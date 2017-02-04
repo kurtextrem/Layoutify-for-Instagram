@@ -17,12 +17,23 @@ var shell = require('shelljs'),
 	}
 
 	Build.prototype.copy = function () {
+		this.copyLocales()
 		this.copyImg()
 		this.copyHTML()
+		this.copyCSS()
 	}
 
 	Build.prototype.copyImg = function () {
-		shell.cp('src/*.png', 'dist')
+		shell.mkdir('dist/img')
+		shell.cp('src/img/*.png', 'dist/img')
+	}
+
+	Build.prototype.copyLocales = function () {
+		shell.cp('-rf', 'src/_locales', 'dist')
+	}
+
+	Build.prototype.copyCSS = function () {
+		shell.cp('src/*.css', 'dist')
 	}
 
 	Build.prototype.copyHTML = function () {

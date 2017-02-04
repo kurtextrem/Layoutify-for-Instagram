@@ -17,7 +17,7 @@
 			"*://*.instagram.com/",
 			"*://instagram.com/"
 		],
-		"js": ["contentscript.js"],
+		"js": ["main.js"],
 		"css": ["content.css"],
 		"run_at": "document_end",
 		"all_frames": true
@@ -26,7 +26,7 @@
 			"*://*.instagram.com/p/*",
 			"*://instagram.com/p/*"
 		],
-		"js": ["contentscript.js"],
+		"js": ["main.js"],
 		"css": ["single.css"],
 		"run_at": "document_idle",
 		"all_frames": true
