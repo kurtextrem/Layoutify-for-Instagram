@@ -1,0 +1,22 @@
+{
+	"dependencies": {
+		"rimraf": "^2.5.4",
+		"shelljs": "^0.7.5",
+		"uglify-js": "^2.7.5",
+		"zip-dir": "^1.0.2",
+		"json-minify": "^1.0.0"
+		},
+		"scripts": {
+			"clean": "rimraf dist && mkdir dist",
+
+			"js": "uglifyjs src/inject.js > dist/inject.js & uglifyjs -c drop_console=true src/main.js > dist/main.js",
+			"json": "json-minify src/manifest.json > dist/manifest.json",
+
+			"copy": "node build.js copy",
+
+			"build": "npm run clean & npm run js & npm run json & npm run copy",
+			"postjs": "node build.js replaceJS",
+			"postjson": "node build.js replaceJSON",
+			"postbuild": "node build.js buildZip"
+		}
+	}
