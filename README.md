@@ -7,4 +7,4 @@ Instagram icon by http://www.martialred.com/ Creative Commons (Attribution 3.0 U
 
 [Chrome Web Store](https://chrome.google.com/webstore/detail/nekeeojpcbiehcignddhindbgacbghmi)
 
-<img src="https://raw.githubusercontent.com/kurtextrem/Instagram-Extended/master/webstore2.png">
+<img src="https://raw.githubusercontent.com/kurtextrem/Instagram-Extended/master/Screen.png">
