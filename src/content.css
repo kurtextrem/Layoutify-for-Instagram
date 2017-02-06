@@ -12,9 +12,7 @@ main > section > div > div {
 
 /** Improve auto load */
 section > div > div:last-of-type {
-	position: absolute;
-	bottom: 20%;
-	width: 100%;
+	transform: translateY(-200vh);
 }
 
 div > div > article {
@@ -23,7 +21,7 @@ div > div > article {
 	margin-right: 20px !important;
 	max-height: 1045px;
 	margin-bottom: 10px !important;
-	contain:  content;
+	contain: content;
 }
 
 article > div > ul > li > *:not(button) > span {
