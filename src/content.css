@@ -12,7 +12,7 @@ main > section > div > div {
 
 /** Improve auto load */
 section > div > div:last-of-type {
-	transform: translateY(-200vh);
+	transform: translateY(-205vh);
 }
 
 div > div > article {
@@ -49,7 +49,7 @@ div > img {
 }
 
 /** Accelerate nav bar */
-nav > div > div > div:nth-of-type(2), #trayContainer {
+nav > div > div > div:nth-of-type(2) {
 	transform: translateZ(0);
 	contain: content;
 }
@@ -73,13 +73,13 @@ article > div:nth-of-type(2n) {
 }
 
 ::-webkit-scrollbar {
-	width: 7px;
+	width: 9px;
 	background-color: rgba(0,0,0,0);
 	border-radius: 100px;
 	/*transition: background-color 1s linear;*/
 }
 ::-webkit-scrollbar:horizontal {
-	height: 6px;
+	height: 9px;
 }
 /* hover effect for both scrollbar area, and scrollbar 'thumb' */
 ::-webkit-scrollbar:hover {
@@ -91,10 +91,13 @@ article > div:nth-of-type(2n) {
 	/*transition: background-color 1s linear;*/
 }
 ::-webkit-scrollbar-thumb:vertical, ::-webkit-scrollbar-thumb:horizontal {
-	background-color: rgba(0,0,0,0.3);
+	background-color: #afafaf;
 	border-radius: 100px;
+	background-clip: padding-box;
+	border: 2px solid rgba(0, 0, 0, 0);
+	min-height: 30px;
 }
 ::-webkit-scrollbar-thumb:vertical:active,  ::-webkit-scrollbar-thumb:horizontal:active {
-	background-color: rgba(0,0,0,0.51); /* Some darker color when you click it */
+	background-color: #727272; /* Some darker color when you click it */
 	border-radius: 100px;
 }
