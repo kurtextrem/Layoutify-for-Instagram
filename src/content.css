@@ -39,7 +39,7 @@ article > div > section {
 }
 
 /** Always show media controls */
-video::-webkit-media-controls-enclosure {
+video::-webkit-media-controls-enclosure, div > .coreSpriteLikeAnimationHeart, div > .coreSpriteSidecarIconLarge {
 	z-index:  10;
 }
 
