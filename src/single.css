@@ -8,7 +8,7 @@ div > img {
 }
 
 /** Always show media controls */
-video::-webkit-media-controls {
+video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-controls-enclosure {
 	z-index:  10;
 }
 
