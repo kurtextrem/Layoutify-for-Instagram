@@ -9,12 +9,12 @@ div > img {
 
 /** Always show media controls */
 video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-controls-enclosure {
-	z-index:  10;
+	z-index:  2;
 }
 
 /** Makes the multiple videos/images dots visible; Heart animation when db-clicking posts */
 div > div + a + div, div > .coreSpriteLikeAnimationHeart, div > .coreSpriteSidecarIconLarge {
-	z-index: 10;
+	z-index:  2;
 }
 
 td > div {

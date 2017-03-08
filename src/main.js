@@ -27,15 +27,21 @@
 				mutation[0].controls = 'true'
 			}
 		}
-		window.requestIdleCallback(addControls)
+		window.requestIdleCallback(onReady)
 	})
 
 	if (document.readyState === 'interactive' || document.readyState === 'complete') {
-		addControls()
+		window.requestIdleCallback(onReady)
 	} else {
-		document.addEventListener('DOMContentLoaded', function(event) {
-			addControls()
+		document.addEventListener('DOMContentLoaded', function () {
+			window.requestIdleCallback(onReady)
 		})
+	}
+
+	function onReady() {
+		addControls()
+
+		document.documentElement.style.setProperty('--boxHeight', document.querySelector('div > article').offsetHeight + 'px');
 	}
 
 	function addControls() {
