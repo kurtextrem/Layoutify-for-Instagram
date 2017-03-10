@@ -1,5 +1,11 @@
-main > div > div > article {
-	min-height: 70vh;
+/** Make the post as big as possible. */
+main > div > div, main > div > div > div, article, article > div {
+	flex-grow: 1;
+}
+
+/** Center the image. */
+article > div {
+	justify-content: center;
 }
 
 /** Moves the img over the "prevent right click copy"-element */
@@ -9,12 +15,12 @@ div > img {
 
 /** Always show media controls */
 video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-controls-enclosure {
-	z-index:  2;
+	z-index: 3;
 }
 
 /** Makes the multiple videos/images dots visible; Heart animation when db-clicking posts */
 div > div + a + div, div > .coreSpriteLikeAnimationHeart, div > .coreSpriteSidecarIconLarge {
-	z-index:  2;
+	z-index: 3;
 }
 
 td > div {

@@ -59,7 +59,7 @@ div > img {
 
 /** Always show media controls */
 video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-controls-enclosure, div > .coreSpriteLikeAnimationHeart, div > .coreSpriteSidecarIconLarge {
-	z-index:  2;
+	z-index: 3;
 }
 
 /** Mark videos in the feed */
