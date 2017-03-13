@@ -4,7 +4,7 @@ main > div > div, main > div > div > div, article, article > div {
 }
 
 /** Center the image. */
-article > div {
+article > div, article > div > div {
 	justify-content: center;
 }
 
