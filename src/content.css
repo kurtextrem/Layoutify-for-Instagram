@@ -5,7 +5,14 @@
 	--boxMarginRight: 10px;
 }
 
-#react-root > section > main > section {
+section > div > div {
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	contain: content;
+}
+
+main > section {
 	margin: 0;
 	padding: 0;
 	max-width: none;
@@ -82,11 +89,12 @@ nav > div > div > div:nth-of-type(2) {
 }
 
 /** Make "Chrome IG Story" play nicely */
-main > section > div > div {
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
-	contain: content;
+section > div > div:first-child {
+	margin-bottom: 10px;
+	overflow: auto;
+}
+section > div > div:first-child > div {
+	margin-bottom: 0;
 }
 
 /** Mac OS Scrollbar */
