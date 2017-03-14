@@ -5,20 +5,24 @@
 	--boxMarginRight: 10px;
 }
 
+/** Remove width limit */
+main > section {
+	margin: 0 !important;
+	padding: 0 !important;
+	max-width: none !important;
+	z-index: 1;
+}
+
+/** Make the flex box layout row instead of column */
 section > div > div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
+
 	contain: content;
 }
 
-main > section {
-	margin: 0;
-	padding: 0;
-	max-width: none;
-	z-index: 1;
-}
-
+/** Make boxes equaly height and width */
 div > div > article {
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
@@ -44,9 +48,15 @@ article > div > section {
 	min-height: initial;
 }
 
+/** Outer parent of the image */
+article > header + div {
+	contain: content;
+}
+article > header + div > div {
+	box-shadow: none;
+}
+
 article > div:nth-of-type(2n) {
-	/*min-height: 325px;
-	flex-grow: 1;*/
 	flex-grow: 1;
 	flex-shrink: 1;
 }
