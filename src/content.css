@@ -53,7 +53,7 @@ article > header + div {
 	contain: content;
 }
 article > header + div > div {
-	box-shadow: none;
+	box-shadow: none !important;
 }
 
 article > div:nth-of-type(2n) {
@@ -80,7 +80,7 @@ video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-cont
 }
 
 /** Mark videos in the feed */
-article div > div + a[role="button"]:not(.coreSpriteRightPaginationArrow) + div::before  {
+article div > div + a[role="button"]:not(.coreSpriteRightChevron) + div::before  {
 	background-image: url("/static/sprites/core/f8e8ab.png");
 	background-position: -264px -211px;
 	background-repeat: no-repeat;

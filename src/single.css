@@ -24,11 +24,12 @@ div > div + a + div, div > .coreSpriteLikeAnimationHeart, div > .coreSpriteSidec
 }
 
 td > div {
-	background: #9E9E9E;
+	background: #9E9E9E !important;
+	transform: translateY(20px);
 }
 
 /** Mark videos in the feed */
-article div > div + a[role="button"]:not(.coreSpriteRightPaginationArrow) + div::before  {
+article div > div + a[role="button"]:not(.coreSpriteRightChevron) + div::before  {
 	background-image: url("/static/sprites/core/f8e8ab.png");
 	background-position: -264px -211px;
 	background-repeat: no-repeat;
