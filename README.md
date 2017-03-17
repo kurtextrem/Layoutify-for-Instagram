@@ -1,5 +1,5 @@
-IG Extended
-===================
+Improved Layout for Instagram.com
+===============================
 
 The default Instagram.com layout is not optimized for the desktop. This extension improves this.
 

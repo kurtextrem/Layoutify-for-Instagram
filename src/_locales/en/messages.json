@@ -1,6 +1,10 @@
 {
+	"extTitle": {
+		"message": "Improved Layout for Instagram.com",
+		"description": "Extension Title."
+	},
 	"extDesc": {
-		"message": "Improves the desktop design of Instagram.com.",
+		"message": "The default Instagram.com layout is not optimized for the desktop. This extension improves this.",
 		"description": "Extension description."
 	}
 }

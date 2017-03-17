@@ -1,6 +1,10 @@
 {
+	"extTitle": {
+		"message": "Verbessertes Design für Instagram.com",
+		"description": "Extension Title."
+	},
 	"extDesc": {
-		"message": "Verbessert das Desktop Design von Instagram.com.",
+		"message": "Das Web-Design von Instagram.com ist nicht für den Desktop optimiert. Diese Erweiterung ändert das.",
 		"description": "Extension description."
 	}
 }
