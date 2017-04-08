@@ -106,6 +106,9 @@ section > div > div:first-child {
 section > div > div:first-child > div {
 	margin-bottom: 0;
 }
+section > div > div:first-child {
+	justify-content: flex-start;
+}
 
 /** Mac OS Scrollbar */
 ::-webkit-scrollbar {
