@@ -99,15 +99,13 @@ nav > div > div > div:nth-of-type(2) {
 }
 
 /** Make "Chrome IG Story" play nicely */
-section > div > div:first-child {
+#rcr-anchor {
 	margin-bottom: 10px;
 	overflow: auto;
-}
-section > div > div:first-child > div {
-	margin-bottom: 0;
-}
-section > div > div:first-child {
 	justify-content: flex-start;
+}
+#rcr-anchor > div {
+	margin-bottom: 0;
 }
 
 /** Mac OS Scrollbar */

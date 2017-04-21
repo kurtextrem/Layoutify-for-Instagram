@@ -12,7 +12,7 @@
 
 	var observer = null
 	function observe(elem, fn) {
-		if (!elem) return;
+		if (!elem) return
 
 		observer = new MutationObserver(fn)
 		observer.observe(elem, { childList: true, subtree: true })
@@ -41,7 +41,7 @@
 	function onReady() {
 		addControls()
 
-		document.documentElement.style.setProperty('--boxHeight', document.querySelector('div > article').offsetHeight + 'px');
+		document.documentElement.style.setProperty('--boxHeight', document.querySelector('div > article').offsetHeight + 'px') // give boxes equal height
 	}
 
 	function addControls() {
