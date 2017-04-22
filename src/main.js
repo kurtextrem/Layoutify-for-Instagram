@@ -27,7 +27,7 @@
 				mutation[0].controls = 'true'
 			}
 		}
-		window.requestIdleCallback(onReady)
+		window.requestIdleCallback(addControls)
 	})
 
 	if (document.readyState === 'interactive' || document.readyState === 'complete') {
@@ -49,10 +49,14 @@
 		if (location.pathname.indexOf('/p/') !== -1)
 			addAuto = true
 
-		root.querySelectorAll('video').forEach(function (elem) {
+		var elems = root.querySelectorAll('video')
+		for (var i = 0; i < elems.length; i++) {
+			var elem = elems[i]
+
 			elem.controls = 'true'
+
 			if (addAuto)
 				elem.preload = 'auto'
-		})
+		}
 	}
 } (window));

@@ -62,11 +62,12 @@ article > div:nth-of-type(2n) {
 }
 
 /** Improve auto load */
-section > div > div:nth-of-type(3) {
+section > div > div:not(#rcr-anchor) + div:not(:last-child) {
 	transform: translateY(calc(var(--boxHeight) * -2));
 	z-index: 2;
-	width: 100%;
-	height: 5px;
+	width: 1px;
+	height: 1px;
+	contain: strict;
 }
 
 /** Moves the img over the "prevent right click copy"-element */
@@ -92,9 +93,21 @@ article div > div + a[role="button"]:not(.coreSpriteRightChevron) + div::before 
 	content: "";
 }
 
-/** Accelerate nav bar */
+/** Nav bar */
 nav > div > div > div:nth-of-type(2) {
 	transform: translateZ(0);
+	contain: content;
+}
+
+/** Spinner */
+section > div > div:last-child {
+	contain: strict;
+	height: 30px;
+	z-index: 2;
+}
+
+/** Toast */
+section > footer + div {
 	contain: content;
 }
 
