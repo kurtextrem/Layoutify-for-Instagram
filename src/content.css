@@ -3,6 +3,10 @@
 	--maxBoxHeight: 115vh;
 	--boxWidth: 23vw;
 	--boxMarginRight: 10px;
+
+	/* Video Icon */
+	--spriteUrl: url("/static/sprites/core/5e53b4.png");
+	--spritePosition:	-264px -223px;
 }
 
 /** Remove width limit */
@@ -36,7 +40,7 @@ div > div > article {
 
 article > div > ul > li > *:not(button) > span {
 	max-height: inherit;
-	display: block;
+	/*display: block;*/
 	overflow: auto;
 }
 article > div > ul {
@@ -61,6 +65,15 @@ article > div:nth-of-type(2n) {
 	flex-shrink: 1;
 }
 
+/* Slimmer header */
+article > header {
+	height: 54px !important;
+}
+
+div > section:first-child {
+	margin-top: 15px;
+}
+
 /** Improve auto load */
 section > div > div:not(#rcr-anchor) + div:not(:last-child) {
 	transform: translateY(calc(var(--boxHeight) * -2));
@@ -82,8 +95,8 @@ video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-cont
 
 /** Mark videos in the feed */
 article div > div + a[role="button"]:not(.coreSpriteRightChevron) + div::before  {
-	background-image: url("/static/sprites/core/f8e8ab.png");
-	background-position: -264px -211px;
+	background-image: var(--spriteUrl);
+	background-position: var(--spritePosition);
 	background-repeat: no-repeat;
 	width: 30px;
 	height: 30px;

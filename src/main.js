@@ -42,6 +42,16 @@
 		addControls()
 
 		document.documentElement.style.setProperty('--boxHeight', document.querySelector('div > article').offsetHeight + 'px') // give boxes equal height
+
+		var el = document.createElement('div')
+		el.classList.add('coreSpriteVideoIconSmall')
+		document.body.appendChild(el)
+
+		var computed = window.getComputedStyle(el)
+		document.documentElement.style.setProperty('--spriteUrl', computed.backgroundImage) // set correct sprite url
+		document.documentElement.style.setProperty('--spritePosition', computed.backgroundPosition) // set correct sprite url
+		document.body.removeChild(el)
+		el = undefined
 	}
 
 	function addControls() {
