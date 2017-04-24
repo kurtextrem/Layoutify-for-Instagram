@@ -1,4 +1,4 @@
-(function (window) {
+(function(window) {
 	'use strict'
 
 	const API = 'https://i.instagram.com/api/v1/feed/'
@@ -16,13 +16,13 @@
 	function checkStatus(response) {
 		if (response.status >= 200 && response.status < 300) {
 			return response
-		} else {
-			const error = new Error(`HTTP Error ${response.statusText}`)
-			error.status = response.statusText
-			error.response = response
-			console.log(error)
-			throw error
 		}
+
+		const error = new Error(`HTTP Error ${response.statusText}`)
+		error.status = response.statusText
+		error.response = response
+		console.log(error)
+		throw error
 	}
 
 	function parseJSON(response) {
@@ -33,19 +33,31 @@
 		constructor(endpoint) {
 			this.maxId = ''
 			this.endpoint = endpoint
-
-			return fetch(this.endpoint, this.maxId)
-				.then(this.storeNext)
+			this.data = []
 		}
 
 		storeNext(data) {
 			if (data.more_available) {
-				this.maxId = data.next_max_id !== undefined && ('' + data.next_max_id)
+				this.maxId = data.next_max_id !== undefined ? String(data.next_max_id) : null
 			}
+
+			return data
+		}
+
+		fetch() {
+			if (this.maxId === null) return Promise.resolve(this.data)
+
+			return fetch(this.endpoint, this.maxId)
+				.then(this.storeData.bind(this))
+				.then(this.storeNext.bind(this))
+		}
+
+		storeData(data) {
+			this.data.push(...data.items)
 
 			return data
 		}
 	}
 
 	window.getInstagram = Instagram
-}(window));
+}(window))

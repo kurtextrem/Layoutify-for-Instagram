@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+	<style>
+		:root {
+			--boxHeight: 1045px;
+			--maxBoxHeight: 115vh;
+			--boxWidth: 23vw;
+			--boxMarginRight: 10px;
+		}
+
+		header>a {
+			width: 30px;
+			height: 30px;
+		}
+
+		header {
+			height: 54px;
+		}
+
+		article {
+			min-width: var(--boxWidth);
+			max-width: var(--boxWidth);
+			max-height: var(--maxBoxHeight);
+			contain: content;
+			z-index: 1;
+			margin-right: var(--boxMarginRight);
+			margin-bottom: 10px;
+		}
+
+		.grow-0 {
+			flex-grow: 0;
+		}
+
+		.overflow-auto {
+			overflow: auto;
+		}
+	</style>
+	<title>Improved Layout for Instagram</title>
+</head>
+<body>
+	<script src="/bundle.js" async></script>
+</body>
+</html>

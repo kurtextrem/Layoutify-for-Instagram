@@ -4,3 +4,5 @@ contentscript1.js
 dist
 dist.zip
 node_modules
+/build
+old

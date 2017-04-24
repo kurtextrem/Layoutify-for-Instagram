@@ -1,21 +1,37 @@
 {
 	"dependencies": {
+		"babel-core": "^6.24.1",
+		"babel-loader": "^7.0.0",
+		"babel-plugin-transform-react-jsx": "^6.24.1",
+		"babel-plugin-transform-runtime": "^6.23.0",
+		"babel-preset-env": "^1.4.0",
+		"babel-preset-stage-1": "^6.24.1",
+		"babel-runtime": "^6.23.0",
+		"bootstrap": "4.0.0-alpha.6",
+		"friendly-errors-webpack-plugin": "^1.6.1",
+		"json-minify": "^1.0.0",
+		"preact": "^8.1.0",
+		"preact-compat": "^3.15.0",
+		"preact-css-transition-group": "^1.2.0",
+		"preact-router": "^2.5.1",
+		"preact-transition-group": "^1.1.1",
+		"reactstrap": "^4.5.0",
 		"rimraf": "^2.5.4",
 		"shelljs": "^0.7.5",
 		"uglify-js": "^2.7.5",
-		"zip-dir": "^1.0.2",
-		"json-minify": "^1.0.0"
-		},
-		"scripts": {
-			"clean": "rimraf dist && mkdir dist",
-
-			"js": "uglifyjs -c drop_console=true src/main.js > dist/main.js",
-			"json": "json-minify src/manifest.json > dist/manifest.json",
-
-			"copy": "node build.js copy",
-
-			"build": "npm run clean & npm run js & npm run json & npm run copy",
-			"postjson": "node build.js replaceJSON",
-			"postbuild": "node build.js buildZip"
-		}
+		"webpack": "^2.4.1",
+		"webpack-dev-server": "^2.4.3",
+		"zip-dir": "^1.0.2"
+	},
+	"scripts": {
+		"clean": "rimraf dist && mkdir dist",
+		"js": "uglifyjs -c drop_console=true src/main.js > dist/main.js",
+		"json": "json-minify src/manifest.json > dist/manifest.json",
+		"copy": "node build.js copy",
+		"build": "npm run clean & npm run js & npm run json & npm run copy",
+		"postjson": "node build.js replaceJSON",
+		"postbuild": "node build.js buildZip",
+		"build2": "webpack",
+		"start": "webpack-dev-server --progress --hot --inline"
 	}
+}
