@@ -2,12 +2,16 @@
 	"dependencies": {
 		"babel-core": "^6.24.1",
 		"babel-loader": "^7.0.0",
+		"babel-plugin-loop-optimizer": "^1.2.3",
+		"babel-plugin-transform-es2015-block-scoping": "^6.24.1",
 		"babel-plugin-transform-react-jsx": "^6.24.1",
 		"babel-plugin-transform-runtime": "^6.23.0",
 		"babel-preset-env": "^1.4.0",
 		"babel-preset-stage-1": "^6.24.1",
 		"babel-runtime": "^6.23.0",
 		"bootstrap": "4.0.0-alpha.6",
+		"copy-webpack-plugin": "^4.0.1",
+		"cross-env": "^4.0.0",
 		"friendly-errors-webpack-plugin": "^1.6.1",
 		"json-minify": "^1.0.0",
 		"preact": "^8.1.0",
@@ -18,20 +22,17 @@
 		"reactstrap": "^4.5.0",
 		"rimraf": "^2.5.4",
 		"shelljs": "^0.7.5",
-		"uglify-js": "^2.7.5",
 		"webpack": "^2.4.1",
+		"webpack-bundle-analyzer": "^2.4.0",
 		"webpack-dev-server": "^2.4.3",
-		"zip-dir": "^1.0.2"
+		"zip-webpack-plugin": "^1.1.0"
 	},
 	"scripts": {
 		"clean": "rimraf dist && mkdir dist",
-		"js": "uglifyjs -c drop_console=true src/main.js > dist/main.js",
 		"json": "json-minify src/manifest.json > dist/manifest.json",
-		"copy": "node build.js copy",
-		"build": "npm run clean & npm run js & npm run json & npm run copy",
-		"postjson": "node build.js replaceJSON",
-		"postbuild": "node build.js buildZip",
-		"build2": "webpack",
-		"start": "webpack-dev-server --progress --hot --inline"
+		"prebuild": "npm run clean",
+		"build": "npm run json && npm run build-bundle",
+		"build-bundle": "cross-env NODE_ENV=production webpack --define process.env.NODE_ENV=\"'production'\" --color",
+		"start": "cross-env NODE_ENV=development webpack-dev-server --progress --colors --hot --inline"
 	}
 }

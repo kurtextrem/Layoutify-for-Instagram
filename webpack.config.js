@@ -1,18 +1,29 @@
+'use strict'
+
 const path = require('path')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ZipPlugin = require('zip-webpack-plugin')
 const webpack = require('webpack')
 
-const isProd = process.env.NODE_ENV === 'production'
+const ENV = process.env.NODE_ENV
+const isProd = ENV === 'production'
 
 module.exports = {
-	// entry file - starting point for the app
-	entry: './src',
+	context: path.join(__dirname, 'src'),
+
+	entry: [
+		'webpack/hot/only-dev-server',
+		// bundle the client for hot reloading
+		// only- means to only hot reload for successful updates
+		'./'
+	],
 
 	// where to dump the output of a production build
 	output: {
-		path: path.join(__dirname, 'build'), // dist
-		/*publicPath: '/dist/',
-		filename: '[name].[chunkhash].js'*/
+		path: path.join(__dirname, 'dist'),
+		publicPath: '/',
 		filename: 'bundle.js'
 	},
 
@@ -24,53 +35,86 @@ module.exports = {
 				loader: 'babel-loader',
 				options: {
 					presets: [
-						["env", { "es2015": { "modules": false } }],
-						"stage-1"
+						['env', {
+							modules: false,
+							targets: isProd ? { chrome: 49, uglify: true } : {
+								browsers: 'last 2 Chrome versions'
+							},
+							loose: true
+						}],
+						'stage-1'
 					],
-					plugins: [
-						['transform-react-jsx', { pragma: 'h' }],
+					plugins: isProd ? [
+						['transform-react-jsx', { pragma: 'h', useBuiltIns: true }],
+						['transform-es2015-block-scoping', {
+							throwIfClosureRequired: true
+						}],
+						'loop-optimizer',
 						'transform-runtime'
-					],
+					] : [
+							['transform-react-jsx', { pragma: 'h' }]
+						],
 					cacheDirectory: true
 				}
 			}
 		]
 	},
 
-	"resolve": {
-		"alias": {
-			"react": "preact-compat",
-			"react-dom": "preact-compat",
-			"react-addons-css-transition-group": "preact-css-transition-group",
-			"react-addons-transition-group": "preact-transition-group"
+	resolve: {
+		alias: {
+			react: 'preact-compat',
+			'react-dom': 'preact-compat',
+			'react-addons-css-transition-group': 'preact-css-transition-group',
+			'react-addons-transition-group': 'preact-transition-group'
 		}
 	},
 
-	// enable Source Maps
-	devtool: 'cheap-module-source-map',
+	devtool: isProd ? false /*'cheap-module-source-map'*/ : 'inline-source-map',
 
 	devServer: {
-		// serve up any static files from src/
-		contentBase: path.join(__dirname, 'src/'),
-
-		// enable gzip compression:
-		compress: false,
-
-		// enable pushState() routing, as used by preact-router et al:
-		historyApiFallback: true
+		//contentBase: path.join(__dirname, 'src/'),
+		compress: true,
+		historyApiFallback: true,
+		hot: true,
+		publicPath: '/',
+		overlay: true
 	},
 
 	plugins: isProd ? [
 		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-		}), new webpack.optimize.UglifyJsPlugin({
+			'process.env.NODE_ENV': JSON.stringify(ENV || 'development')
+		}),
+		new webpack.LoaderOptionsPlugin({
+			minimize: true,
+			debug: false
+		}),
+		new BundleAnalyzerPlugin({
+			analyzerMode: 'static',
+			openAnalyzer: false,
+			reportFilename: '../report.html'
+		}),
+		new CopyWebpackPlugin([
+			{ from: '*.html' },
+			{ from: 'img/*.png' },
+			{ from: 'content/*' },
+			{ from: '_locales/**' }
+		]),
+		new webpack.optimize.UglifyJsPlugin({
+			beautify: false,
+			mangle: {
+				screw_ie8: true
+			},
 			compress: {
-				warnings: false
-			}
-		})] : [
+				screw_ie8: true
+			},
+			comments: false
+		}),
+		new ZipPlugin({ filename: 'dist.zip', path: '../' })
+	] : [
 			new FriendlyErrorsPlugin(),
+			new webpack.NamedModulesPlugin(),
 			new webpack.DefinePlugin({
-				'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+				'process.env.NODE_ENV': JSON.stringify(ENV || 'development')
 			})
 		]
-};
+}
