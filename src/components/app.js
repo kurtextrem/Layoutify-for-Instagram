@@ -12,7 +12,7 @@ export default class App extends Component {
 			<div id="app">
 				<Header />
 
-				<main>
+				<main className="d-flex justify-content-center">
 					<Router>
 						<Liked path="/" default />
 						<Saved path="/saved" id="default" />

@@ -74,9 +74,10 @@
 		a.onclick = function(e) {
 			e.preventDefault()
 
-			liked.fetch().then(store)
-			saved.fetch().then(store)
+			Promise.all(liked.fetch().then(store), saved.fetch().then(store))
+				.then(chrome.runtime.sendMessage(null, { action: 'click' }))
 		}
+		el.style.top = '-8px'
 		anchor.after(el)
 	}
 

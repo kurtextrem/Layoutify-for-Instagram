@@ -31,8 +31,8 @@ export default class Post extends Component {
 		return (
 			<article className="card ml-auto mr-auto">
 				<header className="media align-items-center card-block grow-0">
-					<a href={`https://instagram.com/${display}`} className="d-flex"><img src={user.profile_pic_url} className="img-fluid" /></a>
-					<Media body><a href={`https://instagram.com/${display}`}>{display}</a></Media>
+					<a href={`https://instagram.com/${display}`} className="d-flex" target="_blank"><img src={user.profile_pic_url} className="img-fluid" /></a>
+					<Media body><a href={`https://instagram.com/${display}`} target="_blank">{display}</a></Media>
 				</header>
 				{media}
 				<CardBlock className="overflow-auto">
