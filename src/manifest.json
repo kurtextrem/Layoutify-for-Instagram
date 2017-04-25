@@ -31,6 +31,10 @@
 		"run_at": "document_idle",
 		"all_frames": true
 	}],
+	"background": {
+		"scripts": ["content/background.js"],
+		"persistent": false
+	},
 	"options_page": "index.html",
 	"minimum_chrome_version": "49",
 
