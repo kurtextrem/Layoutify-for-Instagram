@@ -42,5 +42,6 @@
 		"*://*.instagram.com/*",
 		"*://instagram.com/*",
 		"storage"
-	]
+	],
+	"content_security_policy": "script-src 'self' http://localhost:8080; object-src 'self'"
 }

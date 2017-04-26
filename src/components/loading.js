@@ -1,6 +1,9 @@
 import { h, render, Component } from 'preact'
 
 export default class Loading extends Component {
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		return (
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="128" height="128" fill="gray">

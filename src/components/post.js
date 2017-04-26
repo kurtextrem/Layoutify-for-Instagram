@@ -13,7 +13,7 @@ export default class Post extends Component {
 	render() {
 		const data = this.props.data.media === undefined ? this.props.data : this.props.data.media
 
-		const caption = data.caption.text
+		const caption = data.caption && data.caption.text
 		const user = data.user
 		const isVideo = data.media_type === 2
 

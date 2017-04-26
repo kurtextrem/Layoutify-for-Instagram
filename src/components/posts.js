@@ -1,6 +1,6 @@
-import { h, render, Component } from 'preact'
+import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
 import { CardDeck } from 'reactstrap'
-import { XHR, Storage } from './utils'
+import { Storage } from './utils'
 import Loading from './loading'
 import Post from './post'
 
@@ -9,6 +9,8 @@ export default class Posts extends Component {
 	constructor(props) {
 		super(props)
 
+		console.log(this.id)
+
 		if (this.id === '')
 			throw new Error('Children must have an id set')
 
@@ -16,6 +18,8 @@ export default class Posts extends Component {
 			data: null
 		}
 		this.loading = <Loading />
+
+		this.addStorageListener()
 	}
 
 	handleData = (data) => {
@@ -25,27 +29,33 @@ export default class Posts extends Component {
 
 	addStorageListener = () => {
 		chrome.storage.onChanged.addListener((changes, area) => {
-			if (changes[this.id] !== undefined) {
+			if (changes[this.id] !== undefined && changes[this.id].newValue !== undefined) {
+				console.log('new data', changes)
 				this.populateData()
 			}
 		})
 	}
 
 	populateData = () => {
-		return Storage.get(this.id)
+		return Storage.get(this.id, [])
 			.then(this.handleData)
-			.then((data) => Storage.shiftData(this.id, data))
 	}
+
+	/**
+	 * @todo: Implement
+	 *
+	 *
+	 * @memberOf Posts
+	 */
+	onScroll = () => {
+		// https://developer.chrome.com/extensions/tabs#method-sendMessage
+		chrome.tabs.sendMessage(document.location.search.split('=')[1], { action: 'load', which: this.id }, null, function () { })
+	}
+
 
 	componentDidMount() {
 		if (this.state.data === null) {
-			if (chrome.storage !== undefined) {
-				this.populateData()
-				this.addStorageListener()
-			} else {
-				XHR.fetch(`../test/${this.id}.json`)
-					.then(this.handleData)
-			}
+			this.populateData()
 		}
 	}
 
@@ -53,11 +63,15 @@ export default class Posts extends Component {
 		const { data } = this.state
 		if (data === null)
 			return this.loading
+		if (data.length === 0) {
+			return <span>No Data Available</span>
+		}
 
+		// @todo: On scroll, ask for more posts
 		return (
 			<CardDeck>
 				{data.map((post) => (
-					<Post data={post} />
+					<Post data={post.media !== undefined ? post.media : post} />
 				))}
 			</CardDeck>
 		)

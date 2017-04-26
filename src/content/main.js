@@ -47,6 +47,7 @@
 		setSpriteVars()
 
 		addExtendedButton()
+		addListener()
 	}
 
 	function setSpriteVars() {
@@ -74,16 +75,24 @@
 		a.onclick = function(e) {
 			e.preventDefault()
 
-			Promise.all(liked.fetch().then(store), saved.fetch().then(store))
-				.then(chrome.runtime.sendMessage(null, { action: 'click' }))
+			liked.start().then(liked.fetch())
+			saved.start().then(saved.fetch())
+			chrome.runtime.sendMessage(null, { action: 'click' })
 		}
 		el.style.top = '-8px'
 		anchor.after(el)
 	}
 
-	function store(data) {
-		chrome.storage.local.set({ data })
-		return data
+	function addListener() {
+		chrome.runtime.onMessage.addListener(
+			function(request, sender, sendResponse) {
+				if (request.action === 'load')
+					if (request.which === 'liked')
+						liked.fetch()
+					else
+						saved.fetch()
+			}
+		)
 	}
 
 	function addControls() {

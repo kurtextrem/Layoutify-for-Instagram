@@ -7,11 +7,9 @@ function init() {
 	root = render(<App />, document.body, root)
 }
 
-// in development, set up HMR:
 if (module.hot) {
-	require('preact/devtools') // turn this on if you want to enable React DevTools!
+	require('preact/devtools')
 	module.hot.accept('./components/app', () => requestAnimationFrame(init))
 }
 
-// initial render!
 init()

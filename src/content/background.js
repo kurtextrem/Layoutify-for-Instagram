@@ -1,19 +1,14 @@
 'use strict'
 
-function createTab() {
+function createTab(id) {
 	chrome.tabs.create({
-		url: chrome.extension.getURL('index.html')
+		url: chrome.extension.getURL('index.html') + '?tabid=' + id
 	})
 }
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
-		console.log(sender.tab ?
-			'from a content script:' + sender.tab.url :
-			'from the extension')
 		if (request.action === 'click')
-			createTab()
-
-		return true // async
+			createTab(sender.tab.id)
 	}
 )
