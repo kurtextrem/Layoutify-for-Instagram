@@ -27,7 +27,8 @@
 				mutation[0].controls = 'true'
 			}
 		}
-		window.requestIdleCallback(addControls)
+
+		window.requestIdleCallback(onChange)
 	})
 
 	if (document.readyState === 'interactive' || document.readyState === 'complete') {
@@ -48,6 +49,30 @@
 
 		addExtendedButton()
 		addListener()
+	}
+
+	function onChange() {
+		addControls()
+
+		checkURL()
+	}
+
+	var url = document.location.href, regex = /\/.+/
+	function checkURL() {
+		if (document.location.href !== url) {
+			console.log('url change', url, document.location.href)
+			url = document.location.href
+
+			var section = document.querySelector('#react-root > section')
+			if (regex.test(url) && url.indexOf('/p/') === -1) { // profile page
+				section.classList.add('profile')
+			} else if (regex.test(url)) { // post page
+				section.classList.add('post')
+			} else {
+				section.classList.remove('profile')
+				section.classList.remove('post')
+			}
+		}
 	}
 
 	function setSpriteVars() {

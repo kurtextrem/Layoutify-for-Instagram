@@ -26,8 +26,8 @@ section > div > div {
 	contain: content;
 }
 
-/** Make boxes equaly height and width */
-div > div > article {
+/** Make boxes equaly high and wide */
+section:not(.post) > div > div > article {
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
 	max-height: var(--maxBoxHeight);
@@ -66,7 +66,7 @@ article > div:nth-of-type(2n) {
 }
 
 /* Slimmer header */
-article > header {
+section:not(.profile) article > header {
 	height: 54px !important;
 }
 
@@ -123,6 +123,19 @@ section > div > div:last-child {
 section > footer + div {
 	contain: content;
 }
+
+/** Enlargen modal */
+div[role='dialog'] article {
+    height: var(--boxHeight);
+    max-height: 70vh;
+}
+
+/** Center the image. */
+div[role='dialog'] article > div {
+    justify-content: center;
+    flex-grow: 1;
+}
+
 
 /** Make "Chrome IG Story" play nicely */
 #rcr-anchor {
