@@ -6,8 +6,10 @@ import Post from './post'
 
 
 export default class Posts extends Component {
-	constructor(props) {
+	constructor(props, id) {
 		super(props)
+
+		this.id = id
 
 		console.log(this.id)
 
@@ -48,8 +50,8 @@ export default class Posts extends Component {
 	 * @memberOf Posts
 	 */
 	onScroll = () => {
-		// https://developer.chrome.com/extensions/tabs#method-sendMessage
-		chrome.tabs.sendMessage(document.location.search.split('=')[1], { action: 'load', which: this.id }, null, function () { })
+		// https://developers.google.com/web/updates/2016/04/intersectionobserver
+		chrome.tabs.sendMessage(document.location.search.split('=')[1], { action: 'load', which: this.id }, null, function() { })
 	}
 
 

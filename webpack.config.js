@@ -11,7 +11,7 @@ const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-const WriteFilePlugin = require('write-file-webpack-plugin')
+const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin')
 
 const ENV = process.env.NODE_ENV
 const isProd = ENV === 'production'
@@ -29,7 +29,12 @@ if (isProd) {
 
 var plugins = [
 	new webpack.DefinePlugin({
-		'process.env.NODE_ENV': JSON.stringify(ENV || 'development')
+		'process.env.NODE_ENV': JSON.stringify(ENV || 'development'),
+		POLYFILL_OBJECT_ASSIGN: false,
+		POLYFILL_OBJECT_VALUES: false,
+		POLYFILL_PROMISES: false,
+		POLYFILL_FETCH: false,
+		POLYFILL_URL: false
 	}),
 	new HtmlWebpackPlugin(html),
 	new CopyWebpackPlugin([
@@ -70,12 +75,12 @@ if (isProd) {
 			},
 			comments: false
 		}),
+		new V8LazyParseWebpackPlugin(),
 		new ZipPlugin({ filename: 'dist.zip', path: '../' })
 	)
 } else {
 	plugins.push(
 		new FriendlyErrorsPlugin(),
-		new WriteFilePlugin(),
 		new webpack.NamedModulesPlugin(),
 		new HtmlWebpackIncludeAssetsPlugin({
 			assets: ['bootstrap.min.css'],
@@ -87,7 +92,7 @@ if (isProd) {
 module.exports = {
 	context: path.join(__dirname, 'src'),
 
-	entry: [
+	entry: isProd ? './' : [
 		'webpack/hot/only-dev-server',
 		// bundle the client for hot reloading
 		// only- means to only hot reload for successful updates
@@ -97,7 +102,7 @@ module.exports = {
 	// where to dump the output of a production build
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: '/',
+		publicPath: isProd ? '/' : 'http://localhost:8080',
 		filename: 'bundle.js'
 	},
 
@@ -123,8 +128,7 @@ module.exports = {
 						['transform-es2015-block-scoping', {
 							throwIfClosureRequired: true
 						}],
-						'loop-optimizer',
-						'transform-runtime'
+						'loop-optimizer'
 					] : [
 							['transform-react-jsx', { pragma: 'h' }]
 						],
