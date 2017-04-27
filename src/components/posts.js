@@ -73,7 +73,7 @@ export default class Posts extends Component {
 		return (
 			<CardDeck>
 				{data.map((post) => (
-					<Post data={post.media !== undefined ? post.media : post} />
+					<Post data={post.media !== undefined ? post.media : post} key={post.media !== undefined ? post.media.id : post.id} />
 				))}
 			</CardDeck>
 		)

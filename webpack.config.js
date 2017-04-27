@@ -99,7 +99,6 @@ module.exports = {
 		'./'
 	],
 
-	// where to dump the output of a production build
 	output: {
 		path: path.join(__dirname, 'dist'),
 		publicPath: isProd ? '/' : 'http://localhost:8080',
@@ -128,13 +127,29 @@ module.exports = {
 						['transform-es2015-block-scoping', {
 							throwIfClosureRequired: true
 						}],
-						'loop-optimizer'
+						'loop-optimizer',
+						'transform-react-inline-elements',
+						'transform-react-constant-elements',
+						['transform-imports', {
+							reactstrap: {
+								transform: 'reactstrap/lib/${member}',
+								preventFullImport: true
+							},
+							history: {
+								transform: 'history/es/${member}',
+								preventFullImport: true
+							}
+						}]
 					] : [
-							['transform-react-jsx', { pragma: 'h' }]
+							['transform-react-jsx', { pragma: 'h', useBuiltIns: true }]
 						],
 					cacheDirectory: true
 				}
 			}
+		],
+		noParse: [
+			new RegExp(path.resolve(__dirname, 'node_modules/preact/dist/preact.min.js')),
+			new RegExp(path.resolve(__dirname, 'node_modules/preact-compat/dist/preact-compat.min.js'))
 		]
 	},
 
@@ -143,7 +158,9 @@ module.exports = {
 			react: 'preact-compat',
 			'react-dom': 'preact-compat',
 			'react-addons-css-transition-group': 'preact-css-transition-group',
-			'react-addons-transition-group': 'preact-transition-group'
+			'react-addons-transition-group': 'preact-transition-group',
+			preact: path.resolve(__dirname, 'node_modules/preact/dist/preact.min.js'),
+			'preact-compat': path.resolve(__dirname, 'node_modules/preact-compat/dist/preact-compat.min.js')
 		}
 	},
 
