@@ -12,6 +12,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const ENV = process.env.NODE_ENV
 const isProd = ENV === 'production'
@@ -65,16 +66,7 @@ if (isProd) {
 			openAnalyzer: false,
 			reportFilename: '../report.html'
 		}),
-		new webpack.optimize.UglifyJsPlugin({
-			beautify: false,
-			mangle: {
-				screw_ie8: true
-			},
-			compress: {
-				screw_ie8: true
-			},
-			comments: false
-		}),
+		new UglifyJSPlugin({ sourceMap: true }),
 		new V8LazyParseWebpackPlugin(),
 		new ZipPlugin({ filename: 'dist.zip', path: '../' })
 	)
