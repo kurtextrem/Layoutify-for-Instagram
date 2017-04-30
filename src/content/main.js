@@ -45,10 +45,24 @@
 
 		documentElement.style.setProperty('--boxHeight', document.querySelector('div > article').offsetHeight + 'px') // give boxes equal height
 
-		setSpriteVars()
-
 		addExtendedButton()
 		addListener()
+	}
+
+	function addControls() {
+		var addAuto = false
+		if (location.pathname.indexOf('/p/') !== -1)
+			addAuto = true
+
+		var elems = root.querySelectorAll('video')
+		for (var i = 0; i < elems.length; i++) {
+			var elem = elems[i]
+
+			elem.controls = 'true'
+
+			if (addAuto)
+				elem.preload = 'auto'
+		}
 	}
 
 	function onChange() {
@@ -74,19 +88,6 @@
 			}
 		}
 	}
-
-	function setSpriteVars() {
-		var el = document.createElement('div')
-		el.classList.add('coreSpriteVideoIconSmall')
-		document.body.appendChild(el)
-
-		var computed = window.getComputedStyle(el)
-		documentElement.style.setProperty('--spriteUrl', computed.backgroundImage) // set correct sprite url
-		documentElement.style.setProperty('--spritePosition', computed.backgroundPosition) // set correct sprite url
-		document.body.removeChild(el)
-		el = undefined
-	}
-
 
 	var liked = new window.getInstagram('liked'),
 		saved = new window.getInstagram('saved')
@@ -118,21 +119,5 @@
 						saved.fetch()
 			}
 		)
-	}
-
-	function addControls() {
-		var addAuto = false
-		if (location.pathname.indexOf('/p/') !== -1)
-			addAuto = true
-
-		var elems = root.querySelectorAll('video')
-		for (var i = 0; i < elems.length; i++) {
-			var elem = elems[i]
-
-			elem.controls = 'true'
-
-			if (addAuto)
-				elem.preload = 'auto'
-		}
 	}
 }(window))
