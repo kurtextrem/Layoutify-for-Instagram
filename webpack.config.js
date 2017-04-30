@@ -76,7 +76,7 @@ if (isProd) {
 		new FriendlyErrorsPlugin(),
 		new webpack.NamedModulesPlugin(),
 		new WriteFilePlugin({
-			test: /content\//,
+			test: /(content\/|manifest.json)/,
 			useHashIndex: true
 		}),
 		new HtmlWebpackIncludeAssetsPlugin({
