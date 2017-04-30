@@ -17,15 +17,18 @@ export default class Posts extends Component {
 			throw new Error('Children must have an id set')
 
 		this.state = {
-			data: null
+			data: null,
+			loading: false
 		}
 		this.loading = <Loading />
+
+		window.setTimeout(() => this.showLoading(), 200)
 
 		this.addStorageListener()
 	}
 
 	handleData = (data) => {
-		this.setState((prevState, props) => ({ data }))
+		this.setState((prevState, props) => ({ data, loading: false }))
 		return data
 	}
 
@@ -43,6 +46,18 @@ export default class Posts extends Component {
 			.then(this.handleData)
 	}
 
+	showLoading = () => {
+		if (this.state.data === null) {
+			this.setState((prevState, props) => ({ loading: true }))
+		}
+	}
+
+	componentDidMount() {
+		if (this.state.data === null) {
+			this.populateData()
+		}
+	}
+
 	/**
 	 * @todo: Implement
 	 *
@@ -54,25 +69,20 @@ export default class Posts extends Component {
 		chrome.tabs.sendMessage(document.location.search.split('=')[1], { action: 'load', which: this.id }, null, function() { })
 	}
 
-
-	componentDidMount() {
-		if (this.state.data === null) {
-			this.populateData()
-		}
-	}
-
 	render() {
-		const { data } = this.state
-		if (data === null)
+		const { data, loading } = this.state
+		if (loading)
 			return this.loading
-		if (data.length === 0) {
+		if (data === null)
+			return null
+		if (data.items === undefined || data.items.length === 0) {
 			return <span>No Data Available</span>
 		}
 
 		// @todo: On scroll, ask for more posts
 		return (
 			<CardDeck>
-				{data.map((post) => (
+				{data.items.map((post) => (
 					<Post data={post.media !== undefined ? post.media : post} key={post.media !== undefined ? post.media.id : post.id} />
 				))}
 			</CardDeck>

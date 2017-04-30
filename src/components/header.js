@@ -5,7 +5,7 @@ import { Link, Router } from 'preact-router'
 export default class Header extends Component {
 	render() {
 		return (
-			<Navbar color="faded" light toggleable>
+			<Navbar color="faded" light toggleable className="mb-2">
 				<Container>
 					<NavbarBrand href="/">Improved for IG</NavbarBrand>
 					<Nav navbar className="mr-auto">
