@@ -13,6 +13,7 @@ const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plug
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const WriteFilePlugin = require('write-file-webpack-plugin')
 
 const ENV = process.env.NODE_ENV
 const isProd = ENV === 'production'
@@ -74,6 +75,10 @@ if (isProd) {
 	plugins.push(
 		new FriendlyErrorsPlugin(),
 		new webpack.NamedModulesPlugin(),
+		new WriteFilePlugin({
+			test: /content\//,
+			useHashIndex: true
+		}),
 		new HtmlWebpackIncludeAssetsPlugin({
 			assets: ['bootstrap.min.css'],
 			append: false
@@ -93,7 +98,7 @@ module.exports = {
 
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: isProd ? '/' : 'http://localhost:8080',
+		publicPath: isProd ? '/' : 'http://localhost:8080/',
 		filename: 'bundle.js'
 	},
 
@@ -140,7 +145,6 @@ module.exports = {
 			}
 		],
 		noParse: [
-			new RegExp(path.resolve(__dirname, 'node_modules/preact/dist/preact.min.js')),
 			new RegExp(path.resolve(__dirname, 'node_modules/preact-compat/dist/preact-compat.min.js'))
 		]
 	},
@@ -151,7 +155,6 @@ module.exports = {
 			'react-dom': 'preact-compat',
 			'react-addons-css-transition-group': 'preact-css-transition-group',
 			'react-addons-transition-group': 'preact-transition-group',
-			preact: path.resolve(__dirname, 'node_modules/preact/dist/preact.min.js'),
 			'preact-compat': path.resolve(__dirname, 'node_modules/preact-compat/dist/preact-compat.min.js')
 		}
 	},
@@ -163,9 +166,10 @@ module.exports = {
 		compress: true,
 		historyApiFallback: true,
 		hot: true,
+		// hotOnly: true,
 		publicPath: '/',
 		overlay: true,
-		watchContentBase: false,
+		watchContentBase: true,
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
