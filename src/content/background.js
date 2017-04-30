@@ -1,8 +1,17 @@
 'use strict'
 
+var url = ''
 function createTab(id) {
-	chrome.tabs.create({
-		url: chrome.extension.getURL('index.html') + '?tabid=' + id
+	if (url === '') url = chrome.extension.getURL('index.html')
+
+	chrome.tabs.query({ url }, (tabs) => {
+		if (tabs.length) {
+			chrome.tabs.update({ id: tabs[0].id }, { active: true, url: url + '?tabid=' + id })
+		} else {
+			chrome.tabs.create({
+				url: url + '?tabid=' + id
+			})
+		}
 	})
 }
 
