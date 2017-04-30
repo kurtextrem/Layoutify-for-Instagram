@@ -103,14 +103,16 @@ video:not([loop])::-webkit-media-controls-enclosure {
 }*/
 
 /** Mark videos in the feed */
-a.videoSpritePlayButton + div {
-	display: none;
-}
-
 a.videoSpritePlayButton + div + div {
 	opacity: 1;
 	left: 0;
 	right: initial;
+	contain: content;
+}
+
+/** Hide "Click video for audio" */
+a.videoSpritePlayButton + div {
+	display: none;
 }
 
 /** Nav bar */

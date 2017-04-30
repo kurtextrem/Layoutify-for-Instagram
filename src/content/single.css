@@ -14,7 +14,7 @@ div > img {
 }
 
 /** Always show media controls */
-video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-controls-enclosure {
+video::-webkit-media-controls-overlay-enclosure, video::-webkit-media-controls-enclosure {
 	z-index: 3;
 }
 
@@ -29,12 +29,14 @@ td > div {
 }
 
 /** Mark videos in the feed */
-a.videoSpritePlayButton + div {
-	display: none;
-}
-
 a.videoSpritePlayButton + div + div {
 	opacity: 1;
 	left: 0;
 	right: initial;
+	contain: content;
+}
+
+/** Hide "Click video for audio" */
+a.videoSpritePlayButton + div {
+	display: none;
 }
