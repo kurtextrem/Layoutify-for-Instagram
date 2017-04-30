@@ -3,17 +3,13 @@
 	--maxBoxHeight: 115vh;
 	--boxWidth: 23vw;
 	--boxMarginRight: 10px;
-
-	/* Video Icon */
-	--spriteUrl: url("/static/sprites/core/5e53b4.png");
-	--spritePosition:	-264px -223px;
 }
 
 /** Remove width limit */
 main > section {
+	max-width: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
-	max-width: none !important;
 	z-index: 1;
 }
 
@@ -33,9 +29,9 @@ section:not(.post) > div > div > article {
 	max-height: var(--maxBoxHeight);
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
+	z-index: 1;
 
 	contain: content;
-	z-index: 1;
 }
 
 article > div > ul > li > *:not(button) > span {
@@ -44,9 +40,9 @@ article > div > ul > li > *:not(button) > span {
 	overflow: auto;
 }
 article > div > ul {
+	max-height: var(--maxBoxHeight);
 	/*flex-grow: 0 !important;*/
 	overflow: auto;
-	max-height: var(--maxBoxHeight);
 }
 article > div > section {
 	min-height: initial;
@@ -71,15 +67,19 @@ section:not(.profile) article > header {
 }
 
 div > section:first-child {
-	margin-top: 15px;
+	margin-top: 10px !important;
+}
+
+div > section:only-child {
+	flex-grow: 1;
 }
 
 /** Improve auto load */
 section > div > div:not(#rcr-anchor) + div:not(:last-child) {
-	transform: translateY(calc(var(--boxHeight) * -2));
-	z-index: 2;
 	width: 1px;
 	height: 1px;
+	transform: translateY(calc(var(--boxHeight) * -2));
+	z-index: 2;
 	contain: strict;
 }
 
@@ -88,22 +88,29 @@ div > img {
 	z-index:  1;
 }
 
-/** Always show media controls */
+/** Always show media controls when playing */
 video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-controls-enclosure, div > .coreSpriteLikeAnimationHeart, div > .coreSpriteSidecarIconLarge {
 	z-index: 3;
 }
 
+video:not([loop])::-webkit-media-controls-enclosure {
+	opacity: 0;
+}
+
+/*video[loop]::-webkit-media-controls-enclosure {
+	z-index: 3;
+	opacity: 1;
+}*/
+
 /** Mark videos in the feed */
-article div > div + a[role="button"]:not(.coreSpriteRightChevron) + div::before  {
-	background-image: var(--spriteUrl);
-	background-position: var(--spritePosition);
-	background-repeat: no-repeat;
-	width: 30px;
-	height: 30px;
-	display: block;
-	position: absolute;
-	top: 0;
-	content: "";
+a.videoSpritePlayButton + div {
+	display: none;
+}
+
+a.videoSpritePlayButton + div + div {
+	opacity: 1;
+	left: 0;
+	right: initial;
 }
 
 /** Nav bar */
@@ -114,9 +121,9 @@ nav > div > div > div:nth-of-type(2) {
 
 /** Spinner */
 section > div > div:last-child {
-	contain: strict;
 	height: 30px;
 	z-index: 2;
+	contain: strict;
 }
 
 /** Toast */
@@ -125,23 +132,23 @@ section > footer + div {
 }
 
 /** Enlargen modal */
-div[role='dialog'] article {
+div[role='dialog'] article, section.post article {
     height: var(--boxHeight);
     max-height: 70vh;
 }
 
 /** Center the image. */
-div[role='dialog'] article > div {
-    justify-content: center;
+div[role='dialog'] article > div > div, section.post article > div > div {
     flex-grow: 1;
+    justify-content: center;
 }
 
 
 /** Make "Chrome IG Story" play nicely */
 #rcr-anchor {
+	justify-content: flex-start;
 	margin-bottom: 10px;
 	overflow: auto;
-	justify-content: flex-start;
 }
 #rcr-anchor > div {
 	margin-bottom: 0;
@@ -150,8 +157,8 @@ div[role='dialog'] article > div {
 /** Mac OS Scrollbar */
 ::-webkit-scrollbar {
 	width: 9px;
-	background-color: rgba(0,0,0,0);
 	border-radius: 100px;
+	background-color: rgba(0,0,0,0);
 	/*transition: background-color 1s linear;*/
 }
 ::-webkit-scrollbar:horizontal {
@@ -167,13 +174,13 @@ div[role='dialog'] article > div {
 	/*transition: background-color 1s linear;*/
 }
 ::-webkit-scrollbar-thumb:vertical, ::-webkit-scrollbar-thumb:horizontal {
-	background-color: #afafaf;
-	border-radius: 100px;
-	background-clip: padding-box;
-	border: 2px solid rgba(0, 0, 0, 0);
 	min-height: 30px;
+	border: 2px solid rgba(0, 0, 0, 0);
+	border-radius: 100px;
+	background-color: #afafaf;
+	background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:vertical:active,  ::-webkit-scrollbar-thumb:horizontal:active {
-	background-color: #727272; /* Some darker color when you click it */
 	border-radius: 100px;
+	background-color: #727272; /* Some darker color when you click it */
 }
