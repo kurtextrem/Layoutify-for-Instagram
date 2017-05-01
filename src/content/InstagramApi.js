@@ -170,8 +170,26 @@
 			return this.items
 		}
 
-			// else we don't want to save anything new
-			return false
+		remove(id) {
+			var formData = new FormData()
+			formData.set('media_id', id)
+			formData.set('src', 'profile')
+
+			return fetch(`media/${id}/un${this.endpoint}/`, {
+				method: 'POST',
+				body: formData
+			})
+		}
+
+		add(id) {
+			var formData = new FormData()
+			formData.set('media_id', id)
+			formData.set('src', 'profile')
+
+			return fetch(`media/${id}/${this.endpoint}/`, {
+				method: 'POST',
+				body: formData
+			})
 		}
 	}
 
