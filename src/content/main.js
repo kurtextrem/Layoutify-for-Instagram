@@ -11,6 +11,7 @@
 	window.addEventListener('visibilitychange', function(e) { e.stopPropagation() }, true)
 
 	var observer = null
+
 	function observe(elem, fn) {
 		if (!elem) return
 
@@ -40,10 +41,12 @@
 	}
 
 	var documentElement = document.documentElement
+
 	function onReady() {
 		addControls()
 
-		documentElement.style.setProperty('--boxHeight', document.querySelector('div > article').offsetHeight + 'px') // give boxes equal height
+		documentElement.style.setProperty('--boxHeight', document.querySelector('div > article')
+			.offsetHeight + 'px') // give boxes equal height
 
 		addExtendedButton()
 		addListener()
@@ -71,7 +74,9 @@
 		checkURL()
 	}
 
-	var url = document.location.href, regex = /\/.+/
+	var url = document.location.href,
+		regex = /\/.+/
+
 	function checkURL() {
 		if (document.location.href !== url) {
 			console.log('url change', url, document.location.href)
@@ -91,9 +96,13 @@
 
 	var liked = new window.getInstagram('liked'),
 		saved = new window.getInstagram('saved')
+	console.log(window.liked = liked)
+	console.log(window.saved = saved)
+
 	function addExtendedButton() {
 		var anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].parentNode
-		var el = anchor.cloneNode(true), a = el.childNodes[0]
+		var el = anchor.cloneNode(true),
+			a = el.childNodes[0]
 		a.classList.add('coreSpriteEllipsis')
 		a.classList.remove('coreSpriteDesktopNavProfile')
 		a.href = '#'
@@ -101,8 +110,10 @@
 		a.onclick = function(e) {
 			e.preventDefault()
 
-			liked.start().then(liked.fetch())
-			saved.start().then(saved.fetch())
+			liked.start()
+				.then(liked.fetch())
+			saved.start()
+				.then(saved.fetch())
 			chrome.runtime.sendMessage(null, { action: 'click' })
 		}
 		el.style.top = '-8px'
@@ -112,11 +123,26 @@
 	function addListener() {
 		chrome.runtime.onMessage.addListener(
 			function(request, sender, sendResponse) {
-				if (request.action === 'load')
+				if (request.action === 'load') {
 					if (request.which === 'liked')
 						liked.fetch()
 					else
 						saved.fetch()
+				}
+
+				if (request.action === 'add') {
+					if (request.which === 'liked')
+						liked.add(request.id)
+					else
+						saved.add(request.id)
+				}
+
+				if (request.action === 'remove') {
+					if (request.which === 'liked')
+						liked.remove(request.id)
+					else
+						saved.remove(request.id)
+				}
 			}
 		)
 	}

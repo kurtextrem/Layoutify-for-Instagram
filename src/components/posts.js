@@ -80,7 +80,7 @@ export default class Posts extends Component {
 		if (data === null)
 			return null
 		if (data.items === undefined || data.items.length === 0) {
-			return <span>No Data Available</span>
+			return <div>No Data Available (have you tried clicking the three dots on top of Instagram.com?)</div>
 		}
 
 		return (
