@@ -1,9 +1,16 @@
-import { h, render, Component } from 'preact'
+import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
 
 export default class Loading extends Component {
+	constructor(props) {
+		super(props)
+
+		// could use props.width and props.height
+	}
+
 	shouldComponentUpdate() {
 		return false
 	}
+
 	render() {
 		return (
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="128" height="128" fill="gray">

@@ -18,9 +18,14 @@
 			--boxMarginRight: 10px;
 		}
 
-		header>a {
+		.profile-pic {
 			width: 30px;
 			height: 30px;
+		}
+
+		.card-text {
+			word-wrap: break-word;
+			white-space: pre-wrap;
 		}
 
 		header {
@@ -41,8 +46,58 @@
 			flex-grow: 0;
 		}
 
+		.grow-1 {
+			flex-grow: 1;
+		}
+
 		.overflow-auto {
 			overflow: auto;
+		}
+
+		.card-deck {
+			position: relative;
+		}
+
+		.sentinel {
+			width: 1px;
+			height: 1px;
+			position: absolute;
+			bottom: var(--boxHeight);
+			transform: translateY(calc(var(--boxHeight) * -2));
+
+			contain: strict;
+			z-index: 2;
+		}
+
+		/** Mac OS Scrollbar */
+		::-webkit-scrollbar {
+			width: 9px;
+			border-radius: 100px;
+			background-color: rgba(0,0,0,0);
+			/*transition: background-color 1s linear;*/
+		}
+		::-webkit-scrollbar:horizontal {
+			height: 9px;
+		}
+		/* hover effect for both scrollbar area, and scrollbar 'thumb' */
+		::-webkit-scrollbar:hover {
+			background-color: rgba(0, 0, 0, 0.07);
+		}
+
+		/* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+		::-webkit-scrollbar-thumb {
+			/*transition: background-color 1s linear;*/
+		}
+		::-webkit-scrollbar-thumb:vertical, ::-webkit-scrollbar-thumb:horizontal {
+			min-height: 30px;
+			border: 2px solid rgba(0, 0, 0, 0);
+			border-radius: 100px;
+			background-color: #afafaf;
+			background-clip: padding-box;
+		}
+		::-webkit-scrollbar-thumb:vertical:active,  ::-webkit-scrollbar-thumb:horizontal:active {
+			border-radius: 100px;
+			background-color: #727272; /* Some darker color when you click it */
 		}
 	</style>
 </body>

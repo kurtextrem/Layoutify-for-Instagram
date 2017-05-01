@@ -3,7 +3,8 @@
 const path = require('path')
 const webpack = require('webpack')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+	.BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -159,7 +160,7 @@ module.exports = {
 		}
 	},
 
-	devtool: isProd ? false /*'cheap-module-source-map'*/ : 'cheap-module-source-map', //'inline-source-map',
+	devtool: isProd ? false /*'cheap-module-source-map'*/ : 'inline-source-map', //'inline-source-map',
 
 	devServer: {
 		contentBase: path.join(__dirname, 'dist/'),

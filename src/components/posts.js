@@ -3,6 +3,7 @@ import { CardDeck } from 'reactstrap'
 import { Storage } from './utils'
 import Loading from './loading'
 import Post from './post'
+import Sentinel from './sentinel'
 
 
 export default class Posts extends Component {
@@ -32,13 +33,19 @@ export default class Posts extends Component {
 		return data
 	}
 
+	storageListener = (changes, area) => {
+		if (changes[this.id] !== undefined && changes[this.id].newValue !== undefined) {
+			console.log('new data', changes)
+			this.populateData()
+		}
+	}
+
 	addStorageListener = () => {
-		chrome.storage.onChanged.addListener((changes, area) => {
-			if (changes[this.id] !== undefined && changes[this.id].newValue !== undefined) {
-				console.log('new data', changes)
-				this.populateData()
-			}
-		})
+		chrome.storage.onChanged.addListener(this.storageListener)
+	}
+
+	removeStorageListener = () => {
+		chrome.storage.onChanged.removeListener(this.storageListener)
 	}
 
 	populateData = () => {
@@ -52,21 +59,18 @@ export default class Posts extends Component {
 		}
 	}
 
+	onScroll = () => {
+		chrome.tabs.sendMessage(Number(document.location.search.split('=')[1]), { action: 'load', which: this.id }, null, function() {})
+	}
+
 	componentDidMount() {
 		if (this.state.data === null) {
 			this.populateData()
 		}
 	}
 
-	/**
-	 * @todo: Implement
-	 *
-	 *
-	 * @memberOf Posts
-	 */
-	onScroll = () => {
-		// https://developers.google.com/web/updates/2016/04/intersectionobserver
-		chrome.tabs.sendMessage(document.location.search.split('=')[1], { action: 'load', which: this.id }, null, function() { })
+	componentWillUnmount() {
+		this.removeStorageListener()
 	}
 
 	render() {
@@ -79,12 +83,12 @@ export default class Posts extends Component {
 			return <span>No Data Available</span>
 		}
 
-		// @todo: On scroll, ask for more posts
 		return (
 			<CardDeck>
 				{data.items.map((post) => (
-					<Post data={post.media !== undefined ? post.media : post} key={post.media !== undefined ? post.media.id : post.id} />
+					<Post data={post} key={post.id} />
 				))}
+				<Sentinel onVisible={this.onScroll} />
 			</CardDeck>
 		)
 	}
