@@ -17,7 +17,7 @@
 			"*://*.instagram.com/",
 			"*://instagram.com/"
 		],
-		"js": ["content/InstagramAPI.js", "content/main.js"],
+		"js": ["content/spark-md5.min.js", "content/InstagramAPI.js", "content/main.js"],
 		"css": ["content/content.css"],
 		"run_at": "document_end",
 		"all_frames": true
@@ -26,7 +26,7 @@
 			"*://*.instagram.com/p/*",
 			"*://instagram.com/p/*"
 		],
-		"js": ["content/InstagramAPI.js", "content/main.js"],
+		"js": ["content/spark-md5.min.js", "content/InstagramAPI.js", "content/main.js"],
 		"css": ["content/single.css"],
 		"run_at": "document_idle",
 		"all_frames": true

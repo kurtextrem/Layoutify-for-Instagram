@@ -111,9 +111,9 @@
 			e.preventDefault()
 
 			Instagram.liked.start()
-				.then(liked.fetch())
+				.then(Instagram.liked.fetch())
 			Instagram.saved.start()
-				.then(saved.fetch())
+				.then(Instagram.saved.fetch())
 			chrome.runtime.sendMessage(null, { action: 'click' })
 		}
 		el.style.top = '-8px'
@@ -128,11 +128,11 @@
 		},
 
 		add(request) {
-			return this.action(request)
+			return this._action(request)
 		},
 
 		remove(request) {
-			return this.action(request)
+			return this._action(request)
 		}
 	}
 

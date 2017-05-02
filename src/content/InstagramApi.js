@@ -6,11 +6,17 @@
 		accept: 'application/json',
 		credentials: 'include'
 	}
+	const headers = new Headers()
+	headers.append('X-IG-Capabilities', '3boBAA==')
+	headers.append('X-IG-Connection-Type', 'WIFI')
+	headers.append('X-IG-Connection-Speed', '3700kbps')
+	headers.append('X-FB-HTTP-Engine', 'Liger')
 
 	function fetch(url, options) {
 		var opts = fetchOptions
 		if (options !== undefined)
 			opts = { ...fetchOptions, ...options }
+		opts.headers = headers
 
 		return window.fetch(API + url, opts)
 			.then(checkStatus)
@@ -73,6 +79,20 @@
 
 	var Storage = new storage()
 
+	function getCookies(wanted) {
+		var cookies = document.cookie.split('; '), result = {}
+
+		for (var i = 0; i < cookies.length; ++i) {
+			var cookie = cookies[i].split('='),
+				index = wanted.indexOf(cookie[0])
+			if (index !== -1) {
+				result[wanted[index]] = cookie[1]
+			}
+		}
+
+		return result
+	}
+
 	/**
 	 * 0 -> posts + set next max id -> max id -> posts + set next max id -> repeat from 1.
 	 *
@@ -80,28 +100,36 @@
 	 */
 	class Instagram {
 		constructor(endpoint) {
-			this.endpoint = endpoint
-			this.firstNextMaxId = ''
+			this.endpoint = endpoint // e.g. liked
+			this.action = endpoint.slice(0, -1) // e.g. like
+			this.uuid = ''
+
+			this.firstNextMaxId = undefined
 			this.firstRun = true
+
 			this.nextMaxId = null
 			this.items = []
 
 			this.start = () => {
-				if (this.firstNextMaxId === '')
+				if (this.firstNextMaxId === undefined) {
+					this.uuid = 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
+					this.uid = getCookies(['ds_user_id']).ds_user_id
+
 					return Storage.get(this.endpoint, { items: [], nextMaxId: '' })
 						.then((data) => {
 							this.firstNextMaxId = data.nextMaxId
 							this.items = data.items
 							return data
 						})
-				return this.items
+				}
+				return Promise.resolve(this.items)
 			}
 		}
 
 		fetch() {
 			if (this.nextMaxId === '') return Promise.resolve(this.data) // nothing more to fetch
 
-			return fetch('feed/' + this.endpoint + '/' + (this.nextMaxId ? '?max_id=' + this.nextMaxId : '')) // maxId means "show everything before X"
+			return fetch('feed/' + this.endpoint + '/?' + (this.nextMaxId ? 'max_id=' + this.nextMaxId + '&' : '')) // maxId means "show everything before X"
 				.then(this.storeNext.bind(this))
 				.then(this.normalize.bind(this))
 				.then(this.storeData.bind(this))
@@ -165,25 +193,32 @@
 		}
 
 		// https://github.com/huttarichard/instagram-private-api
+		// https://github.com/mgp25/Instagram-API/
 		remove(id) {
-			var formData = new FormData()
-			formData.set('media_id', id)
-			formData.set('src', 'profile')
+			var params = new URLSearchParams(),
+				cookies = getCookies(['csrftoken'])
+			params.append('_uuid', this.uuid)
+			params.append('_uid', this.uid)
+			params.append('_csrftoken', cookies.csrftoken)
+			params.append('media_id', id)
 
-			return fetch(`media/${id}/un${this.endpoint}/`, {
+			return fetch(`media/${id}/un${this.action}/`, {
 				method: 'POST',
-				body: formData
+				body: params
 			})
 		}
 
 		add(id) {
-			var formData = new FormData()
-			formData.set('media_id', id)
-			formData.set('src', 'profile')
+			var params = new URLSearchParams(),
+				cookies = getCookies(['csrftoken'])
+			params.append('_uuid', this.uuid)
+			params.append('_uid', this.uid)
+			params.append('_csrftoken', cookies.csrftoken)
+			params.append('media_id', id)
 
-			return fetch(`media/${id}/${this.endpoint}/`, {
+			return fetch(`media/${id}/${this.action}/`, {
 				method: 'POST',
-				body: formData
+				body: params
 			})
 		}
 	}

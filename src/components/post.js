@@ -11,12 +11,12 @@ export default class Post extends Component {
 	btnClick = (e) => {
 		var heart = e.currentTarget.childNodes[0]
 		if (heart.classList.contains('active')) {
-			Chrome.send('remove', { which: this.id, id: this.props.key })
+			Chrome.send('remove', { which: this.props.id, id: this.props.data.id })
 			heart.classList.remove('active', this.props.id)
 			heart.classList.add('inactive')
 			heart.textContent = this.props['data-toggleClass']
 		} else {
-			Chrome.send('add', { which: this.id, id: this.props.key })
+			Chrome.send('add', { which: this.props.id, id: this.props.data.id })
 			heart.classList.remove('inactive')
 			heart.classList.add('active', this.props.id)
 			heart.textContent = this.props['data-defaultClass']

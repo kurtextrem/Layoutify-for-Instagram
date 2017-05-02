@@ -8,6 +8,7 @@ export default class About extends Component {
 	render() {
 		return (
 			<div>
+				<h3>About</h3>
 				<p>This extension does not store any data of your Instagram account. The Code is Open Source on <a href="https://github.com/kurtextrem/Improved-for-Instagram" target="_blank">GitHub</a>.</p>
 				<h3>Legal</h3>
 				<p>Plus Icon by <a href="https://dribbble.com/enesdal" target="_blank">Enes Dal</a> Creative Commons (Attribution 3.0 Unported). I've added shadows and modified the color.</p>
