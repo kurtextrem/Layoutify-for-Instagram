@@ -194,33 +194,29 @@
 			return this.items
 		}
 
-		// https://github.com/huttarichard/instagram-private-api
-		// https://github.com/mgp25/Instagram-API/
 		remove(id) {
-			var params = new URLSearchParams(),
+			var headers = new Headers(),
 				cookies = getCookies(['csrftoken'])
-			params.append('_uuid', this.uuid)
-			params.append('_uid', this.uid)
-			params.append('_csrftoken', cookies.csrftoken)
-			params.append('media_id', id)
+			headers.append('x-csrftoken', cookies.csrftoken)
+			headers.append('x-instagram-ajax', 1)
+			headers.append('x-requested-with', 'XMLHttpRequest')
 
-			return fetch(`${API}media/${id}/un${this.action}/`, {
+			return fetch(`${WEB_API}${this.action}s/${id}/un${this.action}/`, {
 				method: 'POST',
-				body: params
+				headers
 			})
 		}
 
 		add(id) {
-			var params = new URLSearchParams(),
+			var headers = new Headers(),
 				cookies = getCookies(['csrftoken'])
-			params.append('_uuid', this.uuid)
-			params.append('_uid', this.uid)
-			params.append('_csrftoken', cookies.csrftoken)
-			params.append('media_id', id)
+			headers.append('x-csrftoken', cookies.csrftoken)
+			headers.append('x-instagram-ajax', 1)
+			headers.append('x-requested-with', 'XMLHttpRequest')
 
-			return fetch(`${API}media/${id}/${this.action}/`, {
+			return fetch(`${WEB_API}${this.action}s/${id}/${this.action}/`, {
 				method: 'POST',
-				body: params
+				headers
 			})
 		}
 	}

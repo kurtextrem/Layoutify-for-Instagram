@@ -16,8 +16,6 @@ export default class Posts extends Component {
 		this.toggleClass = toggleClass
 		this.defaultClass = defaultClass
 
-		console.log(this.id)
-
 		if (this.id === '')
 			throw new Error('Children must have an id set')
 
@@ -90,7 +88,7 @@ export default class Posts extends Component {
 		return (
 			<CardDeck>
 				{data.items.map((post) => (
-					<Post data={post} key={post.id} id={this.id} data-defaultClass={this.defaultClass} data-toggleClass={this.toggleClass} />
+					<Post data={post} key={post.id} parent={this.id} data-defaultClass={this.defaultClass} data-toggleClass={this.toggleClass} />
 				))}
 				<Sentinel onVisible={this.onScroll} />
 			</CardDeck>
