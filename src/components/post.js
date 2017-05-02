@@ -46,6 +46,7 @@ export default class Post extends Component {
 		const display = user.full_name || user.username
 		const date = new Date(Number(data.taken_at + '000'))
 
+		// CardFooter is not functioning atm
 		return (
 			<article className="card ml-auto mr-auto">
 				<header className="media align-items-center card-block grow-0 pl-2 pr-2">
@@ -59,7 +60,7 @@ export default class Post extends Component {
 				<CardBlock className="overflow-auto">
 					<CardText>{caption}</CardText>
 				</CardBlock>
-				<CardFooter>
+				<CardFooter className="d-none">
 					<Button className="btn-link" onClick={this.btnClick}><i className={`material-icons active ${this.props.id}`}>{this.props['data-defaultClass']}</i></Button>
 				</CardFooter>
 			</article>
