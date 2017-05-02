@@ -45,7 +45,18 @@ class Storage {
 	}
 }
 
+class Chrome {
+	static send(action, additional = {}) {
+		var search = document.location.search.split('=')
+		if (search.length >= 2) {
+			chrome.tabs.sendMessage(Number(search[1]), { action: 'load', ...additional }, null, function() { })
+			return true
+		}
+		return false
+	}
+}
+
 
 export {
-	XHR, Storage
+	XHR, Storage, Chrome
 }

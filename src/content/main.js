@@ -94,10 +94,10 @@
 		}
 	}
 
-	var liked = new window.getInstagram('liked'),
-		saved = new window.getInstagram('saved')
-	console.log(window.liked = liked)
-	console.log(window.saved = saved)
+	var Instagram = {
+		liked: new window.getInstagram('liked'),
+		saved: new window.getInstagram('saved')
+	}
 
 	function addExtendedButton() {
 		var anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].parentNode
@@ -110,9 +110,9 @@
 		a.onclick = function(e) {
 			e.preventDefault()
 
-			liked.start()
+			Instagram.liked.start()
 				.then(liked.fetch())
-			saved.start()
+			Instagram.saved.start()
 				.then(saved.fetch())
 			chrome.runtime.sendMessage(null, { action: 'click' })
 		}
@@ -120,28 +120,27 @@
 		anchor.after(el)
 	}
 
+	var listenerActions = {
+		load(request) { return Instagram[request.which].fetch() },
+
+		_action(request) {
+			return Instagram[request.which][request.action] !== undefined && Instagram[request.which][request.action](request.id)
+		},
+
+		add(request) {
+			return this.action(request)
+		},
+
+		remove(request) {
+			return this.action(request)
+		}
+	}
+
 	function addListener() {
 		chrome.runtime.onMessage.addListener(
 			function(request, sender, sendResponse) {
-				if (request.action === 'load') {
-					if (request.which === 'liked')
-						liked.fetch()
-					else
-						saved.fetch()
-				}
-
-				if (request.action === 'add') {
-					if (request.which === 'liked')
-						liked.add(request.id)
-					else
-						saved.add(request.id)
-				}
-
-				if (request.action === 'remove') {
-					if (request.which === 'liked')
-						liked.remove(request.id)
-					else
-						saved.remove(request.id)
+				if (listenerActions[request.action] !== undefined && Instagram[request.which] !== undefined) {
+					listenerActions[request.action](request)
 				}
 			}
 		)

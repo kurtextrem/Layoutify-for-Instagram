@@ -1,10 +1,26 @@
 import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
-import { CardBlock, CardText, Media } from 'reactstrap'
+import { CardBlock, CardText, Media, CardFooter, Button } from 'reactstrap'
 import TimeAgo from 'react-timeago'
+import { Chrome } from './utils'
 
 export default class Post extends Component {
 	constructor(props) {
 		super(props)
+	}
+
+	btnClick = (e) => {
+		var heart = e.currentTarget.childNodes[0]
+		if (heart.classList.contains('active')) {
+			Chrome.send('remove', { which: this.id, id: this.props.key })
+			heart.classList.remove('active', this.props.id)
+			heart.classList.add('inactive')
+			heart.textContent = this.props['data-toggleClass']
+		} else {
+			Chrome.send('add', { which: this.id, id: this.props.key })
+			heart.classList.remove('inactive')
+			heart.classList.add('active', this.props.id)
+			heart.textContent = this.props['data-defaultClass']
+		}
 	}
 
 	componentDidMount() {
@@ -12,7 +28,7 @@ export default class Post extends Component {
 	}
 
 	render() {
-		const data = this.props.data.media === undefined ? this.props.data : this.props.data.media
+		const data = this.props.data
 
 		const caption = data.caption && data.caption.text
 		const user = data.user
@@ -43,6 +59,9 @@ export default class Post extends Component {
 				<CardBlock className="overflow-auto">
 					<CardText>{caption}</CardText>
 				</CardBlock>
+				<CardFooter>
+					<Button className="btn-link" onClick={this.btnClick}><i className={`material-icons active ${this.props.id}`}>{this.props['data-defaultClass']}</i></Button>
+				</CardFooter>
 			</article>
 		)
 	}

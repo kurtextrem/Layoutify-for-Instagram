@@ -7,8 +7,12 @@
 		credentials: 'include'
 	}
 
-	function fetch(url) {
-		return window.fetch(API + url, fetchOptions)
+	function fetch(url, options) {
+		var opts = fetchOptions
+		if (options !== undefined)
+			opts = { ...fetchOptions, ...options }
+
+		return window.fetch(API + url, opts)
 			.then(checkStatus)
 			.then(parseJSON)
 	}
@@ -77,10 +81,6 @@
 	class Instagram {
 		constructor(endpoint) {
 			this.endpoint = endpoint
-			this.opt = {}
-			if (this.endpoint === 'saved')
-				this.opt.method = 'POST'
-
 			this.firstNextMaxId = ''
 			this.firstRun = true
 			this.nextMaxId = null
@@ -98,6 +98,15 @@
 			}
 		}
 
+		fetch() {
+			if (this.nextMaxId === '') return Promise.resolve(this.data) // nothing more to fetch
+
+			return fetch('feed/' + this.endpoint + '/' + (this.nextMaxId ? '?max_id=' + this.nextMaxId : '')) // maxId means "show everything before X"
+				.then(this.storeNext.bind(this))
+				.then(this.normalize.bind(this))
+				.then(this.storeData.bind(this))
+		}
+
 		storeNext(data) {
 			console.log(data)
 			this.nextMaxId = data.next_max_id !== undefined ? String(data.next_max_id) : ''
@@ -105,39 +114,28 @@
 			return data
 		}
 
-		fetch() {
-			if (this.nextMaxId === '') return Promise.resolve(this.data) // nothing more to fetch
-
-			return fetch('feed/' + this.endpoint + '/' + (this.nextMaxId ? '?max_id=' + this.nextMaxId : ''), this.opt)
-				.then(this.storeNext.bind(this))
-				.then(this.normalize.bind(this))
-				.then(this.storeData.bind(this))
-		}
-
 		normalize(data) {
-			if (Array.isArray(data.items) && data.items[0].media !== undefined) { // we need to normalize
+			if (data.items !== undefined && data.items.length && data.items[0].media !== undefined) { // we need to normalize "saved"
 				data.items = data.items.map((item) => item.media)
 			}
 			return data
 		}
 
 		/**
-		 * The intention: Compare the first `len` elements of the old item data set with the new data set
+		 * Compare the first `len` elements of the old item data set with the new data set
 		 * To do this, we compare the last elem's id of the new data set with `len` elems of the old.
 		 *
-		 * @param {object} data will modify object
-		 * @return {boolean} Whether the function found a matching item or not
+		 * @param 	{@object} 	data
+		 * @return 	{boolean} 	Whether the function found a matching item or not
 		 */
+		// !! wenn nicht geht -> komplett sessionStorage
 		compareData(data) {
 			var len = data.items.length,
-				last = data.items[len - 1],
-				lastId = last.media !== undefined ? last.media.id : last.id,
+				lastId = data.items[len - 1].id,
 				maxLen = Math.min(len, this.items.length), // don't exceed either array len
 				match = false
 			for (var i = 0; i < maxLen; ++i) {
-				var this_id = this.items[i].media !== undefined ? this.items[i].media.id : this.items[i].id
-
-				if (lastId === this_id) { // next elements are older
+				if (lastId === this.items[i].id) { // next elements are older
 					match = true
 					data.items.push(...this.items.slice(i + 1))
 					this.items = data.items
@@ -149,13 +147,9 @@
 		}
 
 		storeData(data) {
-			console.log('before', this.items)
-			console.log('before2', data.items)
 			const match = this.compareData(data)
-			console.log('after', this.items)
-			console.log('after2', data.items)
 
-			// If this was first run and we found no matches that means our data is too old
+			// If this was first run and we found no matches that means our data is too old (e.g. items got removed by user, or a lot added)
 			if (this.firstRun && !match && this.firstNextMaxId !== this.nextMaxId) {
 				this.items = []
 			}
@@ -170,6 +164,7 @@
 			return this.items
 		}
 
+		// https://github.com/huttarichard/instagram-private-api
 		remove(id) {
 			var formData = new FormData()
 			formData.set('media_id', id)

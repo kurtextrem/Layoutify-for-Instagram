@@ -1,16 +1,20 @@
 import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
 import { CardDeck } from 'reactstrap'
-import { Storage } from './utils'
+import { Storage, Chrome } from './utils'
 import Loading from './loading'
 import Post from './post'
 import Sentinel from './sentinel'
 
 
 export default class Posts extends Component {
-	constructor(props, id) {
+	constructor(props, ...rest) {
 		super(props)
 
+		const [id, defaultClass, toggleClass] = rest
+
 		this.id = id
+		this.toggleClass = toggleClass
+		this.defaultClass = defaultClass
 
 		console.log(this.id)
 
@@ -60,7 +64,7 @@ export default class Posts extends Component {
 	}
 
 	onScroll = () => {
-		chrome.tabs.sendMessage(Number(document.location.search.split('=')[1]), { action: 'load', which: this.id }, null, function() {})
+		Chrome.send('load', { which: this.id })
 	}
 
 	componentDidMount() {
@@ -86,7 +90,7 @@ export default class Posts extends Component {
 		return (
 			<CardDeck>
 				{data.items.map((post) => (
-					<Post data={post} key={post.id} />
+					<Post data={post} key={post.id} id={this.id} data-defaultClass={this.defaultClass} data-toggleClass={this.toggleClass} />
 				))}
 				<Sentinel onVisible={this.onScroll} />
 			</CardDeck>

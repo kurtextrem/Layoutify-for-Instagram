@@ -6,18 +6,17 @@ export default class Sentinel extends Component {
 
 		this.onVisible = props.onVisible
 		if (props.onVisible === undefined) {
-			this.onVisible = function() {}
+			this.onVisible = function() { }
 		}
 		this.onHide = props.onHide
 		if (props.onHide === undefined) {
-			this.onHide = function() {}
+			this.onHide = function() { }
 		}
 
 		this.io = new IntersectionObserver(this.onUpdate)
 	}
 
 	onUpdate = (entries) => {
-		console.log('onUpdate', entries)
 		const entry = entries[0]
 		if (entry.isIntersecting)
 			this.onVisible()

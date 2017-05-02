@@ -13,7 +13,7 @@ export default class Header extends Component {
 							<Link href="/" className="nav-link">Liked <i className="material-icons">favorite</i></Link>
 						</NavItem>
 						<NavItem className="">
-							<Link href="/saved" className="nav-link">Saved <i className="material-icons">save</i></Link>
+							<Link href="/saved" className="nav-link">Saved <i className="material-icons">turned_in</i></Link>
 						</NavItem>
 					</Nav>
 					<Nav navbar className="">
