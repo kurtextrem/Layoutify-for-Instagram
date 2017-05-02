@@ -1,7 +1,6 @@
 (function(window) {
 	'use strict'
 
-	const API = 'https://i.instagram.com/api/v1/'
 	const fetchOptions = {
 		accept: 'application/json',
 		credentials: 'include'
@@ -14,11 +13,11 @@
 
 	function fetch(url, options) {
 		var opts = fetchOptions
+		opts.headers = headers
 		if (options !== undefined)
 			opts = { ...fetchOptions, ...options }
-		opts.headers = headers
 
-		return window.fetch(API + url, opts)
+		return window.fetch(url, opts)
 			.then(checkStatus)
 			.then(parseJSON)
 	}
@@ -93,6 +92,9 @@
 		return result
 	}
 
+	const API = 'https://i.instagram.com/api/v1/'
+	const WEB_API = 'https://www.instagram.com/web/'
+
 	/**
 	 * 0 -> posts + set next max id -> max id -> posts + set next max id -> repeat from 1.
 	 *
@@ -129,7 +131,7 @@
 		fetch() {
 			if (this.nextMaxId === '') return Promise.resolve(this.data) // nothing more to fetch
 
-			return fetch('feed/' + this.endpoint + '/?' + (this.nextMaxId ? 'max_id=' + this.nextMaxId + '&' : '')) // maxId means "show everything before X"
+			return fetch(API + 'feed/' + this.endpoint + '/?' + (this.nextMaxId ? 'max_id=' + this.nextMaxId + '&' : '')) // maxId means "show everything before X"
 				.then(this.storeNext.bind(this))
 				.then(this.normalize.bind(this))
 				.then(this.storeData.bind(this))
@@ -202,7 +204,7 @@
 			params.append('_csrftoken', cookies.csrftoken)
 			params.append('media_id', id)
 
-			return fetch(`media/${id}/un${this.action}/`, {
+			return fetch(`${API}media/${id}/un${this.action}/`, {
 				method: 'POST',
 				body: params
 			})
@@ -216,7 +218,7 @@
 			params.append('_csrftoken', cookies.csrftoken)
 			params.append('media_id', id)
 
-			return fetch(`media/${id}/${this.action}/`, {
+			return fetch(`${API}media/${id}/${this.action}/`, {
 				method: 'POST',
 				body: params
 			})
