@@ -23,6 +23,10 @@ div > div + a + div, div > .coreSpriteLikeAnimationHeart, div > .coreSpriteSidec
 	z-index: 3;
 }
 
+.coreSpriteUserTagIndicator {
+	z-index: 2;
+}
+
 td > div {
 	transform: translateY(35px);
 	background: #9E9E9E !important;
