@@ -85,7 +85,7 @@ section > div > div:not(#rcr-anchor) + div:not(:last-child) {
 
 /** Moves the img over the "prevent right click copy"-element */
 div > img {
-	z-index:  1;
+	z-index: 1;
 }
 
 /** Always show media controls when playing */
@@ -135,14 +135,14 @@ section > footer + div {
 
 /** Enlargen modal */
 div[role='dialog'] article, section.post article {
-    height: var(--boxHeight);
-    max-height: 70vh;
+  height: var(--boxHeight);
+  max-height: 70vh;
 }
 
 /** Center the image. */
 div[role='dialog'] article > div > div, section.post article > div > div {
-    flex-grow: 1;
-    justify-content: center;
+	flex-grow: 1;
+	justify-content: center;
 }
 
 
@@ -182,7 +182,7 @@ div[role='dialog'] article > div > div, section.post article > div > div {
 	background-color: #afafaf;
 	background-clip: padding-box;
 }
-::-webkit-scrollbar-thumb:vertical:active,  ::-webkit-scrollbar-thumb:horizontal:active {
+::-webkit-scrollbar-thumb:vertical:active, ::-webkit-scrollbar-thumb:horizontal:active {
 	border-radius: 100px;
 	background-color: #727272; /* Some darker color when you click it */
 }

@@ -8,13 +8,12 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
+// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV
 const isProd = ENV === 'production'
@@ -48,8 +47,7 @@ var plugins = [
 		{ from: '_locales/**' }
 	]),
 	new HtmlWebpackHarddiskPlugin(),
-	new ResourceHintWebpackPlugin(),
-	new ScriptExtHtmlWebpackPlugin({ defaultAttribute: 'async' })
+	new ScriptExtHtmlWebpackPlugin({ defaultAttribute: 'async', preload: ['.js', '.css'] })
 ]
 
 if (isProd) {
@@ -59,17 +57,17 @@ if (isProd) {
 			append: false,
 			hash: true
 		}),
+		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }),
 		new webpack.LoaderOptionsPlugin({
 			minimize: true,
 			debug: false
 		}),
+		new UglifyJSPlugin({ sourceMap: true }),
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
 			reportFilename: '../report.html'
 		}),
-		new UglifyJSPlugin({ sourceMap: true }),
-		new V8LazyParseWebpackPlugin(),
 		new ZipPlugin({ filename: 'dist.zip', path: '../' })
 	)
 } else {
@@ -126,7 +124,6 @@ module.exports = {
 							throwIfClosureRequired: true
 						}],
 						'loop-optimizer',
-						'transform-react-inline-elements',
 						'transform-react-constant-elements',
 						['transform-imports', {
 							reactstrap: {

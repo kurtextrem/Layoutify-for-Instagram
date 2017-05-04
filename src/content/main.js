@@ -61,7 +61,7 @@
 		for (var i = 0; i < elems.length; i++) {
 			var elem = elems[i]
 
-			elem.controls = 'true'
+			elem.controls = true
 
 			if (addAuto)
 				elem.preload = 'auto'
@@ -102,7 +102,7 @@
 	function addExtendedButton() {
 		var anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].parentNode
 		var el = anchor.cloneNode(true),
-			a = el.childNodes[0]
+			a = el.firstChild
 		a.classList.add('coreSpriteEllipsis')
 		a.classList.remove('coreSpriteDesktopNavProfile')
 		a.href = '#'
