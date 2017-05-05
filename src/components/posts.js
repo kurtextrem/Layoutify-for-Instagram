@@ -23,12 +23,12 @@ export default class Posts extends Component {
 
 		this.state = {
 			data: null,
-			loading: false
+			timeout: 0
 		}
 		this.loading = <Loading />
 		this.error = <div>No Data Available (have you tried clicking the three dots on top of Instagram.com?)</div>
 
-		window.setTimeout(() => this.showLoading(), 200)
+		window.setTimeout(() => this.setTimeout(200), 200)
 
 		this.addStorageListener()
 	}
@@ -69,7 +69,28 @@ export default class Posts extends Component {
 		Chrome.send('load', { which: this.id })
 	}
 
-	componentDidMount() {
+	onClick = (e) => {
+		e.stopPropagation()
+
+		var elem = e.target
+		if (elem.classList.contains('action--btn')) {
+			if (elem.classList.contains('active')) { // @todo: Modify our data
+				Chrome.send('remove', { which: this.id, id: elem.dataset.id })
+				elem.classList.remove('active')
+				elem.classList.add('inactive')
+				elem.textContent = this.toggleClass
+			} else {
+				Chrome.send('add', { which: this.id, id: elem.dataset.id })
+				elem.classList.remove('inactive')
+				elem.classList.add('active')
+				elem.textContent = this.defaultClass
+			}
+		}
+
+		return true
+	}
+
+	async componentDidMount() {
 		if (this.state.data === null) {
 			this.populateData()
 		}
@@ -80,13 +101,13 @@ export default class Posts extends Component {
 	}
 
 	render() {
-		const { data, loading } = this.state
-		if (loading)
+		const { data, timeout } = this.state
+		if (timeout === 200)
 			return this.loading
 		if (data === null)
 			return null
-		if (data.items === undefined || data.items.length === 0) {
-			return <div>No Data Available (have you tried clicking the three dots on top of Instagram.com?)</div>
+		if (timeout === 400 && (data.items === undefined || data.items.length === 0)) {
+			return this.error
 		}
 
 		return (
