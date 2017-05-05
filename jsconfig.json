@@ -3,7 +3,8 @@
 		"target": "ES6",
 		"experimentalDecorators": true,
 		"allowSyntheticDefaultImports": true,
-		"checkJs": true
+		"checkJs": true,
+		"jsx": "preserve"
 	},
 	"exclude": [
 		"node_modules",

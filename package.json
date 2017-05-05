@@ -22,6 +22,7 @@
     "preact": "^8.1.0",
     "preact-compat": "^3.16.0",
     "preact-css-transition-group": "^1.2.0",
+    "preact-delegate": "^1.1.1",
     "preact-router": "^2.5.2",
     "preact-transition-group": "^1.1.1",
     "preload-webpack-plugin": "^1.2.2",

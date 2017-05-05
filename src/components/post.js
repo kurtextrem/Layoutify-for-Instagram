@@ -10,21 +10,6 @@ export default class Post extends Component {
 		this.id = this.props.data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
 	}
 
-	btnClick = (e) => {
-		var heart = e.currentTarget.childNodes[0]
-		if (heart.classList.contains('active')) {
-			Chrome.send('remove', { which: this.props.parent, id: this.id })
-			heart.classList.remove('active', this.props.parent)
-			heart.classList.add('inactive')
-			heart.textContent = this.props['data-toggleClass']
-		} else {
-			Chrome.send('add', { which: this.props.parent, id: this.id })
-			heart.classList.remove('inactive')
-			heart.classList.add('active', this.props.parent)
-			heart.textContent = this.props['data-defaultClass']
-		}
-	}
-
 	componentDidMount() {
 
 	}
@@ -49,7 +34,7 @@ export default class Post extends Component {
 		const date = new Date(Number(data.taken_at + '000'))
 
 		return (
-			<article className="card ml-auto mr-auto">
+			<article className="card ml-auto mr-auto" data-id={this.id}>
 				<header className="media align-items-center card-block grow-0 pl-2 pr-2">
 					<a href={`https://www.instagram.com/${display}`} target="_blank"><img src={user.profile_pic_url} className="img-fluid profile-pic rounded mr-2" /></a>
 					<Media body className="grow-1"><a href={`https://instagram.com/${display}`} target="_blank">{display}</a></Media>
@@ -62,7 +47,7 @@ export default class Post extends Component {
 					<CardText>{caption}</CardText>
 				</CardBlock>
 				<CardFooter className={this.props.parent}>
-					<Button className="btn-link" onClick={this.btnClick}><i className={`material-icons active ${this.props.parent}`}>{this.props['data-defaultClass']}</i></Button>
+					<Button className={'material-icons active action--btn'} color="link" data-id={this.id}>{this.props['data-defaultClass']}</Button>
 				</CardFooter>
 			</article>
 		)

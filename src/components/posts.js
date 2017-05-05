@@ -1,5 +1,7 @@
 import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
 import { CardDeck } from 'reactstrap'
+import { DelegateContainer, DelegateElement } from 'preact-delegate'
+
 import { Storage, Chrome } from './utils'
 import Loading from './loading'
 import Post from './post'
@@ -24,15 +26,15 @@ export default class Posts extends Component {
 			loading: false
 		}
 		this.loading = <Loading />
+		this.error = <div>No Data Available (have you tried clicking the three dots on top of Instagram.com?)</div>
 
 		window.setTimeout(() => this.showLoading(), 200)
 
 		this.addStorageListener()
 	}
 
-	handleData = (data) => {
-		this.setState((prevState, props) => ({ data, loading: false }))
-		return data
+	addStorageListener = () => {
+		chrome.storage.onChanged.addListener(this.storageListener)
 	}
 
 	storageListener = (changes, area) => {
@@ -40,10 +42,6 @@ export default class Posts extends Component {
 			console.log('new data', changes)
 			this.populateData()
 		}
-	}
-
-	addStorageListener = () => {
-		chrome.storage.onChanged.addListener(this.storageListener)
 	}
 
 	removeStorageListener = () => {
@@ -55,9 +53,15 @@ export default class Posts extends Component {
 			.then(this.handleData)
 	}
 
-	showLoading = () => {
+	handleData = (data) => {
+		this.setState((prevState, props) => ({ data, timeout: 400 }))
+		return data
+	}
+
+	setTimeout = (timeout) => {
 		if (this.state.data === null) {
-			this.setState((prevState, props) => ({ loading: true }))
+			this.setState((prevState, props) => ({ timeout }))
+			window.setTimeout(() => this.setTimeout(400), 200)
 		}
 	}
 
@@ -71,7 +75,7 @@ export default class Posts extends Component {
 		}
 	}
 
-	componentWillUnmount() {
+	async componentWillUnmount() {
 		this.removeStorageListener()
 	}
 
@@ -86,12 +90,16 @@ export default class Posts extends Component {
 		}
 
 		return (
-			<CardDeck>
-				{data.items.map((post) => (
-					<Post data={post} key={post.id} parent={this.id} data-defaultClass={this.defaultClass} data-toggleClass={this.toggleClass} />
-				))}
-				<Sentinel onVisible={this.onScroll} />
-			</CardDeck>
+			<DelegateContainer>
+				<CardDeck>
+					{data.items.map((post) => (
+						<DelegateElement click={this.onClick}>
+							<Post data={post} key={post.id} parent={this.id} data-defaultClass={this.defaultClass} data-toggleClass={this.toggleClass} />
+						</DelegateElement>
+					))}
+					<Sentinel onVisible={this.onScroll} />
+				</CardDeck>
+			</DelegateContainer>
 		)
 	}
 }

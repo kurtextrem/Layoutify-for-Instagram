@@ -6,11 +6,11 @@ export default class Sentinel extends Component {
 
 		this.onVisible = props.onVisible
 		if (props.onVisible === undefined) {
-			this.onVisible = function() { }
+			this.onVisible = function () { }
 		}
 		this.onHide = props.onHide
 		if (props.onHide === undefined) {
-			this.onHide = function() { }
+			this.onHide = function () { }
 		}
 
 		this.io = new IntersectionObserver(this.onUpdate)
@@ -32,11 +32,11 @@ export default class Sentinel extends Component {
 		return false
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.io.observe(this.node)
 	}
 
-	componentWillUnmount() {
+	async componentWillUnmount() {
 		this.io.disconnect()
 	}
 

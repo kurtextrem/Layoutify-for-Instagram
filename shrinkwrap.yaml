@@ -20,6 +20,7 @@ dependencies:
   json-minify@^1.0.0: 1.0.0
   preact-compat@^3.16.0: 3.16.0
   preact-css-transition-group@^1.2.0: 1.2.0
+  preact-delegate@^1.1.1: 1.1.1
   preact-router@^2.5.2: 2.5.2
   preact-transition-group@^1.1.1: 1.1.1
   preact@^8.1.0: 8.1.0
@@ -1511,6 +1512,7 @@ packages:
       standalone-react-addons-pure-render-mixin: 0.1.1
     resolution: cf2bc1b2f8fca14900d68094f9e10b8b329cc41e
   /preact-css-transition-group/1.2.0: 28f6acb0cb95c107f3c9ddbcd6f4c3de26deebdc
+  /preact-delegate/1.1.1: 7047f768e4eae2172884f01196ac0ddf25b68c40
   /preact-render-to-string/3.6.1:
     dependencies:
       pretty-format: 3.8.0
