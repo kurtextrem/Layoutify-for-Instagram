@@ -34,13 +34,13 @@ export default class Post extends Component {
 		return (
 			<article className="card ml-auto mr-auto" data-id={this.id}>
 				<header className="media align-items-center card-block grow-0 pl-2 pr-2">
-					<a href={`https://www.instagram.com/${user.username}`} target="_blank"><img src={user.profile_pic_url} className="img-fluid profile-pic rounded mr-2" /></a>
-					<Media body className="grow-1"><a href={`https://instagram.com/${user.username}`} target="_blank">{user.full_name}</a></Media>
-					<a href={`https://www.instagram.com/p/${data.code}`} target="_blank">
+					<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener"><img src={user.profile_pic_url} className="img-fluid profile-pic rounded mr-2" /></a>
+					<Media body className="grow-1"><a href={`https://instagram.com/${user.username}`} target="_blank" rel="noopener">{user.full_name}</a></Media>
+					<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener">
 						<TimeAgo className="text-muted" date={date}></TimeAgo>
 					</a>
 				</header>
-				<a href={`https://www.instagram.com/p/${data.code}`} target="_blank">{media}</a>
+				<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener">{media}</a>
 				<CardBlock className="overflow-auto">
 					<CardText>{caption}</CardText>
 				</CardBlock>
