@@ -1,7 +1,6 @@
 import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
 import { CardBlock, CardText, Media, CardFooter, Button } from 'reactstrap'
 import TimeAgo from 'react-timeago'
-import { Chrome } from './utils'
 
 export default class Post extends Component {
 	constructor(props) {

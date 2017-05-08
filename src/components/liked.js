@@ -1,4 +1,4 @@
-import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
+import { h, render } from 'preact' // eslint-disable-line no-unused-vars
 import Posts from './posts'
 
 export default class Liked extends Posts {

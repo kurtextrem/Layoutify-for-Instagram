@@ -1,6 +1,6 @@
-import { Component, h, render } from 'preact'
-import { Container, Nav, NavItem, NavLink, Navbar, NavbarBrand } from 'reactstrap'
-import { Link, Router } from 'preact-router'
+import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
+import { Container, Nav, NavItem, Navbar, NavbarBrand } from 'reactstrap'
+import { Link } from 'preact-router'
 
 export default class Header extends Component {
 	render() {
