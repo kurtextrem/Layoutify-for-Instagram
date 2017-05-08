@@ -112,7 +112,11 @@
 		var anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].parentNode
 		var el = anchor.cloneNode(true),
 			a = el.firstChild
+
 		a.classList.add('coreSpriteEllipsis', 'extended--btn')
+		if (window.localStorage.clickedExtendedBtn === undefined)
+			a.classList.add('extended--btn__new')
+
 		a.classList.remove('coreSpriteDesktopNavProfile')
 		a.href = '#'
 		a.title = 'Improved Layout for Instagram'
@@ -123,6 +127,8 @@
 				.then(Instagram.liked.fetch())
 			Instagram.saved.start()
 				.then(Instagram.saved.fetch())
+
+			window.localStorage.clickedExtendedBtn = true
 			chrome.runtime.sendMessage(null, { action: 'click' })
 		}
 		el.style.top = '-8px'
