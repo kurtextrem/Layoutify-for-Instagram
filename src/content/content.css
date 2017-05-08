@@ -23,7 +23,7 @@ section > div > div {
 }
 
 /** Make boxes equaly high and wide */
-main:not(.post) > div > div > article {
+section > div > div > article {
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
 	max-height: var(--maxBoxHeight);
