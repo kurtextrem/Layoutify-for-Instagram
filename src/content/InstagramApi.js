@@ -114,7 +114,7 @@
 
 			this.start = () => {
 				if (this.firstNextMaxId === undefined) {
-					this.uuid = 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
+					// this.uuid = 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
 					this.uid = getCookies(['ds_user_id']).ds_user_id
 
 					return Storage.get(this.endpoint, { items: [], nextMaxId: '' })

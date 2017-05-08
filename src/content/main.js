@@ -1,7 +1,8 @@
 (function(window) {
 	'use strict'
 
-	var document = window.document
+	var document = window.document,
+		location = document.location
 
 	// block middle mouse button
 	window.addEventListener('click', function(e) { if (e.button > 0) e.stopPropagation() }, true)
@@ -45,11 +46,20 @@
 	function onReady() {
 		addControls()
 
-		documentElement.style.setProperty('--boxHeight', document.querySelector('div > article')
-			.offsetHeight + 'px') // give boxes equal height
+		var elem = document.querySelector('div > article')
+		if (elem !== null)
+			documentElement.style.setProperty('--boxHeight', elem.offsetHeight + 'px') // give boxes equal height
+
+		addClass()
 
 		addExtendedButton()
 		addListener()
+	}
+
+	function onChange() {
+		addControls()
+
+		checkURL()
 	}
 
 	function addControls() {
@@ -68,29 +78,27 @@
 		}
 	}
 
-	function onChange() {
-		addControls()
+	var url = location.href
+	function checkURL() {
+		if (location.href !== url) {
+			console.log('url change', url, location.href)
+			url = location.href
 
-		checkURL()
+			addClass()
+		}
 	}
 
-	var url = document.location.href,
-		regex = /\/.+/
-
-	function checkURL() {
-		if (document.location.href !== url) {
-			console.log('url change', url, document.location.href)
-			url = document.location.href
-
-			var section = document.querySelector('#react-root > section')
-			if (regex.test(url) && url.indexOf('/p/') === -1) { // profile page
-				section.classList.add('profile')
-			} else if (regex.test(url)) { // post page
-				section.classList.add('post')
-			} else {
-				section.classList.remove('profile')
-				section.classList.remove('post')
-			}
+	function addClass() {
+		var main = document.querySelector('#react-root > section > main')
+		if (location.pathname === '/') { // home page
+			main.classList.add('home')
+			main.classList.remove('profile', 'post')
+		} else if (location.pathname.indexOf('/p/') !== -1 && document.querySelector('div[role="dialog"]') === null) { // single post
+			main.classList.add('post')
+			main.classList.remove('profile', 'home')
+		} else { // profile page
+			main.classList.add('profile')
+			main.classList.remove('post', 'home')
 		}
 	}
 
@@ -98,12 +106,13 @@
 		liked: new window.getInstagram('liked'),
 		saved: new window.getInstagram('saved')
 	}
+	console.log(window.Instagram = Instagram) // for debugging
 
 	function addExtendedButton() {
 		var anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].parentNode
 		var el = anchor.cloneNode(true),
 			a = el.firstChild
-		a.classList.add('coreSpriteEllipsis')
+		a.classList.add('coreSpriteEllipsis', 'extended--btn')
 		a.classList.remove('coreSpriteDesktopNavProfile')
 		a.href = '#'
 		a.title = 'Improved Layout for Instagram'

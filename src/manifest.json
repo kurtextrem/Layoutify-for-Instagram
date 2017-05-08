@@ -17,17 +17,17 @@
 			"*://*.instagram.com/",
 			"*://instagram.com/"
 		],
-		"js": ["content/spark-md5.min.js", "content/InstagramAPI.js", "content/main.js"],
+		"js": ["content/InstagramAPI.js", "content/main.js"],
 		"css": ["content/content.css"],
 		"run_at": "document_end",
 		"all_frames": true
 	}, {
 		"matches": [
-			"*://*.instagram.com/p/*",
-			"*://instagram.com/p/*"
+			"*://*.instagram.com/*",
+			"*://instagram.com/*"
 		],
-		"js": ["content/spark-md5.min.js", "content/InstagramAPI.js", "content/main.js"],
-		"css": ["content/single.css"],
+		"js": ["content/InstagramAPI.js", "content/main.js"],
+		"css": ["content/content.css"],
 		"run_at": "document_idle",
 		"all_frames": true
 	}],

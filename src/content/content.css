@@ -23,7 +23,7 @@ section > div > div {
 }
 
 /** Make boxes equaly high and wide */
-section:not(.post) > div > div > article {
+main:not(.post) > div > div > article {
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
 	max-height: var(--maxBoxHeight);
@@ -62,15 +62,15 @@ article > div:nth-of-type(2n) {
 }
 
 /* Slimmer header */
-section:not(.profile) article > header {
+main:not(.profile) article > header {
 	height: 54px !important;
 }
 
-div > section:first-child {
+div > main:first-child {
 	margin-top: 10px !important;
 }
 
-div > section:only-child {
+div > main:only-child {
 	flex-grow: 1;
 }
 
@@ -89,24 +89,35 @@ div > img {
 }
 
 /** Always show media controls when playing */
-video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-controls-enclosure, div > .coreSpriteLikeAnimationHeart, div > .coreSpriteSidecarIconLarge {
+video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-controls-enclosure {
 	z-index: 3;
 }
 
-video:not([loop])::-webkit-media-controls-enclosure {
+/** Hide media controls when not playing */
+main.home video:not([loop])::-webkit-media-controls-enclosure {
 	opacity: 0;
 }
 
-/*video[loop]::-webkit-media-controls-enclosure {
+main.post video::-webkit-media-controls-enclosure {
 	z-index: 3;
-	opacity: 1;
-}*/
+}
+
+/** Makes the multiple videos/images dots visible; Heart animation when db-clicking posts */
+div > div + a + div, .coreSpriteLikeAnimationHeart, .coreSpriteSidecarIconLarge, .coreSpriteUserTagIndicator, .coreSpriteVideoIconLarge {
+	z-index: 3;
+}
+
+/** Move multiple videos/images dots and make them more visible */
+main.post td > div {
+	transform: translateY(35px);
+	background: #9E9E9E !important;
+}
 
 /** Mark videos in the feed */
 a.videoSpritePlayButton + div + div {
-	opacity: 1;
-	left: 0;
 	right: initial;
+	left: 0;
+	opacity: 1;
 	contain: content;
 }
 
@@ -134,15 +145,38 @@ section > footer + div {
 }
 
 /** Enlargen modal */
-div[role='dialog'] article, section.post article {
+div[role='dialog'] article, main.post article {
   height: var(--boxHeight);
   max-height: 70vh;
 }
 
-/** Center the image. */
-div[role='dialog'] article > div > div, section.post article > div > div {
+/** Center the image */
+div[role='dialog'] article,
+div[role='dialog'] article > div > div,
+main:not(.home) main > div > div,
+main:not(.home) main > div > div > div,
+main:not(.home) article {
 	flex-grow: 1;
 	justify-content: center;
+}
+
+/** Show likes and so on on hover */
+main.profile a:hover > div:last-child {
+	z-index: 3;
+}
+
+/** Extended marker */
+.extended--btn::after {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 4px;
+	height: 4px;
+	margin: 0 auto;
+	border-radius: 2px;
+	background: #03A9F4;
+	content: '';
 }
 
 
