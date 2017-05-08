@@ -21,6 +21,7 @@ dependencies:
   preact-compat@^3.16.0: 3.16.0
   preact-css-transition-group@^1.2.0: 1.2.0
   preact-delegate@^1.1.1: 1.1.1
+  preact-router-hash@^0.0.1: 0.0.1
   preact-router@^2.5.2: 2.5.2
   preact-transition-group@^1.1.1: 1.1.1
   preact@^8.1.0: 8.1.0
@@ -1517,6 +1518,7 @@ packages:
     dependencies:
       pretty-format: 3.8.0
     resolution: 3be5dfc4e917fbe619398374deaa5b8f717ddf7c
+  /preact-router-hash/0.0.1: 6dda89f13105e5856fcab9433ada05ce09b32d19
   /preact-router/2.5.2: 15402f809f7236006e40214fcffadcac409bd693
   /preact-transition-group/1.1.1: f0a49327ea515ece34ea2be864c4a7d29e5d6e10
   /preact/8.1.0: f035b808eebb74e46d56246b02ca0f190b6d6574

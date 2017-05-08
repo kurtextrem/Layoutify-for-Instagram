@@ -24,6 +24,7 @@
     "preact-css-transition-group": "^1.2.0",
     "preact-delegate": "^1.1.1",
     "preact-router": "^2.5.2",
+    "preact-router-hash": "^0.0.1",
     "preact-transition-group": "^1.1.1",
     "preload-webpack-plugin": "^1.2.2",
     "prepack": "^0.2.0",

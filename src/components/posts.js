@@ -90,13 +90,13 @@ export default class Posts extends Component {
 		return true
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		if (this.state.data === null) {
 			this.populateData()
 		}
 	}
 
-	async componentWillUnmount() {
+	componentWillUnmount() {
 		this.removeStorageListener()
 	}
 

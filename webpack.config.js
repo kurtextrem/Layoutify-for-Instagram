@@ -111,7 +111,7 @@ module.exports = {
 					presets: [
 						['env', {
 							modules: false,
-							targets: isProd ? { chrome: 49, uglify: true } : {
+							targets: isProd ? { chrome: 55, uglify: false } : {
 								browsers: 'last 2 Chrome versions'
 							},
 							loose: true
