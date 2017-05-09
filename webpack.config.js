@@ -11,7 +11,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const BabiliPlugin = require('babili-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
@@ -42,12 +43,16 @@ var plugins = [
 	new CopyWebpackPlugin([
 		{ from: '../node_modules/bootstrap/dist/css/bootstrap.min.css' },
 		{ from: '*.html' },
+		{ from: '*.json' },
 		{ from: 'img/*.png' },
 		{ from: 'content/*' },
 		{ from: '_locales/**' }
 	]),
 	new HtmlWebpackHarddiskPlugin(),
-	new ScriptExtHtmlWebpackPlugin({ defaultAttribute: 'async', preload: ['.js', '.css'] })
+	new ScriptExtHtmlWebpackPlugin({
+		defaultAttribute: 'async',
+		preload: ['.js', '.css']
+	})
 ]
 
 if (isProd) {
@@ -57,12 +62,13 @@ if (isProd) {
 			append: false,
 			hash: true
 		}),
-		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }),
 		new webpack.LoaderOptionsPlugin({
 			minimize: true,
 			debug: false
 		}),
-		new UglifyJSPlugin({ sourceMap: true }),
+		// new UglifyJSPlugin({ sourceMap: true }),
+		new BabiliPlugin(),
+		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }),
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
@@ -111,7 +117,7 @@ module.exports = {
 					presets: [
 						['env', {
 							modules: false,
-							targets: isProd ? { chrome: 55, uglify: false } : {
+							targets: isProd ? { chrome: 55 } : {
 								browsers: 'last 2 Chrome versions'
 							},
 							loose: true
@@ -120,11 +126,6 @@ module.exports = {
 					],
 					plugins: isProd ? [
 						['transform-react-jsx', { pragma: 'h', useBuiltIns: true }],
-						['transform-es2015-block-scoping', {
-							throwIfClosureRequired: true
-						}],
-						'loop-optimizer',
-						'transform-react-constant-elements',
 						['transform-imports', {
 							reactstrap: {
 								transform: 'reactstrap/lib/${member}',
@@ -134,7 +135,14 @@ module.exports = {
 								transform: 'history/es/${member}',
 								preventFullImport: true
 							}
-						}]
+						}],
+						'transform-react-constant-elements',
+						['transform-react-remove-prop-types', { removeImport: true }],
+
+						'module:fast-async',
+						'loop-optimizer',
+						'closure-elimination',
+						['transform-es2015-block-scoping', { throwIfClosureRequired: true }]
 					] : [
 							['transform-react-jsx', { pragma: 'h', useBuiltIns: true }]
 						],
