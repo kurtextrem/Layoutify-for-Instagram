@@ -14,14 +14,18 @@ export default class Post extends Component {
 	}
 
 	render() {
-		const data = this.props.data
+		var data = this.props.data
 
-		const caption = data.caption && data.caption.text
+		const caption = data.caption && data.caption.text // could be either undefined or null
 		const user = data.user
-		const isVideo = data.media_type === 2
+		const isCarousel = data.media_type === 8
+
+		if (isCarousel) { // @todo: Add carousel
+			data = data.carousel_media[0]
+		}
 
 		var media = null, candidate = null
-		if (isVideo) {
+		if (data.media_type === 2) { // video
 			candidate = data.video_versions[0]
 			media = <video src={data.video_versions[0].url} poster={data.image_versions2.candidates[0].url} controls type="video/mp4" width={candidate.width} height={candidate.height} preload="none" className="img-fluid" />
 		} else {

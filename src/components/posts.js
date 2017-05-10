@@ -87,6 +87,10 @@ export default class Posts extends Component {
 			}
 		}
 
+		if (elem.classList.contains('carousel--btn')) { // @todo: Emit event that the carousel should slide (using a re-render)
+
+		}
+
 		return true
 	}
 
