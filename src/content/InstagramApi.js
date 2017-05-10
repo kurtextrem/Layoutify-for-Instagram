@@ -2,14 +2,19 @@
 	'use strict'
 
 	const fetchOptions = {
-		accept: 'application/json',
-		credentials: 'include'
+		credentials: 'include',
+		mode: 'cors',
+		referrerPolicy: 'no-referrer'
 	}
 	const headers = new Headers()
-	headers.append('X-IG-Capabilities', '3boBAA==')
+	headers.append('X-IG-Capabilities', '3ToAAA==')
 	headers.append('X-IG-Connection-Type', 'WIFI')
 	headers.append('X-IG-Connection-Speed', '3700kbps')
 	headers.append('X-FB-HTTP-Engine', 'Liger')
+	headers.append('Accept', '*/*')
+	headers.append('Accept-Language', 'en-US')
+	headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+	headers.append('Connection', 'keep-alive')
 
 	function fetch(url, options) {
 		var opts = fetchOptions
@@ -19,13 +24,13 @@
 
 		return window.fetch(url, opts)
 			.then(checkStatus)
+			.then(toText)
+			.then(fixMaxId)
 			.then(parseJSON)
 	}
 
 	function checkStatus(response) {
-		if (response.status >= 200 && response.status < 300) {
-			return response
-		}
+		if (response.ok) return response
 
 		const error = new Error(`HTTP Error ${response.statusText}`)
 		error.status = response.statusText
@@ -34,8 +39,17 @@
 		throw error
 	}
 
+	function toText(response) {
+		return response.text()
+	}
+
+	var fixMaxIdRegex = /"next_max_id": (\d+)/g
+	function fixMaxId(response) {
+		return response.replace(fixMaxIdRegex, '"next_max_id": "$1"')
+	}
+
 	function parseJSON(response) {
-		return response.json()
+		return JSON.parse(response)
 	}
 
 	class storage {
@@ -95,6 +109,9 @@
 	const API = 'https://i.instagram.com/api/v1/'
 	const WEB_API = 'https://www.instagram.com/web/'
 
+	var UID = getCookies(['ds_user_id']).ds_user_id,
+		UUID = '' // 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
+
 	/**
 	 * 0 -> posts + set next max id -> max id -> posts + set next max id -> repeat from 1.
 	 *
@@ -104,7 +121,8 @@
 		constructor(endpoint) {
 			this.endpoint = endpoint // e.g. liked
 			this.action = endpoint.slice(0, -1) // e.g. like
-			this.uuid = ''
+			this.uid = UID
+			this.uuid = UUID
 
 			this.firstNextMaxId = undefined
 			this.firstRun = true
@@ -114,9 +132,6 @@
 
 			this.start = () => {
 				if (this.firstNextMaxId === undefined) {
-					// this.uuid = 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
-					this.uid = getCookies(['ds_user_id']).ds_user_id
-
 					return Storage.get(this.endpoint, { items: [], nextMaxId: '' })
 						.then((data) => {
 							this.firstNextMaxId = data.nextMaxId
@@ -129,7 +144,7 @@
 		}
 
 		fetch() {
-			if (this.nextMaxId === '') return Promise.resolve(this.data) // nothing more to fetch
+			if (this.nextMaxId === '') return Promise.resolve(this.items) // nothing more to fetch
 
 			return fetch(API + 'feed/' + this.endpoint + '/?' + (this.nextMaxId ? 'max_id=' + this.nextMaxId + '&' : '')) // maxId means "show everything before X"
 				.then(this.storeNext.bind(this))
@@ -198,7 +213,7 @@
 			var headers = new Headers(),
 				cookies = getCookies(['csrftoken'])
 			headers.append('x-csrftoken', cookies.csrftoken)
-			headers.append('x-instagram-ajax', 1)
+			headers.append('x-instagram-ajax', '1')
 			headers.append('x-requested-with', 'XMLHttpRequest')
 
 			return fetch(`${WEB_API}${this.action}s/${id}/un${this.action}/`, {
@@ -211,7 +226,7 @@
 			var headers = new Headers(),
 				cookies = getCookies(['csrftoken'])
 			headers.append('x-csrftoken', cookies.csrftoken)
-			headers.append('x-instagram-ajax', 1)
+			headers.append('x-instagram-ajax', '1')
 			headers.append('x-requested-with', 'XMLHttpRequest')
 
 			return fetch(`${WEB_API}${this.action}s/${id}/${this.action}/`, {
