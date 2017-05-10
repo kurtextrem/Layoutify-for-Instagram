@@ -165,7 +165,7 @@ section > footer + div {
 =============================================*/
 /** Enlargen modal */
 div[role='dialog'] article, main.post article {
-  height: var(--boxHeight);
+  height: 1045px;
   max-height: 70vh;
 }
 

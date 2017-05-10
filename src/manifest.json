@@ -24,7 +24,7 @@
 	}],
 	"background": {
 		"scripts": ["content/background.js"],
-		"persistent": false
+		"persistent": true
 	},
 	"options_page": "index.html",
 	"minimum_chrome_version": "55",
@@ -32,7 +32,10 @@
 	"permissions": [
 		"*://*.instagram.com/*",
 		"*://instagram.com/*",
-		"storage"
+		"storage",
+		"webRequest",
+		"webRequestBlocking",
+		"cookies"
 	],
 	"content_security_policy": "script-src 'self' http://localhost:8080; object-src 'self'"
 }

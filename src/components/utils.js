@@ -8,9 +8,7 @@ class XHR {
 	}
 
 	static checkStatus(response) {
-		if (response.status >= 200 && response.status < 300) {
-			return response
-		}
+		if (response.ok) return response
 
 		const error = new Error(`HTTP Error ${response.statusText}`)
 		error.status = response.statusText

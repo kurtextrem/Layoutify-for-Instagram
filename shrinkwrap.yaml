@@ -3,6 +3,7 @@ dependencies:
   babel-loader@^7.0.0: 7.0.0
   babel-plugin-closure-elimination@^1.1.15: 1.1.15
   babel-plugin-loop-optimizer@^1.2.3: 1.2.3
+  babel-plugin-runtyper@^0.2.2: 0.2.2
   babel-plugin-transform-es2015-block-scoping@^7.0.0-alpha.9: 7.0.0-alpha.9
   babel-plugin-transform-imports@^1.2.0: 1.2.0
   babel-plugin-transform-react-constant-elements@^7.0.0-alpha.9: 7.0.0-alpha.9
@@ -34,6 +35,7 @@ dependencies:
   rimraf@^2.6.1: 2.6.1
   script-ext-html-webpack-plugin@^1.7.1: 1.7.1
   shelljs@^0.7.7: 0.7.7
+  uglify-es@^3.0.2: 3.0.2
   'uglify-js@github:mishoo/UglifyJS2#harmony-v3.0.1': github.com/mishoo/UglifyJS2/e0ae8da0892fa92ff6c471bfdaf1e8e725fd9035
   uglifyjs-webpack-plugin@^0.4.3: 0.4.3
   webpack-bundle-analyzer@^2.6.0: 2.6.0
@@ -344,6 +346,7 @@ packages:
     dependencies:
       babel-helper-is-void-0: 0.0.1
     resolution: 52d8b623775107523227719ade2d0b7458758b5f
+  /babel-plugin-runtyper/0.2.2: 305f895fe5f5eb6618435219daef3f423811b837
   /babel-plugin-syntax-async-functions/7.0.0-alpha.3: f07c8bb1b4c6d7fad16f2f4265feecf9a68ad6db
   /babel-plugin-syntax-async-generators/7.0.0-alpha.9: 2e19abfde0da639e6bfae5872ef66e4e1a8a9375
   /babel-plugin-syntax-class-properties/7.0.0-alpha.9: a79f336c5aa729fac70b20790157ebc81bb41c13
@@ -2038,6 +2041,12 @@ packages:
       mime-types: 2.1.15
     resolution: cab10fb4909e441c82842eafe1ad646c81804410
   /ua-parser-js/0.7.12: 04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb
+  /uglify-es/3.0.2:
+    dependencies:
+      commander: 2.9.0
+      source-map: 0.5.6
+      uglify-to-browserify: 1.0.2
+    resolution: 90b1a481b55d4cd2b26ed27b6c96ac247528231c
   /uglify-js/2.8.22:
     dependencies:
       source-map: 0.5.6

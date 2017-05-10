@@ -145,6 +145,7 @@ module.exports = {
 						['transform-es2015-block-scoping', { throwIfClosureRequired: true }]
 					] : [
 							['transform-react-jsx', { pragma: 'h', useBuiltIns: true }]
+							// 'runtyper'
 						],
 					cacheDirectory: true
 				}
