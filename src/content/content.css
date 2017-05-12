@@ -225,6 +225,17 @@ main.profile a:hover > div:last-child {
 
 
 /*=============================================
+									Media Querys
+=============================================*/
+
+/** 3 column layout on smaller screens */
+@media (max-width: 1366px) {
+	:root {
+		--boxWidth: 30vw;
+	}
+}
+
+/*=============================================
 								Mac OS Scrollbar
 =============================================*/
 ::-webkit-scrollbar {
