@@ -118,8 +118,12 @@
 
 		a.className = ''
 		a.classList.add('coreSpriteEllipsis', 'extended--btn')
-		if (window.localStorage.clickedExtendedBtn === undefined)
+
+		var clickedExtendedBtn = true
+		if (window.localStorage.clickedExtendedBtn === undefined) {
 			a.classList.add('extended--btn__new')
+			clickedExtendedBtn = false
+		}
 
 		a.href = '#'
 		a.nodeValue = '' // clear content
@@ -133,8 +137,9 @@
 			Instagram.saved.start()
 				.then(Instagram.saved.fetch())
 
-			window.localStorage.clickedExtendedBtn = true
 			chrome.runtime.sendMessage(null, { action: 'click' })
+			if (!clickedExtendedBtn)
+				window.localStorage.clickedExtendedBtn = true
 		}
 		el.style.top = '-8px'
 		anchor.after(el)

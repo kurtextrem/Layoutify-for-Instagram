@@ -8,13 +8,13 @@ dependencies:
   babel-plugin-transform-imports@^1.2.0: 1.2.0
   babel-plugin-transform-react-constant-elements@^7.0.0-alpha.9: 7.0.0-alpha.9
   babel-plugin-transform-react-jsx@^7.0.0-alpha.9: 7.0.0-alpha.9
-  babel-plugin-transform-react-remove-prop-types@^0.4.4: 0.4.4
+  babel-plugin-transform-react-remove-prop-types@^0.4.5: 0.4.5
   babel-preset-env@^2.0.0-alpha.7: 2.0.0-alpha.7
   babel-preset-stage-1@^7.0.0-alpha.9: 7.0.0-alpha.9
   babili-webpack-plugin@^0.0.11: 0.0.11
   bootstrap@4.0.0-alpha.6: 4.0.0-alpha.6
   copy-webpack-plugin@^4.0.1: 4.0.1
-  cross-env@^5.0.0-beta.0: 5.0.0-beta.0
+  cross-env@^5.0.0: 5.0.0
   fast-async@^6.2.2: 6.2.2
   friendly-errors-webpack-plugin@^1.6.1: 1.6.1
   history@^4.6.1: 4.6.1
@@ -33,10 +33,9 @@ dependencies:
   react-timeago@^3.3.0: 3.3.0
   reactstrap@^4.5.0: 4.5.0
   rimraf@^2.6.1: 2.6.1
-  script-ext-html-webpack-plugin@^1.7.1: 1.7.1
+  script-ext-html-webpack-plugin@^1.7.3: 1.7.3
   shelljs@^0.7.7: 0.7.7
-  uglify-es@^3.0.2: 3.0.2
-  'uglify-js@github:mishoo/UglifyJS2#harmony-v3.0.1': github.com/mishoo/UglifyJS2/e0ae8da0892fa92ff6c471bfdaf1e8e725fd9035
+  uglify-es@^3.0.4: github.com/mishoo/UglifyJS2/945ba641609cea5c97bf8aa05d9afb00cd69471c
   uglifyjs-webpack-plugin@^0.4.3: 0.4.3
   webpack-bundle-analyzer@^2.6.0: 2.6.0
   webpack-dev-server@^2.4.5: 2.4.5
@@ -503,10 +502,10 @@ packages:
       babel-helper-builder-react-jsx: 7.0.0-alpha.9
       babel-plugin-syntax-jsx: 7.0.0-alpha.9
     resolution: c895a71b4b783caa6cc61d825fbc08f0a5fb4510
-  /babel-plugin-transform-react-remove-prop-types/0.4.4:
+  /babel-plugin-transform-react-remove-prop-types/0.4.5:
     dependencies:
       babel-traverse: 6.24.1
-    resolution: ef3f6fc166b0d1f53f828d1a9dda90106ac27cd8
+    resolution: 79d1958437ae23d4fbc0b11d1a041498ddb23877
   /babel-plugin-transform-regenerator/7.0.0-alpha.8:
     dependencies:
       regenerator-transform: 0.9.11
@@ -656,7 +655,7 @@ packages:
       babel-messages: 6.23.0
       babel-runtime: 6.23.0
       babel-types: 6.24.1
-      babylon: 6.17.0
+      babylon: 6.17.1
       debug: 2.6.6
       globals: 9.17.0
       invariant: 2.2.2
@@ -710,6 +709,7 @@ packages:
       webpack-sources: 0.1.5
     resolution: 09571593b81bbcc3033e8570540b391e98801803
   /babylon/6.17.0: 37da948878488b9c4e3c4038893fa3314b3fc932
+  /babylon/6.17.1: 17f14fddf361b695981fe679385e4f1c01ebd86f
   /babylon/7.0.0-beta.8: 2bdc5ae366041442c27e068cce6f0d7c06ea9949
   /balanced-match/0.4.2: cb3f3e3c732dc0f01ee70b403f302e61d7709838
   /base62/1.1.2: 22ced6a49913565bc0b8d9a11563a465c084124c
@@ -911,11 +911,11 @@ packages:
       create-hash: 1.1.2
       inherits: 2.0.3
     resolution: d3fb4ba253eb8b3f56e39ea2fbcb8af747bd3170
-  /cross-env/5.0.0-beta.0:
+  /cross-env/5.0.0:
     dependencies:
       cross-spawn: 5.1.0
       is-windows: 1.0.1
-    resolution: 9ab98526d6b9a466e6016afd6cc59a9ff6eed9e6
+    resolution: 565ccae4d09676441a5087f406fe7661a29c931b
   /cross-spawn/5.1.0:
     dependencies:
       lru-cache: 4.0.2
@@ -1876,10 +1876,10 @@ packages:
       glob: 7.1.1
     resolution: c2338ec643df7a1b7fe5c54fa86f57428a55f33d
   /ripemd160/1.0.1: 93a4bbd4942bc574b69a8fa57c71de10ecca7d6e
-  /script-ext-html-webpack-plugin/1.7.1:
+  /script-ext-html-webpack-plugin/1.7.3:
     dependencies:
       debug: 2.6.6
-    resolution: ae9c0e26d7767d4aa793c76e3550344ec08b6d10
+    resolution: dcb6eda8f5dd5c2de02970f8556d2e3d6c0c4a3d
   /seedrandom/2.4.3: 2438504dad33917314bff18ac4d794f16d6aaecc
   /select-hose/2.0.0: 625d8658f865af43ec962bfc376a37359a4994ca
   /semver/5.3.0: 9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f
@@ -2041,12 +2041,6 @@ packages:
       mime-types: 2.1.15
     resolution: cab10fb4909e441c82842eafe1ad646c81804410
   /ua-parser-js/0.7.12: 04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb
-  /uglify-es/3.0.2:
-    dependencies:
-      commander: 2.9.0
-      source-map: 0.5.6
-      uglify-to-browserify: 1.0.2
-    resolution: 90b1a481b55d4cd2b26ed27b6c96ac247528231c
   /uglify-js/2.8.22:
     dependencies:
       source-map: 0.5.6
@@ -2265,12 +2259,12 @@ packages:
       webpack-sources: 0.1.5
       yazl: 2.4.2
     resolution: bb6ec7a7a0e543f20df8495830001c3de9797934
-  github.com/mishoo/UglifyJS2/e0ae8da0892fa92ff6c471bfdaf1e8e725fd9035:
+  github.com/mishoo/UglifyJS2/945ba641609cea5c97bf8aa05d9afb00cd69471c:
     dependencies:
       commander: 2.9.0
       source-map: 0.5.6
       uglify-to-browserify: 1.0.2
     resolution:
-      tarball: 'https://codeload.github.com/mishoo/UglifyJS2/tar.gz/e0ae8da0892fa92ff6c471bfdaf1e8e725fd9035'
+      tarball: 'https://codeload.github.com/mishoo/UglifyJS2/tar.gz/945ba641609cea5c97bf8aa05d9afb00cd69471c'
 registry: 'https://registry.npmjs.org/'
 version: 2

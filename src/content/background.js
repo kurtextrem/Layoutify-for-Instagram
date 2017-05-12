@@ -62,7 +62,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 },
 	{
 		urls: [
-			'https://i.instagram.com/*'
+			'https://i.instagram.com/api/v1/feed/*'
 		],
 		types: ['xmlhttprequest']
 	},
