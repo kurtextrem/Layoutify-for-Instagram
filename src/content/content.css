@@ -18,6 +18,7 @@ section > div > div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
+	margin-top: 10px;
 
 	contain: content;
 }
@@ -141,7 +142,13 @@ a.videoSpritePlayButton + div {
 =============================================*/
 nav > div > div > div:nth-of-type(2) {
 	transform: translateZ(0);
-	contain: content;
+	height: inherit;
+	contain: strict;
+}
+
+/** Hide "Open in App" */
+nav > div > div > div:last-of-type:not(:only-child) {
+	display: none;
 }
 
 /*=============================================
@@ -209,7 +216,6 @@ main.profile a:hover > div:last-child {
 =============================================*/
 #rcr-anchor {
 	justify-content: flex-start;
-	margin-bottom: 10px;
 	overflow: auto;
 }
 

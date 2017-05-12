@@ -109,16 +109,21 @@
 	console.log(window.Instagram = Instagram) // for debugging
 
 	function addExtendedButton() {
-		var anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].parentNode
+		var anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')
+		if (!anchor.length) anchor = document.querySelector('header > div > button')
+
+		anchor = anchor[0].parentNode
 		var el = anchor.cloneNode(true),
 			a = el.firstChild
 
+		a.className = ''
 		a.classList.add('coreSpriteEllipsis', 'extended--btn')
 		if (window.localStorage.clickedExtendedBtn === undefined)
 			a.classList.add('extended--btn__new')
 
-		a.classList.remove('coreSpriteDesktopNavProfile')
 		a.href = '#'
+		a.nodeValue = '' // clear content
+		a.textContent = ''
 		a.title = 'Improved Layout for Instagram'
 		a.onclick = function(e) {
 			e.preventDefault()

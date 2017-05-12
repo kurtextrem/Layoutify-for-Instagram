@@ -42,17 +42,17 @@ function getSessionId() {
 getSessionId()
 
 // hook into web request and modify headers before sending the request
-chrome.webRequest.onBeforeSendHeaders.addListener(function(info) {
+chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 	getSessionId() // just update for next time
 
-	var headers = info.requestHeaders
+	var headers = details.requestHeaders
 
 	for (var i = 0; i < headers.length; ++i) {
 		var header = headers[i]
 
-		if (header.name.toLowerCase() === 'user-agent') {
+		if (header.name === 'User-Agent') {
 			header.value = 'Instagram 10.8.0 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US)'
-		} else if (header.name.toLowerCase() === 'cookie') {
+		} else if (header.name === 'Cookie') {
 			// add auth cookies to authenticate API requests
 			var cookies = header.value + '; sessionid=' + sessionid
 			header.value = cookies
