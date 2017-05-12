@@ -175,6 +175,8 @@
 		 */
 		// !! wenn nicht geht -> komplett sessionStorage
 		compareData(data) {
+			if (data.items === undefined || !data.items.length) return true // prevent adding undefined or similar
+
 			var len = data.items.length,
 				lastId = data.items[len - 1].id,
 				maxLen = Math.min(len, this.items.length), // don't exceed either array len
