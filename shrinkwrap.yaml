@@ -1,3 +1,4 @@
+createdWith: pnpm@0.68.0
 dependencies:
   babel-core@^7.0.0-alpha.9: 7.0.0-alpha.9
   babel-loader@^7.0.0: 7.0.0
@@ -35,6 +36,7 @@ dependencies:
   script-ext-html-webpack-plugin@^1.7.3: 1.7.3
   shelljs@^0.7.7: 0.7.7
   uglify-es@^3.0.4: github.com/mishoo/UglifyJS2/945ba641609cea5c97bf8aa05d9afb00cd69471c
+  'uglify-js@git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22': github.com/mishoo/UglifyJS2/278577f3cb75e72320564805ee91be63e5f9c806
   uglifyjs-webpack-plugin@^0.4.3: 0.4.3
   webpack-bundle-analyzer@^2.8.1: 2.8.1
   webpack-dev-server@^2.4.5: 2.4.5
@@ -2252,6 +2254,13 @@ packages:
       webpack-sources: 0.1.5
       yazl: 2.4.2
     resolution: bb6ec7a7a0e543f20df8495830001c3de9797934
+  github.com/mishoo/UglifyJS2/278577f3cb75e72320564805ee91be63e5f9c806:
+    dependencies:
+      source-map: 0.5.6
+      uglify-to-browserify: 1.0.2
+      yargs: 3.10.0
+    resolution:
+      tarball: 'https://codeload.github.com/mishoo/UglifyJS2/tar.gz/278577f3cb75e72320564805ee91be63e5f9c806'
   github.com/mishoo/UglifyJS2/945ba641609cea5c97bf8aa05d9afb00cd69471c:
     dependencies:
       commander: 2.9.0

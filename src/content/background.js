@@ -36,7 +36,7 @@ function getCookie(name) {
 var sessionid = ''
 function getSessionId() {
 	getCookie('sessionid').then(function(value) {
-		sessionid = value
+		return sessionid = value
 	})
 }
 getSessionId()

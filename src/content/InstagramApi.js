@@ -61,22 +61,21 @@
 			return new Promise((resolve, reject) => {
 				chrome.storage[this.STORAGE].set({
 					[key]: value
-				}, (data) => this.check(data, resolve, reject))
+				}, data => this.check(data, resolve, reject))
 			})
 		}
-
 
 		get(key, defaultValue) {
 			return new Promise((resolve, reject) => {
 				chrome.storage[this.STORAGE].get({
 					[key]: defaultValue
-				}, (data) => this.check(data[key], resolve, reject))
+				}, data => this.check(data[key], resolve, reject))
 			})
 		}
 
 		remove(key) {
 			return new Promise((resolve, reject) => {
-				chrome.storage[this.STORAGE].remove(key, (data) => this.check(data, resolve, reject))
+				chrome.storage[this.STORAGE].remove(key, data => this.check(data, resolve, reject))
 			})
 		}
 
@@ -93,7 +92,8 @@
 	var Storage = new storage()
 
 	function getCookies(wanted) {
-		var cookies = document.cookie.split('; '), result = {}
+		var cookies = document.cookie.split('; '),
+			result = {}
 
 		for (var i = 0; i < cookies.length; ++i) {
 			var cookie = cookies[i].split('='),
@@ -133,7 +133,7 @@
 			this.start = () => {
 				if (this.firstNextMaxId === undefined) {
 					return Storage.get(this.endpoint, { items: [], nextMaxId: '' })
-						.then((data) => {
+						.then(data => {
 							this.firstNextMaxId = data.nextMaxId
 							this.items = data.items
 							return data
@@ -161,7 +161,7 @@
 
 		normalize(data) {
 			if (data.items !== undefined && data.items.length && data.items[0].media !== undefined) { // we need to normalize "saved"
-				data.items = data.items.map((item) => item.media)
+				data.items = data.items.map(item => item.media)
 			}
 			return data
 		}
@@ -239,4 +239,4 @@
 	}
 
 	window.getInstagram = Instagram
-}(window))
+})(window)

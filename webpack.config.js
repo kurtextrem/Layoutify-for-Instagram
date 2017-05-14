@@ -11,10 +11,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-// const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const BabiliPlugin = require('babili-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
-// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
+const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV
 const isProd = ENV === 'production'
@@ -74,9 +74,10 @@ if (isProd) {
 			minimize: true,
 			debug: false
 		}),
+		new UglifyJSPlugin(), // doesn't support "async", so watch out
 		// new UglifyJSPlugin({ sourceMap: true }), // for correct bundle stats
-		new BabiliPlugin(),
-		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }),
+		// new BabiliPlugin(),
+		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // doesn't support `class` yet
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
@@ -125,7 +126,7 @@ module.exports = {
 					presets: [
 						['env', {
 							modules: false,
-							targets: isProd ? { chrome: 55 /*, uglify: true - correct bundle stats */ } : {
+							targets: isProd ? { chrome: 55 } : {
 								browsers: 'last 2 Chrome versions'
 							},
 							loose: true
@@ -150,7 +151,8 @@ module.exports = {
 						// 'module:fast-async', - enabled from Chrome 55
 						'loop-optimizer',
 						'closure-elimination',
-						['transform-es2015-block-scoping', { throwIfClosureRequired: true }]
+						['transform-es2015-block-scoping', { throwIfClosureRequired: true }],
+						'./pure-plugin.js'
 					] : [
 							['transform-react-jsx', { pragma: 'h', useBuiltIns: true }]
 							// 'runtyper'

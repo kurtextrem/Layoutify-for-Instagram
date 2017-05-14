@@ -1,5 +1,5 @@
-import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
-import { CardBlock, CardText, Media, CardFooter, Button } from 'reactstrap'
+import { Button, CardBlock, CardFooter, CardText, Media } from 'reactstrap' // eslint-disable-line no-unused-vars
+import { Component, h, render } from 'preact'
 import TimeAgo from 'react-timeago'
 
 export default class Post extends Component {
@@ -24,7 +24,8 @@ export default class Post extends Component {
 			data = data.carousel_media[0]
 		}
 
-		var media = null, candidate = null
+		var media = null,
+			candidate = null
 		if (data.media_type === 2) { // video
 			candidate = data.video_versions[0]
 			media = <video src={data.video_versions[0].url} poster={data.image_versions2.candidates[0].url} controls type="video/mp4" width={candidate.width} height={candidate.height} preload="none" className="img-fluid" />
@@ -41,7 +42,7 @@ export default class Post extends Component {
 					<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener"><img src={user.profile_pic_url} className="img-fluid profile-pic rounded mr-2" /></a>
 					<Media body className="grow-1"><a href={`https://instagram.com/${user.username}`} target="_blank" rel="noopener">{user.full_name}</a></Media>
 					<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener">
-						<TimeAgo className="text-muted" date={date}></TimeAgo>
+						<TimeAgo className="text-muted" date={date} />
 					</a>
 				</header>
 				<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener">{media}</a>
