@@ -19,6 +19,12 @@ const WriteFilePlugin = require('write-file-webpack-plugin')
 const ENV = process.env.NODE_ENV
 const isProd = ENV === 'production'
 
+// by using min versions we speed up HMR
+function getMin(module) {
+	return path.resolve(__dirname, `node_modules/${module}/dist/${module}.min.js`)
+}
+const preactCompat = isProd ? 'preact-compat' : getMin('preact-compat') // if we take the min build in prod we also include prop-types
+
 var html = {
 	title: 'Improved Layout for Instagram',
 	template: 'index.ejs',
@@ -32,7 +38,8 @@ if (isProd) {
 
 var plugins = [
 	new webpack.DefinePlugin({
-		'process.env.NODE_ENV': JSON.stringify(ENV || 'development'),
+		'process.env': `(${JSON.stringify(ENV)})`,
+		'typeof window': JSON.stringify('object'),
 		POLYFILL_OBJECT_ASSIGN: false,
 		POLYFILL_OBJECT_VALUES: false,
 		POLYFILL_PROMISES: false,
@@ -62,11 +69,12 @@ if (isProd) {
 			append: false,
 			hash: true
 		}),
+		new webpack.IgnorePlugin(/prop-types/),
 		new webpack.LoaderOptionsPlugin({
 			minimize: true,
 			debug: false
 		}),
-		// new UglifyJSPlugin({ sourceMap: true }),
+		// new UglifyJSPlugin({ sourceMap: true }), // for correct bundle stats
 		new BabiliPlugin(),
 		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }),
 		new BundleAnalyzerPlugin({
@@ -117,7 +125,7 @@ module.exports = {
 					presets: [
 						['env', {
 							modules: false,
-							targets: isProd ? { chrome: 55 } : {
+							targets: isProd ? { chrome: 55 /*, uglify: true - correct bundle stats */ } : {
 								browsers: 'last 2 Chrome versions'
 							},
 							loose: true
@@ -137,9 +145,9 @@ module.exports = {
 							}
 						}],
 						'transform-react-constant-elements',
-						['transform-react-remove-prop-types', { removeImport: true }],
+						['transform-react-remove-prop-types', { removeImport: true, additionalLibraries: ['react-immutable-proptypes'] }],
 
-						'module:fast-async',
+						// 'module:fast-async', - enabled from Chrome 55
 						'loop-optimizer',
 						'closure-elimination',
 						['transform-es2015-block-scoping', { throwIfClosureRequired: true }]
@@ -152,17 +160,17 @@ module.exports = {
 			}
 		],
 		noParse: [
-			new RegExp(path.resolve(__dirname, 'node_modules/preact-compat/dist/preact-compat.min.js'))
+			new RegExp(getMin('preact-compat')) // faster HMR
 		]
 	},
 
 	resolve: {
 		alias: {
-			react: 'preact-compat',
-			'react-dom': 'preact-compat',
-			'react-addons-css-transition-group': 'preact-css-transition-group',
-			'react-addons-transition-group': 'preact-transition-group',
-			'preact-compat': path.resolve(__dirname, 'node_modules/preact-compat/dist/preact-compat.min.js')
+			react: preactCompat,
+			'react-dom': preactCompat,
+			'preact-compat': preactCompat,
+			'react-addons-css-transition-group': isProd ? 'preact-css-transition-group' : getMin('preact-css-transition-group'),
+			'react-addons-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group')
 		}
 	},
 
