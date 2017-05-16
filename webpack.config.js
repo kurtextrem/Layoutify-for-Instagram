@@ -12,9 +12,10 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const BabiliPlugin = require('babili-webpack-plugin')
+// const ButternutWebpackPlugin = require('butternut-webpack-plugin')
+// const BabiliPlugin = require('babili-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
-const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
+// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV
 const isProd = ENV === 'production'
@@ -69,13 +70,14 @@ if (isProd) {
 			append: false,
 			hash: true
 		}),
-		new webpack.IgnorePlugin(/prop-types/),
 		new webpack.LoaderOptionsPlugin({
 			minimize: true,
 			debug: false
 		}),
+		new webpack.NormalModuleReplacementPlugin(/process/, path.resolve(__dirname, 'noop.js')),
+		// new webpack.optimize.ModuleConcatenationPlugin(), // @todo: Soon available in webpack
 		new UglifyJSPlugin(), // doesn't support "async", so watch out
-		// new UglifyJSPlugin({ sourceMap: true }), // for correct bundle stats
+		// new ButternutWebpackPlugin(),
 		// new BabiliPlugin(),
 		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // doesn't support `class` yet
 		new BundleAnalyzerPlugin({
@@ -110,6 +112,7 @@ module.exports = {
 		'./'
 	],
 
+	target: 'web',
 	output: {
 		path: path.join(__dirname, 'dist'),
 		publicPath: isProd ? '/' : 'http://localhost:8080/',
@@ -172,7 +175,8 @@ module.exports = {
 			'react-dom': preactCompat,
 			'preact-compat': preactCompat,
 			'react-addons-css-transition-group': isProd ? 'preact-css-transition-group' : getMin('preact-css-transition-group'),
-			'react-addons-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group')
+			'react-addons-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
+			'prop-types': isProd ? 'proptypes/disabled' : 'prop-types'
 		}
 	},
 

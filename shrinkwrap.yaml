@@ -14,8 +14,10 @@ dependencies:
   babel-preset-stage-1@^7.0.0-alpha.9: 7.0.0-alpha.9
   babili-webpack-plugin@^0.0.11: 0.0.11
   bootstrap@4.0.0-alpha.6: 4.0.0-alpha.6
+  butternut-webpack-plugin@^0.0.4: 0.0.4
   copy-webpack-plugin@^4.0.1: 4.0.1
   cross-env@^5.0.0: 5.0.0
+  empty-module@^0.0.2: 0.0.2
   friendly-errors-webpack-plugin@^1.6.1: 1.6.1
   history@^4.6.1: 4.6.1
   html-webpack-harddisk-plugin@^0.1.0: 0.1.0
@@ -30,6 +32,7 @@ dependencies:
   preact@^8.1.0: 8.1.0
   preload-webpack-plugin@^1.2.2: 1.2.2
   prepack-webpack-plugin@^1.1.0: 1.1.0
+  proptypes@^1.0.0: 1.0.0
   react-timeago@^3.3.0: 3.3.0
   reactstrap@^4.5.0: 4.5.0
   rimraf@^2.6.1: 2.6.1
@@ -793,6 +796,19 @@ packages:
     resolution: 6d1bb601b07a4efced97094132093027c95bc298
   /builtin-modules/1.1.1: 270f076c5a72c02f5b65a47df94c5fe3a278892f
   /builtin-status-codes/3.0.0: 85982878e21b98e1c66425e03d0174788f569ee8
+  /butternut-webpack-plugin/0.0.4:
+    dependencies:
+      butternut: 0.3.6
+      webpack-sources: 0.2.3
+    resolution: 9ad6f96ce10b79f75ab117301d8430905c54680d
+  /butternut/0.3.6:
+    dependencies:
+      acorn: 5.0.3
+      chalk: 1.1.3
+      magic-string: 0.19.1
+      minimist: 1.2.0
+      sourcemap-codec: 1.3.1
+    resolution: 599030b3038140400e15b929e757b827d8a2da6f
   /bytes/2.3.0: d5b680a165b6201739acb611542aabc2d8ceb070
   /camel-case/3.0.0:
     dependencies:
@@ -1018,6 +1034,7 @@ packages:
       minimalistic-crypto-utils: 1.0.1
     resolution: cac9af8762c85836187003c8dfe193e5e2eae5df
   /emojis-list/2.1.0: 4daa4d9db00f9819880c79fa457ae5b09a1fd389
+  /empty-module/0.0.2: 13b4dd8d4afeddd35e50c18dcd788c51087f1545
   /encodeurl/1.0.1: 79e3d58655346909fe6f0f45a5de68103b294d20
   /encoding/0.1.12:
     dependencies:
@@ -1457,6 +1474,10 @@ packages:
       pseudomap: 1.0.2
       yallist: 2.1.2
     resolution: 1d17679c069cda5d040991a09dbc2c0db377e55e
+  /magic-string/0.19.1:
+    dependencies:
+      vlq: 0.2.2
+    resolution: 14d768013caf2ec8fdea16a49af82fc377e75201
   /media-typer/0.3.0: 8710d7af0aa626f8fffa1ce00168545263255748
   /memory-fs/0.4.1:
     dependencies:
@@ -1503,6 +1524,7 @@ packages:
       brace-expansion: 1.1.7
     resolution: 5166e286457f03306064be5497e8dbb0c3d32083
   /minimist/0.0.8: 857fcabfc3397d2625b8228262e86aa7a011b05d
+  /minimist/1.2.0: a35008b20f41383eec1fb914f4cd5df79a264284
   /mkdirp/0.5.1:
     dependencies:
       minimist: 0.0.8
@@ -1721,6 +1743,7 @@ packages:
     dependencies:
       fbjs: 0.8.12
     resolution: 6b7b2e141083be38c8595aa51fc55775c7199394
+  /proptypes/1.0.0: ba831a653aab89862f28a084cebbc0cdf9f1b09b
   /proxy-addr/1.1.4:
     dependencies:
       forwarded: 0.1.0
@@ -1946,6 +1969,10 @@ packages:
       source-map: 0.5.6
     resolution: 03202df65c06d2bd8c7ec2362a193056fef8d3b1
   /source-map/0.5.6: 75ce38f52bf0733c5a7f0c118d81334a2bb5f412
+  /sourcemap-codec/1.3.1:
+    dependencies:
+      vlq: 0.2.2
+    resolution: 9ad6f9bdbd691931016e30939dbc868673323146
   /spdx-correct/1.0.2:
     dependencies:
       spdx-license-ids: 1.2.2
@@ -2089,6 +2116,7 @@ packages:
     resolution: 2804babe712ad3379459acfbe24746ab2c303fbc
   /value-equal/0.2.1: c220a304361fce6994dbbedaa3c7e1a1b895871d
   /vary/1.1.1: 67535ebb694c1d52257457984665323f587e8d37
+  /vlq/0.2.2: e316d5257b40b86bb43cb8d5fea5d7f54d6b0ca1
   /vm-browserify/0.0.4:
     dependencies:
       indexof: 0.0.1
