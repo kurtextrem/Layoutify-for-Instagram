@@ -12,7 +12,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-// const ButternutWebpackPlugin = require('butternut-webpack-plugin')
+// const ButternutWebpackPlugin = require('butternut-webpack-plugin').default
 // const BabiliPlugin = require('babili-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
@@ -39,8 +39,10 @@ if (isProd) {
 
 var plugins = [
 	new webpack.DefinePlugin({
-		'process.env': `(${JSON.stringify(ENV)})`,
+		'process.env': JSON.stringify({ NODE_ENV: ENV }), // Preact checkks for `!process.env`
+		'process.env.NODE_ENV': JSON.stringify(ENV),
 		'typeof window': JSON.stringify('object'),
+		'typeof process': JSON.stringify('0'), // Preact checks for `type process === 'undefined'`
 		POLYFILL_OBJECT_ASSIGN: false,
 		POLYFILL_OBJECT_VALUES: false,
 		POLYFILL_PROMISES: false,
@@ -77,7 +79,7 @@ if (isProd) {
 		new webpack.NormalModuleReplacementPlugin(/process/, path.resolve(__dirname, 'noop.js')),
 		// new webpack.optimize.ModuleConcatenationPlugin(), // @todo: Soon available in webpack
 		new UglifyJSPlugin(), // doesn't support "async", so watch out
-		// new ButternutWebpackPlugin(),
+		// new ButternutWebpackPlugin(), // slightly larger than uglify
 		// new BabiliPlugin(),
 		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // doesn't support `class` yet
 		new BundleAnalyzerPlugin({
@@ -132,7 +134,8 @@ module.exports = {
 							targets: isProd ? { chrome: 55 } : {
 								browsers: 'last 2 Chrome versions'
 							},
-							loose: true
+							loose: true,
+							useBuiltIns: false
 						}],
 						'stage-1'
 					],
@@ -164,8 +167,9 @@ module.exports = {
 				}
 			}
 		],
-		noParse: [
-			new RegExp(getMin('preact-compat')) // faster HMR
+		noParse: [ // faster HMR
+			new RegExp(getMin('preact-compat')),
+			new RegExp('proptypes/disabled')
 		]
 	},
 
@@ -176,11 +180,11 @@ module.exports = {
 			'preact-compat': preactCompat,
 			'react-addons-css-transition-group': isProd ? 'preact-css-transition-group' : getMin('preact-css-transition-group'),
 			'react-addons-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
-			'prop-types': isProd ? 'proptypes/disabled' : 'prop-types'
+			'prop-types$': isProd ? 'proptypes/disabled' : 'prop-types'
 		}
 	},
 
-	devtool: isProd ? false /*'cheap-module-source-map'*/ : 'inline-source-map', //'inline-source-map',
+	devtool: isProd ? false /*'cheap-module-source-map'*/ : 'cheap-module-inline-source-map',
 
 	devServer: {
 		contentBase: path.join(__dirname, 'dist/'),

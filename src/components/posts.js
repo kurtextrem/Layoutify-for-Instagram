@@ -1,12 +1,11 @@
-import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
 import { CardDeck } from 'reactstrap'
-import { DelegateContainer, DelegateElement } from 'preact-delegate'
+import { Chrome, Storage } from './utils'
+import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
 
-import { Storage, Chrome } from './utils'
+import { DelegateContainer, DelegateElement } from 'preact-delegate'
 import Loading from './loading'
 import Post from './post'
 import Sentinel from './sentinel'
-
 
 export default class Posts extends Component {
 	constructor(props, ...rest) {
@@ -53,12 +52,12 @@ export default class Posts extends Component {
 			.then(this.handleData)
 	}
 
-	handleData = (data) => {
+	handleData = data => {
 		this.setState((prevState, props) => ({ data, timeout: 400 }))
 		return data
 	}
 
-	setTimeout = (timeout) => {
+	setTimeout = timeout => {
 		if (this.state.data === null) {
 			this.setState((prevState, props) => ({ timeout }))
 			window.setTimeout(() => this.setTimeout(400), 200)
@@ -69,7 +68,7 @@ export default class Posts extends Component {
 		Chrome.send('load', { which: this.id })
 	}
 
-	onClick = (e) => {
+	onClick = e => {
 		e.stopPropagation()
 
 		var elem = e.target
@@ -117,7 +116,7 @@ export default class Posts extends Component {
 		return (
 			<DelegateContainer>
 				<CardDeck>
-					{data.items.map((post) => (
+					{data.items.map(post => (
 						<DelegateElement click={this.onClick}>
 							<Post data={post} key={post.id} parent={this.id} data-defaultClass={this.defaultClass} data-toggleClass={this.toggleClass} />
 						</DelegateElement>

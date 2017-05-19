@@ -1,5 +1,5 @@
-import { Button, CardBlock, CardFooter, CardText, Media } from 'reactstrap' // eslint-disable-line no-unused-vars
-import { Component, h, render } from 'preact'
+import { Button, CardBlock, CardFooter, CardText, Media } from 'reactstrap'
+import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
 import TimeAgo from 'react-timeago'
 
 export default class Post extends Component {
