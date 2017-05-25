@@ -30,23 +30,9 @@ section > div > div > article {
 	max-height: var(--maxBoxHeight);
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
-	z-index: 1;
 
 	contain: content;
-}
-
-article > div > ul > li > *:not(button) > span {
-	max-height: inherit;
-	/*display: block;*/
-	overflow: auto;
-}
-article > div > ul {
-	max-height: var(--maxBoxHeight);
-	/*flex-grow: 0 !important;*/
-	overflow: auto;
-}
-article > div > section {
-	min-height: initial;
+	z-index: 1;
 }
 
 /** Outer parent of the image */
@@ -62,11 +48,23 @@ article > div:nth-of-type(2n) {
 	flex-shrink: 1;
 }
 
+/** Moves the img over the "prevent right click copy"-element */
+div > img {
+	z-index: 1;
+}
+
+/** Improve picture quality */
+main:not(.home) div > img {
+	image-rendering: -webkit-optimize-contrast;
+}
+
 /*=============================================
 						Slimmer Post Header
 =============================================*/
+div[role='dialog'] article > header,
 main:not(.profile) article > header {
-	height: 54px !important;
+	height: 50px !important;
+	contain: strict;
 }
 
 div > main:first-child {
@@ -77,6 +75,85 @@ div > main:only-child {
 	flex-grow: 1;
 }
 
+div[role='dialog'] article > header + div + div,
+main:not(.home) article > header + div + div {
+	top: 63px !important;
+}
+
+/*----------  Improve new post layout  ----------*/
+
+main.home article > header + div + div {
+	margin-top: 8px;
+	padding-bottom: 4rem; /** Append height of heart / write comment to the bottom */
+}
+
+/** Row layout */
+article > header + div + div {
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: baseline;
+	contain: content;
+}
+
+/** Views / likes */
+div > section + section {
+	flex: 9999 0 auto;
+	order: 1 !important;
+	max-width: 100%;
+}
+
+/** Posted date */
+div > section + div + div {
+	flex: 99999999 0 auto; /* higher than views / likes to push it to the right */
+	order: 0 !important;
+}
+
+/** Larger timestamp */
+div > a > time {
+	font-size: 14px !important;
+	text-transform: none;
+}
+
+/** Grow comments */
+main article > header + div + div > div:first-of-type {
+	flex-grow: 1;
+	order: 2 !important;
+	max-height: 86%;
+	padding-top: 5px;
+	padding-bottom: 0;
+	width: 100%;
+}
+
+/** Heart */
+article > header + div + div > section:first-child {
+	position: absolute;
+	bottom: 13px;
+	margin-top: 4px;
+}
+
+/** Center heart */
+main.home article > header + div + div > section:first-child > a {
+	margin: auto;
+}
+
+/** Hide useless comment icon */
+article > header + div + div > section > a:last-child {
+	display: none;
+}
+
+/** Add comment */
+article > header + div + div > section:last-child {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 83%;
+}
+
+main.home article > header + div + div > section:last-child {
+	width: 84%;
+}
+
+
 /*=============================================
 						Improved Autoload
 =============================================*/
@@ -84,13 +161,8 @@ section > div > div:not(#rcr-anchor) + div:not(:last-child) {
 	width: 1px;
 	height: 1px;
 	transform: translateY(calc(var(--boxHeight) * -2));
-	z-index: 2;
 	contain: strict;
-}
-
-/** Moves the img over the "prevent right click copy"-element */
-div > img {
-	z-index: 1;
+	z-index: 2;
 }
 
 /*=============================================
@@ -141,8 +213,8 @@ a.videoSpritePlayButton + div {
 										Nav Bar
 =============================================*/
 nav > div > div > div:nth-of-type(2) {
-	transform: translateZ(0);
 	height: inherit;
+	transform: translateZ(0);
 	contain: strict;
 }
 
@@ -156,8 +228,8 @@ nav > div > div > div:last-of-type:not(:only-child) {
 =============================================*/
 section > div > div:last-child {
 	height: 30px;
-	z-index: 2;
 	contain: strict;
+	z-index: 2;
 }
 
 /*=============================================
@@ -174,13 +246,11 @@ section > footer + div {
 div[role='dialog'] article, main.post article {
   height: 1045px;
   max-height: 70vh;
+	contain: strict;
 }
 
 /** Center the image */
 div[role='dialog'] article,
-div[role='dialog'] article > div > div,
-main:not(.home) main > div > div,
-main:not(.home) main > div > div > div,
 main:not(.home) article {
 	flex-grow: 1;
 	justify-content: center;
