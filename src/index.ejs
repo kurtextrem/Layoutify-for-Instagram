@@ -120,5 +120,8 @@
 			background-color: #727272; /* Some darker color when you click it */
 		}
 	</style>
+	<%= htmlWebpackPlugin.options.ssr({
+			url: '/'
+	}) %>
 </body>
 </html>

@@ -1,4 +1,4 @@
-import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
+import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
 
 import { Router } from 'preact-router'
 import { createHashHistory } from 'history'
@@ -6,7 +6,6 @@ import About from './about'
 import Header from './header'
 import Liked from './liked'
 import Saved from './saved'
-
 
 export default class App extends Component {
 	render() {

@@ -3,6 +3,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 	.BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -15,9 +16,13 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 // const ButternutWebpackPlugin = require('butternut-webpack-plugin').default
 // const BabiliPlugin = require('babili-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
+const errorOverlayMiddleware = require('react-error-overlay/middleware')
+const ReplacePlugin = require('replace-bundle-webpack-plugin')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const prerender = require('./prerender')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
-const ENV = process.env.NODE_ENV
+const ENV = process.env.NODE_ENV || 'development'
 const isProd = ENV === 'production'
 
 // by using min versions we speed up HMR
@@ -29,12 +34,26 @@ const preactCompat = isProd ? 'preact-compat' : getMin('preact-compat') // if we
 var html = {
 	title: 'Improved Layout for Instagram',
 	template: 'index.ejs',
-	alwaysWriteToDisk: true
+	alwaysWriteToDisk: true,
+	inject: true,
+	ssr: params => isProd ? prerender(params) : ''
 }
 
 if (isProd) {
-	html.minify = {}
-	html.hash = true
+	html.minify = {
+		removeComments: true,
+		collapseWhitespace: true,
+		removeRedundantAttributes: true,
+		useShortDoctype: true,
+		removeEmptyAttributes: true,
+		removeStyleLinkTypeAttributes: true,
+		removeScriptTypeAttributes: true,
+		keepClosingSlash: true,
+		minifyJS: true,
+		minifyCSS: true,
+		minifyURLs: true
+	}
+	// html.hash = true
 }
 
 var plugins = [
@@ -42,7 +61,7 @@ var plugins = [
 		'process.env': JSON.stringify({ NODE_ENV: ENV }), // Preact checkks for `!process.env`
 		'process.env.NODE_ENV': JSON.stringify(ENV),
 		'typeof window': JSON.stringify('object'),
-		'typeof process': JSON.stringify('0'), // Preact checks for `type process === 'undefined'`
+		'typeof process': JSON.stringify('object'), // Preact checks for `type process === 'undefined'`
 		POLYFILL_OBJECT_ASSIGN: false,
 		POLYFILL_OBJECT_VALUES: false,
 		POLYFILL_PROMISES: false,
@@ -62,6 +81,12 @@ var plugins = [
 	new ScriptExtHtmlWebpackPlugin({
 		defaultAttribute: 'async',
 		preload: ['.js', '.css']
+	}),
+	new ProgressBarPlugin({
+		format: '\u001b[90m\u001b[44mBuild\u001b[49m\u001b[39m [:bar] \u001b[32m\u001b[1m:percent\u001b[22m\u001b[39m (:elapseds) \u001b[2m:msg\u001b[22m',
+		renderThrottle: 100,
+		summary: false,
+		clear: true
 	})
 ]
 
@@ -73,12 +98,55 @@ if (isProd) {
 			hash: true
 		}),
 		new webpack.LoaderOptionsPlugin({
-			minimize: true,
-			debug: false
+			minimize: true
 		}),
-		new webpack.NormalModuleReplacementPlugin(/process/, path.resolve(__dirname, 'noop.js')),
+		new webpack.NoEmitOnErrorsPlugin(),
 		// new webpack.optimize.ModuleConcatenationPlugin(), // @todo: Soon available in webpack
-		new UglifyJSPlugin(), // doesn't support "async", so watch out
+
+		// strip out babel-helper invariant checks
+		new ReplacePlugin([{
+			// this is actually the property name https://github.com/kimhou/replace-bundle-webpack-plugin/issues/1
+			partten: /throw\s+(new\s+)?(Type|Reference)?Error\s*\(/g,
+			replacement: () => 'return;('
+		}]),
+		new UglifyJSPlugin({
+			output: {
+				comments: false
+			},
+			mangle: true,
+			compress: {
+				unsafe_comps: true,
+				properties: true,
+				keep_fargs: false,
+				pure_getters: true,
+				collapse_vars: true,
+				unsafe: true,
+				warnings: false,
+				screw_ie8: true,
+				sequences: true,
+				dead_code: true,
+				drop_debugger: true,
+				comparisons: true,
+				conditionals: true,
+				evaluate: true,
+				booleans: true,
+				loops: true,
+				unused: true,
+				hoist_funs: true,
+				if_return: true,
+				join_vars: true,
+				cascade: true,
+				drop_console: false,
+				pure_funcs: [
+					'classCallCheck',
+					'_classCallCheck',
+					'_possibleConstructorReturn',
+					'Object.freeze',
+					'invariant',
+					'warning'
+				]
+			}
+		}), // doesn't support "async", so watch out */
 		// new ButternutWebpackPlugin(), // slightly larger than uglify
 		// new BabiliPlugin(),
 		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // doesn't support `class` yet
@@ -92,10 +160,12 @@ if (isProd) {
 } else {
 	plugins.push(
 		new FriendlyErrorsPlugin(),
+		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
 		new WriteFilePlugin({
 			test: /(content\/|manifest.json)/,
-			useHashIndex: true
+			useHashIndex: true,
+			log: false
 		}),
 		new HtmlWebpackIncludeAssetsPlugin({
 			assets: ['bootstrap.min.css'],
@@ -108,17 +178,20 @@ module.exports = {
 	context: path.join(__dirname, 'src'),
 
 	entry: isProd ? './' : [
+		require.resolve('react-error-overlay'),
 		'webpack/hot/only-dev-server',
 		// bundle the client for hot reloading
 		// only- means to only hot reload for successful updates
 		'./'
 	],
 
-	target: 'web',
 	output: {
 		path: path.join(__dirname, 'dist'),
 		publicPath: isProd ? '/' : 'http://localhost:8080/',
-		filename: 'bundle.js'
+		filename: 'bundle.js',
+		pathinfo: true,
+		devtoolModuleFilenameTemplate: info =>
+			isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`
 	},
 
 	module: {
@@ -127,54 +200,19 @@ module.exports = {
 				test: /\.jsx?$/i,
 				exclude: /(node_modules|bower_components)/,
 				loader: 'babel-loader',
-				options: {
-					presets: [
-						['env', {
-							modules: false,
-							targets: isProd ? { chrome: 55 } : {
-								browsers: 'last 2 Chrome versions'
-							},
-							loose: true,
-							useBuiltIns: false
-						}],
-						'stage-1'
-					],
-					plugins: isProd ? [
-						['transform-react-jsx', { pragma: 'h', useBuiltIns: true }],
-						['transform-imports', {
-							reactstrap: {
-								transform: 'reactstrap/lib/${member}',
-								preventFullImport: true
-							},
-							history: {
-								transform: 'history/es/${member}',
-								preventFullImport: true
-							}
-						}],
-						'transform-react-constant-elements',
-						['transform-react-remove-prop-types', { removeImport: true, additionalLibraries: ['react-immutable-proptypes'] }],
-
-						// 'module:fast-async', - enabled from Chrome 55
-						'loop-optimizer',
-						'closure-elimination',
-						['transform-es2015-block-scoping', { throwIfClosureRequired: true }],
-						'./pure-plugin.js'
-					] : [
-							['transform-react-jsx', { pragma: 'h', useBuiltIns: true }]
-							// 'runtyper'
-						],
-					cacheDirectory: true
-				}
+				options: require('./babelConfig')(isProd, {})
 			}
 		],
-		noParse: [ // faster HMR
+		noParse: isProd ? [new RegExp('something-because-cannot-be-empty')] : [ // faster HMR
 			new RegExp(getMin('preact-compat')),
-			new RegExp('proptypes/disabled')
+			new RegExp('proptypes/disabled'),
+			new RegExp(getMin('preact'))
 		]
 	},
 
 	resolve: {
 		alias: {
+			preact$: isProd ? 'preact' : getMin('preact'),
 			react: preactCompat,
 			'react-dom': preactCompat,
 			'preact-compat': preactCompat,
@@ -184,7 +222,7 @@ module.exports = {
 		}
 	},
 
-	devtool: isProd ? false /*'cheap-module-source-map'*/ : 'cheap-module-inline-source-map',
+	devtool: isProd ? false /*'cheap-module-source-map'*/ : 'cheap-module-source-map',
 
 	devServer: {
 		contentBase: path.join(__dirname, 'dist/'),
@@ -193,14 +231,36 @@ module.exports = {
 		hot: true,
 		// hotOnly: true,
 		publicPath: '/',
-		overlay: true,
+		overlay: {
+			warnings: true,
+			errors: true
+		},
 		watchContentBase: true,
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
 			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+		},
+		setup(app) {
+			app.use(errorOverlayMiddleware())
 		}
 	},
 
-	plugins
+	plugins,
+
+	performance: {
+		hints: isProd ? 'warning' : false
+	},
+
+	node: isProd ? {
+		fs: false,
+		net: false,
+		tls: false,
+		console: false,
+		process: false,
+		Buffer: false,
+		__filename: false,
+		__dirname: false,
+		setImmediate: false
+	} : {}
 }
