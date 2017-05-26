@@ -5,6 +5,9 @@
 	--boxMarginRight: 10px;
 }
 
+body {
+	font-size: 15px !important; /** we're on desktop, okay? */
+}
 /** Remove width limit */
 main > section {
 	max-width: none !important;
