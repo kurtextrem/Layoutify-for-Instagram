@@ -36,7 +36,7 @@ var html = {
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	inject: true,
-	ssr: params => isProd ? prerender(params) : ''
+	ssr: params => '' //@todo: Fix prerender -> isProd ? prerender(params) : ''
 }
 
 if (isProd) {

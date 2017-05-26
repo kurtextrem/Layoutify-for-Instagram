@@ -88,7 +88,8 @@ main.home article > header + div + div {
 }
 
 /** Row layout */
-article > header + div + div {
+div[role='dialog'] article > header + div + div,
+main:not(.profile) article > header + div + div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: baseline;

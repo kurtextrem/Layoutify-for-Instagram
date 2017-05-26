@@ -1,7 +1,7 @@
 import { h, render } from 'preact'
 
 // this holds our rendered root element so we can re-render in response to HMR updates.
-let root = document.body.firstElementChild
+let root
 function init() {
 	const App = require('./components/app').default
 	root = render(<App />, document.body, root)
