@@ -7,7 +7,20 @@
 
 body {
 	font-size: 15px !important; /** we're on desktop, okay? */
+	text-rendering: optimizeSpeed;
 }
+
+
+/*----------  Performance  ----------*/
+* {
+	box-shadow: none !important;
+}
+
+/** Outer parent of the image */
+header + div {
+	contain: content;
+}
+
 /** Remove width limit */
 main > section {
 	max-width: none !important;
@@ -38,13 +51,6 @@ section > div > div > article {
 	z-index: 1;
 }
 
-/** Outer parent of the image */
-article > header + div {
-	contain: content;
-}
-article > header + div > div {
-	box-shadow: none !important;
-}
 
 article > div:nth-of-type(2n) {
 	flex-grow: 1;
@@ -78,8 +84,8 @@ div > main:only-child {
 	flex-grow: 1;
 }
 
-div[role='dialog'] article > header + div + div,
-main:not(.home) article > header + div + div {
+div[role='dialog'] header + div + div,
+main:not(.home) header + div + div {
 	top: 63px !important;
 }
 
@@ -91,8 +97,8 @@ main.home article > header + div + div {
 }
 
 /** Row layout */
-div[role='dialog'] article > header + div + div,
-main:not(.profile) article > header + div + div {
+div[role='dialog'] header + div + div,
+main:not(.profile) header + div + div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: baseline;
@@ -119,7 +125,7 @@ div > a > time {
 }
 
 /** Grow comments */
-main article > header + div + div > div:first-of-type {
+main header + div + div > div:first-of-type {
 	flex-grow: 1;
 	order: 2 !important;
 	max-height: 86%;
@@ -129,34 +135,33 @@ main article > header + div + div > div:first-of-type {
 }
 
 /** Heart */
-article > header + div + div > section:first-child {
+header + div + div > section:first-child {
 	position: absolute;
 	bottom: 13px;
 	margin-top: 4px;
 }
 
 /** Center heart */
-main.home article > header + div + div > section:first-child > a {
+main.home header + div + div > section:first-child > a {
 	margin: auto;
 }
 
 /** Hide useless comment icon */
-article > header + div + div > section > a:last-child {
+section > a[role="button"] + a[role="button"] {
 	display: none;
 }
 
 /** Add comment */
-article > header + div + div > section:last-child {
+header + div + div > section:last-child {
 	position: absolute;
 	right: 0;
 	bottom: 0;
 	width: 83%;
 }
 
-main.home article > header + div + div > section:last-child {
+main.home header + div + div > section:last-child {
 	width: 84%;
 }
-
 
 /*=============================================
 						Improved Autoload
