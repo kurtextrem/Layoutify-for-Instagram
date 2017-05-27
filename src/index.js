@@ -1,6 +1,7 @@
-import { h, render } from 'preact'
+import { h, options, render } from 'preact' // eslint-disable-line no-unused-vars
 
-// this holds our rendered root element so we can re-render in response to HMR updates.
+options.syncComponentUpdates = false
+
 let root
 function init() {
 	const App = require('./components/app').default

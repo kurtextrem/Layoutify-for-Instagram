@@ -89,7 +89,7 @@
 		}
 	}
 
-	var Storage = new storage()
+	const Storage = new storage()
 
 	function getCookies(wanted) {
 		var cookies = document.cookie.split('; '),
@@ -109,7 +109,7 @@
 	const API = 'https://i.instagram.com/api/v1/'
 	const WEB_API = 'https://www.instagram.com/web/'
 
-	var UID = getCookies(['ds_user_id']).ds_user_id,
+	const UID = getCookies(['ds_user_id']).ds_user_id,
 		UUID = '' // 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
 
 	/**
@@ -181,7 +181,7 @@
 				lastId = data.items[len - 1].id,
 				maxLen = Math.min(len, this.items.length), // don't exceed either array len
 				match = false
-			for (var i = 0; i < maxLen; ++i) {
+			for (let i = 0; i < maxLen; ++i) {
 				if (lastId === this.items[i].id) { // next elements are older
 					match = true
 					data.items.push(...this.items.slice(i + 1))

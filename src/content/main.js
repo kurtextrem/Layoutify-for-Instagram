@@ -1,7 +1,7 @@
 (function(window) {
 	'use strict'
 
-	var document = window.document,
+	const document = window.document,
 		location = document.location
 
 	// block middle mouse button
@@ -11,7 +11,7 @@
 	window.addEventListener('blur', function(e) { e.stopPropagation() }, true)
 	window.addEventListener('visibilitychange', function(e) { e.stopPropagation() }, true)
 
-	var observer = null
+	let observer = null
 
 	function observe(elem, fn) {
 		if (!elem) return
@@ -20,10 +20,10 @@
 		observer.observe(elem, { childList: true, subtree: true })
 	}
 
-	var root = document.getElementById('react-root')
+	const root = document.getElementById('react-root')
 	observe(root, function(mutations) {
-		for (var i = 0; i < mutations.length; i++) {
-			var mutation = mutations[i].addedNodes
+		for (let i = 0; i < mutations.length; i++) {
+			const mutation = mutations[i].addedNodes
 
 			if (mutation.length === 1 && mutation[0].nodeName === 'VIDEO') {
 				mutation[0].controls = 'true'
@@ -63,13 +63,13 @@
 	}
 
 	function addControls() {
-		var addAuto = false
+		let addAuto = false
 		if (location.pathname.indexOf('/p/') !== -1)
 			addAuto = true
 
-		var elems = root.querySelectorAll('video')
-		for (var i = 0; i < elems.length; i++) {
-			var elem = elems[i]
+		const elems = root.querySelectorAll('video')
+		for (let i = 0; i < elems.length; i++) {
+			const elem = elems[i]
 
 			elem.controls = true
 
@@ -78,7 +78,7 @@
 		}
 	}
 
-	var url = location.href
+	let url = location.href
 	function checkURL() {
 		if (location.href !== url) {
 			console.log('url change', url, location.href)
@@ -109,17 +109,17 @@
 	console.log(window.Instagram = Instagram) // for debugging
 
 	function addExtendedButton() {
-		var anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')
+		let anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')
 		if (!anchor.length) anchor = document.querySelector('header > div > button')
 
 		anchor = anchor[0].parentNode
-		var el = anchor.cloneNode(true),
+		let el = anchor.cloneNode(true),
 			a = el.firstChild
 
 		a.className = ''
 		a.classList.add('coreSpriteEllipsis', 'extended--btn')
 
-		var clickedExtendedBtn = true
+		let clickedExtendedBtn = true
 		if (window.localStorage.clickedExtendedBtn === undefined) {
 			a.classList.add('extended--btn__new')
 			clickedExtendedBtn = false

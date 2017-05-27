@@ -13,6 +13,10 @@ export default class Post extends Component {
 
 	}
 
+	shouldComponentUpdate() {
+		return false
+	}
+
 	render() {
 		var data = this.props.data
 
@@ -31,7 +35,7 @@ export default class Post extends Component {
 			media = <video src={data.video_versions[0].url} poster={data.image_versions2.candidates[0].url} controls type="video/mp4" width={candidate.width} height={candidate.height} preload="none" className="img-fluid" />
 		} else {
 			candidate = data.image_versions2.candidates[0]
-			media = <img width={candidate.width} height={candidate.height} src={candidate.url} alt={caption} className="img-fluid" />
+			media = <img width={candidate.width} height={candidate.height} src={candidate.url} alt={caption + ' - if you see this, the post has probably been deleted.'} className="img-fluid" />
 		}
 
 		const date = new Date(Number(data.taken_at + '000'))

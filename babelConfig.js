@@ -39,7 +39,6 @@ module.exports = (isProd, options = {}) => ({
 		// 'module:fast-async', - enabled from Chrome 55
 		require.resolve('babel-plugin-loop-optimizer'),
 		require.resolve('babel-plugin-closure-elimination'),
-		[require.resolve('babel-plugin-transform-es2015-block-scoping'), { throwIfClosureRequired: true }],
 		require.resolve('./pure-plugin.js')
 	] : [
 			[require.resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }]

@@ -1,8 +1,12 @@
-import { h, render, Component } from 'preact' // eslint-disable-line no-unused-vars
+import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
 import { Container, Nav, NavItem, Navbar, NavbarBrand } from 'reactstrap'
 import { Link } from 'preact-router'
 
 export default class Header extends Component {
+	shouldComponentUpdate() {
+		return false
+	}
+
 	render() {
 		return (
 			<Navbar color="faded" light toggleable className="mb-2">
