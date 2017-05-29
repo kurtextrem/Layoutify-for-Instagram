@@ -1,5 +1,6 @@
 'use strict'
 module.exports = (isProd, options = {}) => ({
+	babelrc: false,
 	comments: !isProd,
 	presets: [
 		[require.resolve('babel-preset-env'), {
@@ -10,13 +11,14 @@ module.exports = (isProd, options = {}) => ({
 			loose: true,
 			useBuiltIns: false,
 			exclude: [
-				'transform-regenerator',
+				'transform-regenerator', // for fast-async
 				'transform-es2015-typeof-symbol'
 			]
 		}],
 		'stage-0'
 	],
 	plugins: isProd ? [
+		[require.resolve('babel-plugin-transform-object-rest-spread'), { useBuiltIns: true }],
 		[require.resolve('babel-plugin-transform-imports'), {
 			reactstrap: {
 				transform: 'reactstrap/lib/${member}',
@@ -43,6 +45,5 @@ module.exports = (isProd, options = {}) => ({
 	] : [
 			[require.resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }]
 			// 'runtyper'
-		],
-	cacheDirectory: true
+		]
 })

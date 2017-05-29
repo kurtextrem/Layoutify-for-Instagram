@@ -20,7 +20,7 @@
 		var opts = fetchOptions
 		opts.headers = headers
 		if (options !== undefined)
-			opts = { ...fetchOptions, ...options }
+			opts = Object.assign({}, fetchOptions, options)
 
 		return window.fetch(url, opts)
 			.then(checkStatus)

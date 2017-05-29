@@ -25,6 +25,9 @@ const prerender = require('./prerender')
 const ENV = process.env.NODE_ENV || 'development'
 const isProd = ENV === 'production'
 
+const babelConfig = require('./babelConfig')(isProd, {})
+babelConfig.cacheDirectory = true
+
 // by using min versions we speed up HMR
 function getMin(module) {
 	return path.resolve(__dirname, `node_modules/${module}/dist/${module}.min.js`)
@@ -36,7 +39,7 @@ var html = {
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	inject: true,
-	ssr: params => '' //@todo: Fix prerender -> isProd ? prerender(params) : ''
+	ssr: params => '' // isProd ? prerender(params) : '' // @todo: https://github.com/developit/preact-cli/issues/62
 }
 
 if (isProd) {
@@ -143,6 +146,11 @@ if (isProd) {
 					'_possibleConstructorReturn',
 					'Object.freeze',
 					'invariant',
+					'classnames',
+					'value-equal',
+					'valueEqual',
+					'resolve-pathname',
+					'resolvePathname',
 					'warning'
 				]
 			}
@@ -178,7 +186,7 @@ module.exports = {
 	context: path.join(__dirname, 'src'),
 
 	entry: isProd ? './' : [
-		require.resolve('react-error-overlay'),
+		'react-error-overlay',
 		'webpack/hot/only-dev-server',
 		// bundle the client for hot reloading
 		// only- means to only hot reload for successful updates
@@ -200,7 +208,7 @@ module.exports = {
 				test: /\.jsx?$/i,
 				exclude: /(node_modules|bower_components)/,
 				loader: 'babel-loader',
-				options: require('./babelConfig')(isProd, {})
+				options: babelConfig
 			}
 		],
 		noParse: isProd ? [new RegExp('something-because-cannot-be-empty')] : [ // faster HMR
