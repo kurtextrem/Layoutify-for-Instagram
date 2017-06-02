@@ -117,7 +117,7 @@ div > a > time {
 }
 
 /** Grow comments */
-main header + div + div > div:first-of-type {
+header + div + div > div:first-of-type {
 	flex-grow: 1;
 	order: 2 !important;
 	max-height: 86%;
@@ -213,9 +213,7 @@ a.videoSpritePlayButton + div {
 /*=============================================
 										Nav Bar
 =============================================*/
-nav > div > div > div:nth-of-type(2) {
-	height: inherit;
-	transform: translateZ(0);
+nav > div + div > div {
 	contain: strict;
 }
 
@@ -260,6 +258,11 @@ main:not(.home) article {
 /** Improve picture quality */
 main:not(.home) div > img {
 	image-rendering: -webkit-optimize-contrast;
+}
+
+div[role='dialog'] div > div > div > div > div > div:first-child,
+main.post div > div > div > div > div > div:first-child {
+	width: 100%;
 }
 
 /*=============================================
