@@ -1,28 +1,18 @@
-'use strict'
-
 const { resolve } = require('path')
-const babelConfig = require('./babelConfig')
-const config = babelConfig(true, { modules: 'commonjs' })
-require('babel-register').default(config)
 
-module.exports = function prerender(params) {
+module.exports = function prerender(outputDir, params) {
 	params = params || {}
 
-	const entry = resolve('./src/components/app'),
+	let entry = resolve(outputDir, './ssr-build/ssr-bundle.js'),
 		url = params.url || '/'
 
-	global.location = { href: url, pathname: url }
-	global.history = {}
+	global.window = { document: { createElement() { return {} }, location: { href: url, pathname: url, replace() { } } }, history: {}, navigator: { userAgent: '' }, pushState: {} }
+	global.window.location = global.window.document.location
+	global.history = global.window.history
+	global.document = global.window.document
+	global.location = global.window.location
 
-	// strip webpack loaders from import names
-	const { Module } = require('module')
-	const oldResolve = Module._resolveFilename
-	Module._resolveFilename = function(request, parent, isMain) {
-		request = request.replace(/^.*\!/g, '')
-		return oldResolve.call(this, request, parent, isMain)
-	}
-
-	const m = require(entry),
+	let m = require(entry),
 		app = m && m.default || m
 
 	if (typeof app !== 'function') {
@@ -31,13 +21,10 @@ module.exports = function prerender(params) {
 		return ''
 	}
 
-	const preact = require('preact'),
+	let preact = require('preact'),
 		renderToString = require('preact-render-to-string')
 
-	const html = renderToString(preact.h(app, { url }))
-
-	// restore resolution without loader stripping
-	Module._resolveFilename = oldResolve
+	const html = renderToString(preact.h(app, {}))
 
 	return html
 }

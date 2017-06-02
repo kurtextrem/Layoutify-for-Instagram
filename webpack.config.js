@@ -39,7 +39,7 @@ var html = {
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	inject: true,
-	ssr: params => '' // isProd ? prerender(params) : '' // @todo: https://github.com/developit/preact-cli/issues/62
+	ssr: params => '' // isProd ? prerender('dist', params) : ''
 }
 
 if (isProd) {
@@ -182,7 +182,7 @@ if (isProd) {
 	)
 }
 
-module.exports = {
+const first = {
 	context: path.join(__dirname, 'src'),
 
 	entry: isProd ? './' : [
@@ -235,6 +235,7 @@ module.exports = {
 	devServer: {
 		contentBase: path.join(__dirname, 'dist/'),
 		compress: true,
+		disableHostCheck: true,
 		historyApiFallback: true,
 		hot: true,
 		// hotOnly: true,
@@ -272,3 +273,15 @@ module.exports = {
 		setImmediate: false
 	} : {}
 }
+
+const second = Object.assign({}, first, {
+	target: 'node',
+	output: {
+		path: path.join(__dirname, 'dist', 'ssr-build'),
+		publicPath: '/',
+		filename: 'ssr-bundle.js',
+		libraryTarget: 'commonjs2'
+	}
+})
+
+module.exports = isProd ? [first, second] : first
