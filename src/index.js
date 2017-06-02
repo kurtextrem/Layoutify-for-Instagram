@@ -2,15 +2,22 @@ import { h, options, render } from 'preact' // eslint-disable-line no-unused-var
 
 options.syncComponentUpdates = false
 
-let root
-function init() {
-	const App = require('./components/app').default
-	root = render(<App />, document.body, root)
-}
+const interopDefault = m => m && m.default || m
 
-if (module.hot) {
-	require('preact/devtools')
-	module.hot.accept('./components/app', () => requestAnimationFrame(init))
-}
+let app = interopDefault(require('./components/app'))
 
-init()
+if (typeof app === 'function') {
+	let root = document.body
+
+	const init = () => {
+		app = interopDefault(require('./components/app'))
+		root = render(h(app), document.body, root)
+	}
+
+	if (module.hot) {
+		require('preact/devtools')
+		module.hot.accept('./components/app', () => requestAnimationFrame(init))
+	}
+
+	init()
+}

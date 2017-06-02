@@ -39,7 +39,7 @@ var html = {
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	inject: true,
-	ssr: params => '' // isProd ? prerender('dist', params) : ''
+	ssr: params => isProd ? prerender('dist', params) : ''
 }
 
 if (isProd) {
@@ -95,6 +95,7 @@ var plugins = [
 
 if (isProd) {
 	plugins.push(
+		new webpack.HashedModuleIdsPlugin(),
 		new HtmlWebpackIncludeAssetsPlugin({
 			assets: ['bootstrap.min.css'],
 			append: false,
@@ -163,7 +164,7 @@ if (isProd) {
 			openAnalyzer: false,
 			reportFilename: '../report.html'
 		}),
-		new ZipPlugin({ filename: 'dist.zip', path: '../' })
+		new ZipPlugin({ filename: 'dist.zip', path: '../', exclude: 'ssr-bundle.js' })
 	)
 } else {
 	plugins.push(
@@ -274,14 +275,21 @@ const first = {
 	} : {}
 }
 
-const second = Object.assign({}, first, {
+const second = {
 	target: 'node',
+
+	entry: './components/app',
+
 	output: {
-		path: path.join(__dirname, 'dist', 'ssr-build'),
+		path: path.join(__dirname, 'dist'),
 		publicPath: '/',
 		filename: 'ssr-bundle.js',
 		libraryTarget: 'commonjs2'
-	}
-})
+	},
+
+	context: first.context,
+	module: first.module,
+	resolve: first.resolve
+}
 
 module.exports = isProd ? [first, second] : first
