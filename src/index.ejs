@@ -11,6 +11,9 @@
 	<!-- <link rel="preload" as="style" href="style.css" onload="this.rel='stylesheet'"> -->
 </head>
 <body>
+	<%= htmlWebpackPlugin.options.ssr({
+		url: '/'
+	}) %>
 	<style>
 		:root {
 			--boxHeight: 1045px;
@@ -120,8 +123,5 @@
 			background-color: #727272; /* Some darker color when you click it */
 		}
 	</style>
-	<%= htmlWebpackPlugin.options.ssr({
-			url: '/'
-	}) %>
 </body>
 </html>

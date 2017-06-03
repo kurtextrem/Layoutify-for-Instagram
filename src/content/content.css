@@ -120,9 +120,9 @@ div > a > time {
 header + div + div > div:first-of-type {
 	flex-grow: 1;
 	order: 2 !important;
-	max-height: 86%;
-	padding-top: 5px;
-	padding-bottom: 0;
+	max-height: 85%;
+	padding-top: 5px !important;
+	padding-bottom: 0 !important;
 	width: 100%;
 }
 
@@ -130,7 +130,7 @@ header + div + div > div:first-of-type {
 header + div + div > section:first-child {
 	position: absolute;
 	bottom: 13px;
-	margin-top: 4px;
+	background-color: white;
 }
 
 /** Center heart */
@@ -149,6 +149,8 @@ header + div + div > section:last-child {
 	right: 0;
 	bottom: 0;
 	width: 83%;
+	background-color: white;
+	margin-top: 0;
 }
 
 main.home header + div + div > section:last-child {
@@ -243,7 +245,7 @@ section > footer + div {
 =============================================*/
 /** Enlargen modal */
 div[role='dialog'] article, main.post article {
-	min-height: 64vh;
+	min-height: 50vh;
   max-height: 70vh;
 	contain: content;
 }

@@ -7,7 +7,7 @@ const interopDefault = m => m && m.default || m
 let app = interopDefault(require('./components/app'))
 
 if (typeof app === 'function') {
-	let root = document.body
+	let root = document.body.firstChild
 
 	const init = () => {
 		app = interopDefault(require('./components/app'))
