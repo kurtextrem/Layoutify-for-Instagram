@@ -5,6 +5,10 @@ export default class About extends Component {
 		super(props)
 	}
 
+	shouldComponentUpdate() {
+		return false
+	}
+
 	render() {
 		return (
 			<div>

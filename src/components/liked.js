@@ -1,7 +1,6 @@
-import { h, render } from 'preact' // eslint-disable-line no-unused-vars
-import Posts from './posts'
+import PostsContainer from './PostsContainer'
 
-export default class Liked extends Posts {
+export default class Liked extends PostsContainer {
 	static get id() { return 'liked' }
 	static get defaultClass() { return 'favorite' }
 	static get toggleClass() { return 'favorite_border' }

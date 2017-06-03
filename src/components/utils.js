@@ -1,5 +1,5 @@
-class XHR {
-	static parseJSON = (response) => response.json()
+export class XHR {
+	static parseJSON = response => response.json()
 
 	static fetch(url, options) {
 		return window.fetch(url, options)
@@ -18,19 +18,19 @@ class XHR {
 	}
 }
 
-class Storage {
+export class Storage {
 	static STORAGE = 'local'
 
 	static set = (key, value) => new Promise((resolve, reject) => {
-		chrome.storage[Storage.STORAGE].set({ [key]: value }, (data) => Storage.check(data, resolve, reject))
+		chrome.storage[Storage.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
 	})
 
 	static get = (key, defaultValue) => new Promise((resolve, reject) => {
-		chrome.storage[Storage.STORAGE].get({ [key]: defaultValue }, (data) => Storage.check(data[key], resolve, reject))
+		chrome.storage[Storage.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
 	})
 
-	static remove = (key) => new Promise((resolve, reject) => {
-		chrome.storage[Storage.STORAGE].remove(key, (data) => Storage.check(data, resolve, reject))
+	static remove = key => new Promise((resolve, reject) => {
+		chrome.storage[Storage.STORAGE].remove(key, data => Storage.check(data, resolve, reject))
 	})
 
 	static check(data, resolve, reject) {
@@ -43,7 +43,7 @@ class Storage {
 	}
 }
 
-class Chrome {
+export class Chrome {
 	static send(action, additional = {}) {
 		var search = document.location.search.split('=')
 		if (search.length >= 2) {
@@ -52,9 +52,4 @@ class Chrome {
 		}
 		return false
 	}
-}
-
-
-export {
-	XHR, Storage, Chrome
 }

@@ -42,7 +42,7 @@ export default class Sentinel extends Component {
 
 	render() {
 		return (
-			<div className="sentinel" ref={this.setNode} />
+			<div ref={this.setNode} className="sentinel" />
 		)
 	}
 }

@@ -2,10 +2,10 @@ import { Component, h, render } from 'preact' // eslint-disable-line no-unused-v
 
 import { Router } from 'preact-router'
 import { createHashHistory } from 'history'
-import About from './about'
-import Header from './header'
-import Liked from './liked'
-import Saved from './saved'
+import About from './About'
+import Header from './Header'
+import Liked from './Liked'
+import Saved from './Saved'
 
 export default class App extends Component {
 	render() {

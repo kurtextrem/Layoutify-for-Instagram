@@ -278,7 +278,7 @@ const first = {
 const second = {
 	target: 'node',
 
-	entry: './components/app',
+	entry: './components/App',
 
 	output: {
 		path: path.join(__dirname, 'dist'),
