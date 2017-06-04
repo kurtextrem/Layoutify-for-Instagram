@@ -1,4 +1,4 @@
-import { Button, CardBlock, CardFooter, CardText } from 'reactstrap'
+import { Button, CardBlock, CardText } from 'reactstrap'
 import { Chrome } from './Utils'
 import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
 import PostFooter from './PostFooter'
