@@ -11,6 +11,7 @@ export default class Post extends Component {
 		this.id = props.data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
 		this.isCarousel = props.data.media_type === 8
 		this.carouselLen = this.isCarousel ? props.data.carousel_media.length : 0
+		this.preloaded = false
 
 		this.state = {
 			carouselIndex: 0,
@@ -18,9 +19,20 @@ export default class Post extends Component {
 		}
 	}
 
+	preload = index => {
+		new Image().src = this.props.data.carousel_media[index].image_versions2.candidates[0]
+	}
+
 	handleArrowClick = e => {
 		e.stopPropagation()
 		e.preventDefault()
+
+		if (!this.preloaded) {
+			for (let i = 1; i < this.carouselLen; ++i) {
+				window.requestAnimationFrame(this.preload.bind(this, i))
+			}
+			this.preloaded = true
+		}
 
 		this.setState((prevState, props) => {
 			let newIndex = prevState.carouselIndex
