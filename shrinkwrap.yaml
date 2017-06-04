@@ -4,7 +4,7 @@ dependencies:
   babel-loader@^7.0.0: 7.0.0
   babel-plugin-closure-elimination@^1.1.16: 1.1.16
   babel-plugin-jsx-pragmatic@^1.0.2: 1.0.2
-  babel-plugin-loop-optimizer@^1.2.3: 1.2.3
+  babel-plugin-loop-optimizer@^1.3.3: 1.3.3
   babel-plugin-runtyper@^0.2.2: 0.2.2
   babel-plugin-transform-es2015-block-scoping@^7.0.0-alpha.10: 7.0.0-alpha.10
   babel-plugin-transform-es2015-typeof-symbol@^7.0.0-alpha.10: 7.0.0-alpha.10
@@ -20,7 +20,7 @@ dependencies:
   babili-webpack-plugin@^0.1.1: 0.1.1
   bootstrap@4.0.0-alpha.6: 4.0.0-alpha.6
   butternut-webpack-plugin@^0.0.6: 0.0.6
-  case-sensitive-paths-webpack-plugin@^2.0.0: 2.0.0
+  case-sensitive-paths-webpack-plugin@^2.1.1: 2.1.1
   copy-webpack-plugin@^4.0.1: 4.0.1
   cross-env@^5.0.0: 5.0.0
   friendly-errors-webpack-plugin@^1.6.1: 1.6.1
@@ -30,7 +30,6 @@ dependencies:
   html-webpack-plugin@^2.28.0: 2.28.0
   preact-compat@^3.16.0: 3.16.0
   preact-css-transition-group@^1.2.0: 1.2.0
-  preact-delegate@^1.1.1: 1.1.1
   preact-render-to-string@^3.6.3: 3.6.3
   preact-router-hash@^0.0.1: 0.0.1
   preact-router@^2.5.2: 2.5.2
@@ -39,7 +38,7 @@ dependencies:
   preload-webpack-plugin@^1.2.2: 1.2.2
   prepack-webpack-plugin@^1.1.0: 1.1.0
   progress-bar-webpack-plugin@^1.9.3: 1.9.3
-  proptypes@^1.0.0: 1.0.0
+  proptypes@^1.1.0: 1.1.0
   react-dev-utils@^3.0.0: 3.0.0
   react-error-overlay@^1.0.7: 1.0.7
   react-timeago@^3.3.0: 3.3.0
@@ -343,7 +342,7 @@ packages:
     dependencies:
       babel-plugin-syntax-jsx: 6.18.0
     resolution: 41e2beb8642235f34b2a7ab12ca39e07201b8e59
-  /babel-plugin-loop-optimizer/1.2.3: 4b075be54e8405ef78da50d89ae8bc3efa8f2228
+  /babel-plugin-loop-optimizer/1.3.3: 0171a13de524a0202477307a96c5b6226c7eb394
   /babel-plugin-minify-builtins/0.1.1:
     dependencies:
       babel-helper-evaluate-path: 0.1.0
@@ -900,7 +899,7 @@ packages:
   /camelcase/1.2.1: 9bb5304d2e0b56698b2c758b08a3eaa9daa58a39
   /camelcase/3.0.0: 32fc4b9fcdaf845fcdf7e73bb97cac2261f0ab0a
   /caniuse-db/1.0.30000666: 951ed9f3d3bfaa08a06dafbb5089ab07cce6ab90
-  /case-sensitive-paths-webpack-plugin/2.0.0: 60142d7d0beabdb35676ef0aeace3027da0578ba
+  /case-sensitive-paths-webpack-plugin/2.1.1: 3d29ced8c1f124bf6f53846fb3f5894731fdc909
   /center-align/0.1.3:
     dependencies:
       align-text: 0.1.4
@@ -1922,7 +1921,6 @@ packages:
       standalone-react-addons-pure-render-mixin: 0.1.1
     resolution: cf2bc1b2f8fca14900d68094f9e10b8b329cc41e
   /preact-css-transition-group/1.2.0: 28f6acb0cb95c107f3c9ddbcd6f4c3de26deebdc
-  /preact-delegate/1.1.1: 7047f768e4eae2172884f01196ac0ddf25b68c40
   /preact-render-to-string/3.6.1:
     dependencies:
       pretty-format: 3.8.0
@@ -1986,7 +1984,7 @@ packages:
     dependencies:
       fbjs: 0.8.12
     resolution: 6b7b2e141083be38c8595aa51fc55775c7199394
-  /proptypes/1.0.0: ba831a653aab89862f28a084cebbc0cdf9f1b09b
+  /proptypes/1.1.0: 78b3828a5aa6bb1308939e0de3c6044dfd4bd239
   /proxy-addr/1.1.4:
     dependencies:
       forwarded: 0.1.0

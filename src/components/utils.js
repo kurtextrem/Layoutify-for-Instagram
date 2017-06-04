@@ -1,5 +1,5 @@
 export class XHR {
-	static parseJSON = response => response.json()
+	static parseJSON(response) { return response.json() }
 
 	static fetch(url, options) {
 		return window.fetch(url, options)

@@ -1,61 +1,92 @@
-import { Button, CardBlock, CardFooter, CardText, Media } from 'reactstrap'
+import { Button, CardBlock, CardFooter, CardText } from 'reactstrap'
+import { Chrome } from './Utils'
 import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
-import TimeAgo from 'react-timeago'
+import PostFooter from './PostFooter'
+import PostHeader from './PostHeader'
 
 export default class Post extends Component {
 	constructor(props) {
 		super(props)
 
-		this.id = this.props.data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
+		this.id = props.data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
+		this.isCarousel = props.data.media_type === 8
+		this.carouselLen = this.isCarousel ? props.data.carousel_media.length : 0
+
+		this.state = {
+			carouselIndex: 0,
+			active: true
+		}
 	}
 
-	componentDidMount() {
+	handleArrowClick = e => {
+		e.stopPropagation()
+		e.preventDefault()
 
+		this.setState((prevState, props) => {
+			let newIndex = prevState.carouselIndex
+			if (e.currentTarget.classList.contains('arrow--left'))
+				--newIndex
+			else
+				++newIndex
+
+			if (newIndex < 0) newIndex = this.carouselLen - 1
+			else if (newIndex >= this.carouselLen) newIndex = 0
+
+			return { carouselIndex: newIndex }
+		})
 	}
 
-	shouldComponentUpdate() {
+	onBtnClick = e => {
+		e.stopPropagation()
+		e.preventDefault()
+
+		if (this.state.active) { // @todo: Modify our data
+			Chrome.send('remove', { which: this.props.parent, id: this.id })
+			this.setState((prevState, props) => ({ active: false }))
+		} else {
+			Chrome.send('add', { which: this.props.parent, id: this.id })
+			this.setState((prevState, props) => ({ active: true }))
+		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (this.isCarousel && this.state.carouselIndex !== nextState.carouselIndex) return true
+		if (this.state.active !== nextState.active) return true
 		return false
 	}
 
-	render() {
-		var data = this.props.data
+	render(props, state) {
+		const post = props.data
+		const isCarousel = this.isCarousel
 
-		const caption = data.caption && data.caption.text // could be either undefined or null
-		const user = data.user
-		const isCarousel = data.media_type === 8
+		const caption = post.caption && post.caption.text // could be either undefined or null
+		const user = post.user
 
-		if (isCarousel) { // @todo: Add carousel
-			data = data.carousel_media[0]
-		}
+		const media = isCarousel ? post.carousel_media[state.carouselIndex] : post
 
-		var media = null,
+		let mediaElement = null,
 			candidate = null
-		if (data.media_type === 2) { // video
-			candidate = data.video_versions[0]
-			media = <video src={data.video_versions[0].url} poster={data.image_versions2.candidates[0].url} controls type="video/mp4" width={candidate.width} height={candidate.height} preload="none" className="img-fluid" />
+		if (media.media_type === 2) { // video
+			candidate = media.video_versions[0]
+			mediaElement = <video src={media.video_versions[0].url} poster={media.image_versions2.candidates[0].url} controls type="video/mp4" width={candidate.width} height={candidate.height} preload="none" className="img-fluid" />
 		} else {
-			candidate = data.image_versions2.candidates[0]
-			media = <img width={candidate.width} height={candidate.height} src={candidate.url} alt={caption + ' - if you see this, the post has probably been deleted.'} className="img-fluid" />
+			candidate = media.image_versions2.candidates[0]
+			mediaElement = <img width={candidate.width} height={candidate.height} src={candidate.url} alt={caption + ' - if you see this, the post has probably been deleted.'} className="img-fluid" />
 		}
-
-		const date = new Date(Number(data.taken_at + '000'))
 
 		return (
-			<article className="card ml-auto mr-auto" data-id={this.id}>
-				<header className="media align-items-center card-block grow-0 pl-2 pr-2">
-					<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener"><img src={user.profile_pic_url} className="img-fluid profile-pic rounded mr-2" /></a>
-					<Media body className="grow-1"><a href={`https://instagram.com/${user.username}`} target="_blank" rel="noopener">{user.full_name}</a></Media>
-					<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener">
-						<TimeAgo className="text-muted" date={date} />
-					</a>
-				</header>
-				<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener">{media}</a>
+			<article className="card ml-auto mr-auto">
+				<PostHeader user={user} code={post.code} taken_at={post.taken_at} />
+				<a href={`https://www.instagram.com/p/${post.code}`} target="_blank" rel="noopener" className={isCarousel ? 'post--carousel' : ''}>
+					{isCarousel ? <Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}><i className="material-icons">keyboard_arrow_left</i></Button> : ''}
+					{mediaElement}
+					{isCarousel ? <Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}><i className="material-icons">keyboard_arrow_right</i></Button> : ''}
+				</a>
+				{/* @todo: dots */}
 				<CardBlock className="overflow-auto">
 					<CardText>{caption}</CardText>
 				</CardBlock>
-				<CardFooter className={this.props.parent}>
-					<Button className={'material-icons active action--btn'} color="link" data-id={this.id}>{this.props['data-defaultClass']}</Button>
-				</CardFooter>
+				<PostFooter active={state.active} btnClick={this.onBtnClick} defaultClass={props.defaultClass} toggleClass={props.toggleClass} parent={props.parent} />
 			</article>
 		)
 	}

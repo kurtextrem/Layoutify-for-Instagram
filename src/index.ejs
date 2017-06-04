@@ -14,6 +14,7 @@
 	<%= htmlWebpackPlugin.options.ssr({
 		url: '/'
 	}) %>
+
 	<style>
 		:root {
 			--boxHeight: 1045px;
@@ -90,6 +91,41 @@
 
 		.saved {
 			display: none;
+		}
+
+		.post--carousel {
+			position: relative;
+		}
+
+		.post--carousel i {
+			vertical-align: middle;
+		}
+
+		.post--carousel > .arrow {
+			position: absolute;
+			top: 0;
+			color: white;
+			background-color: rgba(0, 0, 0, 0.3);
+			border-radius: 50px;
+			opacity: 0;
+			padding: 8px;
+			transition: opacity ease-in-out 200ms;
+			z-index: 2;
+			top: 45%;
+			contain: content;
+		}
+
+		.post--carousel:hover > .arrow {
+			opacity: 1;
+		}
+
+		.post--carousel > .arrow--left {
+			position: absolute;
+			left: 0;
+		}
+
+		.post--carousel > .arrow--right {
+			right: 0;
 		}
 
 		/** Mac OS Scrollbar */
