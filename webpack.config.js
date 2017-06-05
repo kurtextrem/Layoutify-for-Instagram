@@ -105,7 +105,7 @@ if (isProd) {
 			minimize: true
 		}),
 		new webpack.NoEmitOnErrorsPlugin(),
-		// new webpack.optimize.ModuleConcatenationPlugin(), // @todo: Soon available in webpack
+		new webpack.optimize.ModuleConcatenationPlugin(),
 
 		// strip out babel-helper invariant checks
 		new ReplacePlugin([{
