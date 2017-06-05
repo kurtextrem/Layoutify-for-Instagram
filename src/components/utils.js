@@ -45,9 +45,10 @@ export class Storage {
 
 export class Chrome {
 	static send(action, additional = {}) {
-		var search = document.location.search.split('=')
-		if (search.length >= 2) {
-			chrome.tabs.sendMessage(Number(search[1]), { action, ...additional }, null, function() { })
+		const search = document.location.search.split('='),
+			index = search.indexOf('tabid')
+		if (index !== -1) {
+			chrome.tabs.sendMessage(Number(search[index + 1]), { action, ...additional }, null, function() { })
 			return true
 		}
 		return false

@@ -117,6 +117,7 @@
 
 		.post--carousel:hover > .arrow {
 			opacity: 1;
+			will-change: opacity;
 		}
 
 		.post--carousel > .arrow--left {
@@ -126,6 +127,10 @@
 
 		.post--carousel > .arrow--right {
 			right: 0;
+		}
+
+		img {
+			image-rendering: -webkit-optimize-contrast;
 		}
 
 		/** Mac OS Scrollbar */
