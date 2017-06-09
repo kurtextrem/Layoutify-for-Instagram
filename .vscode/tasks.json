@@ -1,18 +1,3 @@
 {
-	"version": "0.1.0",
-	"command": "yarn run",
-	"isShellCommand": true,
-	"tasks": [{
-		"args": ["start"],
-		"taskName": "start",
-		"suppressTaskName": true,
-		"isBuildCommand": false,
-		"isBackground": true
-	}, {
-		"args": ["build"],
-		"taskName": "build",
-		"suppressTaskName": true,
-		"isBuildCommand": true,
-		"isBackground": false
-		}]
+	"version": "2.0.0"
 }
