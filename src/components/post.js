@@ -1,6 +1,7 @@
 import { Button, CardBlock, CardText } from 'reactstrap'
 import { Chrome } from './Utils'
 import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
+import Dots from './Dots'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 
@@ -29,7 +30,7 @@ export default class Post extends Component {
 
 		if (!this.preloaded) {
 			for (let i = 1; i < this.carouselLen; ++i) {
-				window.requestAnimationFrame(this.preload.bind(this, i))
+				window.setTimeout(this.preload.bind(this, i), 1)
 			}
 			this.preloaded = true
 		}
@@ -90,12 +91,12 @@ export default class Post extends Component {
 			<article className="card ml-auto mr-auto">
 				<PostHeader user={user} code={post.code} taken_at={post.taken_at} />
 				<a href={`https://www.instagram.com/p/${post.code}`} target="_blank" rel="noopener" className={isCarousel ? 'post--carousel' : ''}>
-					{isCarousel ? <Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}><i className="material-icons">keyboard_arrow_left</i></Button> : ''}
+					{isCarousel ? <Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}><i className="material-icons">keyboard_arrow_left</i></Button> : null}
 					{mediaElement}
-					{isCarousel ? <Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}><i className="material-icons">keyboard_arrow_right</i></Button> : ''}
+					{isCarousel ? <Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}><i className="material-icons">keyboard_arrow_right</i></Button> : null}
 				</a>
-				{/* @todo: dots */}
-				<CardBlock className="overflow-auto">
+				{isCarousel ? <Dots index={state.carouselIndex} len={this.carouselLen} /> : null}
+				<CardBlock className="overflow-auto p-3">
 					<CardText>{caption}</CardText>
 				</CardBlock>
 				<PostFooter active={state.active} btnClick={this.onBtnClick} defaultClass={props.defaultClass} toggleClass={props.toggleClass} parent={props.parent} />

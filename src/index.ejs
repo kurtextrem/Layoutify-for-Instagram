@@ -129,6 +129,19 @@
 			right: 0;
 		}
 
+		.dots--dot {
+			width: 10px;
+			height: 10px;
+			background-color: white;
+			border-radius: 50px;
+			border: 1px solid #9E9E9E;
+			transition: background-color cubic-bezier(0.22, 0.61, 0.36, 1) 400ms;
+		}
+
+		.dots--dot.active {
+			background-color: #9E9E9E;
+		}
+
 		img {
 			image-rendering: -webkit-optimize-contrast;
 		}

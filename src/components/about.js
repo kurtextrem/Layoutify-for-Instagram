@@ -1,10 +1,6 @@
 import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
 
 export default class About extends Component {
-	constructor(props) {
-		super(props)
-	}
-
 	shouldComponentUpdate() {
 		return false
 	}
