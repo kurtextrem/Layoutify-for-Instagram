@@ -21,7 +21,7 @@ export default class Post extends Component {
 	}
 
 	preload = index => {
-		new Image().src = this.props.data.carousel_media[index].image_versions2.candidates[0]
+		new Image().src = this.props.data.carousel_media[index].image_versions2.candidates[0].url
 	}
 
 	handleArrowClick = e => {
