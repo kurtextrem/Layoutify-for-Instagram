@@ -13,7 +13,7 @@ export default class Dots extends Component {
 		const dots = new Array(props.len)
 		dots[0] = this.renderDot(0)
 		for (let i = 1; i < props.len; ++i) {
-			dots.push(this.renderDot(i))
+			dots[i] = this.renderDot(i)
 		}
 
 		return (

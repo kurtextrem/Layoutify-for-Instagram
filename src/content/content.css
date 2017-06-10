@@ -120,7 +120,7 @@ div > a > time {
 header + div + div > div:first-of-type {
 	flex-grow: 1;
 	order: 2 !important;
-	max-height: 85%;
+	max-height: 80%;
 	padding-top: 5px !important;
 	padding-bottom: 0 !important;
 	width: 100%;
