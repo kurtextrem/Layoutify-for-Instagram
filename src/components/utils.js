@@ -1,10 +1,10 @@
 export class XHR {
-	static parseJSON(response) { return response.json() }
+	static parseJSON(response) {
+		return response.json()
+	}
 
 	static fetch(url, options) {
-		return window.fetch(url, options)
-			.then(XHR.checkStatus)
-			.then(XHR.parseJSON)
+		return window.fetch(url, options).then(XHR.checkStatus).then(XHR.parseJSON)
 	}
 
 	static checkStatus(response) {
@@ -21,17 +21,20 @@ export class XHR {
 export class Storage {
 	static STORAGE = 'local'
 
-	static set = (key, value) => new Promise((resolve, reject) => {
-		chrome.storage[Storage.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
-	})
+	static set = (key, value) =>
+		new Promise((resolve, reject) => {
+			chrome.storage[Storage.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
+		});
 
-	static get = (key, defaultValue) => new Promise((resolve, reject) => {
-		chrome.storage[Storage.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
-	})
+	static get = (key, defaultValue) =>
+		new Promise((resolve, reject) => {
+			chrome.storage[Storage.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
+		});
 
-	static remove = key => new Promise((resolve, reject) => {
-		chrome.storage[Storage.STORAGE].remove(key, data => Storage.check(data, resolve, reject))
-	})
+	static remove = key =>
+		new Promise((resolve, reject) => {
+			chrome.storage[Storage.STORAGE].remove(key, data => Storage.check(data, resolve, reject))
+		})
 
 	static check(data, resolve, reject) {
 		if (chrome.runtime.lastError) {
@@ -45,10 +48,10 @@ export class Storage {
 
 export class Chrome {
 	static send(action, additional = {}) {
-		const search = document.location.search.split('='),
+		const search = document.location.search.replace('?', '').split('='),
 			index = search.indexOf('tabid')
 		if (index !== -1) {
-			chrome.tabs.sendMessage(Number(search[index + 1]), { action, ...additional }, null, function() { })
+			chrome.tabs.sendMessage(Number(search[index + 1]), { action, ...additional }, null, function() {})
 			return true
 		}
 		return false

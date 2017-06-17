@@ -12,7 +12,6 @@
 	window.addEventListener('visibilitychange', function(e) { e.stopPropagation() }, true)
 
 	let observer = null
-
 	function observe(elem, fn) {
 		if (!elem) return
 
@@ -21,8 +20,8 @@
 	}
 
 	const root = document.getElementById('react-root')
-	observe(root, function(mutations) {
-		for (let i = 0; i < mutations.length; i++) {
+	observe(root, function observation(mutations) {
+		for (let i = 0; i < mutations.length; ++i) {
 			const mutation = mutations[i].addedNodes
 
 			if (mutation.length === 1 && mutation[0].nodeName === 'VIDEO') {
@@ -41,12 +40,12 @@
 		})
 	}
 
-	var documentElement = document.documentElement
+	const documentElement = document.documentElement
 
 	function onReady() {
 		addControls()
 
-		var elem = document.querySelector('div > article')
+		const elem = document.querySelector('div > article')
 		if (elem !== null)
 			documentElement.style.setProperty('--boxHeight', elem.offsetHeight + 'px') // give boxes equal height
 
@@ -89,7 +88,7 @@
 	}
 
 	function addClass() {
-		var main = document.querySelector('#react-root > section > main')
+		const main = document.querySelector('#react-root > section > main')
 		if (location.pathname === '/') { // home page
 			main.classList.add('home')
 			main.classList.remove('profile', 'post')
@@ -102,7 +101,7 @@
 		}
 	}
 
-	var Instagram = {
+	const Instagram = {
 		liked: new window.getInstagram('liked'),
 		saved: new window.getInstagram('saved')
 	}
@@ -113,7 +112,7 @@
 		if (!anchor.length) anchor = document.querySelector('header > div > button')
 
 		anchor = anchor[0].parentNode
-		let el = anchor.cloneNode(true),
+		const el = anchor.cloneNode(true),
 			a = el.firstChild
 
 		a.className = ''

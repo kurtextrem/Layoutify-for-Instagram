@@ -17,12 +17,11 @@ export default class PostsContainer extends Component {
 		this.toggleClass = toggleClass
 		this.defaultClass = defaultClass
 
-		if (this.id === '')
-			throw new Error('Children must have an id set')
+		if (this.id === '') throw new Error('Children must have an id set')
 
 		this.state = {
 			data: null,
-			timeout: 0
+			timeout: 0,
 		}
 		this.loading = <Loading />
 		this.error = <div>No Data Available (have you tried clicking the three dots on top of Instagram.com?)</div>
@@ -46,8 +45,7 @@ export default class PostsContainer extends Component {
 	}
 
 	populateData = () => {
-		return Storage.get(this.id, [])
-			.then(this.handleData)
+		return Storage.get(this.id, []).then(this.handleData)
 	}
 
 	handleData = data => {
@@ -84,18 +82,16 @@ export default class PostsContainer extends Component {
 
 	render(props, state) {
 		const { data, timeout } = state
-		if (timeout === 200)
-			return this.loading
-		if (data === null)
-			return null
+
+		if (timeout === 200) return this.loading
+		if (data === null) return null
 		if (timeout === 400 && (data.items === undefined || data.items.length === 0)) {
 			return this.error
 		}
 
 		return (
 			<CardDeck>
-				{
-					Posts(data.items, this.renderPost) // https://github.com/developit/preact/issues/45
+				{Posts(data.items, this.renderPost) // https://github.com/developit/preact/issues/45
 				}
 				<Sentinel onVisible={this.handleScroll} />
 			</CardDeck>

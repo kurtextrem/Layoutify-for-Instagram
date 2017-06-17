@@ -17,7 +17,7 @@
 	headers.append('Connection', 'keep-alive')
 
 	function fetch(url, options) {
-		var opts = fetchOptions
+		let opts = fetchOptions
 		opts.headers = headers
 		if (options !== undefined)
 			opts = Object.assign({}, fetchOptions, options)
@@ -35,7 +35,7 @@
 		const error = new Error(`HTTP Error ${response.statusText}`)
 		error.status = response.statusText
 		error.response = response
-		console.log(error)
+		console.error(error)
 		throw error
 	}
 
@@ -170,10 +170,9 @@
 		 * Compare the first `len` elements of the old item data set with the new data set
 		 * To do this, we compare the last elem's id of the new data set with `len` elems of the old.
 		 *
-		 * @param 	{@object} 	data
-		 * @return 	{boolean} 	Whether the function found a matching item or not
+		 * @param 	{Object} 	data
+		 * @return 	{boolean} Whether the function found a matching item or not
 		 */
-		// !! wenn nicht geht -> komplett sessionStorage
 		compareData(data) {
 			if (data.items === undefined || !data.items.length) return true // prevent adding undefined or similar
 
