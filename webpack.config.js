@@ -4,8 +4,7 @@ const path = require('path')
 const webpack = require('webpack')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-	.BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -39,7 +38,7 @@ var html = {
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	inject: true,
-	ssr: params => isProd ? prerender('dist', params) : ''
+	ssr: params => (isProd ? prerender('dist', params) : ''),
 }
 
 if (isProd) {
@@ -54,7 +53,7 @@ if (isProd) {
 		keepClosingSlash: true,
 		minifyJS: true,
 		minifyCSS: true,
-		minifyURLs: true
+		minifyURLs: true,
 	}
 	// html.hash = true
 }
@@ -69,7 +68,7 @@ var plugins = [
 		POLYFILL_OBJECT_VALUES: false,
 		POLYFILL_PROMISES: false,
 		POLYFILL_FETCH: false,
-		POLYFILL_URL: false
+		POLYFILL_URL: false,
 	}),
 	new HtmlWebpackPlugin(html),
 	new CopyWebpackPlugin([
@@ -78,19 +77,19 @@ var plugins = [
 		{ from: '*.json' },
 		{ from: 'img/*.png' },
 		{ from: 'content/*' },
-		{ from: '_locales/**' }
+		{ from: '_locales/**' },
 	]),
 	new HtmlWebpackHarddiskPlugin(),
 	new ScriptExtHtmlWebpackPlugin({
 		defaultAttribute: 'async',
-		preload: ['.js', '.css']
+		preload: ['.js', '.css'],
 	}),
 	new ProgressBarPlugin({
 		format: '\u001b[90m\u001b[44mBuild\u001b[49m\u001b[39m [:bar] \u001b[32m\u001b[1m:percent\u001b[22m\u001b[39m (:elapseds) \u001b[2m:msg\u001b[22m',
 		renderThrottle: 100,
 		summary: false,
-		clear: true
-	})
+		clear: true,
+	}),
 ]
 
 if (isProd) {
@@ -99,23 +98,24 @@ if (isProd) {
 		new HtmlWebpackIncludeAssetsPlugin({
 			assets: ['bootstrap.min.css'],
 			append: false,
-			hash: true
+			hash: true,
 		}),
 		new webpack.LoaderOptionsPlugin({
-			minimize: true
+			minimize: true,
 		}),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.optimize.ModuleConcatenationPlugin(),
-
 		// strip out babel-helper invariant checks
-		new ReplacePlugin([{
-			// this is actually the property name https://github.com/kimhou/replace-bundle-webpack-plugin/issues/1
-			partten: /throw\s+(new\s+)?(Type|Reference)?Error\s*\(/g,
-			replacement: () => 'return;('
-		}]),
+		new ReplacePlugin([
+			{
+				// this is actually the property name https://github.com/kimhou/replace-bundle-webpack-plugin/issues/1
+				partten: /throw\s+(new\s+)?(Type|Reference)?Error\s*\(/g,
+				replacement: () => 'return;(',
+			},
+		]),
 		new UglifyJSPlugin({
 			output: {
-				comments: false
+				comments: false,
 			},
 			mangle: true,
 			compress: {
@@ -152,9 +152,9 @@ if (isProd) {
 					'valueEqual',
 					'resolve-pathname',
 					'resolvePathname',
-					'warning'
-				]
-			}
+					'warning',
+				],
+			},
 		}), // doesn't support "async", so watch out */
 		// new ButternutWebpackPlugin(), // slightly larger than uglify
 		// new BabiliPlugin(),
@@ -162,7 +162,7 @@ if (isProd) {
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
-			reportFilename: '../report.html'
+			reportFilename: '../report.html',
 		}),
 		new ZipPlugin({ filename: 'dist.zip', path: '../', exclude: 'ssr-bundle.js' })
 	)
@@ -174,11 +174,11 @@ if (isProd) {
 		new WriteFilePlugin({
 			test: /(content\/|manifest.json)/,
 			useHashIndex: true,
-			log: false
+			log: false,
 		}),
 		new HtmlWebpackIncludeAssetsPlugin({
 			assets: ['bootstrap.min.css'],
-			append: false
+			append: false,
 		})
 	)
 }
@@ -186,21 +186,22 @@ if (isProd) {
 const first = {
 	context: path.join(__dirname, 'src'),
 
-	entry: isProd ? './' : [
-		'react-error-overlay',
-		'webpack/hot/only-dev-server',
-		// bundle the client for hot reloading
-		// only- means to only hot reload for successful updates
-		'./'
-	],
+	entry: isProd ?
+		'./' :
+		[
+				'react-error-overlay',
+				'webpack/hot/only-dev-server',
+				// bundle the client for hot reloading
+				// only- means to only hot reload for successful updates
+				'./',
+			],
 
 	output: {
 		path: path.join(__dirname, 'dist'),
 		publicPath: isProd ? '/' : 'http://localhost:8080/',
 		filename: 'bundle.js',
 		pathinfo: true,
-		devtoolModuleFilenameTemplate: info =>
-			isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`
+		devtoolModuleFilenameTemplate: info => (isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`),
 	},
 
 	module: {
@@ -209,14 +210,17 @@ const first = {
 				test: /\.jsx?$/i,
 				exclude: /(node_modules|bower_components)/,
 				loader: 'babel-loader',
-				options: babelConfig
-			}
+				options: babelConfig,
+			},
 		],
-		noParse: isProd ? [new RegExp('something-because-cannot-be-empty')] : [ // faster HMR
-			new RegExp(getMin('preact-compat')),
-			new RegExp('proptypes/disabled'),
-			new RegExp(getMin('preact'))
-		]
+		noParse: isProd ?
+			[new RegExp('something-because-cannot-be-empty')] :
+			[
+					// faster HMR
+					new RegExp(getMin('preact-compat')),
+					new RegExp('proptypes/disabled'),
+					new RegExp(getMin('preact')),
+				],
 	},
 
 	resolve: {
@@ -227,8 +231,8 @@ const first = {
 			'preact-compat': preactCompat,
 			'react-addons-css-transition-group': isProd ? 'preact-css-transition-group' : getMin('preact-css-transition-group'),
 			'react-addons-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
-			'prop-types$': isProd ? 'proptypes/disabled' : 'prop-types'
-		}
+			'prop-types$': isProd ? 'proptypes/disabled' : 'prop-types',
+		},
 	},
 
 	devtool: isProd ? false /*'cheap-module-source-map'*/ : 'cheap-module-source-map',
@@ -243,36 +247,38 @@ const first = {
 		publicPath: '/',
 		overlay: {
 			warnings: true,
-			errors: true
+			errors: true,
 		},
 		watchContentBase: true,
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
 		},
 		setup(app) {
 			app.use(errorOverlayMiddleware())
-		}
+		},
 	},
 
 	plugins,
 
 	performance: {
-		hints: isProd ? 'warning' : false
+		hints: isProd ? 'warning' : false,
 	},
 
-	node: isProd ? {
-		fs: false,
-		net: false,
-		tls: false,
-		console: false,
-		process: false,
-		Buffer: false,
-		__filename: false,
-		__dirname: false,
-		setImmediate: false
-	} : {}
+	node: isProd ?
+		{
+				fs: false,
+				net: false,
+				tls: false,
+				console: false,
+				process: false,
+				Buffer: false,
+				__filename: false,
+				__dirname: false,
+				setImmediate: false,
+			} :
+		{},
 }
 
 const second = {
@@ -284,12 +290,12 @@ const second = {
 		path: path.join(__dirname, 'dist'),
 		publicPath: '/',
 		filename: 'ssr-bundle.js',
-		libraryTarget: 'commonjs2'
+		libraryTarget: 'commonjs2',
 	},
 
 	context: first.context,
 	module: first.module,
-	resolve: first.resolve
+	resolve: first.resolve,
 }
 
 module.exports = isProd ? [first, second] : first

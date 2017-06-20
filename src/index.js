@@ -1,10 +1,11 @@
-import { h, options, render } from 'preact' // eslint-disable-line no-unused-vars
+import { h, options, render } from 'preact'
+import App from './components/App'
 
 options.syncComponentUpdates = false
 
-const interopDefault = m => m && m.default || m
+const interopDefault = m => (m && m.default) || m
 
-let app = interopDefault(require('./components/App'))
+let app = interopDefault(App)
 
 if (typeof app === 'function') {
 	let root = document.body.firstChild

@@ -50,8 +50,8 @@
 		"shelljs": "^0.7.8",
 		"source-map": "^0.5.6",
 		"uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22",
-		"uglifyjs-webpack-plugin": "^0.4.3",
-		"webpack": "^3.0.0-rc.2",
+		"uglifyjs-webpack-plugin": "^0.4.4",
+		"webpack": "^3.0.0",
 		"webpack-bundle-analyzer": "^2.8.2",
 		"webpack-dev-server": "^2.4.5",
 		"write-file-webpack-plugin": "^4.1.0",
@@ -61,7 +61,7 @@
 		"clean": "rimraf dist && mkdir dist",
 		"prebuild": "npm run clean",
 		"build": "npm run build-bundle",
-		"build-bundle": "cross-env NODE_ENV=production webpack --define process.env.NODE_ENV=\"'production'\" --color",
-		"start": "cross-env NODE_ENV=development webpack-dev-server --progress --colors --hot --inline"
+		"build-bundle": "cross-env NODE_ENV=production webpack --define process.env.NODE_ENV=\"'production'\" --color --display-optimization-bailout",
+		"start": "cross-env NODE_ENV=development webpack-dev-server --progress --colors --hot --inline --display-optimization-bailout"
 	}
 }

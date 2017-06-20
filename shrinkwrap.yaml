@@ -47,8 +47,8 @@ dependencies:
   shelljs: 0.7.8
   source-map: 0.5.6
   uglify-js: github.com/mishoo/UglifyJS2/278577f3cb75e72320564805ee91be63e5f9c806
-  uglifyjs-webpack-plugin: 0.4.3
-  webpack: 3.0.0-rc.2
+  uglifyjs-webpack-plugin: 0.4.4
+  webpack: 3.0.0
   webpack-bundle-analyzer: 2.8.2
   webpack-dev-server: 2.4.5
   write-file-webpack-plugin: 4.1.0
@@ -83,18 +83,20 @@ packages:
   /address/1.0.2:
     resolution:
       integrity: sha1-SACB6CtYe6MZRZ/vUS9Rb+A9WK8=
-  /ajv-keywords/2.1.0/ajv@5.1.5:
+  /ajv-keywords/2.1.0/ajv@5.2.0:
     dependencies:
-      ajv: 5.1.5
+      ajv: 5.2.0
     id: registry.npmjs.org/ajv-keywords/2.1.0
     resolution:
       integrity: sha1-opbhf3v658HOT34N5T0pyzIWLfA=
-  /ajv/5.1.5:
+  /ajv/5.2.0:
     dependencies:
       co: 4.6.0
+      fast-deep-equal: 0.1.0
+      json-schema-traverse: 0.3.0
       json-stable-stringify: 1.0.1
     resolution:
-      integrity: sha1-hzSTG2AfANT+73xlc4130bZdH2g=
+      integrity: sha1-wXNQJMXaLvdcwZBxMHPUTwmL9IY=
   /align-text/0.1.4:
     dependencies:
       kind-of: 3.2.2
@@ -1078,6 +1080,9 @@ packages:
   /balanced-match/0.4.2:
     resolution:
       integrity: sha1-yz8+PHMtwPAe5wtAPzAuYddwmDg=
+  /balanced-match/1.0.0:
+    resolution:
+      integrity: sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
   /base62/1.2.0:
     resolution:
       integrity: sha1-MeflYNyEbJ9EwaUx32UU2jVHQVc=
@@ -1117,6 +1122,12 @@ packages:
       concat-map: 0.0.1
     resolution:
       integrity: sha1-Pv/DxQ4ABTH7cg6v+A8K6O8jz1k=
+  /brace-expansion/1.1.8:
+    dependencies:
+      balanced-match: 1.0.0
+      concat-map: 0.0.1
+    resolution:
+      integrity: sha1-wHshHHyVLsH479Uad+8NHTmQopI=
   /braces/1.8.5:
     dependencies:
       expand-range: 1.8.2
@@ -1260,7 +1271,7 @@ packages:
       path-is-absolute: 1.0.1
       readdirp: 2.1.0
     optionalDependencies:
-      fsevents: 1.1.1
+      fsevents: 1.1.2
     resolution:
       integrity: sha1-eY5ol3gVHIB2tLNg5e3SjNortGg=
   /cipher-base/1.0.3:
@@ -1754,6 +1765,9 @@ packages:
       is-extglob: 1.0.0
     resolution:
       integrity: sha1-Lhj/PS9JqydlzskCPwEdqo2DSaE=
+  /fast-deep-equal/0.1.0:
+    resolution:
+      integrity: sha1-XG9FmaumszPuM0Li7ZeGcvEAH40=
   /faye-websocket/0.10.0:
     dependencies:
       websocket-driver: 0.6.5
@@ -1793,7 +1807,7 @@ packages:
     dependencies:
       is-number: 2.1.0
       isobject: 2.1.0
-      randomatic: 1.1.6
+      randomatic: 1.1.7
       repeat-element: 1.1.2
       repeat-string: 1.6.1
     resolution:
@@ -1863,6 +1877,12 @@ packages:
       nan: 2.6.2
     resolution:
       integrity: sha1-8Z/Sj0Pur3YWgOUZogPE0LPTGv8=
+  /fsevents/1.1.2:
+    dependencies:
+      nan: 2.6.2
+    optional: true
+    resolution:
+      integrity: sha1-MoK3E/s62A7eDp/PRhG1qm/AM/Q=
   /function-bind/1.1.0:
     resolution:
       integrity: sha1-FhdnFMgBeY5Ojyz391KUZ7tKV3E=
@@ -2162,6 +2182,11 @@ packages:
       kind-of: 3.2.2
     resolution:
       integrity: sha1-Afy7s5NGOlSPL0ZszhbezknbkI8=
+  /is-number/3.0.0:
+    dependencies:
+      kind-of: 3.2.2
+    resolution:
+      integrity: sha1-JP1iAaR4LPUFYcgQJ2r8fRLXEZU=
   /is-posix-bracket/0.1.1:
     resolution:
       integrity: sha1-MzTceXdDaOkvAW5vvAqI9c1ua8Q=
@@ -2221,6 +2246,9 @@ packages:
   /json-loader/0.5.4:
     resolution:
       integrity: sha1-i6oTZaYy9Yo8RtIBdfxgAsluN94=
+  /json-schema-traverse/0.3.0:
+    resolution:
+      integrity: sha1-ABbAscoe/kbUTTdUG838Gdz64Ns=
   /json-stable-stringify/1.0.1:
     dependencies:
       jsonify: 0.0.0
@@ -2247,6 +2275,11 @@ packages:
       is-buffer: 1.1.5
     resolution:
       integrity: sha1-MeohpzS6ubuw8yRm2JOupR5KPGQ=
+  /kind-of/4.0.0:
+    dependencies:
+      is-buffer: 1.1.5
+    resolution:
+      integrity: sha1-IIE989cSkosgc3hpGkUGb65y3Vc=
   /klaw/1.3.1:
     dependencies:
       graceful-fs: 4.1.11
@@ -2353,7 +2386,7 @@ packages:
   /memory-fs/0.4.1:
     dependencies:
       errno: 0.1.4
-      readable-stream: 2.2.11
+      readable-stream: 2.3.0
     resolution:
       integrity: sha1-OpoguEYlI+RHz7x+i7gO1me/xVI=
   /merge-descriptors/1.0.1:
@@ -2418,7 +2451,7 @@ packages:
       integrity: sha1-Kk5AkLlrLbBqnX3wEFWmKnfJt3Q=
   /minimatch/3.0.4:
     dependencies:
-      brace-expansion: 1.1.7
+      brace-expansion: 1.1.8
     resolution:
       integrity: sha1-UWbihkV/AzBgZL5Ul+jbsMPTIIM=
   /minimist/0.0.8:
@@ -2487,7 +2520,7 @@ packages:
       process: 0.11.10
       punycode: 1.4.1
       querystring-es3: 0.2.1
-      readable-stream: 2.2.11
+      readable-stream: 2.3.0
       stream-browserify: 2.0.1
       stream-http: 2.7.2
       string_decoder: 0.10.31
@@ -2821,12 +2854,12 @@ packages:
   /querystringify/1.0.0:
     resolution:
       integrity: sha1-YoYkIRLFtxL6ZU5SZlK/ahP/Bcs=
-  /randomatic/1.1.6:
+  /randomatic/1.1.7:
     dependencies:
-      is-number: 2.1.0
-      kind-of: 3.2.2
+      is-number: 3.0.0
+      kind-of: 4.0.0
     resolution:
-      integrity: sha1-EQ3Kv/OX6dz/fAeJzMCkmt8exbs=
+      integrity: sha1-x6vpzIuHwLqodrGf3oP9RkeX44w=
   /randombytes/2.0.5:
     dependencies:
       safe-buffer: 5.1.0
@@ -2915,22 +2948,22 @@ packages:
       util-deprecate: 1.0.2
     resolution:
       integrity: sha1-7/5yu3yITA3TNeI3nVJhltnQEe4=
-  /readable-stream/2.2.11:
+  /readable-stream/2.3.0:
     dependencies:
       core-util-is: 1.0.2
       inherits: 2.0.3
       isarray: 1.0.0
       process-nextick-args: 1.0.7
-      safe-buffer: 5.0.1
+      safe-buffer: 5.1.0
       string_decoder: 1.0.2
       util-deprecate: 1.0.2
     resolution:
-      integrity: sha1-B5azH412iAB/8Lk6gIjTSqF8D3I=
+      integrity: sha1-ZA9dzaiMkajcYHhxRWKRcIE6HtI=
   /readdirp/2.1.0:
     dependencies:
       graceful-fs: 4.1.11
       minimatch: 3.0.4
-      readable-stream: 2.2.11
+      readable-stream: 2.3.0
       set-immediate-shim: 1.0.1
     resolution:
       integrity: sha1-TtCtBg3zBzMAxIRANz9y0cxkLXg=
@@ -3266,14 +3299,14 @@ packages:
   /stream-browserify/2.0.1:
     dependencies:
       inherits: 2.0.3
-      readable-stream: 2.2.11
+      readable-stream: 2.3.0
     resolution:
       integrity: sha1-ZiZu5fm9uZQKTkUUyvtDu3Hlyds=
   /stream-http/2.7.2:
     dependencies:
       builtin-status-codes: 3.0.0
       inherits: 2.0.3
-      readable-stream: 2.2.11
+      readable-stream: 2.3.0
       to-arraybuffer: 1.0.1
       xtend: 4.0.1
     resolution:
@@ -3373,14 +3406,6 @@ packages:
   /ua-parser-js/0.7.12:
     resolution:
       integrity: sha1-BMgamb3V3FImPqKdJMa/jUgYpLs=
-  /uglify-js/2.8.29:
-    dependencies:
-      source-map: 0.5.6
-      yargs: 3.10.0
-    optionalDependencies:
-      uglify-to-browserify: 1.0.2
-    resolution:
-      integrity: sha1-KcVzMUgFe7Th913zW3qcty5qWd0=
   /uglify-js/3.0.15:
     dependencies:
       commander: 2.9.0
@@ -3390,12 +3415,12 @@ packages:
   /uglify-to-browserify/1.0.2:
     resolution:
       integrity: sha1-bgkk1r2mta/jSeOabWMoUKD4grc=
-  /uglifyjs-webpack-plugin/0.4.3:
+  /uglifyjs-webpack-plugin/0.4.4:
     dependencies:
       source-map: 0.5.6
-      webpack-sources: 0.2.3
+      webpack-sources: 1.0.1
     resolution:
-      integrity: sha1-pnKn1mVflN+n4JZw1IAw83zJMmc=
+      integrity: sha1-eCnFDuWlt1WWnURYNX7Vot02+70=
   /ultron/1.1.0:
     resolution:
       integrity: sha1-sHoualQagV/Go0zNRTO67DB8qGQ=
@@ -3563,12 +3588,12 @@ packages:
       source-map: 0.5.6
     resolution:
       integrity: sha1-xzVkNqTRMSO+LiQmoF0drZy+Zc8=
-  /webpack/3.0.0-rc.2:
+  /webpack/3.0.0:
     dependencies:
       acorn: 5.0.3
       acorn-dynamic-import: 2.0.2
-      ajv: 5.1.5
-      ajv-keywords: /ajv-keywords/2.1.0/ajv@5.1.5
+      ajv: 5.2.0
+      ajv-keywords: /ajv-keywords/2.1.0/ajv@5.2.0
       async: 2.4.1
       enhanced-resolve: 3.1.0
       escope: 3.6.0
@@ -3583,12 +3608,12 @@ packages:
       source-map: 0.5.6
       supports-color: 3.2.3
       tapable: 0.2.6
-      uglify-js: 2.8.29
+      uglifyjs-webpack-plugin: 0.4.4
       watchpack: 1.3.1
       webpack-sources: 1.0.1
       yargs: 6.6.0
     resolution:
-      integrity: sha1-IMkDWA+p+6hJe8HGRVgQ09OXyVg=
+      integrity: sha1-7pvOvyEkf3FTy0EBaMq0XjpZ1Nc=
   /websocket-driver/0.6.5:
     dependencies:
       websocket-extensions: 0.1.1
@@ -3751,8 +3776,8 @@ specifiers:
   shelljs: ^0.7.8
   source-map: ^0.5.6
   uglify-js: 'git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22'
-  uglifyjs-webpack-plugin: ^0.4.3
-  webpack: ^3.0.0-rc.2
+  uglifyjs-webpack-plugin: ^0.4.4
+  webpack: ^3.0.0
   webpack-bundle-analyzer: ^2.8.2
   webpack-dev-server: ^2.4.5
   write-file-webpack-plugin: ^4.1.0
