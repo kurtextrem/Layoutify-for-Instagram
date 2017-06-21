@@ -210,13 +210,18 @@ a.videoSpritePlayButton + div {
 										Nav Bar
 =============================================*/
 /** See https://github.com/kurtextrem/Improved-for-Instagram/issues/16 */
-/* nav > div + div > div {
-	contain: strict;
-} */
+nav > div + div > div {
+	contain: layout;
+}
 
 /** Hide "Open in App" */
 nav > div > div > div:last-of-type:not(:only-child) {
 	display: none;
+}
+
+/** Search arrow */
+nav input + span + div + div > div:first-of-type {
+	border: solid 11px #e6e6e6;
 }
 
 /*=============================================
