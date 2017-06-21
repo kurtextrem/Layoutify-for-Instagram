@@ -28,7 +28,7 @@ main > section {
 }
 
 /** Make the flex box layout row instead of column */
-section > div > div {
+main > section > div > div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -88,7 +88,7 @@ div[role='dialog'] header + div + div, main:not(.profile) header + div + div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: baseline;
-	contain: content;
+	contain: layout;
 }
 
 /** Views / likes */
@@ -227,7 +227,7 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 										Spinner
 =============================================*/
-section > div > div:last-child {
+main > section > div > div:last-child {
 	height: 30px;
 	contain: strict;
 	z-index: 2;
