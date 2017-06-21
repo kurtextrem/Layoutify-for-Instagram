@@ -47,7 +47,7 @@ dependencies:
   shelljs: 0.7.8
   source-map: 0.5.6
   uglify-js: github.com/mishoo/UglifyJS2/278577f3cb75e72320564805ee91be63e5f9c806
-  uglifyjs-webpack-plugin: 0.4.6
+  uglifyjs-webpack-plugin: 0.4.4
   webpack: 3.0.0
   webpack-bundle-analyzer: 2.8.2
   webpack-dev-server: 2.5.0
@@ -3589,14 +3589,6 @@ packages:
   /ua-parser-js/0.7.12:
     resolution:
       integrity: sha1-BMgamb3V3FImPqKdJMa/jUgYpLs=
-  /uglify-js/2.8.29:
-    dependencies:
-      source-map: 0.5.6
-      yargs: 3.10.0
-    optionalDependencies:
-      uglify-to-browserify: 1.0.2
-    resolution:
-      integrity: sha1-KcVzMUgFe7Th913zW3qcty5qWd0=
   /uglify-js/3.0.15:
     dependencies:
       commander: 2.9.0
@@ -3612,13 +3604,6 @@ packages:
       webpack-sources: 1.0.1
     resolution:
       integrity: sha1-eCnFDuWlt1WWnURYNX7Vot02+70=
-  /uglifyjs-webpack-plugin/0.4.6:
-    dependencies:
-      source-map: 0.5.6
-      uglify-js: 2.8.29
-      webpack-sources: 1.0.1
-    resolution:
-      integrity: sha1-uVH0q7a9YX5m9j64kUmOORdj4wk=
   /ultron/1.1.0:
     resolution:
       integrity: sha1-sHoualQagV/Go0zNRTO67DB8qGQ=
@@ -3978,7 +3963,7 @@ specifiers:
   shelljs: ^0.7.8
   source-map: ^0.5.6
   uglify-js: 'git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22'
-  uglifyjs-webpack-plugin: ^0.4.6
+  uglifyjs-webpack-plugin: 0.4.4
   webpack: ^3.0.0
   webpack-bundle-analyzer: ^2.8.2
   webpack-dev-server: ^2.5.0
