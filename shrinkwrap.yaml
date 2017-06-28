@@ -1,6 +1,6 @@
 dependencies:
   babel-core: 7.0.0-alpha.12
-  babel-loader: 7.1.0
+  babel-loader: 7.1.1
   babel-plugin-closure-elimination: 1.1.16
   babel-plugin-jsx-pragmatic: 1.0.2
   babel-plugin-loop-optimizer: 1.4.1
@@ -15,9 +15,9 @@ dependencies:
   babel-plugin-transform-regenerator: 7.0.0-alpha.12
   babel-preset-env: 2.0.0-alpha.12
   babel-preset-stage-0: 7.0.0-alpha.10
-  babili-webpack-plugin: 0.1.1
+  babili-webpack-plugin: 0.1.2
   bootstrap: 4.0.0-alpha.6
-  butternut-webpack-plugin: 0.0.6
+  butternut-webpack-plugin: 0.1.0
   case-sensitive-paths-webpack-plugin: 2.1.1
   copy-webpack-plugin: 4.0.1
   cross-env: 5.0.1
@@ -25,7 +25,7 @@ dependencies:
   history: 4.6.3
   html-webpack-harddisk-plugin: 0.1.0
   html-webpack-include-assets-plugin: 0.0.5
-  html-webpack-plugin: 2.28.0
+  html-webpack-plugin: 2.29.0
   preact: 8.1.0
   preact-compat: 3.16.0
   preact-css-transition-group: 1.3.0
@@ -40,10 +40,10 @@ dependencies:
   react-dev-utils: 3.0.0
   react-error-overlay: 1.0.7
   react-timeago: 3.3.0
-  reactstrap: 4.6.2
+  reactstrap: 4.8.0
   replace-bundle-webpack-plugin: 1.0.0
   rimraf: 2.6.1
-  script-ext-html-webpack-plugin: 1.8.1
+  script-ext-html-webpack-plugin: 1.8.3
   shelljs: 0.7.8
   source-map: 0.5.6
   uglify-js: github.com/mishoo/UglifyJS2/278577f3cb75e72320564805ee91be63e5f9c806
@@ -248,6 +248,29 @@ packages:
       source-map: 0.5.6
     resolution:
       integrity: sha1-jEKFZNzh4fQfszfsNPTDsCK1rYM=
+  /babel-core/6.25.0:
+    dependencies:
+      babel-code-frame: 6.22.0
+      babel-generator: 6.25.0
+      babel-helpers: 6.24.1
+      babel-messages: 6.23.0
+      babel-register: 6.24.1
+      babel-runtime: 6.23.0
+      babel-template: 6.25.0
+      babel-traverse: 6.25.0
+      babel-types: 6.25.0
+      babylon: 6.17.4
+      convert-source-map: 1.5.0
+      debug: 2.6.8
+      json5: 0.5.1
+      lodash: 4.17.4
+      minimatch: 3.0.4
+      path-is-absolute: 1.0.1
+      private: 0.1.7
+      slash: 1.0.0
+      source-map: 0.5.6
+    resolution:
+      integrity: sha1-fdQrBGPHQunVKW3rPsZ6kyLa1yk=
   /babel-core/7.0.0-alpha.12:
     dependencies:
       babel-code-frame: 7.0.0-alpha.12
@@ -281,6 +304,18 @@ packages:
       trim-right: 1.0.1
     resolution:
       integrity: sha1-5xX0hsWN7SVknYiJRNUqoHxdlJc=
+  /babel-generator/6.25.0:
+    dependencies:
+      babel-messages: 6.23.0
+      babel-runtime: 6.23.0
+      babel-types: 6.25.0
+      detect-indent: 4.0.0
+      jsesc: 1.3.0
+      lodash: 4.17.4
+      source-map: 0.5.6
+      trim-right: 1.0.1
+    resolution:
+      integrity: sha1-M6GvcNXyiQrrRlpKd5PB32qeqfw=
   /babel-generator/7.0.0-alpha.12:
     dependencies:
       babel-messages: 7.0.0-alpha.12
@@ -327,9 +362,9 @@ packages:
       babel-types: 7.0.0-alpha.12
     resolution:
       integrity: sha1-x0WxC1FuZMau7ZmdkvDmzo+mYeQ=
-  /babel-helper-flip-expressions/0.1.1:
+  /babel-helper-flip-expressions/0.1.2:
     resolution:
-      integrity: sha1-NlmyQJp7eBMSYTAqmTCI0cCC+rQ=
+      integrity: sha1-d/ZlL53pxCQB2Ce9RuvSEJ4+8Yo=
   /babel-helper-function-name/7.0.0-alpha.10:
     dependencies:
       babel-helper-get-function-arity: 7.0.0-alpha.10
@@ -443,13 +478,13 @@ packages:
       babel-template: 7.0.0-alpha.12
     resolution:
       integrity: sha1-CLjCajSf4MVvEXxHitHnpPMwZOI=
-  /babel-loader/7.1.0:
+  /babel-loader/7.1.1:
     dependencies:
       find-cache-dir: 1.0.0
       loader-utils: 1.1.0
       mkdirp: 0.5.1
     resolution:
-      integrity: sha1-P78lgfCFd0vZZC3KmZDm1sFJEUQ=
+      integrity: sha1-uHE0yLEuPkwqlOBUYIW8aAorhIg=
   /babel-messages/6.23.0:
     dependencies:
       babel-runtime: 6.23.0
@@ -480,59 +515,59 @@ packages:
   /babel-plugin-loop-optimizer/1.4.1:
     resolution:
       integrity: sha1-YbLgKaXCFX9XXH066ZrMY64rU9k=
-  /babel-plugin-minify-builtins/0.1.1:
+  /babel-plugin-minify-builtins/0.1.3:
     dependencies:
       babel-helper-evaluate-path: 0.1.0
     resolution:
-      integrity: sha1-sCfGJGTlij60uIDkRWBQ8AnZpbs=
-  /babel-plugin-minify-constant-folding/0.1.1:
+      integrity: sha1-TyGn3LUfkaBOpx1H/w6OOwX+wCE=
+  /babel-plugin-minify-constant-folding/0.1.3:
     dependencies:
       babel-helper-evaluate-path: 0.1.0
     resolution:
-      integrity: sha1-kF/Rixnx7MveolH29JNe367hSrg=
-  /babel-plugin-minify-dead-code-elimination/0.1.6:
+      integrity: sha1-V70XKt+LjXStfJlhLrlQQU6+o8o=
+  /babel-plugin-minify-dead-code-elimination/0.1.7:
     dependencies:
       babel-helper-mark-eval-scopes: 0.1.1
       babel-helper-remove-or-void: 0.1.1
       lodash.some: 4.6.0
     resolution:
-      integrity: sha1-xUcTRvsKEEaGP9dlx4TLqX17IuM=
-  /babel-plugin-minify-flip-comparisons/0.1.1:
+      integrity: sha1-d09TbzR7mDk6J7qnF4cpaIE8NCw=
+  /babel-plugin-minify-flip-comparisons/0.1.2:
     dependencies:
       babel-helper-is-void-0: 0.1.1
     resolution:
-      integrity: sha1-dLjlFckRuj9aSTPM9yRVQyC9VJg=
-  /babel-plugin-minify-guarded-expressions/0.1.1:
+      integrity: sha1-4oa0C3WZsY3+oZUHHkJ5Rlz8GIQ=
+  /babel-plugin-minify-guarded-expressions/0.1.2:
     dependencies:
-      babel-helper-flip-expressions: 0.1.1
+      babel-helper-flip-expressions: 0.1.2
     resolution:
-      integrity: sha1-RGwSTHJcOPk4Wf7XBsmq4c+rx/8=
-  /babel-plugin-minify-infinity/0.1.1:
+      integrity: sha1-38PUc7A2LZYF084KweIjKMYNEAc=
+  /babel-plugin-minify-infinity/0.1.2:
     resolution:
-      integrity: sha1-YukdL/PEZSDWe8W9vt/RXq89+FE=
-  /babel-plugin-minify-mangle-names/0.1.2:
+      integrity: sha1-Xxz2fd7cuhPIoA2oMlQt8AkaHNQ=
+  /babel-plugin-minify-mangle-names/0.1.3:
     dependencies:
       babel-helper-mark-eval-scopes: 0.1.1
     resolution:
-      integrity: sha1-DKE5xFCnNP3iWD5Jy420U8F1MnE=
+      integrity: sha1-v6JGYaZ5T7A4M1h+VYKLZUSeBv4=
   /babel-plugin-minify-numeric-literals/0.1.1:
     resolution:
       integrity: sha1-1LiwySX4dHFO4z7ksmZ4WD185/s=
-  /babel-plugin-minify-replace/0.1.1:
+  /babel-plugin-minify-replace/0.1.2:
     resolution:
-      integrity: sha1-AC9tAVYzIHfNirmwjBoE5hlr+Y0=
-  /babel-plugin-minify-simplify/0.1.1:
+      integrity: sha1-uQuecatNOzYyVimpG+q+E7CxasE=
+  /babel-plugin-minify-simplify/0.1.2:
     dependencies:
-      babel-helper-flip-expressions: 0.1.1
+      babel-helper-flip-expressions: 0.1.2
       babel-helper-is-nodes-equiv: 0.0.1
       babel-helper-to-multiple-sequence-expressions: 0.1.1
     resolution:
-      integrity: sha1-9qprW2hGFx7aAsIGL2gN28P3k38=
-  /babel-plugin-minify-type-constructors/0.1.1:
+      integrity: sha1-qWjxZY/esvx1noH+Mx2Jgp3w9rk=
+  /babel-plugin-minify-type-constructors/0.1.2:
     dependencies:
       babel-helper-is-void-0: 0.1.1
     resolution:
-      integrity: sha1-Y8naU3CE12spfmxNJ8K3gf8OdH8=
+      integrity: sha1-21PFt2y44vzUXYYvFxBMeHYTN+4=
   /babel-plugin-runtyper/0.2.2:
     resolution:
       integrity: sha1-MF+JX+X162YYQ1IZ2u8/QjgRuDc=
@@ -748,15 +783,15 @@ packages:
       lodash.snakecase: 4.1.1
     resolution:
       integrity: sha1-9Vy19atD/iiFwizpqR0x+9Md7w8=
-  /babel-plugin-transform-inline-consecutive-adds/0.1.1:
+  /babel-plugin-transform-inline-consecutive-adds/0.1.2:
     resolution:
-      integrity: sha1-cQQzXPCavudCbwU83zYtEOBpa/o=
-  /babel-plugin-transform-member-expression-literals/6.8.3:
+      integrity: sha1-VELp8cGceKeJn4pN7m/UgfYQAfU=
+  /babel-plugin-transform-member-expression-literals/6.8.4:
     resolution:
-      integrity: sha1-Tu+n+h06htBawiC8P9+W1e0YNdY=
-  /babel-plugin-transform-merge-sibling-variables/6.8.4:
+      integrity: sha1-BWebxAWWuRKTQBlZqhYgqxsr5Dc=
+  /babel-plugin-transform-merge-sibling-variables/6.8.5:
     resolution:
-      integrity: sha1-gTpDPy2MaYnuOpxeDLRtN1LTZ6k=
+      integrity: sha1-A6vfEHxhJBkT6yaN3t5tW8VBhiw=
   /babel-plugin-transform-minify-booleans/6.8.2:
     resolution:
       integrity: sha1-hFFXn3BucCweGrJ1beXI6jac8Hw=
@@ -770,9 +805,11 @@ packages:
       babel-plugin-syntax-object-rest-spread: 7.0.0-alpha.12
     resolution:
       integrity: sha1-qQIx4TN35iPx3EQM28gA6p2nqB0=
-  /babel-plugin-transform-property-literals/6.8.3:
+  /babel-plugin-transform-property-literals/6.8.4:
+    dependencies:
+      esutils: 2.0.2
     resolution:
-      integrity: sha1-Dc0uzwSGxUwj+EgX+RHEqw6NS5k=
+      integrity: sha1-atMREQuAoZKlbvtd30/jym96Ydo=
   /babel-plugin-transform-react-constant-elements/7.0.0-alpha.12:
     resolution:
       integrity: sha1-myClebYYY3LVKihpgcjHMzl0ng0=
@@ -795,18 +832,18 @@ packages:
   /babel-plugin-transform-regexp-constructors/0.1.1:
     resolution:
       integrity: sha1-MSq3SHzIihxi7iXqG2CH6JuHeZw=
-  /babel-plugin-transform-remove-console/6.8.3:
+  /babel-plugin-transform-remove-console/6.8.4:
     resolution:
-      integrity: sha1-MTRBcgMkrSCvD7AJ+lnoECNkYms=
-  /babel-plugin-transform-remove-debugger/6.8.3:
+      integrity: sha1-Qf3awZpymkw91+8pZOrAewlvmo8=
+  /babel-plugin-transform-remove-debugger/6.8.4:
     resolution:
-      integrity: sha1-UGTy2EO3fOZg66p3YL4w65JbuT8=
-  /babel-plugin-transform-remove-undefined/0.1.1:
+      integrity: sha1-+FcEoIrapxtV13AFtblOm53yH24=
+  /babel-plugin-transform-remove-undefined/0.1.2:
     resolution:
-      integrity: sha1-Vydv7Icj6fNCycyyt71rSOGx2E8=
-  /babel-plugin-transform-simplify-comparison-operators/6.8.3:
+      integrity: sha1-4ev1ERD2seBmXyg4Lvc/leUCNlI=
+  /babel-plugin-transform-simplify-comparison-operators/6.8.4:
     resolution:
-      integrity: sha1-LkfhHl+Nwz6XR24CYxUdX9V+HEw=
+      integrity: sha1-KqJKJi1mTIyz4SWjBseY16LeCNU=
   /babel-plugin-transform-strict-mode/7.0.0-alpha.12:
     dependencies:
       babel-types: 7.0.0-alpha.12
@@ -829,33 +866,33 @@ packages:
       regenerator-runtime: 0.10.5
     resolution:
       integrity: sha1-g2TKYt+Or7gwSZ9pkXdGbDsDSZ0=
-  /babel-preset-babili/0.1.2:
+  /babel-preset-babili/0.1.4:
     dependencies:
-      babel-plugin-minify-builtins: 0.1.1
-      babel-plugin-minify-constant-folding: 0.1.1
-      babel-plugin-minify-dead-code-elimination: 0.1.6
-      babel-plugin-minify-flip-comparisons: 0.1.1
-      babel-plugin-minify-guarded-expressions: 0.1.1
-      babel-plugin-minify-infinity: 0.1.1
-      babel-plugin-minify-mangle-names: 0.1.2
+      babel-plugin-minify-builtins: 0.1.3
+      babel-plugin-minify-constant-folding: 0.1.3
+      babel-plugin-minify-dead-code-elimination: 0.1.7
+      babel-plugin-minify-flip-comparisons: 0.1.2
+      babel-plugin-minify-guarded-expressions: 0.1.2
+      babel-plugin-minify-infinity: 0.1.2
+      babel-plugin-minify-mangle-names: 0.1.3
       babel-plugin-minify-numeric-literals: 0.1.1
-      babel-plugin-minify-replace: 0.1.1
-      babel-plugin-minify-simplify: 0.1.1
-      babel-plugin-minify-type-constructors: 0.1.1
-      babel-plugin-transform-inline-consecutive-adds: 0.1.1
-      babel-plugin-transform-member-expression-literals: 6.8.3
-      babel-plugin-transform-merge-sibling-variables: 6.8.4
+      babel-plugin-minify-replace: 0.1.2
+      babel-plugin-minify-simplify: 0.1.2
+      babel-plugin-minify-type-constructors: 0.1.2
+      babel-plugin-transform-inline-consecutive-adds: 0.1.2
+      babel-plugin-transform-member-expression-literals: 6.8.4
+      babel-plugin-transform-merge-sibling-variables: 6.8.5
       babel-plugin-transform-minify-booleans: 6.8.2
-      babel-plugin-transform-property-literals: 6.8.3
+      babel-plugin-transform-property-literals: 6.8.4
       babel-plugin-transform-regexp-constructors: 0.1.1
-      babel-plugin-transform-remove-console: 6.8.3
-      babel-plugin-transform-remove-debugger: 6.8.3
-      babel-plugin-transform-remove-undefined: 0.1.1
-      babel-plugin-transform-simplify-comparison-operators: 6.8.3
+      babel-plugin-transform-remove-console: 6.8.4
+      babel-plugin-transform-remove-debugger: 6.8.4
+      babel-plugin-transform-remove-undefined: 0.1.2
+      babel-plugin-transform-simplify-comparison-operators: 6.8.4
       babel-plugin-transform-undefined-to-void: 6.8.2
       lodash.isplainobject: 4.0.6
     resolution:
-      integrity: sha1-usPlFeVWoH4bNCzm/YfGJSf4apQ=
+      integrity: sha1-rZ1mUQAvW8PwfKswB4EWf1RyS/I=
   /babel-preset-env/2.0.0-alpha.12:
     dependencies:
       babel-plugin-check-es2015-constants: 7.0.0-alpha.12
@@ -944,6 +981,15 @@ packages:
       lodash: 4.17.4
     resolution:
       integrity: sha1-BK5RTx+Ts6JTfyoPYKWkX7gwgzM=
+  /babel-template/6.25.0:
+    dependencies:
+      babel-runtime: 6.23.0
+      babel-traverse: 6.25.0
+      babel-types: 6.25.0
+      babylon: 6.17.4
+      lodash: 4.17.4
+    resolution:
+      integrity: sha1-ZlJBFmt8KqTGGdceGSlpVSsQwHE=
   /babel-template/7.0.0-alpha.10:
     dependencies:
       babel-traverse: 7.0.0-alpha.10
@@ -1069,19 +1115,22 @@ packages:
       to-fast-properties: 1.0.3
     resolution:
       integrity: sha1-S9t3OG0fbiAB9C+prCG2w9atDYI=
-  /babili-webpack-plugin/0.1.1:
+  /babili-webpack-plugin/0.1.2:
     dependencies:
-      babel-core: 6.24.1
-      babel-preset-babili: 0.1.2
-      webpack-sources: 0.2.3
+      babel-core: 6.25.0
+      babel-preset-babili: 0.1.4
+      webpack-sources: 1.0.1
     resolution:
-      integrity: sha1-Jerpx5wDuS8rwSyCzvfguGbYO/s=
+      integrity: sha1-FkrAPVky9qUhQ+f/wG8nEcZRtvI=
   /babylon/6.17.2:
     resolution:
       integrity: sha1-IB0l71+JLEG65JSIsI2w3Udun1w=
   /babylon/6.17.3:
     resolution:
       integrity: sha1-EyfXCZULVY8gTlNSWH/QKQ+Njkg=
+  /babylon/6.17.4:
+    resolution:
+      integrity: sha1-Pot0AriNIsNCPhN6FXeIOxX/hpo=
   /babylon/7.0.0-beta.10:
     resolution:
       integrity: sha1-B6IQ6mpEgMlYF5RAOQemxyq8YHw=
@@ -1235,21 +1284,21 @@ packages:
   /builtin-status-codes/3.0.0:
     resolution:
       integrity: sha1-hZgoeOIbmOHGZCXgPQF0eI9Wnug=
-  /butternut-webpack-plugin/0.0.6:
+  /butternut-webpack-plugin/0.1.0:
     dependencies:
-      butternut: 0.3.6
-      webpack-sources: 0.2.3
+      butternut: 0.4.6
+      webpack-sources: 1.0.1
     resolution:
-      integrity: sha1-KRp3xlr/r5ec3vgS7ED+GCr+F1E=
-  /butternut/0.3.6:
+      integrity: sha1-7vvr081WNdwCYmDp0ui0bbCpPMc=
+  /butternut/0.4.6:
     dependencies:
       acorn: 5.0.3
       chalk: 1.1.3
-      magic-string: 0.19.1
+      magic-string: 0.20.0
       minimist: 1.2.0
       sourcemap-codec: 1.3.1
     resolution:
-      integrity: sha1-WZAwswOBQEAOFbkp51e4J9ii2m8=
+      integrity: sha1-HuTkNZZekk99JFueXmphTLGZFbY=
   /bytes/2.3.0:
     resolution:
       integrity: sha1-1baAoWW2IBc5rLYRVCqrwtjOsHA=
@@ -1318,11 +1367,11 @@ packages:
   /classnames/2.2.5:
     resolution:
       integrity: sha1-+zgB1FNGdknvNgPH1hoCvRKb3m0=
-  /clean-css/4.1.3:
+  /clean-css/4.1.4:
     dependencies:
       source-map: 0.5.6
     resolution:
-      integrity: sha1-B8/omA7bINRV3cI6rc8eBMblCc4=
+      integrity: sha1-7siBHbJ0V+AHjYypIfqBty+oK/Q=
   /cli-cursor/2.1.0:
     dependencies:
       restore-cursor: 2.0.0
@@ -2084,13 +2133,13 @@ packages:
   /html-minifier/3.5.2:
     dependencies:
       camel-case: 3.0.0
-      clean-css: 4.1.3
+      clean-css: 4.1.4
       commander: 2.9.0
       he: 1.1.1
       ncname: 1.0.0
       param-case: 2.1.1
       relateurl: 0.2.7
-      uglify-js: 3.0.15
+      uglify-js: 3.0.20
     resolution:
       integrity: sha1-1zvD/0SJQkCIGM5gm/P7DqfvTrc=
   /html-webpack-harddisk-plugin/0.1.0:
@@ -2103,16 +2152,16 @@ packages:
       minimatch: 3.0.4
     resolution:
       integrity: sha1-yjh2fQGRiUFMDoy6oOizJVcDGo0=
-  /html-webpack-plugin/2.28.0:
+  /html-webpack-plugin/2.29.0:
     dependencies:
       bluebird: 3.5.0
       html-minifier: 3.5.2
       loader-utils: 0.2.17
       lodash: 4.17.4
-      pretty-error: 2.1.0
+      pretty-error: 2.1.1
       toposort: 1.0.3
     resolution:
-      integrity: sha1-LnhjtX5f1I/iYzA+L/yTTDBk0Ak=
+      integrity: sha1-6Yf0IYU9O2k4yMTIFxhC5f0XryM=
   /htmlparser2/3.3.0:
     dependencies:
       domelementtype: 1.3.0
@@ -2454,9 +2503,6 @@ packages:
   /lodash.kebabcase/4.1.1:
     resolution:
       integrity: sha1-hImxyw0p/4gZXM7KRI/21swpXDY=
-  /lodash.omit/4.5.0:
-    resolution:
-      integrity: sha1-brGa5aHuHdnfC5aeZs4Lf6MLXmA=
   /lodash.snakecase/4.1.1:
     resolution:
       integrity: sha1-OdcUo1NXFHg3rv1ktdy7Fr7Nj40=
@@ -2498,11 +2544,11 @@ packages:
       yallist: 2.1.2
     resolution:
       integrity: sha1-Wb5JpoO42YapOfHKYP22mJ9LIEY=
-  /magic-string/0.19.1:
+  /magic-string/0.20.0:
     dependencies:
       vlq: 0.2.2
     resolution:
-      integrity: sha1-FNdoATyvLsj96hakmvgvw3fnUgE=
+      integrity: sha1-JV8H4LFFncANdGNjZ+kgDLtdUp0=
   /make-dir/1.0.0:
     dependencies:
       pify: 2.3.0
@@ -2947,12 +2993,12 @@ packages:
   /preserve/0.2.0:
     resolution:
       integrity: sha1-gV7R9uvGWSb4ZbMQwHE7yzMVzks=
-  /pretty-error/2.1.0:
+  /pretty-error/2.1.1:
     dependencies:
       renderkid: 2.0.1
       utila: 0.4.0
     resolution:
-      integrity: sha1-h/Tp1waiTIfWy+6fq+wAH8+Mddg=
+      integrity: sha1-X0+HyPkeWuPzuoerTPXgOxoX8aM=
   /pretty-format/3.8.0:
     resolution:
       integrity: sha1-v77VbV6ad2ZF9LH/eqGjrE+jw4U=
@@ -3082,17 +3128,16 @@ packages:
   /reactstrap-tether/1.3.4:
     resolution:
       integrity: sha1-htlNMCFv+jTOssYm9LmRLA0ZOJQ=
-  /reactstrap/4.6.2:
+  /reactstrap/4.8.0:
     dependencies:
       classnames: 2.2.5
       lodash.isfunction: 3.0.8
       lodash.isobject: 3.0.2
-      lodash.omit: 4.5.0
       lodash.tonumber: 4.0.3
       prop-types: 15.5.10
       reactstrap-tether: 1.3.4
     resolution:
-      integrity: sha1-luTN2vHHOSPnAeIWszzltHQGJME=
+      integrity: sha1-6zUGQqYoLHnH4b2Nb3XGJxMaQvY=
   /read-pkg-up/1.0.1:
     dependencies:
       find-up: 1.1.2
@@ -3275,11 +3320,11 @@ packages:
   /safe-buffer/5.1.0:
     resolution:
       integrity: sha1-/kyEYDl/nqqqWOc75GJzQIpF4iM=
-  /script-ext-html-webpack-plugin/1.8.1:
+  /script-ext-html-webpack-plugin/1.8.3:
     dependencies:
       debug: 2.6.8
     resolution:
-      integrity: sha1-NrunJsOLzevB5pMz4/19cYqbMZU=
+      integrity: sha1-BMd+aOtF62NYvzZVSho1jKYMou0=
   /seedrandom/2.4.3:
     resolution:
       integrity: sha1-JDhQTa0zkXMUv/GKxNeU8W1qrsw=
@@ -3589,12 +3634,12 @@ packages:
   /ua-parser-js/0.7.12:
     resolution:
       integrity: sha1-BMgamb3V3FImPqKdJMa/jUgYpLs=
-  /uglify-js/3.0.15:
+  /uglify-js/3.0.20:
     dependencies:
       commander: 2.9.0
       source-map: 0.5.6
     resolution:
-      integrity: sha1-qssyOoRrI0YCJw3q2KMkQaiAb0I=
+      integrity: sha1-yzWyvP5HgFG28ygr6NtOSt1JoeU=
   /uglify-to-browserify/1.0.2:
     resolution:
       integrity: sha1-bgkk1r2mta/jSeOabWMoUKD4grc=
@@ -3914,9 +3959,10 @@ packages:
     resolution:
       tarball: 'https://codeload.github.com/mishoo/UglifyJS2/tar.gz/278577f3cb75e72320564805ee91be63e5f9c806'
 registry: 'https://registry.npmjs.org/'
+shrinkwrapVersion: 3
 specifiers:
   babel-core: ^7.0.0-alpha.12
-  babel-loader: ^7.1.0
+  babel-loader: ^7.1.1
   babel-plugin-closure-elimination: ^1.1.16
   babel-plugin-jsx-pragmatic: ^1.0.2
   babel-plugin-loop-optimizer: ^1.4.1
@@ -3931,9 +3977,9 @@ specifiers:
   babel-plugin-transform-regenerator: ^7.0.0-alpha.12
   babel-preset-env: ^2.0.0-alpha.7
   babel-preset-stage-0: 7.0.0-alpha.10
-  babili-webpack-plugin: ^0.1.1
+  babili-webpack-plugin: ^0.1.2
   bootstrap: 4.0.0-alpha.6
-  butternut-webpack-plugin: ^0.0.6
+  butternut-webpack-plugin: ^0.1.0
   case-sensitive-paths-webpack-plugin: ^2.1.1
   copy-webpack-plugin: ^4.0.1
   cross-env: ^5.0.1
@@ -3941,7 +3987,7 @@ specifiers:
   history: ^4.6.3
   html-webpack-harddisk-plugin: ^0.1.0
   html-webpack-include-assets-plugin: ^0.0.5
-  html-webpack-plugin: ^2.28.0
+  html-webpack-plugin: ^2.29.0
   preact: ^8.1.0
   preact-compat: ^3.16.0
   preact-css-transition-group: ^1.3.0
@@ -3956,10 +4002,10 @@ specifiers:
   react-dev-utils: ^3.0.0
   react-error-overlay: ^1.0.7
   react-timeago: ^3.3.0
-  reactstrap: ^4.6.2
+  reactstrap: ^4.8.0
   replace-bundle-webpack-plugin: ^1.0.0
   rimraf: ^2.6.1
-  script-ext-html-webpack-plugin: ^1.8.1
+  script-ext-html-webpack-plugin: ^1.8.3
   shelljs: ^0.7.8
   source-map: ^0.5.6
   uglify-js: 'git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22'
@@ -3969,4 +4015,3 @@ specifiers:
   webpack-dev-server: ^2.5.0
   write-file-webpack-plugin: ^4.1.0
   zip-webpack-plugin: ^1.1.0
-version: 3

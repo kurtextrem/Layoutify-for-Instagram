@@ -102,6 +102,7 @@ if (isProd) {
 		}),
 		new webpack.LoaderOptionsPlugin({
 			minimize: true,
+			debug: false,
 		}),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.optimize.ModuleConcatenationPlugin(),
@@ -231,6 +232,7 @@ const first = {
 			'preact-compat': preactCompat,
 			'react-addons-css-transition-group': isProd ? 'preact-css-transition-group' : getMin('preact-css-transition-group'),
 			'react-addons-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
+			'react-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
 			'prop-types$': isProd ? 'proptypes/disabled' : 'prop-types',
 		},
 	},

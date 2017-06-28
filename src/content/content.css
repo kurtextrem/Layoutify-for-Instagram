@@ -28,7 +28,7 @@ main > section {
 }
 
 /** Make the flex box layout row instead of column */
-main > section > div > div {
+main > section > div > div > div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -37,7 +37,7 @@ main > section > div > div {
 }
 
 /** Make boxes equaly high and wide */
-section > div > div > article {
+main > section div > article {
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
 	margin-right: var(--boxMarginRight) !important;
@@ -54,7 +54,8 @@ div > img {
 /*=============================================
 						Slimmer Post Header
 =============================================*/
-div[role='dialog'] article > header, main:not(.profile) article > header {
+div[role='dialog'] article > header,
+main:not(.profile) article > header {
 	height: 50px !important;
 	contain: strict;
 }
@@ -67,7 +68,8 @@ div > main:only-child {
 	flex-grow: 1;
 }
 
-div[role='dialog'] header + div + div, main:not(.home) header + div + div {
+div[role='dialog'] header + div + div,
+main:not(.home) header + div + div {
 	top: 63px !important;
 }
 
@@ -84,7 +86,8 @@ main.home header + div + div {
 }
 
 /** Row layout */
-div[role='dialog'] header + div + div, main:not(.profile) header + div + div {
+div[role='dialog'] header + div + div,
+main:not(.profile) header + div + div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: baseline;
@@ -166,7 +169,8 @@ section > div > div:not(#rcr-anchor) + div:not(:last-child) {
 								Media Controls
 =============================================*/
 /** Always show media controls when playing */
-video::-webkit-media-controls-overlay-enclosure, video[loop]::-webkit-media-controls-enclosure {
+video::-webkit-media-controls-overlay-enclosure,
+video[loop]::-webkit-media-controls-enclosure {
 	z-index: 3;
 }
 
@@ -181,7 +185,11 @@ main.post video::-webkit-media-controls-enclosure {
 }
 
 /** Makes the multiple videos/images dots visible; Heart animation when db-clicking posts */
-div > div + a + div, .coreSpriteLikeAnimationHeart, .coreSpriteSidecarIconLarge, .coreSpriteUserTagIndicator, .coreSpriteVideoIconLarge {
+div > div + a + div,
+.coreSpriteLikeAnimationHeart,
+.coreSpriteSidecarIconLarge,
+.coreSpriteUserTagIndicator,
+.coreSpriteVideoIconLarge {
 	z-index: 3;
 }
 
@@ -227,7 +235,7 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 										Spinner
 =============================================*/
-main > section > div > div:last-child {
+main > section > div > div > div:last-child {
 	height: 30px;
 	contain: strict;
 	z-index: 2;
@@ -244,26 +252,29 @@ section > footer + div {
 										Post
 =============================================*/
 /** Enlargen modal */
-div[role='dialog'] article, main.post article {
+div[role='dialog'] article,
+main.post article {
 	min-height: 50vh;
 	max-height: 70vh;
 	contain: content;
 }
 
-/** Center the image */
-div[role='dialog'] article, main:not(.home) article {
+/** Center the image
+div[role='dialog'] article,
+main:not(.home) article {
 	flex-grow: 1;
 	justify-content: center;
-}
+}*/
 
 /** Improve picture quality */
 main:not(.home) div > img {
 	image-rendering: -webkit-optimize-contrast;
 }
 
-div[role='dialog'] div > div > div > div > div > div:first-child, main.post div > div > div > div > div > div:first-child {
+/*div[role='dialog'] div > div > div > div > div > div:first-child,
+main.post div > div > div > div > div > div:first-child {
 	width: 100%;
-}
+}*/
 
 /*=============================================
 									Profile
@@ -336,7 +347,8 @@ main.profile a:hover > div:last-child {
 	/*transition: background-color 1s linear;*/
 }
 
-::-webkit-scrollbar-thumb:vertical, ::-webkit-scrollbar-thumb:horizontal {
+::-webkit-scrollbar-thumb:vertical,
+::-webkit-scrollbar-thumb:horizontal {
 	min-height: 30px;
 	border: 2px solid rgba(0, 0, 0, 0);
 	border-radius: 100px;
@@ -344,7 +356,8 @@ main.profile a:hover > div:last-child {
 	background-clip: padding-box;
 }
 
-::-webkit-scrollbar-thumb:vertical:active, ::-webkit-scrollbar-thumb:horizontal:active {
+::-webkit-scrollbar-thumb:vertical:active,
+::-webkit-scrollbar-thumb:horizontal:active {
 	border-radius: 100px;
 	background-color: #727272; /* Some darker color when you click it */
 }
