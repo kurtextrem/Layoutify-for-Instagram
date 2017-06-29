@@ -285,6 +285,17 @@ main.profile a:hover > div:last-child {
 }
 
 /*=============================================
+									Footer
+=============================================*/
+footer > div {
+	max-width: fit-content !important;
+}
+
+footer > div > nav {
+	margin: auto;
+}
+
+/*=============================================
 									Extended
 =============================================*/
 /** Extended Marker */
