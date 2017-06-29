@@ -40,8 +40,8 @@
 		"prepack-webpack-plugin": "^1.1.0",
 		"progress-bar-webpack-plugin": "^1.9.3",
 		"proptypes": "^1.1.0",
-		"react-dev-utils": "^3.0.0",
-		"react-error-overlay": "^1.0.7",
+		"react-dev-utils": "^3.0.1",
+		"react-error-overlay": "^1.0.8",
 		"react-timeago": "^3.3.0",
 		"reactstrap": "^4.8.0",
 		"replace-bundle-webpack-plugin": "^1.0.0",
@@ -53,6 +53,7 @@
 		"uglifyjs-webpack-plugin": "0.4.4",
 		"webpack": "^3.0.0",
 		"webpack-bundle-analyzer": "^2.8.2",
+		"webpack-common-shake": "^1.0.0-alpha5",
 		"webpack-dev-server": "^2.5.0",
 		"write-file-webpack-plugin": "^4.1.0",
 		"zip-webpack-plugin": "^1.1.0"

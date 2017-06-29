@@ -50,6 +50,7 @@ dependencies:
   uglifyjs-webpack-plugin: 0.4.4
   webpack: 3.0.0
   webpack-bundle-analyzer: 2.8.2
+  webpack-common-shake: 1.0.0-alpha5
   webpack-dev-server: 2.5.0
   write-file-webpack-plugin: 4.1.0
   zip-webpack-plugin: 1.1.0
@@ -93,7 +94,7 @@ packages:
     dependencies:
       co: 4.6.0
       fast-deep-equal: 0.1.0
-      json-schema-traverse: 0.3.0
+      json-schema-traverse: 0.3.1
       json-stable-stringify: 1.0.1
     resolution:
       integrity: sha1-wXNQJMXaLvdcwZBxMHPUTwmL9IY=
@@ -176,7 +177,7 @@ packages:
       integrity: sha1-UidltQw1EEkOUtfc/ghe+bqWlY8=
   /asn1.js/4.9.1:
     dependencies:
-      bn.js: 4.11.6
+      bn.js: 4.11.7
       inherits: 2.0.3
       minimalistic-assert: 1.0.0
     resolution:
@@ -192,11 +193,11 @@ packages:
   /async/1.5.2:
     resolution:
       integrity: sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
-  /async/2.4.1:
+  /async/2.5.0:
     dependencies:
       lodash: 4.17.4
     resolution:
-      integrity: sha1-YqVrJ5yYoR0JhwlqAcw+6463u9c=
+      integrity: sha1-hDGQ/WtzV6C54clW7d3V7IRitU0=
   /babel-code-frame/6.22.0:
     dependencies:
       chalk: 1.1.3
@@ -1149,9 +1150,9 @@ packages:
   /base62/1.2.0:
     resolution:
       integrity: sha1-MeflYNyEbJ9EwaUx32UU2jVHQVc=
-  /base64-js/1.2.0:
+  /base64-js/1.2.1:
     resolution:
-      integrity: sha1-o5mS1yNYSBGYK+XikLtqU9hnAPE=
+      integrity: sha1-qRlH2h9KUW6jjltOwOw3c2deCIY=
   /batch/0.6.1:
     resolution:
       integrity: sha1-3DQxT05nkxgJP8dgJyUl+UvyXBY=
@@ -1167,9 +1168,9 @@ packages:
   /bluebird/3.5.0:
     resolution:
       integrity: sha1-eRQg1/VR7qKJdFOop3ZT+WYG1nw=
-  /bn.js/4.11.6:
+  /bn.js/4.11.7:
     resolution:
-      integrity: sha1-UzRK2xRhehP26N0s4okF0cC6MhU=
+      integrity: sha1-3bBI5Q2UgnkAlME+s/z8gzznq0Y=
   /bonjour/3.5.0:
     dependencies:
       array-flatten: 2.1.1
@@ -1236,13 +1237,13 @@ packages:
       integrity: sha1-2qJ3cXRwki7S/hhZQRihdUOXId0=
   /browserify-rsa/4.0.1:
     dependencies:
-      bn.js: 4.11.6
+      bn.js: 4.11.7
       randombytes: 2.0.5
     resolution:
       integrity: sha1-IeCr+vbyApzy+vsTNWenAdQTVSQ=
   /browserify-sign/4.0.4:
     dependencies:
-      bn.js: 4.11.6
+      bn.js: 4.11.7
       browserify-rsa: 4.0.1
       create-hash: 1.1.3
       create-hmac: 1.1.6
@@ -1273,7 +1274,7 @@ packages:
       integrity: sha1-JuYe0UIvtw3ULm42cp7VHYVf6Nk=
   /buffer/4.9.1:
     dependencies:
-      base64-js: 1.2.0
+      base64-js: 1.2.1
       ieee754: 1.1.8
       isarray: 1.0.0
     resolution:
@@ -1405,6 +1406,12 @@ packages:
       graceful-readlink: 1.0.1
     resolution:
       integrity: sha1-nJkJQXbhIkDLItbFFGCYQA/g99Q=
+  /common-shake/1.1.0:
+    dependencies:
+      escope: 3.6.0
+      estraverse: 4.2.0
+    resolution:
+      integrity: sha1-QjTs4p45j37gR9O2k22X9UA8NIA=
   /commondir/1.0.1:
     resolution:
       integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
@@ -1475,7 +1482,7 @@ packages:
       integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
   /create-ecdh/4.0.0:
     dependencies:
-      bn.js: 4.11.6
+      bn.js: 4.11.7
       elliptic: 6.4.0
     resolution:
       integrity: sha1-iIxyNZbN92EvZJgjPuvXo1MBc30=
@@ -1493,7 +1500,7 @@ packages:
       create-hash: 1.1.3
       inherits: 2.0.3
       ripemd160: 2.0.1
-      safe-buffer: 5.1.0
+      safe-buffer: 5.1.1
       sha.js: 2.4.8
     resolution:
       integrity: sha1-rLniIaThe9sHbpBlfEK5PjcmzwY=
@@ -1613,7 +1620,7 @@ packages:
       integrity: sha1-ogM8CcyOFY03dI+951B4Mr1s4Sc=
   /diffie-hellman/5.0.2:
     dependencies:
-      bn.js: 4.11.6
+      bn.js: 4.11.7
       miller-rabin: 4.0.0
       randombytes: 2.0.5
     resolution:
@@ -1682,9 +1689,9 @@ packages:
       integrity: sha1-GzperObgh7teJXoQCwy/6Bsokfw=
   /elliptic/6.4.0:
     dependencies:
-      bn.js: 4.11.6
+      bn.js: 4.11.7
       brorand: 1.1.0
-      hash.js: 1.0.3
+      hash.js: 1.1.2
       hmac-drbg: 1.0.1
       inherits: 2.0.3
       minimalistic-assert: 1.0.0
@@ -1784,19 +1791,16 @@ packages:
     dependencies:
       es6-map: 0.1.5
       es6-weak-map: 2.0.2
-      esrecurse: 4.1.0
+      esrecurse: 4.2.0
       estraverse: 4.2.0
     resolution:
       integrity: sha1-4Bl16BJ4GhY6ba392AOY3GTIicM=
-  /esrecurse/4.1.0:
+  /esrecurse/4.2.0:
     dependencies:
-      estraverse: 4.1.1
+      estraverse: 4.2.0
       object-assign: 4.1.1
     resolution:
-      integrity: sha1-RxO2U2rffyrE8yfVWed1a/9kgiA=
-  /estraverse/4.1.1:
-    resolution:
-      integrity: sha1-9srKcokzqFDvkGYdDheYK6RxEaI=
+      integrity: sha1-+pVo2Y04I/mkHZHpAtyrnqblsWM=
   /estraverse/4.2.0:
     resolution:
       integrity: sha1-De4/7TH81GlhjOc0IJn8GvoL2xM=
@@ -2086,11 +2090,12 @@ packages:
       inherits: 2.0.3
     resolution:
       integrity: sha1-ZuodhW206KVHDK32/OI65SRO8uE=
-  /hash.js/1.0.3:
+  /hash.js/1.1.2:
     dependencies:
       inherits: 2.0.3
+      minimalistic-assert: 1.0.0
     resolution:
-      integrity: sha1-EzL/ABVsCg/92CNgE9B7d6BFFXM=
+      integrity: sha1-v1yIeCXP5Aue/ee/Eb0tsm5r8Bs=
   /he/1.1.1:
     resolution:
       integrity: sha1-k0EP0hsAlzUVH4howvJx80J+I/0=
@@ -2105,7 +2110,7 @@ packages:
       integrity: sha1-bXI6hxLFgda+836MJvSu3G64aWc=
   /hmac-drbg/1.0.1:
     dependencies:
-      hash.js: 1.0.3
+      hash.js: 1.1.2
       minimalistic-assert: 1.0.0
       minimalistic-crypto-utils: 1.0.1
     resolution:
@@ -2119,6 +2124,9 @@ packages:
   /hosted-git-info/2.4.2:
     resolution:
       integrity: sha1-AHa59GonBQbduq6lZJaJdGBhKmc=
+  /hosted-git-info/2.5.0:
+    resolution:
+      integrity: sha1-bWDjSzq7yDEwYsO3mO+NkBoHrzw=
   /hpack.js/2.1.6:
     dependencies:
       inherits: 2.0.3
@@ -2406,9 +2414,9 @@ packages:
   /json-loader/0.5.4:
     resolution:
       integrity: sha1-i6oTZaYy9Yo8RtIBdfxgAsluN94=
-  /json-schema-traverse/0.3.0:
+  /json-schema-traverse/0.3.1:
     resolution:
-      integrity: sha1-ABbAscoe/kbUTTdUG838Gdz64Ns=
+      integrity: sha1-NJptRMU6Ud6JtAgFxdXlm0F9M0A=
   /json-stable-stringify/1.0.1:
     dependencies:
       jsonify: 0.0.0
@@ -2563,7 +2571,7 @@ packages:
   /memory-fs/0.4.1:
     dependencies:
       errno: 0.1.4
-      readable-stream: 2.3.0
+      readable-stream: 2.3.3
     resolution:
       integrity: sha1-OpoguEYlI+RHz7x+i7gO1me/xVI=
   /meow/3.7.0:
@@ -2605,7 +2613,7 @@ packages:
       integrity: sha1-hmd8l9FyCzY0MdBNDRUpO9OMFWU=
   /miller-rabin/4.0.0:
     dependencies:
-      bn.js: 4.11.6
+      bn.js: 4.11.7
       brorand: 1.1.0
     resolution:
       integrity: sha1-SmL7HUKTPAVYOYL0xxb2+55sbT0=
@@ -2723,7 +2731,7 @@ packages:
       process: 0.11.10
       punycode: 1.4.1
       querystring-es3: 0.2.1
-      readable-stream: 2.3.0
+      readable-stream: 2.3.3
       stream-browserify: 2.0.1
       stream-http: 2.7.2
       string_decoder: 0.10.31
@@ -2742,6 +2750,14 @@ packages:
       validate-npm-package-license: 3.0.1
     resolution:
       integrity: sha1-2Bntoqne29H/pWPqQHHZNngilbs=
+  /normalize-package-data/2.4.0:
+    dependencies:
+      hosted-git-info: 2.5.0
+      is-builtin-module: 1.0.0
+      semver: 5.3.0
+      validate-npm-package-license: 3.0.1
+    resolution:
+      integrity: sha1-EvlaMH1YNSB1oEkHuErIvpisAS8=
   /normalize-path/2.1.1:
     dependencies:
       remove-trailing-separator: 1.0.2
@@ -2907,7 +2923,7 @@ packages:
       create-hash: 1.1.3
       create-hmac: 1.1.6
       ripemd160: 2.0.1
-      safe-buffer: 5.1.0
+      safe-buffer: 5.1.1
       sha.js: 2.4.8
     resolution:
       integrity: sha1-vjZ4XFBn6kjYBv+SMojF91C2uKI=
@@ -3049,7 +3065,7 @@ packages:
       integrity: sha1-8FKijacOYYkX7wqKw0wa5aaChrM=
   /public-encrypt/4.0.0:
     dependencies:
-      bn.js: 4.11.6
+      bn.js: 4.11.7
       browserify-rsa: 4.0.1
       create-hash: 1.1.3
       parse-asn1: 5.1.0
@@ -3085,7 +3101,7 @@ packages:
       integrity: sha1-x6vpzIuHwLqodrGf3oP9RkeX44w=
   /randombytes/2.0.5:
     dependencies:
-      safe-buffer: 5.1.0
+      safe-buffer: 5.1.1
     resolution:
       integrity: sha1-3ACaJGuNCaF3tLegrne8Vw9LG3k=
   /range-parser/1.2.0:
@@ -3147,7 +3163,7 @@ packages:
   /read-pkg/1.1.0:
     dependencies:
       load-json-file: 1.1.0
-      normalize-package-data: 2.3.8
+      normalize-package-data: 2.4.0
       path-type: 1.1.0
     resolution:
       integrity: sha1-9f+qXs0pyzHAR0vKfXVra7KePyg=
@@ -3170,11 +3186,22 @@ packages:
       util-deprecate: 1.0.2
     resolution:
       integrity: sha1-ZA9dzaiMkajcYHhxRWKRcIE6HtI=
+  /readable-stream/2.3.3:
+    dependencies:
+      core-util-is: 1.0.2
+      inherits: 2.0.3
+      isarray: 1.0.0
+      process-nextick-args: 1.0.7
+      safe-buffer: 5.1.1
+      string_decoder: 1.0.3
+      util-deprecate: 1.0.2
+    resolution:
+      integrity: sha1-No8lEtefnUb9/HE0mueHi7weuVw=
   /readdirp/2.1.0:
     dependencies:
       graceful-fs: 4.1.11
       minimatch: 3.0.4
-      readable-stream: 2.3.0
+      readable-stream: 2.3.3
       set-immediate-shim: 1.0.1
     resolution:
       integrity: sha1-TtCtBg3zBzMAxIRANz9y0cxkLXg=
@@ -3320,6 +3347,9 @@ packages:
   /safe-buffer/5.1.0:
     resolution:
       integrity: sha1-/kyEYDl/nqqqWOc75GJzQIpF4iM=
+  /safe-buffer/5.1.1:
+    resolution:
+      integrity: sha1-iTMSr2myEj3vcfV4iQAWce6yyFM=
   /script-ext-html-webpack-plugin/1.8.3:
     dependencies:
       debug: 2.6.8
@@ -3521,14 +3551,14 @@ packages:
   /stream-browserify/2.0.1:
     dependencies:
       inherits: 2.0.3
-      readable-stream: 2.3.0
+      readable-stream: 2.3.3
     resolution:
       integrity: sha1-ZiZu5fm9uZQKTkUUyvtDu3Hlyds=
   /stream-http/2.7.2:
     dependencies:
       builtin-status-codes: 3.0.0
       inherits: 2.0.3
-      readable-stream: 2.3.0
+      readable-stream: 2.3.3
       to-arraybuffer: 1.0.1
       xtend: 4.0.1
     resolution:
@@ -3559,6 +3589,11 @@ packages:
       safe-buffer: 5.0.1
     resolution:
       integrity: sha1-sp4fThEl+pehA4K4pTNze3SR4Xk=
+  /string_decoder/1.0.3:
+    dependencies:
+      safe-buffer: 5.1.1
+    resolution:
+      integrity: sha1-D8Z9fBQYJd6UKC3VNr7GubzoYKs=
   /strip-ansi/3.0.1:
     dependencies:
       ansi-regex: 2.1.1
@@ -3634,6 +3669,14 @@ packages:
   /ua-parser-js/0.7.12:
     resolution:
       integrity: sha1-BMgamb3V3FImPqKdJMa/jUgYpLs=
+  /uglify-js/2.8.29:
+    dependencies:
+      source-map: 0.5.6
+      yargs: 3.10.0
+    optionalDependencies:
+      uglify-to-browserify: 1.0.2
+    resolution:
+      integrity: sha1-KcVzMUgFe7Th913zW3qcty5qWd0=
   /uglify-js/3.0.20:
     dependencies:
       commander: 2.9.0
@@ -3649,6 +3692,15 @@ packages:
       webpack-sources: 1.0.1
     resolution:
       integrity: sha1-eCnFDuWlt1WWnURYNX7Vot02+70=
+  /uglifyjs-webpack-plugin/0.4.6/webpack@3.0.0:
+    dependencies:
+      source-map: 0.5.6
+      uglify-js: 2.8.29
+      webpack: 3.0.0
+      webpack-sources: 1.0.1
+    id: registry.npmjs.org/uglifyjs-webpack-plugin/0.4.6
+    resolution:
+      integrity: sha1-uVH0q7a9YX5m9j64kUmOORdj4wk=
   /ultron/1.1.0:
     resolution:
       integrity: sha1-sHoualQagV/Go0zNRTO67DB8qGQ=
@@ -3738,7 +3790,7 @@ packages:
       integrity: sha1-MuU3fLVy3kqwR1O9+IIcAe1gW3w=
   /watchpack/1.3.1:
     dependencies:
-      async: 2.4.1
+      async: 2.5.0
       chokidar: 1.7.0
       graceful-fs: 4.1.11
     resolution:
@@ -3763,6 +3815,14 @@ packages:
       ws: 2.3.1
     resolution:
       integrity: sha1-i2JAwpqdY7xy8J2SD7BQrbzOn+g=
+  /webpack-common-shake/1.0.0-alpha5:
+    dependencies:
+      acorn: 5.0.3
+      common-shake: 1.1.0
+      webpack: 3.0.0
+      webpack-sources: 1.0.1
+    resolution:
+      integrity: sha1-HghSwcajXk9EDCC6DM4DpFpGFQQ=
   /webpack-core/0.6.9:
     dependencies:
       source-list-map: 0.1.8
@@ -3826,7 +3886,7 @@ packages:
       acorn-dynamic-import: 2.0.2
       ajv: 5.2.0
       ajv-keywords: /ajv-keywords/2.1.0/ajv@5.2.0
-      async: 2.4.1
+      async: 2.5.0
       enhanced-resolve: 3.1.0
       escope: 3.6.0
       interpret: 1.0.3
@@ -3840,7 +3900,7 @@ packages:
       source-map: 0.5.6
       supports-color: 3.2.3
       tapable: 0.2.6
-      uglifyjs-webpack-plugin: 0.4.4
+      uglifyjs-webpack-plugin: /uglifyjs-webpack-plugin/0.4.6/webpack@3.0.0
       watchpack: 1.3.1
       webpack-sources: 1.0.1
       yargs: 6.6.0
@@ -4012,6 +4072,7 @@ specifiers:
   uglifyjs-webpack-plugin: 0.4.4
   webpack: ^3.0.0
   webpack-bundle-analyzer: ^2.8.2
+  webpack-common-shake: ^1.0.0-alpha5
   webpack-dev-server: ^2.5.0
   write-file-webpack-plugin: ^4.1.0
   zip-webpack-plugin: ^1.1.0

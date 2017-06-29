@@ -19,6 +19,7 @@ const errorOverlayMiddleware = require('react-error-overlay/middleware')
 const ReplacePlugin = require('replace-bundle-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const prerender = require('./prerender')
+const ShakePlugin = require('webpack-common-shake').Plugin
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -106,6 +107,7 @@ if (isProd) {
 		}),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new webpack.optimize.ModuleConcatenationPlugin(),
+		new ShakePlugin(),
 		// strip out babel-helper invariant checks
 		new ReplacePlugin([
 			{
