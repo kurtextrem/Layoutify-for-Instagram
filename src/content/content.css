@@ -259,22 +259,17 @@ main.post article {
 	contain: content;
 }
 
-/** Center the image
+/** Center the image */
 div[role='dialog'] article,
 main:not(.home) article {
 	flex-grow: 1;
 	justify-content: center;
-}*/
+}
 
 /** Improve picture quality */
 main:not(.home) div > img {
 	image-rendering: -webkit-optimize-contrast;
 }
-
-/*div[role='dialog'] div > div > div > div > div > div:first-child,
-main.post div > div > div > div > div > div:first-child {
-	width: 100%;
-}*/
 
 /*=============================================
 									Profile
@@ -342,6 +337,7 @@ footer > div > nav {
 	width: 9px;
 	border-radius: 100px;
 	background-color: rgba(0, 0, 0, 0);
+	contain: strict;
 	/*transition: background-color 1s linear;*/
 }
 

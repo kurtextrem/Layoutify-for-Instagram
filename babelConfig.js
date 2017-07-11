@@ -54,9 +54,11 @@ module.exports = (isProd, options = {}) => ({
 				require.resolve('babel-plugin-loop-optimizer'),
 				require.resolve('babel-plugin-closure-elimination'),
 				require.resolve('./pure-plugin.js'),
+				// 'emotion/babel'
 			] :
 		[
 				[require.resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
+				// 'emotion/babel'
 				// 'runtyper'
 			],
 })

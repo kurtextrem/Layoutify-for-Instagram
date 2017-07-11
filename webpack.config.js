@@ -156,6 +156,7 @@ if (isProd) {
 					'resolve-pathname',
 					'resolvePathname',
 					'warning',
+					'proptypes',
 				],
 			},
 		}), // doesn't support "async", so watch out */

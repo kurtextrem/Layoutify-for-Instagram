@@ -4,8 +4,10 @@ import { Component, h, render } from 'preact' // eslint-disable-line no-unused-v
 
 import Loading from './Loading'
 import Post from './Post'
-import Posts from './Posts'
 import Sentinel from './Sentinel'
+
+const loading = <Loading />
+const Posts = (posts, renderPost) => posts.map(post => renderPost(post))
 
 export default class PostsContainer extends Component {
 	constructor(props, ...rest) {
@@ -23,8 +25,7 @@ export default class PostsContainer extends Component {
 			data: null,
 			timeout: 0,
 		}
-		this.loading = <Loading />
-		this.error = <div>No Data Available (have you tried clicking the three dots on top of Instagram.com?)</div>
+		this.error = <div>No data available (have you tried clicking the three dots on top of Instagram.com?)</div>
 
 		window.setTimeout(() => this.setTimeout(200), 200)
 	}
@@ -56,7 +57,7 @@ export default class PostsContainer extends Component {
 	setTimeout = timeout => {
 		if (this.state.data === null) {
 			this.setState((prevState, props) => ({ timeout }))
-			window.setTimeout(() => this.setTimeout(400), 200)
+			window.setTimeout(() => this.setTimeout(400), 400)
 		}
 	}
 
@@ -83,7 +84,7 @@ export default class PostsContainer extends Component {
 	render(props, state) {
 		const { data, timeout } = state
 
-		if (timeout === 200) return this.loading
+		if (timeout === 200) return loading
 		if (data === null) return null
 		if (timeout === 400 && (data.items === undefined || data.items.length === 0)) {
 			return this.error
