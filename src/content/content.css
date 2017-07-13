@@ -255,7 +255,7 @@ section > footer + div {
 div[role='dialog'] article,
 main.post article {
 	min-height: 50vh;
-	max-height: 70vh;
+	max-height: 90vh;
 	contain: content;
 }
 

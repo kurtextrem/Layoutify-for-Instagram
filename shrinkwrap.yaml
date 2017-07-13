@@ -14,7 +14,7 @@ dependencies:
   babel-plugin-transform-react-remove-prop-types: 0.4.6
   babel-plugin-transform-regenerator: 7.0.0-alpha.12
   babel-preset-env: 2.0.0-alpha.12
-  babel-preset-stage-0: 7.0.0-alpha.10
+  babel-preset-stage-0: 7.0.0-alpha.15
   bootstrap: 4.0.0-alpha.6
   case-sensitive-paths-webpack-plugin: 2.1.1
   copy-webpack-plugin: 4.0.1
@@ -25,7 +25,7 @@ dependencies:
   html-webpack-harddisk-plugin: 0.1.0
   html-webpack-include-assets-plugin: 0.0.6
   html-webpack-plugin: 2.29.0
-  preact: 8.2.0
+  preact: 8.2.1
   preact-compat: 3.16.0
   preact-css-transition-group: 1.3.0
   preact-render-to-string: 3.6.3
@@ -47,7 +47,7 @@ dependencies:
   source-map: 0.5.6
   uglify-js: github.com/mishoo/UglifyJS2/278577f3cb75e72320564805ee91be63e5f9c806
   uglifyjs-webpack-plugin: 0.4.4
-  webpack: 3.1.0
+  webpack: 3.2.0
   webpack-bundle-analyzer: 2.8.2
   webpack-common-shake: 1.5.3
   webpack-dev-server: 2.5.1
@@ -211,6 +211,13 @@ packages:
       js-tokens: 3.0.1
     resolution:
       integrity: sha1-Jvuy6rHCB2MnH+y2sEoQh1b65h8=
+  /babel-code-frame/7.0.0-alpha.15:
+    dependencies:
+      chalk: 1.1.3
+      esutils: 2.0.2
+      js-tokens: 3.0.2
+    resolution:
+      integrity: sha1-OB0+BuF7cyARKcSgGei2LYTi3eM=
   /babel-code-frame/7.0.0-alpha.3:
     dependencies:
       chalk: 1.1.3
@@ -218,13 +225,6 @@ packages:
       js-tokens: 3.0.1
     resolution:
       integrity: sha1-n/Jl6qrJS1jfx8pKTuzzidX000Q=
-  /babel-code-frame/7.0.0-alpha.9:
-    dependencies:
-      chalk: 1.1.3
-      esutils: 2.0.2
-      js-tokens: 3.0.1
-    resolution:
-      integrity: sha1-uGHe7D6fdEowQFE31K0CFszvDLo=
   /babel-core/6.24.1:
     dependencies:
       babel-code-frame: 6.22.0
@@ -324,14 +324,6 @@ packages:
       babel-types: 7.0.0-alpha.12
     resolution:
       integrity: sha1-x0WxC1FuZMau7ZmdkvDmzo+mYeQ=
-  /babel-helper-function-name/7.0.0-alpha.10:
-    dependencies:
-      babel-helper-get-function-arity: 7.0.0-alpha.10
-      babel-template: 7.0.0-alpha.10
-      babel-traverse: 7.0.0-alpha.10
-      babel-types: 7.0.0-alpha.10
-    resolution:
-      integrity: sha1-DD6VX2Xbnt3JY0XbDehFR9/5NtU=
   /babel-helper-function-name/7.0.0-alpha.12:
     dependencies:
       babel-helper-get-function-arity: 7.0.0-alpha.12
@@ -340,6 +332,14 @@ packages:
       babel-types: 7.0.0-alpha.12
     resolution:
       integrity: sha1-aa0NjfI2zvqIJJiRSHQrp1fqRZs=
+  /babel-helper-function-name/7.0.0-alpha.15:
+    dependencies:
+      babel-helper-get-function-arity: 7.0.0-alpha.15
+      babel-template: 7.0.0-alpha.15
+      babel-traverse: 7.0.0-alpha.15
+      babel-types: 7.0.0-alpha.15
+    resolution:
+      integrity: sha1-CHu2u2Z3rN42s8Gfa8Gv7bPRLjA=
   /babel-helper-function-name/7.0.0-alpha.7:
     dependencies:
       babel-helper-get-function-arity: 7.0.0-alpha.7
@@ -348,16 +348,16 @@ packages:
       babel-types: 7.0.0-alpha.7
     resolution:
       integrity: sha1-Ga7N3FQC+UHFcmgCmTB3tB6pgy0=
-  /babel-helper-get-function-arity/7.0.0-alpha.10:
-    dependencies:
-      babel-types: 7.0.0-alpha.10
-    resolution:
-      integrity: sha1-6kau2oqzh82mgkC7YQA8HItbPIs=
   /babel-helper-get-function-arity/7.0.0-alpha.12:
     dependencies:
       babel-types: 7.0.0-alpha.12
     resolution:
       integrity: sha1-kfRKJu2hiwqzNs8KpOMSeBN5jT0=
+  /babel-helper-get-function-arity/7.0.0-alpha.15:
+    dependencies:
+      babel-types: 7.0.0-alpha.15
+    resolution:
+      integrity: sha1-F+kyBtC2JcMSL0xnRHjL7VMoHyQ=
   /babel-helper-get-function-arity/7.0.0-alpha.7:
     dependencies:
       babel-types: 7.0.0-alpha.7
@@ -386,14 +386,6 @@ packages:
       lodash: 4.17.4
     resolution:
       integrity: sha1-HiGWxyBmHMlJnlX6d2Y++kYjBMY=
-  /babel-helper-remap-async-to-generator/7.0.0-alpha.10:
-    dependencies:
-      babel-helper-function-name: 7.0.0-alpha.10
-      babel-template: 7.0.0-alpha.10
-      babel-traverse: 7.0.0-alpha.10
-      babel-types: 7.0.0-alpha.10
-    resolution:
-      integrity: sha1-iI3J6xqgE7PdP5bo2KzzkQVIb5w=
   /babel-helper-remap-async-to-generator/7.0.0-alpha.12:
     dependencies:
       babel-helper-function-name: 7.0.0-alpha.12
@@ -402,6 +394,14 @@ packages:
       babel-types: 7.0.0-alpha.12
     resolution:
       integrity: sha1-Ef6ScZC6xEXkPDlCXTKrjinNElE=
+  /babel-helper-remap-async-to-generator/7.0.0-alpha.15:
+    dependencies:
+      babel-helper-function-name: 7.0.0-alpha.15
+      babel-template: 7.0.0-alpha.15
+      babel-traverse: 7.0.0-alpha.15
+      babel-types: 7.0.0-alpha.15
+    resolution:
+      integrity: sha1-x8UECN/6puCzcrezlfb6M6sVLYk=
   /babel-helper-replace-supers/7.0.0-alpha.12:
     dependencies:
       babel-helper-optimise-call-expression: 7.0.0-alpha.12
@@ -434,12 +434,12 @@ packages:
       babel-runtime: 6.23.0
     resolution:
       integrity: sha1-8830cDhYA1sqKVHG7F7fbGLyYw4=
-  /babel-messages/7.0.0-alpha.10:
-    resolution:
-      integrity: sha1-WoVEsa+93KOKo9jL4sctMBl57Dw=
   /babel-messages/7.0.0-alpha.12:
     resolution:
       integrity: sha1-X9qEDLjf7aBqeJSh6Ksa9pXyScA=
+  /babel-messages/7.0.0-alpha.15:
+    resolution:
+      integrity: sha1-l5kdMthqITCv8I+nWhbPxaytnkI=
   /babel-messages/7.0.0-alpha.3:
     resolution:
       integrity: sha1-yDkKRoR4uDhNoTRhLhKmvDGmhOk=
@@ -465,75 +465,81 @@ packages:
   /babel-plugin-syntax-async-functions/7.0.0-alpha.12:
     resolution:
       integrity: sha1-0am/31MzkZ4KrhMz2fnKLL1VCh4=
-  /babel-plugin-syntax-async-generators/7.0.0-alpha.9:
+  /babel-plugin-syntax-async-generators/7.0.0-alpha.15:
     resolution:
-      integrity: sha1-Lhmr/eDaY55r+uWHLvZuThqKk3U=
-  /babel-plugin-syntax-class-properties/7.0.0-alpha.9:
+      integrity: sha1-BTdZq6WGYUWkz0CkW6HbP/6373k=
+  /babel-plugin-syntax-class-properties/7.0.0-alpha.15:
     resolution:
-      integrity: sha1-p58zbFqnKfrHCyB5AVfryBu0HBM=
-  /babel-plugin-syntax-decorators/7.0.0-alpha.9:
+      integrity: sha1-6dXTuNztZid8yUcmaFiQn2pH67U=
+  /babel-plugin-syntax-decorators/7.0.0-alpha.15:
     resolution:
-      integrity: sha1-WyttfFSfXdEMnETNuFobj/YgieY=
-  /babel-plugin-syntax-do-expressions/7.0.0-alpha.9:
+      integrity: sha1-dozM+qNI4bVJD4iHi9NK5qigjWA=
+  /babel-plugin-syntax-do-expressions/7.0.0-alpha.15:
     resolution:
-      integrity: sha1-gpdLTjBS6Ca4g7abiasuwGUo0Og=
-  /babel-plugin-syntax-dynamic-import/7.0.0-alpha.9:
+      integrity: sha1-wCeBgTpEzS+VZ8QpO6UwL2F6+wQ=
+  /babel-plugin-syntax-dynamic-import/7.0.0-alpha.15:
     resolution:
-      integrity: sha1-hMx60QUkCCpZ/mxd0XFPtdj6wiY=
+      integrity: sha1-0Fhlt7Az7HMKEEl5J5jPflLAcBg=
   /babel-plugin-syntax-exponentiation-operator/7.0.0-alpha.12:
     resolution:
       integrity: sha1-5u3yeb8NcD3Vjorf+ii3qZtmYoY=
-  /babel-plugin-syntax-export-extensions/7.0.0-alpha.9:
+  /babel-plugin-syntax-export-extensions/7.0.0-alpha.15:
     resolution:
-      integrity: sha1-Vjkk0SmULWIJmJu6LuV+4fYC1i4=
-  /babel-plugin-syntax-function-bind/7.0.0-alpha.9:
+      integrity: sha1-6ZYPEpnP3NiHXdgZ29iCeLz7dF4=
+  /babel-plugin-syntax-function-bind/7.0.0-alpha.15:
     resolution:
-      integrity: sha1-5c0YOwlQzLrDEKPYUoagm8OEAFQ=
+      integrity: sha1-wrPKHsTshHXrH+ziiRPTOm/8aZo=
   /babel-plugin-syntax-jsx/6.18.0:
     resolution:
       integrity: sha1-CvMqmm4Tyno/1QaeYtew9Y0NiUY=
   /babel-plugin-syntax-jsx/7.0.0-alpha.12:
     resolution:
       integrity: sha1-xpNdtAJTeGD2yps18hooGRzpflg=
+  /babel-plugin-syntax-numeric-separator/7.0.0-alpha.15:
+    resolution:
+      integrity: sha1-6Er9y4Fhcpr2viL2tyiQUvpEftw=
   /babel-plugin-syntax-object-rest-spread/7.0.0-alpha.12:
     resolution:
       integrity: sha1-tiuQJ3eKiuecOy+C8YpSFFxDjPQ=
-  /babel-plugin-syntax-object-rest-spread/7.0.0-alpha.9:
+  /babel-plugin-syntax-object-rest-spread/7.0.0-alpha.15:
     resolution:
-      integrity: sha1-S5xtMl3t6J6fc3ThOBgzUo1dMdc=
+      integrity: sha1-VtjJTnI3VqziROlWp1H4Gdg8Uss=
+  /babel-plugin-syntax-optional-chaining/7.0.0-alpha.15:
+    resolution:
+      integrity: sha1-RpL+QO2EnccvxJa/tgYhmhF4OnY=
   /babel-plugin-syntax-trailing-function-commas/7.0.0-alpha.12:
     resolution:
       integrity: sha1-QcnE0hXuqla5/4wj2Lty0kZTz0g=
-  /babel-plugin-transform-async-generator-functions/7.0.0-alpha.10:
+  /babel-plugin-transform-async-generator-functions/7.0.0-alpha.15:
     dependencies:
-      babel-helper-remap-async-to-generator: 7.0.0-alpha.10
-      babel-plugin-syntax-async-generators: 7.0.0-alpha.9
+      babel-helper-remap-async-to-generator: 7.0.0-alpha.15
+      babel-plugin-syntax-async-generators: 7.0.0-alpha.15
     resolution:
-      integrity: sha1-3XOBF3xtYdVbdPGUoBQbPjByUrU=
+      integrity: sha1-J165S94Znz/mVY7HxhHZJVFbt74=
   /babel-plugin-transform-async-to-generator/7.0.0-alpha.12:
     dependencies:
       babel-helper-remap-async-to-generator: 7.0.0-alpha.12
       babel-plugin-syntax-async-functions: 7.0.0-alpha.12
     resolution:
       integrity: sha1-PqB3I6VgC5CvRHwthYsqUUHSA/o=
-  /babel-plugin-transform-class-properties/7.0.0-alpha.10:
+  /babel-plugin-transform-class-properties/7.0.0-alpha.15:
     dependencies:
-      babel-helper-function-name: 7.0.0-alpha.10
-      babel-plugin-syntax-class-properties: 7.0.0-alpha.9
-      babel-template: 7.0.0-alpha.10
+      babel-helper-function-name: 7.0.0-alpha.15
+      babel-plugin-syntax-class-properties: 7.0.0-alpha.15
+      babel-template: 7.0.0-alpha.15
     resolution:
-      integrity: sha1-lwmKJOXPx+zpcyIXyeGVGl+WNZU=
-  /babel-plugin-transform-decorators/7.0.0-alpha.10:
+      integrity: sha1-2HfgPCCGFQRPB+vIXzkzLwtGpsY=
+  /babel-plugin-transform-decorators/7.0.0-alpha.15:
     dependencies:
-      babel-plugin-syntax-decorators: 7.0.0-alpha.9
-      babel-template: 7.0.0-alpha.10
+      babel-plugin-syntax-decorators: 7.0.0-alpha.15
+      babel-template: 7.0.0-alpha.15
     resolution:
-      integrity: sha1-Rrvc8BTLrMLlXEOOa6r4JEtbLls=
-  /babel-plugin-transform-do-expressions/7.0.0-alpha.10:
+      integrity: sha1-iNcmQ2iCp4L/E6yd1cpq9pGMTpY=
+  /babel-plugin-transform-do-expressions/7.0.0-alpha.15:
     dependencies:
-      babel-plugin-syntax-do-expressions: 7.0.0-alpha.9
+      babel-plugin-syntax-do-expressions: 7.0.0-alpha.15
     resolution:
-      integrity: sha1-2BO/4qFBjKfxYjnrWyG+4303Bao=
+      integrity: sha1-Z7aUC0L7n2tYdGTOa1TEU6g+lZQ=
   /babel-plugin-transform-es2015-arrow-functions/7.0.0-alpha.12:
     resolution:
       integrity: sha1-4aYGDvK8eFvqGUvVm5IYo+OZi7U=
@@ -656,16 +662,16 @@ packages:
       babel-plugin-syntax-exponentiation-operator: 7.0.0-alpha.12
     resolution:
       integrity: sha1-GlzAxvQNcj7P2qK/QGoxekgD9Ow=
-  /babel-plugin-transform-export-extensions/7.0.0-alpha.10:
+  /babel-plugin-transform-export-extensions/7.0.0-alpha.15:
     dependencies:
-      babel-plugin-syntax-export-extensions: 7.0.0-alpha.9
+      babel-plugin-syntax-export-extensions: 7.0.0-alpha.15
     resolution:
-      integrity: sha1-zf9pU9WOq+V51bRUCzRpgv3LVLA=
-  /babel-plugin-transform-function-bind/7.0.0-alpha.10:
+      integrity: sha1-zlF/KhTtW8L17p5p1Ks68Q0Hs50=
+  /babel-plugin-transform-function-bind/7.0.0-alpha.15:
     dependencies:
-      babel-plugin-syntax-function-bind: 7.0.0-alpha.9
+      babel-plugin-syntax-function-bind: 7.0.0-alpha.15
     resolution:
-      integrity: sha1-nG4sgCdDy0tOTy7Wzs9sSbA8B0c=
+      integrity: sha1-K19lOxpHK1Gf5xkgZr/NnZhfExQ=
   /babel-plugin-transform-imports/1.4.0:
     dependencies:
       babel-types: 6.25.0
@@ -674,16 +680,26 @@ packages:
       lodash.snakecase: 4.1.1
     resolution:
       integrity: sha1-9Vy19atD/iiFwizpqR0x+9Md7w8=
-  /babel-plugin-transform-object-rest-spread/7.0.0-alpha.10:
+  /babel-plugin-transform-numeric-separator/7.0.0-alpha.15:
     dependencies:
-      babel-plugin-syntax-object-rest-spread: 7.0.0-alpha.9
+      babel-plugin-syntax-numeric-separator: 7.0.0-alpha.15
     resolution:
-      integrity: sha1-7UJb2rxGopztPMsHiNGKv47RK+k=
+      integrity: sha1-rrZDwJ2wckrddVFyejicQKyt7yo=
   /babel-plugin-transform-object-rest-spread/7.0.0-alpha.12:
     dependencies:
       babel-plugin-syntax-object-rest-spread: 7.0.0-alpha.12
     resolution:
       integrity: sha1-qQIx4TN35iPx3EQM28gA6p2nqB0=
+  /babel-plugin-transform-object-rest-spread/7.0.0-alpha.15:
+    dependencies:
+      babel-plugin-syntax-object-rest-spread: 7.0.0-alpha.15
+    resolution:
+      integrity: sha1-+pNpVn6VkV76VPNVzFJMcNqxTUs=
+  /babel-plugin-transform-optional-chaining/7.0.0-alpha.15:
+    dependencies:
+      babel-plugin-syntax-optional-chaining: 7.0.0-alpha.15
+    resolution:
+      integrity: sha1-+ZPfZLShv70tT68Y9SXkoQ0mlW8=
   /babel-plugin-transform-react-constant-elements/7.0.0-alpha.12:
     resolution:
       integrity: sha1-myClebYYY3LVKihpgcjHMzl0ng0=
@@ -708,13 +724,13 @@ packages:
       babel-types: 7.0.0-alpha.12
     resolution:
       integrity: sha1-tuZKLLiXBc7qJEBS6NUeQyB+E/w=
-  /babel-plugin-transform-unicode-property-regex/2.0.1:
+  /babel-plugin-transform-unicode-property-regex/2.0.2:
     dependencies:
       babel-helper-regex: 6.24.1
       babel-runtime: 6.23.0
-      regexpu-core: 4.0.11
+      regexpu-core: 4.1.1
     resolution:
-      integrity: sha1-/Y8mItNy7caHPLZGoOHi8VQw2WU=
+      integrity: sha512-UmRwDvxO+8yRMCkI6xOnJWlNlmK+zqR6rdukL7m0+eKC1hnuPPMU8Zvji8iUWBY+GAo8Z8q0R60jQuX9wKGDfA==
   /babel-polyfill/6.23.0:
     dependencies:
       babel-runtime: 6.23.0
@@ -756,34 +772,36 @@ packages:
       semver: 5.3.0
     resolution:
       integrity: sha1-TbpPkX/PCUfGSYX3HapCh/N+Go4=
-  /babel-preset-stage-0/7.0.0-alpha.10:
+  /babel-preset-stage-0/7.0.0-alpha.15:
     dependencies:
-      babel-plugin-transform-do-expressions: 7.0.0-alpha.10
-      babel-plugin-transform-function-bind: 7.0.0-alpha.10
-      babel-preset-stage-1: 7.0.0-alpha.10
+      babel-plugin-transform-do-expressions: 7.0.0-alpha.15
+      babel-plugin-transform-function-bind: 7.0.0-alpha.15
+      babel-preset-stage-1: 7.0.0-alpha.15
     resolution:
-      integrity: sha1-MFHqSXJZyEGxJYHb1NtEsQAp83s=
-  /babel-preset-stage-1/7.0.0-alpha.10:
+      integrity: sha1-cMTjDUcqh2wfc3QUvCb4SvRexXg=
+  /babel-preset-stage-1/7.0.0-alpha.15:
     dependencies:
-      babel-plugin-transform-decorators: 7.0.0-alpha.10
-      babel-plugin-transform-export-extensions: 7.0.0-alpha.10
-      babel-preset-stage-2: 7.0.0-alpha.10
+      babel-plugin-transform-decorators: 7.0.0-alpha.15
+      babel-plugin-transform-export-extensions: 7.0.0-alpha.15
+      babel-plugin-transform-numeric-separator: 7.0.0-alpha.15
+      babel-plugin-transform-optional-chaining: 7.0.0-alpha.15
+      babel-preset-stage-2: 7.0.0-alpha.15
     resolution:
-      integrity: sha1-khcFawPXUYd3JngcBeUMIAF/y2k=
-  /babel-preset-stage-2/7.0.0-alpha.10:
+      integrity: sha1-DM5YJKl0s9cZ6Y8wEPIGSNlZ+mE=
+  /babel-preset-stage-2/7.0.0-alpha.15:
     dependencies:
-      babel-plugin-transform-class-properties: 7.0.0-alpha.10
-      babel-plugin-transform-unicode-property-regex: 2.0.1
-      babel-preset-stage-3: 7.0.0-alpha.10
+      babel-plugin-transform-class-properties: 7.0.0-alpha.15
+      babel-preset-stage-3: 7.0.0-alpha.15
     resolution:
-      integrity: sha1-lsTjtXcMkg1uYG8z+UDGAwUTNcs=
-  /babel-preset-stage-3/7.0.0-alpha.10:
+      integrity: sha1-HZyho753TtYC/41za31CqB2mAkY=
+  /babel-preset-stage-3/7.0.0-alpha.15:
     dependencies:
-      babel-plugin-syntax-dynamic-import: 7.0.0-alpha.9
-      babel-plugin-transform-async-generator-functions: 7.0.0-alpha.10
-      babel-plugin-transform-object-rest-spread: 7.0.0-alpha.10
+      babel-plugin-syntax-dynamic-import: 7.0.0-alpha.15
+      babel-plugin-transform-async-generator-functions: 7.0.0-alpha.15
+      babel-plugin-transform-object-rest-spread: 7.0.0-alpha.15
+      babel-plugin-transform-unicode-property-regex: 2.0.2
     resolution:
-      integrity: sha1-0x3qqz8+Msbj3Y8Em0VIvl+E7T0=
+      integrity: sha1-HS0qX0z2x0PcBKXZu6E/XGNWGwk=
   /babel-register/6.24.1:
     dependencies:
       babel-core: 6.24.1
@@ -810,14 +828,6 @@ packages:
       lodash: 4.17.4
     resolution:
       integrity: sha1-BK5RTx+Ts6JTfyoPYKWkX7gwgzM=
-  /babel-template/7.0.0-alpha.10:
-    dependencies:
-      babel-traverse: 7.0.0-alpha.10
-      babel-types: 7.0.0-alpha.10
-      babylon: 7.0.0-beta.10
-      lodash: 4.17.4
-    resolution:
-      integrity: sha1-44LQ/7Y1ah0h9RqJy1c6qMdFEts=
   /babel-template/7.0.0-alpha.12:
     dependencies:
       babel-traverse: 7.0.0-alpha.12
@@ -826,6 +836,14 @@ packages:
       lodash: 4.17.4
     resolution:
       integrity: sha1-9B45WrC7nqJtBOlozc9wOtuux4o=
+  /babel-template/7.0.0-alpha.15:
+    dependencies:
+      babel-traverse: 7.0.0-alpha.15
+      babel-types: 7.0.0-alpha.15
+      babylon: 7.0.0-beta.13
+      lodash: 4.17.4
+    resolution:
+      integrity: sha1-CLVlYph8mJO71mRrzkgZB0uhz5A=
   /babel-template/7.0.0-alpha.7:
     dependencies:
       babel-traverse: 7.0.0-alpha.7
@@ -860,19 +878,6 @@ packages:
       lodash: 4.17.4
     resolution:
       integrity: sha1-IldJfi/NGbie3BPEyROB+VEklvE=
-  /babel-traverse/7.0.0-alpha.10:
-    dependencies:
-      babel-code-frame: 7.0.0-alpha.9
-      babel-helper-function-name: 7.0.0-alpha.7
-      babel-messages: 7.0.0-alpha.10
-      babel-types: 7.0.0-alpha.10
-      babylon: 7.0.0-beta.10
-      debug: 2.6.8
-      globals: 9.18.0
-      invariant: 2.2.2
-      lodash: 4.17.4
-    resolution:
-      integrity: sha1-uiyufShfepZ3lGr7lmqOwB6ClZ8=
   /babel-traverse/7.0.0-alpha.12:
     dependencies:
       babel-code-frame: 7.0.0-alpha.12
@@ -886,6 +891,19 @@ packages:
       lodash: 4.17.4
     resolution:
       integrity: sha1-DAhVpgKH5W5Uz2HqnxNc33WdatA=
+  /babel-traverse/7.0.0-alpha.15:
+    dependencies:
+      babel-code-frame: 7.0.0-alpha.15
+      babel-helper-function-name: 7.0.0-alpha.15
+      babel-messages: 7.0.0-alpha.15
+      babel-types: 7.0.0-alpha.15
+      babylon: 7.0.0-beta.15
+      debug: 2.6.8
+      globals: 9.18.0
+      invariant: 2.2.2
+      lodash: 4.17.4
+    resolution:
+      integrity: sha1-169Sy47m4IZ7d42hcWbm8BSYsRo=
   /babel-traverse/7.0.0-alpha.7:
     dependencies:
       babel-code-frame: 7.0.0-alpha.3
@@ -914,13 +932,6 @@ packages:
       to-fast-properties: 1.0.3
     resolution:
       integrity: sha1-cK+ySNVmDl0Y+BHZHIMDtUE0oY4=
-  /babel-types/7.0.0-alpha.10:
-    dependencies:
-      esutils: 2.0.2
-      lodash: 4.17.4
-      to-fast-properties: 1.0.3
-    resolution:
-      integrity: sha1-DFS3cjnhtUcyP31J+Ia1aJRQ6d0=
   /babel-types/7.0.0-alpha.12:
     dependencies:
       esutils: 2.0.2
@@ -928,6 +939,13 @@ packages:
       to-fast-properties: 1.0.3
     resolution:
       integrity: sha1-17LG0MScUY/TbeWsFPT1C+1t5+U=
+  /babel-types/7.0.0-alpha.15:
+    dependencies:
+      esutils: 2.0.2
+      lodash: 4.17.4
+      to-fast-properties: 1.0.3
+    resolution:
+      integrity: sha1-5AIeakMukGZ438bMiYBboyNPn0g=
   /babel-types/7.0.0-alpha.7:
     dependencies:
       esutils: 2.0.2
@@ -941,12 +959,15 @@ packages:
   /babylon/6.17.3:
     resolution:
       integrity: sha1-EyfXCZULVY8gTlNSWH/QKQ+Njkg=
-  /babylon/7.0.0-beta.10:
-    resolution:
-      integrity: sha1-B6IQ6mpEgMlYF5RAOQemxyq8YHw=
   /babylon/7.0.0-beta.12:
     resolution:
       integrity: sha1-97nIqJ/31q+1e5BtlHpCN/m/U/k=
+  /babylon/7.0.0-beta.13:
+    resolution:
+      integrity: sha1-EkJcG/2UmL5BkCHtNrQ/5PAonAo=
+  /babylon/7.0.0-beta.15:
+    resolution:
+      integrity: sha1-QQNIvNIa9HClWr6paYycZR2H8cY=
   /babylon/7.0.0-beta.8:
     resolution:
       integrity: sha1-K9xa42YEFELCfgaMzm8NfAbqmUk=
@@ -1329,7 +1350,7 @@ packages:
       which: 1.2.14
     resolution:
       integrity: sha1-6L0O/uWPz/b4+UUQoKVUu/ojVEk=
-  /crypto-browserify/3.11.0:
+  /crypto-browserify/3.11.1:
     dependencies:
       browserify-cipher: 1.0.0
       browserify-sign: 4.0.4
@@ -1342,7 +1363,7 @@ packages:
       public-encrypt: 4.0.0
       randombytes: 2.0.5
     resolution:
-      integrity: sha1-NlKgkGq5sqfgw85mpAjpV6JIVSI=
+      integrity: sha512-Na7ZlwCOqoaW5RwUK1WpXws2kv8mNhWdTlzob0UXulk6G9BDbyiJaGTYBIX61Ozn9l1EPPJpICZb4DaOpT9NlQ==
   /css-color-keywords/1.0.0:
     resolution:
       integrity: sha1-/qJhbcZ2spYmhrOvjb2+GAskTgU=
@@ -1883,7 +1904,7 @@ packages:
       integrity: sha1-DAymltm5u2lNLlRwvTd3fKrVAoY=
   /globals/9.18.0:
     resolution:
-      integrity: sha1-qjiWs+abSH8X4x7SFD1pqOMMLYo=
+      integrity: sha512-S0nG3CLEQiY/ILxqtztTWH/3iRRdyBLw6KMDxnKMchrtbj2OFmehVh0WUCfW3DUrIgx/qFrJPICrq4Z4sTR9UQ==
   /globby/6.1.0:
     dependencies:
       array-union: 1.0.2
@@ -2568,7 +2589,7 @@ packages:
       buffer: 4.9.1
       console-browserify: 1.1.0
       constants-browserify: 1.0.0
-      crypto-browserify: 3.11.0
+      crypto-browserify: 3.11.1
       domain-browser: 1.1.7
       events: 1.1.1
       https-browserify: 0.0.1
@@ -2825,9 +2846,9 @@ packages:
   /preact-transition-group/1.1.1:
     resolution:
       integrity: sha1-8KSTJ+pRXs406ivoZMSn0p5dbhA=
-  /preact/8.2.0:
+  /preact/8.2.1:
     resolution:
-      integrity: sha1-pC6VVChEVa+oY9M4+InaKmJw+Qk=
+      integrity: sha1-Z0JD3wyEeITQGYNARKovzTEecu0=
   /preload-webpack-plugin/1.2.2:
     dependencies:
       object-assign: 4.1.1
@@ -3071,6 +3092,11 @@ packages:
       regenerate: 1.3.2
     resolution:
       integrity: sha1-P+aS2paUT63O1+MyNAtQ+K32Nxo=
+  /regenerate-unicode-properties/5.1.0:
+    dependencies:
+      regenerate: 1.3.2
+    resolution:
+      integrity: sha512-xqlmGBklpiDwqLSkXK4xz0rvr3iIQqMt/HsqA3GWei0wpIcybLoujLppewotKaxzV4KwMcMlunj7c89PIeyv+g==
   /regenerate/1.3.2:
     resolution:
       integrity: sha1-0ZQcZ7rUN+G+dkM63Vs4X5WxkmA=
@@ -3100,6 +3126,16 @@ packages:
       unicode-match-property-value-ecmascript: 1.0.0
     resolution:
       integrity: sha1-eY+emYb3jHk93kA/Gz80wAe/c6k=
+  /regexpu-core/4.1.1:
+    dependencies:
+      regenerate: 1.3.2
+      regenerate-unicode-properties: 5.1.0
+      regjsgen: 0.3.0
+      regjsparser: 0.2.1
+      unicode-match-property-ecmascript: 1.0.2
+      unicode-match-property-value-ecmascript: 1.0.1
+    resolution:
+      integrity: sha512-7GxoLPMhj0ng8DOtWHeTFTXna911T05C3Mm5z7W7ODgX6vIAMfCgnWpmMplzraOtv9Fbu5J4gHhuMCKE+Xzsqg==
   /regjsgen/0.3.0:
     resolution:
       integrity: sha1-DuSj6SdkMM2iXx54nqbBW4ewy0M=
@@ -3565,6 +3601,13 @@ packages:
       webpack-sources: 1.0.1
     resolution:
       integrity: sha1-eCnFDuWlt1WWnURYNX7Vot02+70=
+  /uglifyjs-webpack-plugin/0.4.6:
+    dependencies:
+      source-map: 0.5.6
+      uglify-js: 2.8.29
+      webpack-sources: 1.0.1
+    resolution:
+      integrity: sha1-uVH0q7a9YX5m9j64kUmOORdj4wk=
   /uglifyjs-webpack-plugin/0.4.6/webpack@3.1.0:
     dependencies:
       source-map: 0.5.6
@@ -3580,18 +3623,33 @@ packages:
   /unicode-canonical-property-names-ecmascript/1.0.0:
     resolution:
       integrity: sha1-IAaK70rameoqgL8/+CmaTbPlvtA=
+  /unicode-canonical-property-names-ecmascript/1.0.1:
+    resolution:
+      integrity: sha512-c9juFqQ+es3yrZYrWPgykz4RjhTNv5PEneMmNEXGTAw6RqiCzSl1w4uDB9rxCGasiovwzBeGitMJYO+u9jU7Zg==
   /unicode-match-property-ecmascript/1.0.1:
     dependencies:
       unicode-canonical-property-names-ecmascript: 1.0.0
       unicode-property-aliases-ecmascript: 1.0.2
     resolution:
       integrity: sha1-84BWf7iVzGSYKL6jpST6NPT+udo=
+  /unicode-match-property-ecmascript/1.0.2:
+    dependencies:
+      unicode-canonical-property-names-ecmascript: 1.0.1
+      unicode-property-aliases-ecmascript: 1.0.3
+    resolution:
+      integrity: sha512-1jUYUJTBqPjcSd5fzO5u7Q0QlFMgGZWyN8DgQL1VkvhLn3Ai4gAyzIB9o9D03PMJJ2SFoDyE7x8aVl3whPjuZg==
   /unicode-match-property-value-ecmascript/1.0.0:
     resolution:
       integrity: sha1-OT+j6Lr03ixBW5Wo1zOFh+PlY74=
+  /unicode-match-property-value-ecmascript/1.0.1:
+    resolution:
+      integrity: sha512-lM8B0FDZQh9yYGgiabRQcyWicB27VLOolSBRIxsO7FeQPtg+79Oe7sC8Mzr8BObDs+G9CeYmC/shHo6OggNEog==
   /unicode-property-aliases-ecmascript/1.0.2:
     resolution:
       integrity: sha1-tJX1RMecKoXPMIPJB8iE7xVL4aA=
+  /unicode-property-aliases-ecmascript/1.0.3:
+    resolution:
+      integrity: sha512-TdDmDOTxEf2ad1g3ZBpM6cqKIb2nJpVlz1Q++casDryKz18tpeMBhSng9hjC1CTQCkOV9Rw2knlSB6iRo7ad1w==
   /unpipe/1.0.0:
     resolution:
       integrity: sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw=
@@ -3776,6 +3834,32 @@ packages:
       yargs: 6.6.0
     resolution:
       integrity: sha512-BWF3vW30ZpqscTpIsqUi6gTnXdvoeS+uEcmoAjtg5Yq0xtxebjz8xjDl3AWV4P5Mi3RqS5Xhq+Q5vvcjU3iUAw==
+  /webpack/3.2.0:
+    dependencies:
+      acorn: 5.1.1
+      acorn-dynamic-import: 2.0.2
+      ajv: 5.2.2
+      ajv-keywords: /ajv-keywords/2.1.0/ajv@5.2.2
+      async: 2.5.0
+      enhanced-resolve: 3.3.0
+      escope: 3.6.0
+      interpret: 1.0.3
+      json-loader: 0.5.4
+      json5: 0.5.1
+      loader-runner: 2.3.0
+      loader-utils: 1.1.0
+      memory-fs: 0.4.1
+      mkdirp: 0.5.1
+      node-libs-browser: 2.0.0
+      source-map: 0.5.6
+      supports-color: 3.2.3
+      tapable: 0.2.6
+      uglifyjs-webpack-plugin: 0.4.6
+      watchpack: 1.3.1
+      webpack-sources: 1.0.1
+      yargs: 6.6.0
+    resolution:
+      integrity: sha512-eqCVdO0QMlkhwKr6CmIt0va3XbDhcoeC3SjVhMjJWIL3Rh/nEDC3L49osJxtSw0FelbEs7IXbftWYw2DKGS0cw==
   /websocket-driver/0.6.5:
     dependencies:
       websocket-extensions: 0.1.1
@@ -3906,7 +3990,7 @@ specifiers:
   babel-plugin-transform-react-remove-prop-types: ^0.4.6
   babel-plugin-transform-regenerator: ^7.0.0-alpha.12
   babel-preset-env: ^2.0.0-alpha.7
-  babel-preset-stage-0: 7.0.0-alpha.10
+  babel-preset-stage-0: 7.0.0-alpha.15
   bootstrap: 4.0.0-alpha.6
   case-sensitive-paths-webpack-plugin: ^2.1.1
   copy-webpack-plugin: ^4.0.1
@@ -3917,7 +4001,7 @@ specifiers:
   html-webpack-harddisk-plugin: ^0.1.0
   html-webpack-include-assets-plugin: ^0.0.6
   html-webpack-plugin: ^2.29.0
-  preact: ^8.2.0
+  preact: ^8.2.1
   preact-compat: ^3.16.0
   preact-css-transition-group: ^1.3.0
   preact-render-to-string: ^3.6.3
@@ -3939,7 +4023,7 @@ specifiers:
   source-map: ^0.5.6
   uglify-js: 'git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22'
   uglifyjs-webpack-plugin: 0.4.4
-  webpack: ^3.1.0
+  webpack: ^3.2.0
   webpack-bundle-analyzer: ^2.8.2
   webpack-common-shake: ^1.5.3
   webpack-dev-server: ^2.5.1
