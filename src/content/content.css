@@ -189,13 +189,14 @@ div > div + a + div,
 .coreSpriteLikeAnimationHeart,
 .coreSpriteSidecarIconLarge,
 .coreSpriteUserTagIndicator,
-.coreSpriteVideoIconLarge {
+.coreSpriteVideoIconLarge,
+.coreSpriteRightChevron,
+.coreSpriteLeftChevron {
 	z-index: 3;
 }
 
 /** Move multiple videos/images dots and make them more visible */
 main.post td > div {
-	transform: translateY(35px);
 	background: #9e9e9e !important;
 }
 
