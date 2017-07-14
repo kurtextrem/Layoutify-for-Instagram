@@ -1,6 +1,6 @@
 import { CardDeck } from 'reactstrap'
 import { Chrome, Storage } from './Utils'
-import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
+import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
 
 import Loading from './Loading'
 import Post from './Post'
@@ -10,16 +10,10 @@ const loading = <Loading />
 const Posts = (posts, renderPost) => posts.map(post => renderPost(post))
 
 export default class PostsContainer extends Component {
-	constructor(props, ...rest) {
+	constructor(props) {
 		super(props)
 
-		const [id, defaultClass, toggleClass] = rest
-
-		this.id = id
-		this.toggleClass = toggleClass
-		this.defaultClass = defaultClass
-
-		if (this.id === '') throw new Error('Children must have an id set')
+		if (props.id === '') throw new Error('Children must have an id set')
 
 		this.state = {
 			data: null,
@@ -35,7 +29,8 @@ export default class PostsContainer extends Component {
 	}
 
 	storageListener = (changes, area) => {
-		if (changes[this.id] !== undefined && changes[this.id].newValue !== undefined) {
+		const id = this.props.id
+		if (changes[id] !== undefined && changes[id].newValue !== undefined) {
 			console.log('new data', changes)
 			this.populateData()
 		}
@@ -46,7 +41,7 @@ export default class PostsContainer extends Component {
 	}
 
 	populateData = () => {
-		return Storage.get(this.id, []).then(this.handleData)
+		return Storage.get(this.props.id, []).then(this.handleData)
 	}
 
 	handleData = data => {
@@ -62,11 +57,12 @@ export default class PostsContainer extends Component {
 	}
 
 	handleScroll = () => {
-		Chrome.send('load', { which: this.id })
+		Chrome.send('load', { which: this.props.id })
 	}
 
 	renderPost = post => {
-		return <Post key={post.id} data={post} parent={this.id} defaultClass={this.defaultClass} toggleClass={this.toggleClass} />
+		const { id, defaultClass, toggleClass } = this.props
+		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} />
 	}
 
 	componentDidMount() {
@@ -79,6 +75,11 @@ export default class PostsContainer extends Component {
 
 	componentWillUnmount() {
 		this.removeStorageListener()
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const { timeout, data } = this.state
+		return nextProps.id !== this.props.id || timeout !== nextState.timeout || (data !== null && nextState.length !== data.length)
 	}
 
 	render(props, state) {

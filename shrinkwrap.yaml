@@ -51,6 +51,7 @@ dependencies:
   webpack-bundle-analyzer: 2.8.2
   webpack-common-shake: 1.5.3
   webpack-dev-server: 2.5.1
+  why-did-you-update: 0.0.8
   write-file-webpack-plugin: 4.1.0
   zip-webpack-plugin: 1.1.0
 packages:
@@ -2392,6 +2393,9 @@ packages:
   /lodash.tonumber/4.0.3:
     resolution:
       integrity: sha1-C5azGzVnJ5Prf1pj7nkfG56QJdk=
+  /lodash/4.12.0:
+    resolution:
+      integrity: sha1-K9bcRqBA9Z5obJcu0h2T3FkFMlg=
   /lodash/4.17.4:
     resolution:
       integrity: sha1-eCA6TRwyiuHYbcpkYONptX9AVa4=
@@ -3879,6 +3883,11 @@ packages:
       isexe: 2.0.0
     resolution:
       integrity: sha1-mofEN48D6CfOyvGs31bHNsAcFOU=
+  /why-did-you-update/0.0.8:
+    dependencies:
+      lodash: 4.12.0
+    resolution:
+      integrity: sha1-OJ2X3WwUfh7byfXVRw1E2YXIrjg=
   /window-size/0.1.0:
     resolution:
       integrity: sha1-VDjNLqk7IC76Ohn+iIeu58lPnJ0=
@@ -4027,5 +4036,6 @@ specifiers:
   webpack-bundle-analyzer: ^2.8.2
   webpack-common-shake: ^1.5.3
   webpack-dev-server: ^2.5.1
+  why-did-you-update: ^0.0.8
   write-file-webpack-plugin: ^4.1.0
   zip-webpack-plugin: ^1.1.0

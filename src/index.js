@@ -1,5 +1,5 @@
-import { h, options, render } from 'preact'
 import App from './components/App'
+import Preact, { h, options, render } from 'preact'
 
 options.syncComponentUpdates = false
 
@@ -17,6 +17,8 @@ if (typeof app === 'function') {
 
 	if (module.hot) {
 		require('preact/devtools')
+		const { whyDidYouUpdate } = require('why-did-you-update')
+		whyDidYouUpdate(Preact)
 		module.hot.accept('./components/App', () => requestAnimationFrame(init))
 	}
 

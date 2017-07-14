@@ -54,6 +54,7 @@
 		"webpack-bundle-analyzer": "^2.8.2",
 		"webpack-common-shake": "^1.5.3",
 		"webpack-dev-server": "^2.5.1",
+		"why-did-you-update": "^0.0.8",
 		"write-file-webpack-plugin": "^4.1.0",
 		"zip-webpack-plugin": "^1.1.0"
 	},
