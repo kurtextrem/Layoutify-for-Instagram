@@ -1,4 +1,4 @@
-import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
+import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
 
 import { Router } from 'preact-router'
 import { createHashHistory } from 'history'

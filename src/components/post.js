@@ -1,6 +1,6 @@
 import { Button, CardBlock, CardText } from 'reactstrap'
 import { Chrome } from './Utils'
-import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
+import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
 import Dots from './Dots'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
@@ -16,7 +16,7 @@ export default class Post extends Component {
 
 		this.state = {
 			carouselIndex: 0,
-			active: true
+			active: true,
 		}
 	}
 
@@ -37,10 +37,8 @@ export default class Post extends Component {
 
 		this.setState((prevState, props) => {
 			let newIndex = prevState.carouselIndex
-			if (e.currentTarget.classList.contains('arrow--left'))
-				--newIndex
-			else
-				++newIndex
+			if (e.currentTarget.classList.contains('arrow--left')) --newIndex
+			else ++newIndex
 
 			if (newIndex < 0) newIndex = this.carouselLen - 1
 			else if (newIndex >= this.carouselLen) newIndex = 0
@@ -53,7 +51,8 @@ export default class Post extends Component {
 		e.stopPropagation()
 		e.preventDefault()
 
-		if (this.state.active) { // @todo: Modify our data
+		if (this.state.active) {
+			// @todo: Modify our data
 			Chrome.send('remove', { which: this.props.parent, id: this.id })
 			this.setState((prevState, props) => ({ active: false }))
 		} else {
@@ -79,9 +78,21 @@ export default class Post extends Component {
 
 		let mediaElement = null,
 			candidate = null
-		if (media.media_type === 2) { // video
+		if (media.media_type === 2) {
+			// video
 			candidate = media.video_versions[0]
-			mediaElement = <video src={media.video_versions[0].url} poster={media.image_versions2.candidates[0].url} controls type="video/mp4" width={candidate.width} height={candidate.height} preload="none" className="img-fluid" />
+			mediaElement = (
+				<video
+					src={media.video_versions[0].url}
+					poster={media.image_versions2.candidates[0].url}
+					controls
+					type="video/mp4"
+					width={candidate.width}
+					height={candidate.height}
+					preload="none"
+					className="img-fluid"
+				/>
+			)
 		} else {
 			candidate = media.image_versions2.candidates[0]
 			mediaElement = <img width={candidate.width} height={candidate.height} src={candidate.url} alt={caption + ' - if you see this, the post has probably been deleted.'} className="img-fluid" />
@@ -91,13 +102,23 @@ export default class Post extends Component {
 			<article className="card ml-auto mr-auto">
 				<PostHeader user={user} code={post.code} taken_at={post.taken_at} />
 				<a href={`https://www.instagram.com/p/${post.code}`} target="_blank" rel="noopener" className={isCarousel ? 'post--carousel' : ''}>
-					{isCarousel ? <Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}><i className="material-icons">keyboard_arrow_left</i></Button> : null}
+					{isCarousel
+						? <Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}>
+								<i className="material-icons">keyboard_arrow_left</i>
+							</Button>
+						: null}
 					{mediaElement}
-					{isCarousel ? <Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}><i className="material-icons">keyboard_arrow_right</i></Button> : null}
+					{isCarousel
+						? <Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}>
+								<i className="material-icons">keyboard_arrow_right</i>
+							</Button>
+						: null}
 				</a>
 				{isCarousel ? <Dots index={state.carouselIndex} len={this.carouselLen} /> : null}
 				<CardBlock className="overflow-auto p-3">
-					<CardText>{caption}</CardText>
+					<CardText>
+						{caption}
+					</CardText>
 				</CardBlock>
 				<PostFooter active={state.active} btnClick={this.onBtnClick} defaultClass={props.defaultClass} toggleClass={props.toggleClass} parent={props.parent} />
 			</article>
