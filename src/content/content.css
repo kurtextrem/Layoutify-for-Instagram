@@ -160,7 +160,7 @@ main.home header + div + div > section:last-child {
 section > div > div > div:not(#rcr-anchor) + div:not(:last-child) {
 	width: 1px;
 	height: 1px;
-	transform: translateY(calc(var(--boxHeight) * -2.5));
+	transform: translateY(calc(var(--boxHeight) * -2.75));
 	contain: strict;
 	z-index: 2;
 }
