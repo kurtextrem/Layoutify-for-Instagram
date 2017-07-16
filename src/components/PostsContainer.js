@@ -79,7 +79,7 @@ export default class PostsContainer extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { timeout, data } = this.state
-		return nextProps.id !== this.props.id || timeout !== nextState.timeout || (data !== null && nextState.length !== data.length)
+		return nextProps.id !== this.props.id || timeout !== nextState.timeout || (data !== null && nextState.data.length !== data.length)
 	}
 
 	render(props, state) {
