@@ -157,10 +157,10 @@ main.home header + div + div > section:last-child {
 /*=============================================
 						Improved Autoload
 =============================================*/
-section > div > div:not(#rcr-anchor) + div:not(:last-child) {
+section > div > div > div:not(#rcr-anchor) + div:not(:last-child) {
 	width: 1px;
 	height: 1px;
-	transform: translateY(calc(var(--boxHeight) * -2));
+	transform: translateY(calc(var(--boxHeight) * -2.5));
 	contain: strict;
 	z-index: 2;
 }
