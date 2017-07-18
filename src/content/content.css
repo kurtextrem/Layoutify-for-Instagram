@@ -69,14 +69,14 @@ div > main:only-child {
 }
 
 div[role='dialog'] header + div + div,
-main:not(.home) header + div + div {
+main.post header + div + div {
 	top: 63px !important;
 }
 
 /*----------  Improve new post layout  ----------*/
 
 /** Make the comments/description take the space it needs */
-header + div + div {
+main:not(.profile) header + div + div {
 	flex: 1 0 auto;
 }
 
@@ -236,7 +236,14 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 										Spinner
 =============================================*/
-main > section > div > div > div:last-child {
+main:not(.profile) > section > div > div > div:last-child {
+	height: 30px;
+	contain: strict;
+	z-index: 2;
+}
+
+/** Profile spinner */
+main.profile > article > div > div:last-child {
 	height: 30px;
 	contain: strict;
 	z-index: 2;
