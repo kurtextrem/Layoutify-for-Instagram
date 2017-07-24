@@ -12,14 +12,13 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-// const ButternutWebpackPlugin = require('butternut-webpack-plugin').default
-// const BabiliPlugin = require('babili-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 const errorOverlayMiddleware = require('react-error-overlay/middleware')
-const ReplacePlugin = require('replace-bundle-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const prerender = require('./prerender')
 const ShakePlugin = require('webpack-common-shake').Plugin
+const pureFuncs = require('side-effects-safe').pureFuncs
+// const ReplacePlugin = require('webpack-plugin-replace')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -94,6 +93,20 @@ var plugins = [
 ]
 
 if (isProd) {
+	pureFuncs.push(
+		'classCallCheck',
+		'_classCallCheck',
+		'_possibleConstructorReturn',
+		'Object.freeze',
+		'invariant',
+		'classnames',
+		'value-equal',
+		'valueEqual',
+		'resolve-pathname',
+		'resolvePathname',
+		'warning',
+		'proptypes'
+	)
 	plugins.push(
 		new webpack.HashedModuleIdsPlugin(),
 		new HtmlWebpackIncludeAssetsPlugin({
@@ -101,6 +114,7 @@ if (isProd) {
 			append: false,
 			hash: true,
 		}),
+		// new webpack.IgnorePlugin(/prop-types$/),
 		new webpack.LoaderOptionsPlugin({
 			minimize: true,
 			debug: false,
@@ -109,59 +123,60 @@ if (isProd) {
 		new webpack.optimize.ModuleConcatenationPlugin(),
 		new ShakePlugin(),
 		// strip out babel-helper invariant checks
-		new ReplacePlugin([
-			{
-				// this is actually the property name https://github.com/kimhou/replace-bundle-webpack-plugin/issues/1
-				partten: /throw\s+(new\s+)?(Type|Reference)?Error\s*\(/g,
-				replacement: () => 'return;(',
-			},
-		]),
+		/*new ReplacePlugin({
+			patterns: [
+				/*{
+					regex: /throw\s+(new\s+)?(Type|Reference)?Error\s*\(/g,
+					value: 'return;(',
+					},*/
+		/*{
+					regex: /\.propTypes(\s)?=(\s)?propTypes/g,
+					value: '=undefined;',
+				},
+				{
+					regex: /\.defaultProps(\s)?=(\s)?defaultProps/g,
+					value: '=undefined;',
+				},
+			],
+		}),*/
 		new UglifyJSPlugin({
-			output: {
-				comments: false,
+			parallel: {
+				cache: false,
 			},
-			mangle: true,
-			compress: {
-				unsafe_comps: true,
-				properties: true,
-				keep_fargs: false,
-				pure_getters: true,
-				collapse_vars: true,
-				unsafe: true,
-				warnings: false,
-				screw_ie8: true,
-				sequences: true,
-				dead_code: true,
-				drop_debugger: true,
-				comparisons: true,
-				conditionals: true,
-				evaluate: true,
-				booleans: true,
-				loops: true,
-				unused: true,
-				hoist_funs: true,
-				if_return: true,
-				join_vars: true,
-				cascade: true,
-				drop_console: false,
-				pure_funcs: [
-					'classCallCheck',
-					'_classCallCheck',
-					'_possibleConstructorReturn',
-					'Object.freeze',
-					'invariant',
-					'classnames',
-					'value-equal',
-					'valueEqual',
-					'resolve-pathname',
-					'resolvePathname',
-					'warning',
-					'proptypes',
-				],
+			sourceMap: true,
+			uglifyOptions: {
+				ecma: 6,
+				mangle: true,
+				compress: {
+					arrows: false,
+					ecma: 6,
+					unsafe_comps: true,
+					properties: true,
+					keep_fargs: false,
+					pure_getters: true,
+					collapse_vars: true,
+					reduce_vars: true,
+					unsafe: true,
+					warnings: false,
+					dead_code: true,
+					drop_debugger: true,
+					comparisons: true,
+					conditionals: true,
+					evaluate: true,
+					booleans: true,
+					loops: true,
+					unused: true,
+					hoist_funs: true,
+					if_return: true,
+					join_vars: true,
+					cascade: true,
+					drop_console: false,
+					negate_iife: true,
+					passes: 2,
+					pure_funcs: pureFuncs,
+				},
 			},
-		}), // doesn't support "async", so watch out */
-		// new ButternutWebpackPlugin(), // slightly larger than uglify
-		// new BabiliPlugin(),
+		}),
 		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // doesn't support `class` yet
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
@@ -218,7 +233,7 @@ const first = {
 			},
 		],
 		noParse: isProd ?
-			[new RegExp('something-because-cannot-be-empty')] :
+			undefined :
 			[
 					// faster HMR
 					new RegExp(getMin('preact-compat')),
@@ -236,11 +251,11 @@ const first = {
 			'react-addons-css-transition-group': isProd ? 'preact-css-transition-group' : getMin('preact-css-transition-group'),
 			'react-addons-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
 			'react-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
-			'prop-types$': isProd ? 'proptypes/disabled' : 'prop-types',
+			'prop-types$': 'proptypes/disabled',
 		},
 	},
 
-	devtool: isProd ? false /*'cheap-module-source-map'*/ : 'cheap-module-source-map',
+	devtool: isProd ? false /*'source-map'*/ /* 'cheap-module-source-map'*/ : 'cheap-module-source-map',
 
 	devServer: {
 		contentBase: path.join(__dirname, 'dist/'),
