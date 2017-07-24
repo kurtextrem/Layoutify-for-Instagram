@@ -186,6 +186,7 @@ main.post video::-webkit-media-controls-enclosure {
 
 /** Makes the multiple videos/images dots visible; Heart animation when db-clicking posts */
 div > div + a + div,
+div > div + span > a,
 .coreSpriteLikeAnimationHeart,
 .coreSpriteSidecarIconLarge,
 .coreSpriteUserTagIndicator,
