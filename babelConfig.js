@@ -1,10 +1,12 @@
 'use strict'
+const resolve = require.resolve
+
 module.exports = (isProd, options = {}) => ({
 	babelrc: false,
 	comments: !isProd,
 	presets: [
 		[
-			require.resolve('babel-preset-env'),
+			resolve('babel-preset-env'),
 			{
 				modules: options.modules || false,
 				targets: isProd ?
@@ -24,9 +26,9 @@ module.exports = (isProd, options = {}) => ({
 	],
 	plugins: isProd ?
 		[
-				[require.resolve('babel-plugin-transform-object-rest-spread'), { useBuiltIns: true }],
+				[resolve('babel-plugin-transform-object-rest-spread'), { useBuiltIns: true }],
 				[
-					require.resolve('babel-plugin-transform-imports'),
+					resolve('babel-plugin-transform-imports'),
 					{
 						reactstrap: {
 							transform: 'reactstrap/lib/${member}',
@@ -38,11 +40,11 @@ module.exports = (isProd, options = {}) => ({
 						},
 					},
 				],
-				require.resolve('babel-plugin-transform-react-constant-elements'),
-				[require.resolve('babel-plugin-transform-react-remove-prop-types'), { removeImport: true, additionalLibraries: ['react-immutable-proptypes'] }],
-				[require.resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
+				resolve('babel-plugin-transform-react-constant-elements'),
+				[resolve('babel-plugin-transform-react-remove-prop-types'), { removeImport: true, additionalLibraries: ['react-immutable-proptypes'] }],
+				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
 				[
-					require.resolve('babel-plugin-jsx-pragmatic'),
+					resolve('babel-plugin-jsx-pragmatic'),
 					{
 						module: 'preact',
 						export: 'h',
@@ -51,13 +53,13 @@ module.exports = (isProd, options = {}) => ({
 				],
 
 				// 'module:fast-async', - enabled from Chrome 55
-				require.resolve('babel-plugin-loop-optimizer'),
-				require.resolve('babel-plugin-closure-elimination'),
-				require.resolve('./pure-plugin.js'),
+				resolve('babel-plugin-loop-optimizer'),
+				resolve('babel-plugin-closure-elimination'),
+				resolve('./pure-plugin.js'),
 				// 'emotion/babel'
 			] :
 		[
-				[require.resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
+				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
 				// 'emotion/babel'
 				// 'runtyper'
 			],

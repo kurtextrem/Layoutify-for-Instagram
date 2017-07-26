@@ -1,5 +1,4 @@
 import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
-
 import { Router } from 'preact-router'
 import { createHashHistory } from 'history'
 import About from './About'
@@ -16,8 +15,7 @@ export default class App extends Component {
 				<main className="d-flex justify-content-center">
 					<Router history={createHashHistory()}>
 						<Liked path="/" default />
-						<Saved path="/saved" id="default" />
-						<Saved path="/saved/:id" />
+						<Saved path="/saved" />
 						<About path="/about" />
 					</Router>
 				</main>
