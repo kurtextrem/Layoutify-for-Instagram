@@ -7,6 +7,7 @@
 body {
 	font-size: 15px !important; /** we're on desktop, okay? */
 	text-rendering: optimizeSpeed;
+	overflow-y: unset !important; /** de-opts scrolling */
 }
 
 /*----------  Performance  ----------*/
@@ -17,6 +18,14 @@ body {
 /** Outer parent of the image */
 header + div {
 	contain: content;
+}
+
+form > textarea {
+	contain: strict;
+}
+
+header > a {
+	contain: strict;
 }
 
 /** Remove width limit */
@@ -49,6 +58,7 @@ main > section div > article {
 /** Moves the img over the "prevent right click copy"-element */
 div > img {
 	z-index: 1;
+	contain: strict;
 }
 
 /*=============================================

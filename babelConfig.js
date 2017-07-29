@@ -60,6 +60,7 @@ module.exports = (isProd, options = {}) => ({
 			] :
 		[
 				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
+				resolve('transform-react-jsx-source')
 				// 'emotion/babel'
 				// 'runtyper'
 			],

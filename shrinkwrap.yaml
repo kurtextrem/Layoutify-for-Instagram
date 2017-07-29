@@ -11,6 +11,7 @@ dependencies:
   babel-plugin-transform-object-rest-spread: 7.0.0-alpha.12
   babel-plugin-transform-react-constant-elements: 7.0.0-alpha.12
   babel-plugin-transform-react-jsx: 7.0.0-alpha.12
+  babel-plugin-transform-react-jsx-source: 7.0.0-alpha.17
   babel-plugin-transform-react-remove-prop-types: 0.4.6
   babel-plugin-transform-regenerator: 7.0.0-alpha.12
   babel-preset-env: 2.0.0-alpha.12
@@ -32,9 +33,8 @@ dependencies:
   preact-router: 2.5.5
   preact-router-hash: 0.0.1
   preact-transition-group: 1.1.1
-  preload-webpack-plugin: 1.2.2
+  preload-webpack-plugin: 1.2.3
   prepack-webpack-plugin: 1.1.0
-  progress-bar-webpack-plugin: 1.10.0
   proptypes: 1.1.0
   react-dev-utils: 3.0.2
   react-error-overlay: 1.0.9
@@ -46,11 +46,12 @@ dependencies:
   side-effects-safe: 0.0.1
   source-map: 0.5.6
   uglifyjs-webpack-plugin: 1.0.0-beta.2
-  webpack: 3.4.0
+  webpack: 3.4.1
   webpack-bundle-analyzer: 2.8.3
   webpack-common-shake: 1.5.3
   webpack-dev-server: 2.6.1
   webpack-plugin-replace: 1.1.1
+  webpack-simple-progress-plugin: 0.0.2
   why-did-you-update: 0.0.8
   write-file-webpack-plugin: 4.1.0
   zip-webpack-plugin: 2.0.0
@@ -137,12 +138,12 @@ packages:
       color-convert: 1.9.0
     resolution:
       integrity: sha512-NnSOmMEYtVR2JVMIGTzynRkkaxtiq1xnFBcdQD/DnNCYPoEPsVJhM98BDyaoNOQIi7p4okdi3E27eN7GQbsUug==
-  /anymatch/1.3.0:
+  /anymatch/1.3.2:
     dependencies:
-      arrify: 1.0.1
       micromatch: 2.3.11
+      normalize-path: 2.1.1
     resolution:
-      integrity: sha1-o+Uvo5FoyCX/V7AkgSbOWo/5VQc=
+      integrity: sha512-0XNayC8lTHQ2OI8aljNCN3sSx6hsr/1+rlcDAotXJR7C1oZZHCNsfpbKwMjRA3Uqb5tF1Rae2oloTr4xpq+WjA==
   /aproba/1.1.2:
     resolution:
       integrity: sha512-ZpYajIfO0j2cOFTO955KUMIKNmj6zhX8kVztMAxFsDaMwz+9Z9SV0uou2pC9HJqcfpffOsjnbrDMvkNy+9RXPw==
@@ -183,9 +184,6 @@ packages:
   /array-unique/0.2.1:
     resolution:
       integrity: sha1-odl8yvy8JiXMcPrc6zalDFiwGlM=
-  /arrify/1.0.1:
-    resolution:
-      integrity: sha1-iYUI2iIm84DfkEcoRWhJwVAaSw0=
   /asap/2.0.6:
     resolution:
       integrity: sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
@@ -523,6 +521,9 @@ packages:
   /babel-plugin-syntax-jsx/7.0.0-alpha.12:
     resolution:
       integrity: sha1-xpNdtAJTeGD2yps18hooGRzpflg=
+  /babel-plugin-syntax-jsx/7.0.0-alpha.17:
+    resolution:
+      integrity: sha1-4cETagrJ1TLeIpW89ZccPEVhsKg=
   /babel-plugin-syntax-numeric-separator/7.0.0-alpha.15:
     resolution:
       integrity: sha1-6Er9y4Fhcpr2viL2tyiQUvpEftw=
@@ -731,6 +732,11 @@ packages:
   /babel-plugin-transform-react-constant-elements/7.0.0-alpha.12:
     resolution:
       integrity: sha1-myClebYYY3LVKihpgcjHMzl0ng0=
+  /babel-plugin-transform-react-jsx-source/7.0.0-alpha.17:
+    dependencies:
+      babel-plugin-syntax-jsx: 7.0.0-alpha.17
+    resolution:
+      integrity: sha1-2o4l7vHQ1HiVobWojk/iWXJjVRc=
   /babel-plugin-transform-react-jsx/7.0.0-alpha.12:
     dependencies:
       babel-helper-builder-react-jsx: 7.0.0-alpha.12
@@ -1232,7 +1238,7 @@ packages:
       integrity: sha512-Mp+FXEI+FrwY/XYV45b2YD3E8i3HwnEAoFcM0qlZzq/RZ9RwWitt2Y/c7cqRAz70U7hfekqx6qNYthuKFO6K0g==
   /chokidar/1.7.0:
     dependencies:
-      anymatch: 1.3.0
+      anymatch: 1.3.2
       async-each: 1.0.1
       fsevents: 1.1.1
       glob-parent: 2.0.0
@@ -1521,12 +1527,6 @@ packages:
   /deep-equal/1.0.1:
     resolution:
       integrity: sha1-9dJgKStmDghO/0zbyfCK0yR0SLU=
-  /define-properties/1.1.2:
-    dependencies:
-      foreach: 2.0.5
-      object-keys: 1.0.11
-    resolution:
-      integrity: sha1-g6c/L+pWmJj7c3GTyPhzyvbUXJQ=
   /del/3.0.0:
     dependencies:
       globby: 6.1.0
@@ -1979,9 +1979,6 @@ packages:
       for-in: 1.0.2
     resolution:
       integrity: sha1-UmXGgaTylNq78XyVCbZ2OqhFEM4=
-  /foreach/2.0.5:
-    resolution:
-      integrity: sha1-C+4AUBiusmDQo6865ljdATbsG5k=
   /forwarded/0.1.0:
     resolution:
       integrity: sha1-Ge+YdMSuHCl7zweP3mOgm2aoQ2M=
@@ -2032,9 +2029,6 @@ packages:
     optional: true
     resolution:
       integrity: sha512-Sn44E5wQW4bTHXvQmvSHwqbuiXtduD6Rrjm2ZtUEGbyrig+nUH3t/QD4M4/ZXViY556TBpRgZkHLDx3JxPwxiw==
-  /function-bind/1.1.0:
-    resolution:
-      integrity: sha1-FhdnFMgBeY5Ojyz391KUZ7tKV3E=
   /get-caller-file/1.0.2:
     resolution:
       integrity: sha1-9wLmMSfn4jHBYKgMFVSstw1QR+U=
@@ -2876,16 +2870,6 @@ packages:
   /object-assign/4.1.1:
     resolution:
       integrity: sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
-  /object-keys/1.0.11:
-    resolution:
-      integrity: sha1-xUYBd4rVYPEULODgG8yotW0TQm0=
-  /object.assign/4.0.4:
-    dependencies:
-      define-properties: 1.1.2
-      function-bind: 1.1.0
-      object-keys: 1.0.11
-    resolution:
-      integrity: sha1-scnMBE7xuf5jYG/BQau7MuFHMMw=
   /object.omit/2.0.1:
     dependencies:
       for-own: 0.1.5
@@ -3130,11 +3114,11 @@ packages:
   /preact/8.2.1:
     resolution:
       integrity: sha1-Z0JD3wyEeITQGYNARKovzTEecu0=
-  /preload-webpack-plugin/1.2.2:
+  /preload-webpack-plugin/1.2.3:
     dependencies:
       object-assign: 4.1.1
     resolution:
-      integrity: sha1-0bbw6rPC0LtMJJ1AnPa3qLCkFd0=
+      integrity: sha512-jypdTtVbkFDzBedWyAXLrUpRHTwllHjsVph+SKgM2CmOcGb20u0NNakcR3Uf746P6e1Kp8PBB4K1D2yFeRilfQ==
   /prepack-webpack-plugin/1.1.0:
     dependencies:
       prepack: 0.2.3
@@ -3175,13 +3159,6 @@ packages:
   /process/0.11.10:
     resolution:
       integrity: sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
-  /progress-bar-webpack-plugin/1.10.0:
-    dependencies:
-      chalk: 1.1.3
-      object.assign: 4.0.4
-      progress: 1.1.8
-    resolution:
-      integrity: sha1-4LEGOqA8eeKYqTQFmFkLth7++aQ=
   /progress/1.1.8:
     resolution:
       integrity: sha1-4mDHj2Fhzdmw5WzD4Khd4Xx6V74=
@@ -4165,6 +4142,13 @@ packages:
   /webpack-plugin-replace/1.1.1:
     resolution:
       integrity: sha1-mBZkf+/Jin0XAPk/K0tvSBzyAWE=
+  /webpack-simple-progress-plugin/0.0.2:
+    dependencies:
+      chalk: 1.1.3
+      object-assign: 4.1.1
+      progress: 1.1.8
+    resolution:
+      integrity: sha1-gGNE5ktvMTtNlif+RkR65Ok/zTY=
   /webpack-sources/0.2.3:
     dependencies:
       source-list-map: 1.1.2
@@ -4203,7 +4187,7 @@ packages:
       yargs: 6.6.0
     resolution:
       integrity: sha512-BWF3vW30ZpqscTpIsqUi6gTnXdvoeS+uEcmoAjtg5Yq0xtxebjz8xjDl3AWV4P5Mi3RqS5Xhq+Q5vvcjU3iUAw==
-  /webpack/3.4.0:
+  /webpack/3.4.1:
     dependencies:
       acorn: 5.1.1
       acorn-dynamic-import: 2.0.2
@@ -4228,7 +4212,7 @@ packages:
       webpack-sources: 1.0.1
       yargs: 8.0.2
     resolution:
-      integrity: sha1-6UZbZgrXndLTOHTZaLMXRuqajmM=
+      integrity: sha1-TD9PP7MYFVpNsMtqNv8FxWl0GPQ=
   /websocket-driver/0.6.5:
     dependencies:
       websocket-extensions: 0.1.1
@@ -4383,6 +4367,7 @@ specifiers:
   babel-plugin-transform-object-rest-spread: ^7.0.0-alpha.12
   babel-plugin-transform-react-constant-elements: ^7.0.0-alpha.12
   babel-plugin-transform-react-jsx: ^7.0.0-alpha.12
+  babel-plugin-transform-react-jsx-source: ^7.0.0-alpha.17
   babel-plugin-transform-react-remove-prop-types: ^0.4.6
   babel-plugin-transform-regenerator: ^7.0.0-alpha.12
   babel-preset-env: ^2.0.0-alpha.7
@@ -4404,9 +4389,8 @@ specifiers:
   preact-router: ^2.5.5
   preact-router-hash: ^0.0.1
   preact-transition-group: ^1.1.1
-  preload-webpack-plugin: ^1.2.2
+  preload-webpack-plugin: ^1.2.3
   prepack-webpack-plugin: ^1.1.0
-  progress-bar-webpack-plugin: ^1.10.0
   proptypes: ^1.1.0
   react-dev-utils: ^3.0.2
   react-error-overlay: ^1.0.9
@@ -4418,11 +4402,12 @@ specifiers:
   side-effects-safe: ^0.0.1
   source-map: ^0.5.6
   uglifyjs-webpack-plugin: 1.0.0-beta.2
-  webpack: ^3.4.0
+  webpack: ^3.4.1
   webpack-bundle-analyzer: ^2.8.3
   webpack-common-shake: ^1.5.3
   webpack-dev-server: ^2.6.1
   webpack-plugin-replace: ^1.1.1
+  webpack-simple-progress-plugin: ^0.0.2
   why-did-you-update: ^0.0.8
   write-file-webpack-plugin: ^4.1.0
   zip-webpack-plugin: ^2.0.0
