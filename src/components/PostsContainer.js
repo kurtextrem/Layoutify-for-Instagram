@@ -16,7 +16,8 @@ export default class PostsContainer extends Component {
 		if (props.id === '') throw new Error('Children must have an id set')
 
 		this.state = {
-			data: null,
+			items: null,
+			nextMaxId: '',
 			timeout: 0,
 		}
 		this.error = <div>No data available (have you tried clicking the three dots on top of Instagram.com?)</div>
@@ -45,12 +46,12 @@ export default class PostsContainer extends Component {
 	}
 
 	handleData = data => {
-		this.setState((prevState, props) => ({ data, timeout: 400 }))
+		this.setState((prevState, props) => ({ items: data.items, nextMaxId: data.nextMaxId, timeout: 400 }))
 		return data
 	}
 
 	setTimeout = timeout => {
-		if (this.state.data === null) {
+		if (this.state.items === null) {
 			this.setState((prevState, props) => ({ timeout }))
 			window.setTimeout(() => this.setTimeout(400), 400)
 		}
@@ -78,23 +79,28 @@ export default class PostsContainer extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { timeout, data } = this.state
-		console.log(nextProps.id !== this.props.id, timeout !== nextState.timeout, data !== null && nextState.data.length !== data.length, nextState, data)
-		return nextProps.id !== this.props.id || timeout !== nextState.timeout || (data === null && nextState.data !== null) || nextState.data.length !== data.length
+		const { timeout, items } = this.state
+		console.log(nextProps.id !== this.props.id, nextState.timeout !== timeout, items === null && nextState.items !== null, nextState.items, items)
+		return (
+			nextProps.id !== this.props.id ||
+			nextState.timeout !== timeout ||
+			(items === null && nextState.items !== null) || // first items
+			nextState.items.length !== items.length
+		)
 	}
 
 	render(props, state) {
-		const { data, timeout } = state
+		const { items, timeout } = state
 
 		if (timeout === 200) return loading
-		if (data === null) return null
-		if (timeout === 400 && (data.items === undefined || data.items.length === 0)) {
+		if (items === null) return null
+		if (timeout === 400 && (items === null || items.length === 0)) {
 			return this.error
 		}
 
 		return (
 			<CardDeck>
-				{Posts(data.items, this.renderPost) // https://github.com/developit/preact/issues/45
+				{Posts(items, this.renderPost) // https://github.com/developit/preact/issues/45
 				}
 				<Sentinel onVisible={this.handleScroll} />
 			</CardDeck>

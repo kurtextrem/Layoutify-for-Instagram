@@ -1,4 +1,4 @@
-import { Component, h, render } from 'preact' // eslint-disable-line no-unused-vars
+import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
 
 export default class Sentinel extends Component {
 	constructor(props) {
@@ -6,11 +6,11 @@ export default class Sentinel extends Component {
 
 		this.onVisible = props.onVisible
 		if (props.onVisible === undefined) {
-			this.onVisible = function() { }
+			this.onVisible = function onVisible() {}
 		}
 		this.onHide = props.onHide
 		if (props.onHide === undefined) {
-			this.onHide = function() { }
+			this.onHide = function onHide() {}
 		}
 
 		this.io = new IntersectionObserver(this.onUpdate)
@@ -18,10 +18,8 @@ export default class Sentinel extends Component {
 
 	onUpdate = entries => {
 		const entry = entries[0]
-		if (entry.isIntersecting)
-			this.onVisible()
-		else
-			this.onHide()
+		if (entry.isIntersecting) this.onVisible()
+		else this.onHide()
 	}
 
 	setNode = ref => {
@@ -41,8 +39,6 @@ export default class Sentinel extends Component {
 	}
 
 	render() {
-		return (
-			<div ref={this.setNode} className="sentinel" />
-		)
+		return <div ref={this.setNode} className="sentinel" />
 	}
 }
