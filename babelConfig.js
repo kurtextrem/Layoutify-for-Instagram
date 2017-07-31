@@ -9,9 +9,9 @@ module.exports = (isProd, options = {}) => ({
 			resolve('babel-preset-env'),
 			{
 				modules: options.modules || false,
-				targets: isProd ?
-					{ chrome: 55 } :
-					{
+				targets: isProd
+					? { chrome: 55 }
+					: {
 							browsers: 'last 2 Chrome versions',
 						},
 				loose: true,
@@ -24,8 +24,8 @@ module.exports = (isProd, options = {}) => ({
 		],
 		'stage-0',
 	],
-	plugins: isProd ?
-		[
+	plugins: isProd
+		? [
 				[resolve('babel-plugin-transform-object-rest-spread'), { useBuiltIns: true }],
 				[
 					resolve('babel-plugin-transform-imports'),
@@ -57,10 +57,10 @@ module.exports = (isProd, options = {}) => ({
 				resolve('babel-plugin-closure-elimination'),
 				resolve('./pure-plugin.js'),
 				// 'emotion/babel'
-			] :
-		[
+			]
+		: [
 				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
-				resolve('transform-react-jsx-source')
+				resolve('babel-plugin-transform-react-jsx-source'),
 				// 'emotion/babel'
 				// 'runtyper'
 			],

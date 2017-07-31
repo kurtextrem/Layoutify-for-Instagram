@@ -69,7 +69,7 @@ export default class PostsContainer extends Component {
 	componentDidMount() {
 		this.addStorageListener()
 
-		if (this.state.data === null) {
+		if (this.state.items === null) {
 			this.populateData()
 		}
 	}
@@ -81,11 +81,12 @@ export default class PostsContainer extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { timeout, items } = this.state
 		console.log(nextProps.id !== this.props.id, nextState.timeout !== timeout, items === null && nextState.items !== null, nextState.items, items)
+
 		return (
 			nextProps.id !== this.props.id ||
 			nextState.timeout !== timeout ||
 			(items === null && nextState.items !== null) || // first items
-			nextState.items.length !== items.length
+			(items !== null && nextState.items !== null && nextState.items.length !== items.length)
 		)
 	}
 
@@ -93,10 +94,10 @@ export default class PostsContainer extends Component {
 		const { items, timeout } = state
 
 		if (timeout === 200) return loading
-		if (items === null) return null
 		if (timeout === 400 && (items === null || items.length === 0)) {
 			return this.error
 		}
+		if (items === null) return null // first paint
 
 		return (
 			<CardDeck>
