@@ -22,7 +22,7 @@ export default class PostHeader extends Component {
 				<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener">
 					<img src={user.profile_pic_url} className="img-fluid profile-pic rounded mr-2" />
 				</a>
-				<Media body className="grow-1">
+				<Media body>
 					<a href={`https://instagram.com/${user.username}`} target="_blank" rel="noopener">
 						{user.full_name || user.username}
 					</a>

@@ -5,6 +5,24 @@ import Dots from './Dots'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 
+const observer = new IntersectionObserver(onChange, {
+	rootMargin: '0px 0px 400px 0px', // eagerly load next rows
+})
+
+function onChange(changes) {
+	for (let i = 0; i < changes.length; ++i) {
+		let change = changes[i]
+		if (change.isIntersecting) {
+			if (i < 8) change.target.src = change.target.dataset.src
+			else
+				window.requestIdleCallback(() => {
+					change.target.src = change.target.dataset.src
+				})
+			observer.unobserve(change.target)
+		}
+	}
+}
+
 export default class Post extends Component {
 	constructor(props) {
 		super(props)
@@ -13,6 +31,7 @@ export default class Post extends Component {
 		this.isCarousel = props.data.media_type === 8
 		this.carouselLen = this.isCarousel ? props.data.carousel_media.length : 0
 		this.preloaded = false
+		this.ref = null
 
 		this.state = {
 			carouselIndex: 0,
@@ -61,10 +80,21 @@ export default class Post extends Component {
 		}
 	}
 
+	setRef = ref => (this.ref = ref)
+
 	shouldComponentUpdate(nextProps, nextState) {
 		if (this.isCarousel && this.state.carouselIndex !== nextState.carouselIndex) return true
 		if (this.state.active !== nextState.active) return true
 		return false
+	}
+
+	componentDidMount() {
+		observer.observe(this.ref)
+	}
+
+	componentWillUnmount() {
+		observer.unobserve(this.ref)
+		this.ref = null
 	}
 
 	render(props, state) {
@@ -83,7 +113,8 @@ export default class Post extends Component {
 			candidate = media.video_versions[0]
 			mediaElement = (
 				<video
-					src={media.video_versions[0].url}
+					ref={this.setRef}
+					data-src={candidate.url}
 					poster={media.image_versions2.candidates[0].url}
 					controls
 					type="video/mp4"
@@ -95,7 +126,16 @@ export default class Post extends Component {
 			)
 		} else {
 			candidate = media.image_versions2.candidates[0]
-			mediaElement = <img width={candidate.width} height={candidate.height} src={candidate.url} alt={caption + ' - if you see this, the post has probably been deleted.'} className="img-fluid" />
+			mediaElement = (
+				<img
+					ref={this.setRef}
+					width={candidate.width}
+					height={candidate.height}
+					data-src={candidate.url}
+					alt={caption + ' - if you see this, the post has probably been deleted.'}
+					className="img-fluid"
+				/>
+			)
 		}
 
 		return (
