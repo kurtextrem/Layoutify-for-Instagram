@@ -13,7 +13,8 @@ export default class Sentinel extends Component {
 			this.onHide = function onHide() {}
 		}
 
-		this.io = new IntersectionObserver(this.onUpdate)
+		this.io = null
+		this.ref = null
 	}
 
 	onUpdate = entries => {
@@ -22,16 +23,17 @@ export default class Sentinel extends Component {
 		else this.onHide()
 	}
 
-	setNode = ref => {
-		this.node = ref
-	}
+	setRef = ref => (this.ref = ref)
 
 	shouldComponentUpdate() {
 		return false
 	}
 
 	componentDidMount() {
-		this.io.observe(this.node)
+		this.io = new IntersectionObserver(this.onUpdate, {
+			root: this.ref.parentNode,
+		})
+		this.io.observe(this.ref)
 	}
 
 	componentWillUnmount() {
@@ -39,6 +41,6 @@ export default class Sentinel extends Component {
 	}
 
 	render() {
-		return <div ref={this.setNode} className="sentinel" />
+		return <div ref={this.setRef} className="sentinel" />
 	}
 }
