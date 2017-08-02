@@ -5,9 +5,11 @@ import Dots from './Dots'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 
-const observer = new IntersectionObserver(onChange, {
-	rootMargin: '0px 0px 400px 0px', // eagerly load next rows
-})
+let observer
+if (typeof IntersectionObserver !== 'undefined')
+	observer = new IntersectionObserver(onChange, {
+		rootMargin: '0px 0px 400px 0px', // eagerly load next rows
+	})
 
 function onChange(changes) {
 	for (let i = 0; i < changes.length; ++i) {
