@@ -19,6 +19,7 @@ const prerender = require('./prerender')
 const ShakePlugin = require('webpack-common-shake').Plugin
 const pureFuncs = require('side-effects-safe').pureFuncs
 const ReplacePlugin = require('webpack-plugin-replace')
+const WebpackMessages = require('webpack-messages')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -59,6 +60,7 @@ if (isProd) {
 }
 
 var plugins = [
+	new WebpackMessages(),
 	new ProgressBarPlugin({
 		messageTemplate: '\u001b[90m\u001b[49m\u001b[39m [:bar] \u001b[32m\u001b[1m:percent\u001b[22m\u001b[39m (:elapseds) \u001b[2m:msg\u001b[22m',
 		progressOptions: {
