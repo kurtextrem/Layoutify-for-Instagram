@@ -3,24 +3,20 @@ import Preact, { h, options, render } from 'preact'
 
 options.syncComponentUpdates = false
 
-const interopDefault = m => (m && m.default) || m
+let root = document.body.firstChild
 
-let app = interopDefault(App)
+const init = app => (root = render(h(app), document.body, root))
 
-if (typeof app === 'function') {
-	let root = document.body.firstChild
+if (module.hot) {
+	require('preact/devtools')
+	const { whyDidYouUpdate } = require('why-did-you-update')
+	whyDidYouUpdate(Preact)
 
-	const init = () => {
-		app = interopDefault(require('./components/App'))
-		root = render(h(app), document.body, root)
-	}
-
-	if (module.hot) {
-		require('preact/devtools')
-		const { whyDidYouUpdate } = require('why-did-you-update')
-		whyDidYouUpdate(Preact)
-		module.hot.accept('./components/App', () => requestAnimationFrame(init))
-	}
-
-	init()
+	module.hot.accept('./components/App', () =>
+		requestAnimationFrame(() => {
+			init(App)
+		})
+	)
 }
+
+init(App)
