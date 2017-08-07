@@ -1,7 +1,7 @@
 import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
 
 export default class Dots extends Component {
-	renderDot = i => {
+	renderDot(i) {
 		return <span className={'dots--dot m-1 ' + (i === this.props.index ? 'active' : '')} />
 	}
 

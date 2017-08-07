@@ -13,7 +13,7 @@ if (typeof IntersectionObserver !== 'undefined')
 
 function onChange(changes) {
 	for (let i = 0; i < changes.length; ++i) {
-		let change = changes[i]
+		const change = changes[i]
 		if (change.isIntersecting) {
 			if (i < 8) change.target.src = change.target.dataset.src
 			else
@@ -39,10 +39,6 @@ export default class Post extends Component {
 			carouselIndex: 0,
 			active: true,
 		}
-	}
-
-	preload = index => {
-		new Image().src = this.props.data.carousel_media[index].image_versions2.candidates[0].url
 	}
 
 	handleArrowClick = e => {
@@ -83,6 +79,10 @@ export default class Post extends Component {
 	}
 
 	setRef = ref => (this.ref = ref)
+
+	preload(index) {
+		new Image().src = this.props.data.carousel_media[index].image_versions2.candidates[0].url
+	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		if (this.isCarousel && this.state.carouselIndex !== nextState.carouselIndex) return true
@@ -162,7 +162,13 @@ export default class Post extends Component {
 						{caption}
 					</CardText>
 				</CardBlock>
-				<PostFooter active={state.active} btnClick={this.onBtnClick} defaultClass={props.defaultClass} toggleClass={props.toggleClass} parent={props.parent} />
+				<PostFooter
+					active={state.active}
+					btnClick={this.onBtnClick}
+					defaultClass={props.defaultClass}
+					toggleClass={props.toggleClass}
+					parent={props.parent}
+				/>
 			</article>
 		)
 	}

@@ -25,24 +25,8 @@ export default class PostsContainer extends Component {
 		window.setTimeout(() => this.setTimeout(200), 200)
 	}
 
-	addStorageListener = () => {
-		chrome.storage.onChanged.addListener(this.storageListener)
-	}
-
-	storageListener = (changes, area) => {
-		const id = this.props.id
-		if (changes[id] !== undefined && changes[id].newValue !== undefined) {
-			console.log('new data', changes)
-			this.populateData()
-		}
-	}
-
-	removeStorageListener = () => {
-		chrome.storage.onChanged.removeListener(this.storageListener)
-	}
-
-	populateData = () => {
-		return Storage.get(this.props.id, []).then(this.handleData)
+	handleScroll = () => {
+		Chrome.send('load', { which: this.props.id })
 	}
 
 	handleData = data => {
@@ -50,20 +34,36 @@ export default class PostsContainer extends Component {
 		return data
 	}
 
-	setTimeout = timeout => {
+	renderPost = post => {
+		const { id, defaultClass, toggleClass } = this.props
+		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} />
+	}
+
+	addStorageListener() {
+		chrome.storage.onChanged.addListener(this.storageListener)
+	}
+
+	storageListener(changes, area) {
+		const id = this.props.id
+		if (changes[id] !== undefined && changes[id].newValue !== undefined) {
+			console.log('new data', changes)
+			this.populateData()
+		}
+	}
+
+	removeStorageListener() {
+		chrome.storage.onChanged.removeListener(this.storageListener)
+	}
+
+	populateData() {
+		return Storage.get(this.props.id, []).then(this.handleData)
+	}
+
+	setTimeout(timeout) {
 		if (this.state.items === null) {
 			this.setState((prevState, props) => ({ timeout }))
 			window.setTimeout(() => this.setTimeout(400), 400)
 		}
-	}
-
-	handleScroll = () => {
-		Chrome.send('load', { which: this.props.id })
-	}
-
-	renderPost = post => {
-		const { id, defaultClass, toggleClass } = this.props
-		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} />
 	}
 
 	componentDidMount() {
@@ -80,7 +80,13 @@ export default class PostsContainer extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { timeout, items } = this.state
-		console.log(nextProps.id !== this.props.id, nextState.timeout !== timeout, items === null && nextState.items !== null, nextState.items, items)
+		/*console.log(
+			nextProps.id !== this.props.id,
+			nextState.timeout !== timeout,
+			items === null && nextState.items !== null,
+			nextState.items,
+			items
+		)*/
 
 		return (
 			nextProps.id !== this.props.id ||
