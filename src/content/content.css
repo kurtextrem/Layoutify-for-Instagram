@@ -194,9 +194,11 @@ main.post video::-webkit-media-controls-enclosure {
 	z-index: 3;
 }
 
-/** Makes the multiple videos/images dots visible; Heart animation when db-clicking posts */
+/** Makes the multiple videos/images dots visible */
 div > div + a + div,
-div > div + span > a,
+/** #17 */
+div > div + [style="position: static;"] > a,
+/** Sprites */
 .coreSpriteLikeAnimationHeart,
 .coreSpriteSidecarIconLarge,
 .coreSpriteUserTagIndicator,
