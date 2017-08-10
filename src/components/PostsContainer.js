@@ -13,7 +13,7 @@ export default class PostsContainer extends Component {
 	constructor(props) {
 		super(props)
 
-		if (props.id === '') throw new Error('Children must have an id set')
+		if (!props.id) throw new Error('Children must have an id set')
 
 		this.state = {
 			items: null,
@@ -34,16 +34,11 @@ export default class PostsContainer extends Component {
 		return data
 	}
 
-	renderPost = post => {
-		const { id, defaultClass, toggleClass } = this.props
-		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} />
+	populateData = () => {
+		return Storage.get(this.props.id, []).then(this.handleData)
 	}
 
-	addStorageListener() {
-		chrome.storage.onChanged.addListener(this.storageListener)
-	}
-
-	storageListener(changes, area) {
+	storageListener = (changes, area) => {
 		const id = this.props.id
 		if (changes[id] !== undefined && changes[id].newValue !== undefined) {
 			console.log('new data', changes)
@@ -51,12 +46,9 @@ export default class PostsContainer extends Component {
 		}
 	}
 
-	removeStorageListener() {
-		chrome.storage.onChanged.removeListener(this.storageListener)
-	}
-
-	populateData() {
-		return Storage.get(this.props.id, []).then(this.handleData)
+	renderPost = post => {
+		const { id, defaultClass, toggleClass } = this.props
+		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} />
 	}
 
 	setTimeout(timeout) {
@@ -64,6 +56,14 @@ export default class PostsContainer extends Component {
 			this.setState((prevState, props) => ({ timeout }))
 			window.setTimeout(() => this.setTimeout(400), 400)
 		}
+	}
+
+	addStorageListener() {
+		chrome.storage.onChanged.addListener(this.storageListener)
+	}
+
+	removeStorageListener() {
+		chrome.storage.onChanged.removeListener(this.storageListener)
 	}
 
 	componentDidMount() {

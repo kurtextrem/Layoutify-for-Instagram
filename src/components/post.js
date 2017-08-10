@@ -1,5 +1,5 @@
 import { Button, CardBlock, CardText } from 'reactstrap'
-import { Chrome } from './Utils'
+import { Chrome, updateCDN } from './Utils'
 import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
 import Dots from './Dots'
 import PostFooter from './PostFooter'
@@ -116,14 +116,14 @@ export default class Post extends Component {
 			mediaElement = (
 				<video
 					ref={this.setRef}
-					data-src={candidate.url}
+					data-src={updateCDN(candidate.url)}
 					poster={media.image_versions2.candidates[0].url}
-					controls
 					type="video/mp4"
 					width={candidate.width}
 					height={candidate.height}
 					preload="none"
 					className="img-fluid"
+					controls
 				/>
 			)
 		} else {
@@ -133,7 +133,7 @@ export default class Post extends Component {
 					ref={this.setRef}
 					width={candidate.width}
 					height={candidate.height}
-					data-src={candidate.url}
+					data-src={updateCDN(candidate.url)}
 					alt={caption + ' - if you see this, the post has probably been deleted.'}
 					className="img-fluid"
 				/>

@@ -1,5 +1,6 @@
 import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
 import { Media } from 'reactstrap'
+import { updateCDN } from './Utils'
 import TimeAgo from 'react-timeago'
 
 export default class PostHeader extends Component {
@@ -20,7 +21,7 @@ export default class PostHeader extends Component {
 		return (
 			<header className="media align-items-center card-block grow-0 pl-2 pr-2">
 				<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener">
-					<img src={user.profile_pic_url} className="img-fluid profile-pic rounded mr-2" />
+					<img src={updateCDN(user.profile_pic_url)} className="img-fluid profile-pic rounded mr-2" />
 				</a>
 				<Media body>
 					<a href={`https://instagram.com/${user.username}`} target="_blank" rel="noopener">

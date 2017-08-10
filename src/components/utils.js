@@ -57,3 +57,8 @@ export class Chrome {
 		return false
 	}
 }
+
+const regex = /-fr[atx]\d-\d/
+export function updateCDN(url) {
+	return url.replace(regex, '-frt3-1') // 10.08.2017
+}
