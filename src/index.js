@@ -9,6 +9,7 @@ const init = app => (root = render(h(app), document.body, root))
 
 if (module.hot) {
 	require('preact/devtools')
+	require('preact/debug')
 	const { whyDidYouUpdate } = require('why-did-you-update')
 	whyDidYouUpdate(Preact)
 
