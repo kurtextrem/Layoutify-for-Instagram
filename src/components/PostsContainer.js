@@ -7,7 +7,7 @@ import Post from './Post'
 import Sentinel from './Sentinel'
 
 const loading = <Loading />
-const Posts = (posts, renderPost) => posts.map(post => renderPost(post))
+const Posts = (items, renderPost) => items.map(renderPost)
 
 export default class PostsContainer extends Component {
 	constructor(props) {

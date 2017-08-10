@@ -24,12 +24,12 @@ export class Storage {
 	static set = (key, value) =>
 		new Promise((resolve, reject) => {
 			chrome.storage[Storage.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
-		});
+		})
 
 	static get = (key, defaultValue) =>
 		new Promise((resolve, reject) => {
 			chrome.storage[Storage.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
-		});
+		})
 
 	static remove = key =>
 		new Promise((resolve, reject) => {
