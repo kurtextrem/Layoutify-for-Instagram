@@ -65,7 +65,7 @@ div > img {
 						Slimmer Post Header
 =============================================*/
 div[role='dialog'] article > header,
-main:not(.profile) article > header {
+#react-root:not(.profile) article > header {
 	height: 50px !important;
 	contain: strict;
 }
@@ -79,25 +79,25 @@ div > main:only-child {
 }
 
 div[role='dialog'] header + div + div,
-main.post header + div + div {
+.post header + div + div {
 	top: 63px !important;
 }
 
 /*----------  Improve new post layout  ----------*/
 
 /** Make the comments/description take the space it needs */
-main:not(.profile) header + div + div {
+#react-root:not(.profile) header + div + div {
 	flex: 1 0 auto;
 }
 
-main.home header + div + div {
+.home header + div + div {
 	margin-top: 8px;
 	padding-bottom: 4rem; /** Append height of heart / write comment to the bottom */
 }
 
 /** Row layout */
 div[role='dialog'] header + div + div,
-main:not(.profile) header + div + div {
+#react-root:not(.profile) header + div + div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: baseline;
@@ -141,7 +141,7 @@ header + div + div > section:first-child {
 }
 
 /** Center heart */
-main.home header + div + div > section:first-child > a {
+.home header + div + div > section:first-child > a {
 	margin: auto;
 }
 
@@ -160,7 +160,7 @@ header + div + div > section:last-child {
 	margin-top: 0;
 }
 
-main.home header + div + div > section:last-child {
+.home header + div + div > section:last-child {
 	width: 84%;
 }
 
@@ -185,12 +185,12 @@ video[loop]::-webkit-media-controls-enclosure {
 }
 
 /** Hide media controls when not playing on home */
-main.home video:not([loop])::-webkit-media-controls-enclosure {
+.home video:not([loop])::-webkit-media-controls-enclosure {
 	opacity: 0;
 }
 
 /** Always show media controls on single posts */
-main.post video::-webkit-media-controls-enclosure {
+.post video::-webkit-media-controls-enclosure {
 	z-index: 3;
 }
 
@@ -209,7 +209,7 @@ div > div + [style="position: static;"] > a,
 }
 
 /** Move multiple videos/images dots and make them more visible */
-main.post td > div {
+.post td > div {
 	background: #9e9e9e !important;
 }
 
@@ -249,14 +249,14 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 										Spinner
 =============================================*/
-main:not(.profile) > section > div > div > div:last-child {
+#react-root:not(.profile) main > section > div > div > div:last-child {
 	height: 30px;
 	contain: strict;
 	z-index: 2;
 }
 
 /** Profile spinner */
-main.profile > article > div > div:last-child {
+.profile main > article > div > div:last-child {
 	height: 30px;
 	contain: strict;
 	z-index: 2;
@@ -274,7 +274,7 @@ section > footer + div {
 =============================================*/
 /** Enlargen modal */
 div[role='dialog'] article,
-main.post article {
+.post article {
 	min-height: 50vh;
 	max-height: 90vh;
 	contain: content;
@@ -282,13 +282,13 @@ main.post article {
 
 /** Center the image */
 div[role='dialog'] article,
-main:not(.home) article {
+#react-root:not(.home) article {
 	flex-grow: 1;
 	justify-content: center;
 }
 
 /** Improve picture quality */
-main:not(.home) div > img {
+#react-root:not(.home) div > img {
 	image-rendering: -webkit-optimize-contrast;
 }
 
@@ -296,7 +296,7 @@ main:not(.home) div > img {
 									Profile
 =============================================*/
 /** Show likes and so on on hover */
-main.profile a:hover > div:last-child {
+.profile a:hover > div:last-child {
 	z-index: 3;
 }
 

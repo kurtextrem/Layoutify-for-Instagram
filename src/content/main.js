@@ -1,15 +1,33 @@
-(function(window) {
+;(function main(window) {
 	'use strict'
 
 	const document = window.document,
 		location = document.location
 
 	// block middle mouse button
-	window.addEventListener('click', function(e) { if (e.button > 0) e.stopPropagation() }, true)
+	window.addEventListener(
+		'click',
+		function(e) {
+			if (e.button > 0) e.stopPropagation()
+		},
+		true
+	)
 
 	// prevent vid restart
-	window.addEventListener('blur', function(e) { e.stopPropagation() }, true)
-	window.addEventListener('visibilitychange', function(e) { e.stopPropagation() }, true)
+	window.addEventListener(
+		'blur',
+		function(e) {
+			e.stopPropagation()
+		},
+		true
+	)
+	window.addEventListener(
+		'visibilitychange',
+		function(e) {
+			e.stopPropagation()
+		},
+		true
+	)
 
 	let observer = null
 	function observe(elem, fn) {
@@ -46,8 +64,7 @@
 		addControls()
 
 		const elem = document.querySelector('div > article')
-		if (elem !== null)
-			documentElement.style.setProperty('--boxHeight', elem.offsetHeight + 'px') // give boxes equal height
+		if (elem !== null) documentElement.style.setProperty('--boxHeight', elem.offsetHeight + 'px') // give boxes equal height
 
 		addClass()
 
@@ -63,8 +80,7 @@
 
 	function addControls() {
 		let addAuto = false
-		if (location.pathname.indexOf('/p/') !== -1)
-			addAuto = true
+		if (location.pathname.indexOf('/p/') !== -1) addAuto = true
 
 		const elems = root.querySelectorAll('video')
 		for (let i = 0; i < elems.length; i++) {
@@ -72,8 +88,7 @@
 
 			elem.controls = true
 
-			if (addAuto)
-				elem.preload = 'auto'
+			if (addAuto) elem.preload = 'auto'
 		}
 	}
 
@@ -88,14 +103,17 @@
 	}
 
 	function addClass() {
-		const main = document.querySelector('#react-root > section > main')
-		if (location.pathname === '/') { // home page
+		const main = document.querySelector('#react-root')
+		if (location.pathname === '/') {
+			// home page
 			main.classList.add('home')
 			main.classList.remove('profile', 'post')
-		} else if (location.pathname.indexOf('/p/') !== -1 && document.querySelector('div[role="dialog"]') === null) { // single post
+		} else if (location.pathname.indexOf('/p/') !== -1 && document.querySelector('div[role="dialog"]') === null) {
+			// single post
 			main.classList.add('post')
 			main.classList.remove('profile', 'home')
-		} else { // profile page
+		} else {
+			// profile page
 			main.classList.add('profile')
 			main.classList.remove('post', 'home')
 		}
@@ -103,9 +121,9 @@
 
 	const Instagram = {
 		liked: new window.getInstagram('liked'),
-		saved: new window.getInstagram('saved')
+		saved: new window.getInstagram('saved'),
 	}
-	console.log(window.Instagram = Instagram) // for debugging
+	console.log((window.Instagram = Instagram)) // for debugging
 
 	function addExtendedButton() {
 		let anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')
@@ -131,21 +149,20 @@
 		a.onclick = function(e) {
 			e.preventDefault()
 
-			Instagram.liked.start()
-				.then(Instagram.liked.fetch())
-			Instagram.saved.start()
-				.then(Instagram.saved.fetch())
+			Instagram.liked.start().then(Instagram.liked.fetch())
+			Instagram.saved.start().then(Instagram.saved.fetch())
 
 			chrome.runtime.sendMessage(null, { action: 'click' })
-			if (!clickedExtendedBtn)
-				window.localStorage.clickedExtendedBtn = true
+			if (!clickedExtendedBtn) window.localStorage.clickedExtendedBtn = true
 		}
 		el.style.top = '-8px'
 		anchor.after(el)
 	}
 
 	var listenerActions = {
-		load(request) { return Instagram[request.which].fetch() },
+		load(request) {
+			return Instagram[request.which].fetch()
+		},
 
 		_action(request) {
 			return Instagram[request.which][request.action] !== undefined && Instagram[request.which][request.action](request.id)
@@ -157,16 +174,14 @@
 
 		remove(request) {
 			return this._action(request)
-		}
+		},
 	}
 
 	function addListener() {
-		chrome.runtime.onMessage.addListener(
-			function(request, sender, sendResponse) {
-				if (listenerActions[request.action] !== undefined && Instagram[request.which] !== undefined) {
-					listenerActions[request.action](request)
-				}
+		chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+			if (listenerActions[request.action] !== undefined && Instagram[request.which] !== undefined) {
+				listenerActions[request.action](request)
 			}
-		)
+		})
 	}
 })(window)
