@@ -141,23 +141,23 @@ export default class Post extends Component {
 		}
 
 		return (
-			<article className="card ml-auto mr-auto">
+			<article class="card">
 				<PostHeader user={user} code={post.code} taken_at={post.taken_at} />
 				<a href={`https://www.instagram.com/p/${post.code}`} target="_blank" rel="noopener" className={isCarousel ? 'post--carousel' : ''}>
 					{isCarousel
 						? <Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}>
-								<i className="material-icons">keyboard_arrow_left</i>
+								<i class="material-icons">keyboard_arrow_left</i>
 							</Button>
 						: null}
 					{mediaElement}
 					{isCarousel
 						? <Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}>
-								<i className="material-icons">keyboard_arrow_right</i>
+								<i class="material-icons">keyboard_arrow_right</i>
 							</Button>
 						: null}
 				</a>
 				{isCarousel ? <Dots index={state.carouselIndex} len={this.carouselLen} /> : null}
-				<CardBlock className="overflow-auto p-3">
+				<CardBlock className="overflow-auto p-3 card-body">
 					<CardText>
 						{caption}
 					</CardText>

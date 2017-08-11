@@ -9,7 +9,7 @@ export default class Header extends Component {
 
 	render() {
 		return (
-			<Navbar color="faded" light toggleable className="mb-2">
+			<Navbar color="faded" light toggleable className="mb-2 navbar-expand bg-light">
 				<Container>
 					<NavbarBrand href="/">Improved for IG</NavbarBrand>
 					<Nav navbar className="mr-auto">

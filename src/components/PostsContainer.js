@@ -106,7 +106,7 @@ export default class PostsContainer extends Component {
 		if (items === null) return null // first paint
 
 		return (
-			<CardDeck>
+			<CardDeck className="justify-content-center">
 				{Posts(items, this.renderPost) // https://github.com/developit/preact/issues/45
 				}
 				<Sentinel onVisible={this.handleScroll} />

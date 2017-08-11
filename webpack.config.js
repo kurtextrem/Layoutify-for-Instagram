@@ -62,7 +62,8 @@ if (isProd) {
 var plugins = [
 	new WebpackMessages(),
 	new ProgressBarPlugin({
-		messageTemplate: '\u001b[90m\u001b[49m\u001b[39m [:bar] \u001b[32m\u001b[1m:percent\u001b[22m\u001b[39m (:elapseds) \u001b[2m:msg\u001b[22m',
+		messageTemplate:
+			'\u001b[90m\u001b[49m\u001b[39m [:bar] \u001b[32m\u001b[1m:percent\u001b[22m\u001b[39m (:elapseds) \u001b[2m:msg\u001b[22m',
 		progressOptions: {
 			renderThrottle: 100,
 			clear: true,
@@ -116,7 +117,7 @@ if (isProd) {
 		new HtmlWebpackIncludeAssetsPlugin({
 			assets: ['bootstrap.min.css'],
 			append: false,
-			hash: true,
+			// hash: true,
 		}),
 		// new webpack.IgnorePlugin(/prop-types$/),
 		new webpack.LoaderOptionsPlugin({
@@ -124,8 +125,8 @@ if (isProd) {
 			debug: false,
 		}),
 		new webpack.NoEmitOnErrorsPlugin(),
-		new webpack.optimize.ModuleConcatenationPlugin(),
 		new ShakePlugin(),
+		new webpack.optimize.ModuleConcatenationPlugin(),
 		// strip out babel-helper invariant checks
 		/*new ReplacePlugin({
 			patterns: [
@@ -209,11 +210,12 @@ if (isProd) {
 const first = {
 	context: path.join(__dirname, 'src'),
 
-	entry: isProd ?
-		'./' :
-		[
+	entry: isProd
+		? './'
+		: [
 				// 'react-error-overlay',
 				'webpack/hot/only-dev-server',
+				// 'react-dev-utils/webpackHotDevClient',
 				// bundle the client for hot reloading
 				// only- means to only hot reload for successful updates
 				'./',
@@ -236,9 +238,9 @@ const first = {
 				options: babelConfig,
 			},
 		],
-		noParse: isProd ?
-			undefined :
-			[
+		noParse: isProd
+			? undefined
+			: [
 					// faster HMR
 					new RegExp(getMin('preact-compat')),
 					new RegExp('proptypes/disabled'),
@@ -290,8 +292,8 @@ const first = {
 		hints: isProd ? 'warning' : false,
 	},
 
-	node: isProd ?
-		{
+	node: isProd
+		? {
 				fs: false,
 				net: false,
 				tls: false,
@@ -301,8 +303,8 @@ const first = {
 				__filename: false,
 				__dirname: false,
 				setImmediate: false,
-			} :
-		{},
+			}
+		: {},
 }
 
 const second = {
