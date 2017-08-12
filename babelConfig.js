@@ -9,11 +9,9 @@ module.exports = (isProd, options = {}) => ({
 			resolve('babel-preset-env'),
 			{
 				modules: options.modules || false,
-				targets: isProd
-					? { chrome: 55 }
-					: {
-							browsers: 'last 2 Chrome versions',
-						},
+				targets: {
+					browsers: isProd ? 'Chrome > 54' : 'unreleased Chrome versions',
+				},
 				loose: true,
 				useBuiltIns: false,
 				exclude: [
@@ -41,7 +39,10 @@ module.exports = (isProd, options = {}) => ({
 					},
 				],
 				resolve('babel-plugin-transform-react-constant-elements'),
-				[resolve('babel-plugin-transform-react-remove-prop-types'), { removeImport: true, additionalLibraries: ['react-immutable-proptypes'] }],
+				[
+					resolve('babel-plugin-transform-react-remove-prop-types'),
+					{ removeImport: true, additionalLibraries: ['react-immutable-proptypes'] },
+				],
 				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
 				[
 					resolve('babel-plugin-jsx-pragmatic'),

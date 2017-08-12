@@ -20,6 +20,7 @@ const ShakePlugin = require('webpack-common-shake').Plugin
 const pureFuncs = require('side-effects-safe').pureFuncs
 const ReplacePlugin = require('webpack-plugin-replace')
 const WebpackMessages = require('webpack-messages')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -59,6 +60,8 @@ if (isProd) {
 	// html.hash = true
 }
 
+var copy = [{ from: '*.html' }, { from: '*.json' }, { from: 'img/*.png' }, { from: 'content/*' }, { from: '_locales/**' }]
+
 var plugins = [
 	new WebpackMessages(),
 	new ProgressBarPlugin({
@@ -81,14 +84,6 @@ var plugins = [
 		POLYFILL_URL: false,
 	}),
 	new HtmlWebpackPlugin(html),
-	new CopyWebpackPlugin([
-		{ from: '../node_modules/bootstrap/dist/css/bootstrap.min.css' },
-		{ from: '*.html' },
-		{ from: '*.json' },
-		{ from: 'img/*.png' },
-		{ from: 'content/*' },
-		{ from: '_locales/**' },
-	]),
 	new HtmlWebpackHarddiskPlugin(),
 	new ScriptExtHtmlWebpackPlugin({
 		defaultAttribute: 'async',
@@ -97,6 +92,8 @@ var plugins = [
 ]
 
 if (isProd) {
+	copy.push({ from: '../node_modules/bootstrap/dist/css/bootstrap.min.css' })
+
 	pureFuncs.push(
 		'classCallCheck',
 		'_classCallCheck',
@@ -114,8 +111,9 @@ if (isProd) {
 
 	plugins.push(
 		new webpack.HashedModuleIdsPlugin(),
+		new ExtractTextPlugin('styles.css'),
 		new HtmlWebpackIncludeAssetsPlugin({
-			assets: ['bootstrap.min.css'],
+			assets: ['style.css'],
 			append: false,
 			// hash: true,
 		}),
@@ -193,6 +191,7 @@ if (isProd) {
 } else {
 	plugins.push(
 		new FriendlyErrorsPlugin(),
+		new webpack.IgnorePlugin(/bootstrap.min.css$/),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
 		new WriteFilePlugin({
@@ -206,6 +205,8 @@ if (isProd) {
 		})
 	)
 }
+
+plugins.push(new CopyWebpackPlugin(copy))
 
 const first = {
 	context: path.join(__dirname, 'src'),
@@ -237,6 +238,15 @@ const first = {
 				loader: 'babel-loader',
 				options: babelConfig,
 			},
+			isProd
+				? {
+						test: /\.css$/,
+						use: ExtractTextPlugin.extract({
+							fallback: 'style-loader',
+							use: ['css-loader', 'postcss-loader'],
+						}),
+					}
+				: {},
 		],
 		noParse: isProd
 			? undefined
