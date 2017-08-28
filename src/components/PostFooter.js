@@ -1,5 +1,5 @@
 import { Button, CardFooter } from 'reactstrap'
-import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
+import { Component } from 'preact'
 
 export default class PostFooter extends Component {
 	shouldComponentUpdate(nextProps) {

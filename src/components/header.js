@@ -1,4 +1,4 @@
-import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
+import { Component } from 'preact'
 import { Container, Nav, NavItem, Navbar, NavbarBrand } from 'reactstrap'
 import { Link } from 'preact-router/match'
 

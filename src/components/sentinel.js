@@ -1,4 +1,4 @@
-import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
+import { Component } from 'preact'
 
 export default class Sentinel extends Component {
 	constructor(props) {

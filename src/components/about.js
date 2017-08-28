@@ -1,4 +1,4 @@
-import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
+import { Component } from 'preact'
 
 export default class About extends Component {
 	shouldComponentUpdate() {
@@ -24,7 +24,10 @@ export default class About extends Component {
 				</p>
 				<p>
 					I'd also very much appreciate ratings in the{' '}
-					<a href="https://chrome.google.com/webstore/detail/improved-layout-for-insta/nekeeojpcbiehcignddhindbgacbghmi/reviews" target="_blank" rel="noopener">
+					<a
+						href="https://chrome.google.com/webstore/detail/improved-layout-for-insta/nekeeojpcbiehcignddhindbgacbghmi/reviews"
+						target="_blank"
+						rel="noopener">
 						Chrome Webstore
 					</a>.
 				</p>
@@ -47,8 +50,8 @@ export default class About extends Component {
 					Creative Commons (Attribution 3.0 Unported). I've added shadows and modified the color.
 				</p>
 				<p>
-					This project is in no way affiliated with, authorized, maintained, sponsored or endorsed by Instagram or any of its affiliates or subsidiaries. This is an independent project. Use at your
-					own risk.
+					This project is in no way affiliated with, authorized, maintained, sponsored or endorsed by Instagram or any of its affiliates or
+					subsidiaries. This is an independent project. Use at your own risk.
 				</p>
 			</div>
 		)

@@ -1,9 +1,9 @@
-import { Button, CardBlock, CardText } from 'reactstrap'
-import { Chrome, updateCDN } from './Utils'
-import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
 import Dots from './Dots'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
+import { Button, CardBlock, CardText } from 'reactstrap'
+import { Chrome, updateCDN } from './Utils'
+import { Component } from 'preact'
 
 let observer
 if (typeof IntersectionObserver !== 'undefined')

@@ -1,10 +1,9 @@
-import { CardDeck } from 'reactstrap'
-import { Chrome, Storage } from './Utils'
-import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
-
 import Loading from './Loading'
 import Post from './Post'
 import Sentinel from './Sentinel'
+import { CardDeck } from 'reactstrap'
+import { Chrome, Storage } from './Utils'
+import { Component } from 'preact'
 
 const loading = <Loading />
 const Posts = (items, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load

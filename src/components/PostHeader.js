@@ -1,7 +1,7 @@
-import { Component, h } from 'preact' // eslint-disable-line no-unused-vars
+import TimeAgo from 'react-timeago'
+import { Component } from 'preact'
 import { Media } from 'reactstrap'
 import { updateCDN } from './Utils'
-import TimeAgo from 'react-timeago'
 
 export default class PostHeader extends Component {
 	constructor(props) {
