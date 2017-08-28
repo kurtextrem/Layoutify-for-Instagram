@@ -7,7 +7,7 @@ import Post from './Post'
 import Sentinel from './Sentinel'
 
 const loading = <Loading />
-const Posts = (items, renderPost) => items.map(renderPost)
+const Posts = (items, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
 
 export default class PostsContainer extends Component {
 	constructor(props) {

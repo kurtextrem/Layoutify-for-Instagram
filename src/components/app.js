@@ -6,6 +6,8 @@ import Header from './Header'
 import Liked from './Liked'
 import Saved from './Saved'
 
+const hashHistory = createHashHistory()
+
 export default class App extends Component {
 	render() {
 		return (
@@ -13,7 +15,7 @@ export default class App extends Component {
 				<Header />
 
 				<main className="d-flex justify-content-center">
-					<Router history={createHashHistory()}>
+					<Router history={hashHistory}>
 						<Liked path="/" default />
 						<Saved path="/saved" />
 						<About path="/about" />

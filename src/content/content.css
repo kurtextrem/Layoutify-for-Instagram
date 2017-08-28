@@ -334,6 +334,7 @@ footer > div > nav {
 #rcr-anchor {
 	justify-content: flex-start;
 	overflow: auto;
+	margin-bottom: -55px;
 }
 
 #rcr-anchor > div {

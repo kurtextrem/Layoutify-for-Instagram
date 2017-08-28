@@ -89,11 +89,10 @@ var plugins = [
 		defaultAttribute: 'async',
 		preload: ['.js', '.css'],
 	}),
+	new ExtractTextPlugin('styles.css'),
 ]
 
 if (isProd) {
-	copy.push({ from: '../node_modules/bootstrap/dist/css/bootstrap.min.css' })
-
 	pureFuncs.push(
 		'classCallCheck',
 		'_classCallCheck',
@@ -111,12 +110,6 @@ if (isProd) {
 
 	plugins.push(
 		new webpack.HashedModuleIdsPlugin(),
-		new ExtractTextPlugin('styles.css'),
-		new HtmlWebpackIncludeAssetsPlugin({
-			assets: ['style.css'],
-			append: false,
-			// hash: true,
-		}),
 		// new webpack.IgnorePlugin(/prop-types$/),
 		new webpack.LoaderOptionsPlugin({
 			minimize: true,
@@ -191,17 +184,12 @@ if (isProd) {
 } else {
 	plugins.push(
 		new FriendlyErrorsPlugin(),
-		new webpack.IgnorePlugin(/bootstrap.min.css$/),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
 		new WriteFilePlugin({
 			test: /(content\/|manifest.json)/,
 			useHashIndex: true,
 			log: false,
-		}),
-		new HtmlWebpackIncludeAssetsPlugin({
-			assets: ['bootstrap.min.css'],
-			append: false,
 		})
 	)
 }
@@ -238,15 +226,13 @@ const first = {
 				loader: 'babel-loader',
 				options: babelConfig,
 			},
-			isProd
-				? {
-						test: /\.css$/,
-						use: ExtractTextPlugin.extract({
-							fallback: 'style-loader',
-							use: ['css-loader', 'postcss-loader'],
-						}),
-					}
-				: {},
+			{
+				test: /\.css$/,
+				use: ExtractTextPlugin.extract({
+					fallback: 'style-loader',
+					use: ['css-loader', 'postcss-loader'],
+				}),
+			},
 		],
 		noParse: isProd
 			? undefined

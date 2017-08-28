@@ -10,7 +10,7 @@ module.exports = (isProd, options = {}) => ({
 			{
 				modules: options.modules || false,
 				targets: {
-					browsers: isProd ? 'Chrome > 54' : 'unreleased Chrome versions',
+					browsers: isProd ? 'Chrome > 54' : 'Chrome > 60', //'unreleased Chrome versions',
 				},
 				loose: true,
 				useBuiltIns: false,
