@@ -21,6 +21,8 @@ const pureFuncs = require('side-effects-safe').pureFuncs
 const ReplacePlugin = require('webpack-plugin-replace')
 const WebpackMessages = require('webpack-messages')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin')
+const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -60,8 +62,6 @@ if (isProd) {
 	// html.hash = true
 }
 
-var copy = [{ from: '*.html' }, { from: '*.json' }, { from: 'img/*.png' }, { from: 'content/*' }, { from: '_locales/**' }]
-
 var plugins = [
 	new WebpackMessages(),
 	new ProgressBarPlugin({
@@ -90,6 +90,7 @@ var plugins = [
 		preload: ['.js', '.css'],
 	}),
 	new ExtractTextPlugin('styles.css'),
+	new CopyWebpackPlugin([{ from: '*.html' }, { from: '*.json' }, { from: 'img/*.png' }, { from: 'content/*' }, { from: '_locales/**' }]),
 ]
 
 if (isProd) {
@@ -115,26 +116,21 @@ if (isProd) {
 			minimize: true,
 			debug: false,
 		}),
+		new OmitJSforCSSPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
+		new StyleExtHtmlWebpackPlugin(),
 		new ShakePlugin(),
 		new webpack.optimize.ModuleConcatenationPlugin(),
 		// strip out babel-helper invariant checks
-		/*new ReplacePlugin({
+		new ReplacePlugin({
+			include: /babel-helper$/,
 			patterns: [
-				/*{
-					regex: /throw\s+(new\s+)?(Type|Reference)?Error\s*\(/g,
-					value: 'return;(',
-					},*/
-		/*{
-					regex: /\.propTypes(\s)?=(\s)?propTypes/g,
-					value: '=undefined;',
-				},
 				{
-					regex: /\.defaultProps(\s)?=(\s)?defaultProps/g,
-					value: '=undefined;',
+					regex: /throw\s+(new\s+)?(Type|Reference)?Error\s*\(/g,
+					value: s => `return;${Array(s.length - 7).join(' ')}(`,
 				},
 			],
-		}),*/
+		}),
 		new UglifyJSPlugin({
 			parallel: {
 				cache: true,
@@ -194,8 +190,6 @@ if (isProd) {
 	)
 }
 
-plugins.push(new CopyWebpackPlugin(copy))
-
 const first = {
 	context: path.join(__dirname, 'src'),
 
@@ -254,6 +248,7 @@ const first = {
 			'react-addons-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
 			'react-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
 			'prop-types$': 'proptypes/disabled',
+			'create-react-class': 'preact-compat/lib/create-react-class',
 		},
 	},
 

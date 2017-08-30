@@ -1,6 +1,7 @@
 import App from './components/App'
 import Preact, { h, options, render } from 'preact'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import './components/main.css'
 
 options.syncComponentUpdates = false
 

@@ -52,6 +52,7 @@ dependencies:
   shelljs: 0.7.8
   side-effects-safe: 0.0.1
   source-map: 0.5.7
+  style-ext-html-webpack-plugin: 3.4.1
   style-loader: 0.18.2
   uglifyjs-webpack-plugin: 1.0.0-beta.2
   webpack: 3.5.5
@@ -59,6 +60,7 @@ dependencies:
   webpack-common-shake: 1.5.3
   webpack-dev-server: 2.7.1
   webpack-messages: 1.0.1
+  webpack-omit-js-for-css-plugin: 1.0.1
   webpack-plugin-replace: 1.1.1
   webpack-simple-progress-plugin: 0.0.2
   why-did-you-update: 0.0.8
@@ -1346,7 +1348,7 @@ packages:
       integrity: sha1-+zgB1FNGdknvNgPH1hoCvRKb3m0=
   /clean-css/4.1.7:
     dependencies:
-      source-map: 0.5.6
+      source-map: 0.5.7
     resolution:
       integrity: sha1-ua6k+FZ5iJzz6ui0A0nsTr390DI=
   /cli-cursor/2.1.0:
@@ -4839,6 +4841,13 @@ packages:
       get-stdin: 4.0.1
     resolution:
       integrity: sha1-DHlipq3vp7vUrDZkYKY4VSrhoKI=
+  /style-ext-html-webpack-plugin/3.4.1:
+    dependencies:
+      clean-css: 4.1.7
+      debug: 2.6.8
+      webpack-sources: 0.2.3
+    resolution:
+      integrity: sha1-Ym7CmUjIYnRe3tGpDvj24C7GmTM=
   /style-loader/0.18.2:
     dependencies:
       loader-utils: 1.1.0
@@ -5218,6 +5227,9 @@ packages:
       webpack-format-messages: 1.0.1
     resolution:
       integrity: sha1-9JB4gzopRycHhvZ3GaS19JtFh7U=
+  /webpack-omit-js-for-css-plugin/1.0.1:
+    resolution:
+      integrity: sha1-d8FxgLv9pvGy9snZvp4lsboCx4E=
   /webpack-plugin-replace/1.1.1:
     resolution:
       integrity: sha1-mBZkf+/Jin0XAPk/K0tvSBzyAWE=
@@ -5231,7 +5243,7 @@ packages:
   /webpack-sources/0.2.3:
     dependencies:
       source-list-map: 1.1.2
-      source-map: 0.5.6
+      source-map: 0.5.7
     resolution:
       integrity: sha1-F8Yr+vE8cH+dAsR54Nzd6DgGl/s=
   /webpack-sources/1.0.1:
@@ -5493,6 +5505,7 @@ specifiers:
   shelljs: ^0.7.8
   side-effects-safe: ^0.0.1
   source-map: ^0.5.7
+  style-ext-html-webpack-plugin: ^3.4.1
   style-loader: ^0.18.2
   uglifyjs-webpack-plugin: 1.0.0-beta.2
   webpack: 3.5.5
@@ -5500,6 +5513,7 @@ specifiers:
   webpack-common-shake: ^1.5.3
   webpack-dev-server: ^2.7.1
   webpack-messages: ^1.0.1
+  webpack-omit-js-for-css-plugin: ^1.0.1
   webpack-plugin-replace: ^1.1.1
   webpack-simple-progress-plugin: ^0.0.2
   why-did-you-update: ^0.0.8
