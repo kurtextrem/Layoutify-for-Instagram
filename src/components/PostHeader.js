@@ -1,5 +1,5 @@
 import TimeAgo from 'react-timeago'
-import { Component } from 'preact'
+import { Component, h } from 'preact'
 import { Media } from 'reactstrap'
 import { updateCDN } from './Utils'
 

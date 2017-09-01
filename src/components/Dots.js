@@ -1,4 +1,4 @@
-import { Component } from 'preact'
+import { Component, h } from 'preact'
 
 export default class Dots extends Component {
 	renderDot(i) {
@@ -16,10 +16,6 @@ export default class Dots extends Component {
 			dots[i] = this.renderDot(i)
 		}
 
-		return (
-			<div className="dots d-flex justify-content-center">
-				{dots}
-			</div>
-		)
+		return <div className="dots d-flex justify-content-center">{dots}</div>
 	}
 }

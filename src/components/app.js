@@ -2,7 +2,7 @@ import About from './About'
 import Header from './Header'
 import Liked from './Liked'
 import Saved from './Saved'
-import { Component } from 'preact'
+import { Component, h } from 'preact'
 import { Router } from 'preact-router'
 import { createHashHistory } from 'history'
 

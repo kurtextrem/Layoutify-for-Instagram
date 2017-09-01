@@ -1,4 +1,4 @@
-import { Component } from 'preact'
+import { Component, h } from 'preact'
 import { Container, Nav, NavItem, Navbar, NavbarBrand } from 'reactstrap'
 import { Link } from 'preact-router/match'
 

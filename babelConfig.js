@@ -44,14 +44,6 @@ module.exports = (isProd, options = {}) => ({
 					{ removeImport: true, additionalLibraries: ['react-immutable-proptypes'] },
 				],
 				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
-				[
-					resolve('babel-plugin-jsx-pragmatic'),
-					{
-						module: 'preact',
-						export: 'h',
-						import: 'h',
-					},
-				],
 
 				// 'module:fast-async', - enabled from Chrome 55
 				resolve('babel-plugin-loop-optimizer'),

@@ -3,7 +3,7 @@ import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import { Button, CardBlock, CardText } from 'reactstrap'
 import { Chrome, updateCDN } from './Utils'
-import { Component } from 'preact'
+import { Component, h } from 'preact'
 
 let observer
 if (typeof IntersectionObserver !== 'undefined')
@@ -144,23 +144,21 @@ export default class Post extends Component {
 			<article class="card">
 				<PostHeader user={user} code={post.code} taken_at={post.taken_at} />
 				<a href={`https://www.instagram.com/p/${post.code}`} target="_blank" rel="noopener" className={isCarousel ? 'post--carousel' : ''}>
-					{isCarousel
-						? <Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}>
-								<i class="material-icons">keyboard_arrow_left</i>
-							</Button>
-						: null}
+					{isCarousel ? (
+						<Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}>
+							<i class="material-icons">keyboard_arrow_left</i>
+						</Button>
+					) : null}
 					{mediaElement}
-					{isCarousel
-						? <Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}>
-								<i class="material-icons">keyboard_arrow_right</i>
-							</Button>
-						: null}
+					{isCarousel ? (
+						<Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}>
+							<i class="material-icons">keyboard_arrow_right</i>
+						</Button>
+					) : null}
 				</a>
 				{isCarousel ? <Dots index={state.carouselIndex} len={this.carouselLen} /> : null}
 				<CardBlock className="overflow-auto p-3 card-body">
-					<CardText>
-						{caption}
-					</CardText>
+					<CardText>{caption}</CardText>
 				</CardBlock>
 				<PostFooter
 					active={state.active}
