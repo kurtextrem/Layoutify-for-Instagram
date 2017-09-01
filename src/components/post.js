@@ -134,7 +134,7 @@ export default class Post extends Component {
 					width={candidate.width}
 					height={candidate.height}
 					data-src={updateCDN(candidate.url)}
-					alt={caption + ' - if you see this, the post has probably been deleted.'}
+					alt={'If you see this, the post has probably been deleted'}
 					className="img-fluid"
 				/>
 			)

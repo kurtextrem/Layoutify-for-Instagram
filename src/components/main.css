@@ -146,8 +146,19 @@ main {
 
 img {
 	image-rendering: -webkit-optimize-contrast;
+	text-align: center;
+	display: block;
 }
 
+img::before {
+	content: 'image';
+	font-size: 17px;
+	vertical-align: top;
+	font-family: 'Material Icons';
+	color: rgb(100, 100, 100);
+}
+
+/** Loading animation */
 @keyframes ball-pulse-sync {
 	33% {
 		transform: translateY(10px);
