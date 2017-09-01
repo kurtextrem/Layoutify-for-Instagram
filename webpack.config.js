@@ -73,7 +73,7 @@ var plugins = [
 		},
 	}),
 	new webpack.DefinePlugin({
-		'process.env': JSON.stringify({ NODE_ENV: ENV }), // Preact checkks for `!process.env`
+		'process.env': JSON.stringify({ NODE_ENV: ENV }), // Preact checks for `!process.env`
 		'process.env.NODE_ENV': JSON.stringify(ENV),
 		'typeof window': JSON.stringify('object'),
 		'typeof process': JSON.stringify('object'), // Preact checks for `type process === 'undefined'`
@@ -89,7 +89,6 @@ var plugins = [
 		defaultAttribute: 'async',
 		preload: ['.js', '.css'],
 	}),
-	new ExtractTextPlugin('styles.css'),
 	new CopyWebpackPlugin([{ from: '*.html' }, { from: '*.json' }, { from: 'img/*.png' }, { from: 'content/*' }, { from: '_locales/**' }]),
 ]
 
@@ -118,6 +117,7 @@ if (isProd) {
 		}),
 		new OmitJSforCSSPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
+		new ExtractTextPlugin('styles.css'),
 		new StyleExtHtmlWebpackPlugin(),
 		new ShakePlugin(),
 		new webpack.optimize.ModuleConcatenationPlugin(),
@@ -182,9 +182,13 @@ if (isProd) {
 		new FriendlyErrorsPlugin(),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'manifest',
+			filename: 'bundle1.js',
+			minChunks: Infinity,
+		}),
 		new WriteFilePlugin({
 			test: /(content\/|manifest.json)/,
-			useHashIndex: true,
 			log: false,
 		})
 	)
@@ -209,23 +213,25 @@ const first = {
 		publicPath: isProd ? '/' : 'http://localhost:8080/',
 		filename: 'bundle.js',
 		pathinfo: true,
-		devtoolModuleFilenameTemplate: info => (isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`),
+		//devtoolModuleFilenameTemplate: info => (isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`),
 	},
 
 	module: {
 		rules: [
 			{
 				test: /\.jsx?$/i,
-				exclude: /(node_modules|bower_components)/,
+				include: path.resolve(__dirname, 'src'),
 				loader: 'babel-loader',
 				options: babelConfig,
 			},
 			{
 				test: /\.css$/,
-				use: ExtractTextPlugin.extract({
-					fallback: 'style-loader',
-					use: ['css-loader', 'postcss-loader'],
-				}),
+				use: isProd
+					? ExtractTextPlugin.extract({
+							fallback: 'style-loader',
+							use: ['css-loader', 'postcss-loader'],
+						})
+					: ['style-loader', 'css-loader'],
 			},
 		],
 		noParse: isProd
@@ -266,7 +272,7 @@ const first = {
 			warnings: true,
 			errors: true,
 		},
-		watchContentBase: true,
+		watchContentBase: false,
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
