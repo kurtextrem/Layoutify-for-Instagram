@@ -13,7 +13,6 @@ const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plug
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
-const errorOverlayMiddleware = require('react-error-overlay/middleware')
 const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
 const ShakePlugin = require('webpack-common-shake').Plugin
@@ -277,9 +276,6 @@ const first = {
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
 			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
-		},
-		setup(app) {
-			app.use(errorOverlayMiddleware())
 		},
 	},
 

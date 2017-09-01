@@ -145,6 +145,7 @@ main {
 }
 
 img {
+	/* autoprefixer: off */
 	image-rendering: -webkit-optimize-contrast;
 	text-align: center;
 	display: block;
