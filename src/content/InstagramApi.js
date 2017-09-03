@@ -1,10 +1,9 @@
-(function(window) {
+;(function(window) {
 	'use strict'
 
 	const fetchOptions = {
 		credentials: 'include',
 		mode: 'cors',
-		referrerPolicy: 'no-referrer'
 	}
 	const headers = new Headers()
 	headers.append('X-IG-Capabilities', '3ToAAA==')
@@ -17,12 +16,13 @@
 	headers.append('Connection', 'keep-alive')
 
 	function fetch(url, options) {
-		let opts = fetchOptions
+		const opts = fetchOptions
+		opts.referrerPolicy = 'no-referrer' // we only want that when requesting the private API
 		opts.headers = headers
-		if (options !== undefined)
-			opts = Object.assign({}, fetchOptions, options)
+		if (options !== undefined) Object.assign({}, fetchOptions, options) // eslint-disable-line
 
-		return window.fetch(url, opts)
+		return window
+			.fetch(url, opts)
 			.then(checkStatus)
 			.then(toText)
 			.then(fixMaxId)
@@ -59,17 +59,23 @@
 
 		set(key, value) {
 			return new Promise((resolve, reject) => {
-				chrome.storage[this.STORAGE].set({
-					[key]: value
-				}, data => this.check(data, resolve, reject))
+				chrome.storage[this.STORAGE].set(
+					{
+						[key]: value,
+					},
+					data => this.check(data, resolve, reject)
+				)
 			})
 		}
 
 		get(key, defaultValue) {
 			return new Promise((resolve, reject) => {
-				chrome.storage[this.STORAGE].get({
-					[key]: defaultValue
-				}, data => this.check(data[key], resolve, reject))
+				chrome.storage[this.STORAGE].get(
+					{
+						[key]: defaultValue,
+					},
+					data => this.check(data[key], resolve, reject)
+				)
 			})
 		}
 
@@ -132,12 +138,11 @@
 
 			this.start = () => {
 				if (this.firstNextMaxId === undefined) {
-					return Storage.get(this.endpoint, { items: [], nextMaxId: '' })
-						.then(data => {
-							this.firstNextMaxId = data.nextMaxId
-							this.items = data.items
-							return data
-						})
+					return Storage.get(this.endpoint, { items: [], nextMaxId: '' }).then(data => {
+						this.firstNextMaxId = data.nextMaxId
+						this.items = data.items
+						return data
+					})
 				}
 				return Promise.resolve(this.items)
 			}
@@ -160,7 +165,8 @@
 		}
 
 		normalize(data) {
-			if (data.items !== undefined && data.items.length && data.items[0].media !== undefined) { // we need to normalize "saved"
+			if (data.items !== undefined && data.items.length && data.items[0].media !== undefined) {
+				// we need to normalize "saved"
 				data.items = data.items.map(item => item.media)
 			}
 			return data
@@ -181,7 +187,8 @@
 				maxLen = Math.min(len, this.items.length), // don't exceed either array len
 				match = false
 			for (let i = 0; i < maxLen; ++i) {
-				if (lastId === this.items[i].id) { // next elements are older
+				if (lastId === this.items[i].id) {
+					// next elements are older
 					match = true
 					data.items.push(...this.items.slice(i + 1))
 					this.items = data.items
@@ -202,8 +209,7 @@
 			this.firstRun = false
 
 			// Add (older) items
-			if (!match)
-				this.items.push(...data.items)
+			if (!match) this.items.push(...data.items)
 
 			Storage.set(this.endpoint, { items: this.items, nextMaxId: this.nextMaxId })
 
@@ -219,7 +225,7 @@
 
 			return fetch(`${WEB_API}${this.action}s/${id}/un${this.action}/`, {
 				method: 'POST',
-				headers
+				headers,
 			})
 		}
 
@@ -232,7 +238,7 @@
 
 			return fetch(`${WEB_API}${this.action}s/${id}/${this.action}/`, {
 				method: 'POST',
-				headers
+				headers,
 			})
 		}
 	}
