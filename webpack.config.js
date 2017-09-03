@@ -138,6 +138,7 @@ if (isProd) {
 			uglifyOptions: {
 				ecma: 6,
 				mangle: true,
+				comments: false,
 				compress: {
 					arrows: false,
 					ecma: 6,

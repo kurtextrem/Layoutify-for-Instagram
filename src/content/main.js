@@ -83,7 +83,7 @@
 		if (location.pathname.indexOf('/p/') !== -1) addAuto = true
 
 		const elems = root.querySelectorAll('video')
-		for (let i = 0; i < elems.length; i++) {
+		for (let i = 0; i < elems.length; ++i) {
 			const elem = elems[i]
 
 			elem.controls = true

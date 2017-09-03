@@ -7,9 +7,10 @@ export default class About extends Component {
 		return false
 	}
 
-	onBtnClick = () => {
+	onBtnClick = e => {
 		Storage.remove('liked')
 		Storage.remove('saved')
+		e.target.innerText = 'Cleared!'
 	}
 
 	render() {

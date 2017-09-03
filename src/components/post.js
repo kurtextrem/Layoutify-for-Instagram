@@ -120,7 +120,7 @@ export default class Post extends Component {
 				<video
 					ref={this.setRef}
 					src={isCarousel ? url : ''}
-					data-src={isCarousel ? url : ''}
+					data-src={url}
 					poster={media.image_versions2.candidates[0].url}
 					type="video/mp4"
 					width={candidate.width}

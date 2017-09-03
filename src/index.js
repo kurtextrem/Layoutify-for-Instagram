@@ -12,8 +12,8 @@ const init = app => (root = render(h(app), document.body, root))
 if (module.hot) {
 	require('preact/devtools')
 	require('preact/debug')
-	const { whyDidYouUpdate } = require('why-did-you-update')
-	whyDidYouUpdate(Preact)
+	//	const { whyDidYouUpdate } = require('why-did-you-update')
+	//	whyDidYouUpdate(Preact)
 
 	module.hot.accept('./components/App', () =>
 		requestAnimationFrame(() => {

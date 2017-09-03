@@ -4,7 +4,10 @@ export class XHR {
 	}
 
 	static fetch(url, options) {
-		return window.fetch(url, options).then(XHR.checkStatus).then(XHR.parseJSON)
+		return window
+			.fetch(url, options)
+			.then(XHR.checkStatus)
+			.then(XHR.parseJSON)
 	}
 
 	static checkStatus(response) {
@@ -51,6 +54,7 @@ export class Chrome {
 		const search = document.location.search.replace('?', '').split('='),
 			index = search.indexOf('tabid')
 		if (index !== -1) {
+			console.log('sending req', action, additional)
 			chrome.tabs.sendMessage(Number(search[index + 1]), { action, ...additional }, null, function() {})
 			return true
 		}
