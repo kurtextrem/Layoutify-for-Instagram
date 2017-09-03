@@ -30,9 +30,7 @@ export default class Sentinel extends Component {
 	}
 
 	componentDidMount() {
-		this.io = new IntersectionObserver(this.onUpdate, {
-			root: this.ref.parentNode,
-		})
+		this.io = new IntersectionObserver(this.onUpdate)
 		this.io.observe(this.ref)
 	}
 
