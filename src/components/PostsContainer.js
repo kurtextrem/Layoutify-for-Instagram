@@ -27,6 +27,7 @@ export default class PostsContainer extends Component {
 				</a>?)
 			</div>
 		)
+		this.initial = 0
 
 		window.setTimeout(() => this.setTimeout(200), 200)
 	}
@@ -36,6 +37,7 @@ export default class PostsContainer extends Component {
 	}
 
 	handleData = data => {
+		++this.initial
 		this.setState((prevState, props) => ({ items: data.items, nextMaxId: data.nextMaxId, timeout: 400 }))
 		return data
 	}
@@ -54,7 +56,7 @@ export default class PostsContainer extends Component {
 
 	renderPost = post => {
 		const { id, defaultClass, toggleClass } = this.props
-		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} />
+		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} initial={this.initial < 2} />
 	}
 
 	setTimeout(timeout) {
@@ -98,7 +100,7 @@ export default class PostsContainer extends Component {
 			nextProps.id !== this.props.id ||
 			nextState.timeout !== timeout ||
 			(items === null && nextState.items !== null) || // first items
-			(items !== null && nextState.items !== null && nextState.items.length !== items.length)
+			(items && nextState.items && nextState.items.length !== items.length)
 		)
 	}
 

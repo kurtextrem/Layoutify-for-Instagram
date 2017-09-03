@@ -92,11 +92,11 @@ export default class Post extends Component {
 	}
 
 	componentDidMount() {
-		observer.observe(this.ref)
+		if (this.props.initial) observer.observe(this.ref)
 	}
 
 	componentWillUnmount() {
-		observer.unobserve(this.ref)
+		if (this.props.initial) observer.unobserve(this.ref)
 		this.ref = null
 	}
 
@@ -119,7 +119,7 @@ export default class Post extends Component {
 			mediaElement = (
 				<video
 					ref={this.setRef}
-					src={isCarousel ? url : ''}
+					src={isCarousel || !props.initial ? url : ''}
 					data-src={url}
 					poster={media.image_versions2.candidates[0].url}
 					type="video/mp4"
@@ -139,7 +139,7 @@ export default class Post extends Component {
 					ref={this.setRef}
 					width={candidate.width}
 					height={candidate.height}
-					src={isCarousel ? url : ''}
+					src={isCarousel || !props.initial ? url : ''}
 					data-src={url}
 					alt={'If you see this, the post has probably been deleted'}
 					className="img-fluid"
