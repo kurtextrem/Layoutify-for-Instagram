@@ -47,7 +47,7 @@ export default class Post extends Component {
 
 		if (!this.preloaded) {
 			for (let i = 1; i < this.carouselLen; ++i) {
-				window.setTimeout(this.preload.bind(this, i), 1)
+				this.preload(i)
 			}
 			this.preloaded = true
 		}
@@ -81,6 +81,7 @@ export default class Post extends Component {
 	setRef = ref => (this.ref = ref)
 
 	preload(index) {
+		console.log('preloading', this.props.data.carousel_media[index].image_versions2.candidates[0].url)
 		new Image().src = this.props.data.carousel_media[index].image_versions2.candidates[0].url
 	}
 
@@ -113,10 +114,13 @@ export default class Post extends Component {
 		if (media.media_type === 2) {
 			// video
 			candidate = media.video_versions[0]
+
+			const url = updateCDN(candidate.url)
 			mediaElement = (
 				<video
 					ref={this.setRef}
-					data-src={updateCDN(candidate.url)}
+					src={isCarousel ? url : ''}
+					data-src={isCarousel ? url : ''}
 					poster={media.image_versions2.candidates[0].url}
 					type="video/mp4"
 					width={candidate.width}
@@ -128,12 +132,15 @@ export default class Post extends Component {
 			)
 		} else {
 			candidate = media.image_versions2.candidates[0]
+
+			const url = updateCDN(candidate.url)
 			mediaElement = (
 				<img
 					ref={this.setRef}
 					width={candidate.width}
 					height={candidate.height}
-					data-src={updateCDN(candidate.url)}
+					src={isCarousel ? url : ''}
+					data-src={url}
 					alt={'If you see this, the post has probably been deleted'}
 					className="img-fluid"
 				/>
