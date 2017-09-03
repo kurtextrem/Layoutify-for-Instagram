@@ -19,7 +19,14 @@ export default class PostsContainer extends Component {
 			nextMaxId: '',
 			timeout: 0,
 		}
-		this.error = <div>No data available (have you tried clicking the three dots on top of Instagram.com?)</div>
+		this.error = (
+			<div>
+				No data available (have you tried clicking the three dots on top of{' '}
+				<a href="https://www.instagram.com" _target="blank" rel="noopener">
+					Instagram.com
+				</a>?)
+			</div>
+		)
 
 		window.setTimeout(() => this.setTimeout(200), 200)
 	}
@@ -99,7 +106,7 @@ export default class PostsContainer extends Component {
 		const { items, timeout } = state
 
 		if (timeout === 200) return loading
-		if (timeout === 400 && (items === null || items.length === 0)) {
+		if (timeout === 400 && (!items || items.length === 0)) {
 			return this.error
 		}
 		if (items === null) return null // first paint
