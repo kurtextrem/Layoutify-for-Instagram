@@ -3,17 +3,17 @@
 <head>
 	<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 	<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+	<link rel="preload" as="style" href="https://fonts.googleapis.com/icon?family=Material+Icons"><!-- onload="this.rel='stylesheet'" -->
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<title><%= htmlWebpackPlugin.options.title %></title>
 	<link rel="shortcut icon" type="image/png" href="img/icon-128.png">
-	<!-- <link rel="preload" as="style" href="style.css" onload="this.rel='stylesheet'"> -->
 </head>
 <body>
 	<%= htmlWebpackPlugin.options.ssr({
 		url: '/'
 	}) %>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </body>
 </html>
