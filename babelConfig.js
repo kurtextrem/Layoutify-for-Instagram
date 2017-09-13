@@ -46,7 +46,6 @@ module.exports = (isProd, options = {}) => ({
 				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
 
 				// 'module:fast-async', - enabled from Chrome 55
-				resolve('babel-plugin-loop-optimizer'),
 				resolve('babel-plugin-closure-elimination'),
 				resolve('./pure-plugin.js'),
 				// 'emotion/babel'
