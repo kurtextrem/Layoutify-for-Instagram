@@ -220,7 +220,7 @@ const first = {
 		rules: [
 			{
 				test: /\.jsx?$/i,
-				include: path.resolve(__dirname, 'src'),
+				exclude: /(node_modules|bower_components)/,
 				loader: 'babel-loader',
 				options: babelConfig,
 			},
