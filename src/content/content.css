@@ -29,7 +29,7 @@ header > a {
 }
 
 /** Remove width limit */
-main > section {
+#mainFeed {
 	max-width: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
@@ -37,7 +37,7 @@ main > section {
 }
 
 /** Make the flex box layout row instead of column */
-main > section > div > div > div {
+#mainFeed > div > div > div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -46,7 +46,7 @@ main > section > div > div > div {
 }
 
 /** Make boxes equaly high and wide */
-main > section div > article {
+#mainFeed div > article {
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
 	margin-right: var(--boxMarginRight) !important;
@@ -90,7 +90,7 @@ div[role='dialog'] header + div + div,
 	flex: 1 0 auto;
 }
 
-.home header + div + div {
+#mainFeed header + div + div {
 	margin-top: 8px;
 	padding-bottom: 4rem; /** Append height of heart / write comment to the bottom */
 }
@@ -141,7 +141,7 @@ header + div + div > section:first-child {
 }
 
 /** Center heart */
-.home header + div + div > section:first-child > a {
+#mainFeed header + div + div > section:first-child > a {
 	margin: auto;
 }
 
@@ -160,7 +160,7 @@ header + div + div > section:last-child {
 	margin-top: 0;
 }
 
-.home header + div + div > section:last-child {
+#mainFeed header + div + div > section:last-child {
 	width: 84%;
 }
 
@@ -185,7 +185,7 @@ video[loop]::-webkit-media-controls-enclosure {
 }
 
 /** Hide media controls when not playing on home */
-.home video:not([loop])::-webkit-media-controls-enclosure {
+#mainFeed video:not([loop])::-webkit-media-controls-enclosure {
 	opacity: 0;
 }
 
@@ -195,11 +195,10 @@ video[loop]::-webkit-media-controls-enclosure {
 }
 
 /** Makes the multiple videos/images dots visible */
+/** issues#17 */
 div > div + a + div,
-/** #17 */
-div > div + [style="position: static;"] > a,
-/** Sprites */
-.coreSpriteLikeAnimationHeart,
+div > div + [style='position: static;'] > a,
+/** Sprites */ .coreSpriteLikeAnimationHeart,
 .coreSpriteSidecarIconLarge,
 .coreSpriteUserTagIndicator,
 .coreSpriteVideoIconLarge,
@@ -231,7 +230,7 @@ a.videoSpritePlayButton + div {
 /*=============================================
 										Nav Bar
 =============================================*/
-/** See https://github.com/kurtextrem/Improved-for-Instagram/issues/16 */
+/** See issues#16 */
 nav > div + div > div {
 	contain: layout;
 }
@@ -247,9 +246,23 @@ nav input + span + div + div > div:first-of-type {
 }
 
 /*=============================================
+					Stories experiment issues#20
+=============================================*/
+#mainFeed > div {
+	order: 1;
+}
+
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child {
+	position: static;
+	order: 0;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+/*=============================================
 										Spinner
 =============================================*/
-#react-root:not(.profile) main > section > div > div > div:last-child {
+#react-root:not(.profile) #mainFeed > div:not(#rcr-anchor) > div > div:last-child {
 	height: 30px;
 	contain: strict;
 	z-index: 2;
@@ -334,7 +347,7 @@ footer > div > nav {
 #rcr-anchor {
 	justify-content: flex-start;
 	overflow: auto;
-	margin-bottom: -55px;
+	margin-bottom: -35px;
 }
 
 #rcr-anchor > div {
