@@ -57,8 +57,8 @@ header > a {
 
 /** Moves the img over the "prevent right click copy"-element */
 div > img {
-	z-index: 1;
 	contain: strict;
+	z-index: 1;
 }
 
 /*=============================================
@@ -127,10 +127,10 @@ div > a > time {
 header + div + div > div:first-of-type {
 	flex-grow: 1;
 	order: 2 !important;
+	width: 100%;
 	max-height: 80%;
 	padding-top: 5px !important;
 	padding-bottom: 0 !important;
-	width: 100%;
 }
 
 /** Heart */
@@ -156,8 +156,8 @@ header + div + div > section:last-child {
 	right: 0;
 	bottom: 0;
 	width: 83%;
-	background-color: white;
 	margin-top: 0;
+	background-color: white;
 }
 
 #mainFeed header + div + div > section:last-child {
@@ -253,10 +253,71 @@ nav input + span + div + div > div:first-of-type {
 }
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child {
-	position: static;
-	order: 0;
 	flex-direction: row;
 	flex-wrap: wrap;
+	order: 0;
+	width: 100%;
+	height: auto;
+}
+
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div {
+	/** all children */
+	flex: 1 100%;
+}
+
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr {
+	display: none;
+}
+
+/** owners story */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div:first-child {
+	flex: 1 auto;
+	order: 1;
+	margin-right: 5px;
+}
+
+/* stories / watch all */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div {
+	justify-content: start;
+	order: -1;
+	width: auto;
+}
+
+/** other stories */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
+	flex: 9999 0px;
+	flex-direction: row;
+	order: 2;
+
+	height: auto;
+	overflow-x: auto;
+	overflow-y: auto;
+}
+
+/** other stories container */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
+	flex-direction: row;
+	width: 100%;
+	height: auto;
+}
+
+/** story items */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div {
+	position: static;
+	flex-flow: row nowrap;
+	margin-right: 5px;
+}
+
+/** nav */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div > nav {
+	/**! Temporary solution, best would be moving it down to the loading spinner via absolute positioning */
+	display: none;
+}
+
+/** nav */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div > nav + span {
+	/**! Temporary solution, best would be moving it down to the loading spinner via absolute positioning */
+	display: none;
 }
 
 /*=============================================
@@ -346,8 +407,8 @@ footer > div > nav {
 =============================================*/
 #rcr-anchor {
 	justify-content: flex-start;
-	overflow: auto;
 	margin-bottom: -35px;
+	overflow: auto;
 }
 
 #rcr-anchor > div {
