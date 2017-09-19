@@ -264,7 +264,7 @@ nav input + span + div + div > div:first-of-type {
 	/** contain: content; - unsure about side-effects yet */
 }
 
-/** all children */
+/** All children */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div {
 	flex: 1 100% !important;
 }
@@ -273,7 +273,7 @@ nav input + span + div + div > div:first-of-type {
 	display: none !important;
 }
 
-/** owners story */
+/** Owners Story */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div:first-child {
 	flex: 1 auto !important;
 	order: 1 !important;
@@ -281,14 +281,14 @@ nav input + span + div + div > div:first-of-type {
 	margin-right: 5px !important;
 }
 
-/* stories / watch all */
+/* Stories / watch all */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div {
 	justify-content: start !important;
 	order: -1 !important;
 	width: auto !important;
 }
 
-/** other stories */
+/** Other Stories */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
 	flex: 9999 0px !important;
 	flex-direction: row !important;
@@ -300,7 +300,7 @@ nav input + span + div + div > div:first-of-type {
 	overflow-y: auto !important;
 }
 
-/** other stories container */
+/** Other stories container */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
 	flex-direction: row !important;
 	width: 100% !important;
@@ -308,14 +308,15 @@ nav input + span + div + div > div:first-of-type {
 	height: auto !important;
 }
 
-/** story items */
+/** Story Items */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div {
 	position: static !important;
 	flex-flow: row nowrap !important;
 	margin-right: 5px !important;
 }
 
-/** nav */
+/** Nav */
+/**! @TODO: Temporary solution, best would be moving it down to the loading spinner via absolute positioning */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child {
 	display: none !important;
 }

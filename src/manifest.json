@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extTitle__",
-	"version": "2.3.3",
+	"version": "2.3.3.1",
 	"manifest_version": 2,
 
 	"description": "__MSG_extDesc__",
@@ -17,7 +17,7 @@
 			"*://*.instagram.com/*",
 			"*://instagram.com/*"
 		],
-		"js": ["content/InstagramAPI.js", "content/main.js"],
+		"js": ["content/InstagramApi.js", "content/main.js"],
 		"css": ["content/content.css"],
 		"run_at": "document_idle",
 		"all_frames": true
