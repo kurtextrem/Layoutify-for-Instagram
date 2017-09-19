@@ -248,76 +248,76 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 					Stories experiment issues#20
 =============================================*/
-#mainFeed > div {
-	order: 1;
+#mainFeed > div:first-child:not(#rcr-anchor) {
+	max-width: none !important;
 }
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child {
-	flex-direction: row;
-	flex-wrap: wrap;
-	order: 0;
-	width: 100%;
-	height: auto;
+	position: static !important;
+	flex-direction: row !important;
+	flex-wrap: wrap !important;
+	order: -1 !important;
+	width: 100% !important;
+	max-width: none !important;
+	height: auto !important;
+	margin-bottom: 0 !important;
+	/** contain: content; - unsure about side-effects yet */
 }
 
+/** all children */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div {
-	/** all children */
-	flex: 1 100%;
+	flex: 1 100% !important;
 }
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr {
-	display: none;
+	display: none !important;
 }
 
 /** owners story */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div:first-child {
-	flex: 1 auto;
-	order: 1;
-	margin-right: 5px;
+	flex: 1 auto !important;
+	order: 1 !important;
+	width: auto !important;
+	margin-right: 5px !important;
 }
 
 /* stories / watch all */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div {
-	justify-content: start;
-	order: -1;
-	width: auto;
+	justify-content: start !important;
+	order: -1 !important;
+	width: auto !important;
 }
 
 /** other stories */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
-	flex: 9999 0px;
-	flex-direction: row;
-	order: 2;
+	flex: 9999 0px !important;
+	flex-direction: row !important;
+	order: 2 !important;
 
-	height: auto;
-	overflow-x: auto;
-	overflow-y: auto;
+	height: auto !important;
+	padding: 0 0 5px 0 !important;
+	overflow-x: auto !important;
+	overflow-y: auto !important;
 }
 
 /** other stories container */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
-	flex-direction: row;
-	width: 100%;
-	height: auto;
+	flex-direction: row !important;
+	width: 100% !important;
+	max-width: none !important;
+	height: auto !important;
 }
 
 /** story items */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div {
-	position: static;
-	flex-flow: row nowrap;
-	margin-right: 5px;
+	position: static !important;
+	flex-flow: row nowrap !important;
+	margin-right: 5px !important;
 }
 
 /** nav */
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div > nav {
-	/**! Temporary solution, best would be moving it down to the loading spinner via absolute positioning */
-	display: none;
-}
-
-/** nav */
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div > nav + span {
-	/**! Temporary solution, best would be moving it down to the loading spinner via absolute positioning */
-	display: none;
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child {
+	display: none !important;
 }
 
 /*=============================================
