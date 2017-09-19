@@ -31,6 +31,8 @@ dependencies:
   html-webpack-harddisk-plugin: 0.1.0
   html-webpack-include-assets-plugin: 1.0.0
   html-webpack-plugin: 2.30.1
+  lodash: 4.17.4
+  parallel-webpack: 2.1.0
   postcss-loader: 2.0.6
   postcss-unprefix: 2.1.1
   preact: 8.2.5
@@ -108,6 +110,12 @@ packages:
     id: registry.npmjs.org/ajv-keywords/2.1.0
     resolution:
       integrity: sha1-opbhf3v658HOT34N5T0pyzIWLfA=
+  /ajv/4.11.8:
+    dependencies:
+      co: 4.6.0
+      json-stable-stringify: 1.0.1
+    resolution:
+      integrity: sha1-gv+wKynmYq5TvcIK8VlHcGc5xTY=
   /ajv/5.2.2:
     dependencies:
       co: 4.6.0
@@ -2968,9 +2976,18 @@ packages:
       path-exists: 3.0.0
     resolution:
       integrity: sha1-K1aLJl7slExtnA3pw9u7ygNUzY4=
+  /lodash.assign/4.2.0:
+    resolution:
+      integrity: sha1-DZnzzNem0mHRm9rrkkUAXShYCOc=
   /lodash.camelcase/4.3.0:
     resolution:
       integrity: sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
+  /lodash.endswith/4.2.1:
+    resolution:
+      integrity: sha1-/tWawXOO0+I27dcGTsRWRIs3vAk=
+  /lodash.flatten/4.4.0:
+    resolution:
+      integrity: sha1-8xwiIlqWMtK7+OSt2+8kCqdlph8=
   /lodash.isfunction/3.0.8:
     resolution:
       integrity: sha1-TbcJ/IG8So/XEnpFilNGxc3OLGs=
@@ -3369,6 +3386,21 @@ packages:
       readable-stream: 2.3.3
     resolution:
       integrity: sha1-1BDwZbBdojCB/NEPKIVMKb2jOwY=
+  /parallel-webpack/2.1.0:
+    dependencies:
+      ajv: 4.11.8
+      bluebird: 3.5.0
+      chalk: 1.1.3
+      interpret: 1.0.4
+      lodash.assign: 4.2.0
+      lodash.endswith: 4.2.1
+      lodash.flatten: 4.4.0
+      minimist: 1.2.0
+      pluralize: 1.2.1
+      supports-color: 3.2.3
+      worker-farm: 1.5.0
+    resolution:
+      integrity: sha1-+IezvJ8EfLsL2JSosJr7aQRGAoc=
   /param-case/2.1.1:
     dependencies:
       no-case: 2.3.1
@@ -3471,6 +3503,9 @@ packages:
       find-up: 2.1.0
     resolution:
       integrity: sha1-9tXREJ4Z1j7fQo4L1X4Sd3YVM0s=
+  /pluralize/1.2.1:
+    resolution:
+      integrity: sha1-0aIUg/0iu0HlihL6NCGCMUCJfEU=
   /portfinder/1.0.13:
     dependencies:
       async: 1.5.2
@@ -5441,6 +5476,8 @@ specifiers:
   html-webpack-harddisk-plugin: ^0.1.0
   html-webpack-include-assets-plugin: ^1.0.0
   html-webpack-plugin: ^2.30.1
+  lodash: ^4.17.4
+  parallel-webpack: ^2.1.0
   postcss-loader: ^2.0.6
   postcss-unprefix: ^2.1.1
   preact: ^8.2.5
