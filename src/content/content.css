@@ -258,9 +258,10 @@ nav input + span + div + div > div:first-of-type {
 	flex-wrap: wrap !important;
 	order: -1 !important;
 	width: 100% !important;
-	max-width: none !important;
+	max-width: 100% !important;
 	height: auto !important;
 	margin-bottom: 0 !important;
+	max-height: 150px;
 	/** contain: content; - unsure about side-effects yet */
 }
 
@@ -304,8 +305,10 @@ nav input + span + div + div > div:first-of-type {
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
 	flex-direction: row !important;
 	width: 100% !important;
-	max-width: none !important;
+	max-width: 100% !important;
 	height: auto !important;
+	overflow-x: auto;
+	max-height: 150px;
 }
 
 /** Story Items */
@@ -313,6 +316,13 @@ nav input + span + div + div > div:first-of-type {
 	position: static !important;
 	flex-flow: row nowrap !important;
 	margin-right: 5px !important;
+}
+
+/** Story Items Inner */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > a,
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > div:last-child * {
+	max-width: none !important;
+	width: auto !important;
 }
 
 /** Nav */
