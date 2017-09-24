@@ -17,7 +17,7 @@ body {
 
 /** Outer parent of the image */
 header + div {
-	contain: content;
+	contain: layout;
 }
 
 form > textarea {
@@ -263,6 +263,8 @@ nav input + span + div + div > div:first-of-type {
 	margin-bottom: 0 !important;
 	max-height: 150px;
 	/** contain: content; - unsure about side-effects yet */
+
+	display: none; /**! @TODO: Fix stories */
 }
 
 /** All children */
