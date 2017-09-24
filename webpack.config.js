@@ -220,7 +220,7 @@ const first = {
 		rules: [
 			{
 				test: /\.jsx?$/i,
-				exclude: /(node_modules|bower_components)/,
+				exclude: /node_modules/,
 				loader: 'babel-loader',
 				options: babelConfig,
 			},
