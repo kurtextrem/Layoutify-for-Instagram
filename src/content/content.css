@@ -42,7 +42,7 @@ header > a {
 	flex-wrap: wrap;
 	justify-content: center;
 	margin-top: 10px;
-	contain: content;
+	contain: layout;
 }
 
 /** Make boxes equaly high and wide */
@@ -51,7 +51,7 @@ header > a {
 	max-width: var(--boxWidth);
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
-	contain: content;
+	contain: layout;
 	z-index: 1;
 }
 
