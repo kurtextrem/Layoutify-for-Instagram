@@ -85,7 +85,6 @@ var plugins = [
 	new HtmlWebpackPlugin(html),
 	new HtmlWebpackHarddiskPlugin(),
 	new ScriptExtHtmlWebpackPlugin({
-		defaultAttribute: 'async',
 		preload: ['.js', '.css'],
 	}),
 	new CopyWebpackPlugin([{ from: '*.html' }, { from: '*.json' }, { from: 'img/*.png' }, { from: 'content/*' }, { from: '_locales/**' }]),
