@@ -167,7 +167,7 @@ header + div + div > section:last-child {
 /*=============================================
 						Improved Autoload
 =============================================*/
-section > div > div > div:not(#rcr-anchor) + div:not(:last-child) {
+section > div > div > div:not(#rcr-anchor):not(:last-child) {
 	width: 1px;
 	height: 1px;
 	transform: translateY(calc(var(--boxHeight) * -2.75));
@@ -253,6 +253,8 @@ nav input + span + div + div > div:first-of-type {
 }
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child {
+	/** contain: content; - unsure about side-effects yet */
+	/* display: none; /**! @TODO: Fix stories */
 	position: static !important;
 	flex-direction: row !important;
 	flex-wrap: wrap !important;
@@ -260,11 +262,8 @@ nav input + span + div + div > div:first-of-type {
 	width: 100% !important;
 	max-width: 100% !important;
 	height: auto !important;
-	margin-bottom: 0 !important;
 	max-height: 150px;
-	/** contain: content; - unsure about side-effects yet */
-
-	display: none; /**! @TODO: Fix stories */
+	margin-bottom: 0 !important;
 }
 
 /** All children */
@@ -296,6 +295,7 @@ nav input + span + div + div > div:first-of-type {
 	flex: 9999 0px !important;
 	flex-direction: row !important;
 	order: 2 !important;
+	width: 100% !important;
 
 	height: auto !important;
 	padding: 0 0 5px 0 !important;
@@ -309,22 +309,23 @@ nav input + span + div + div > div:first-of-type {
 	width: 100% !important;
 	max-width: 100% !important;
 	height: auto !important;
-	overflow-x: auto;
-	max-height: 150px;
+	max-height: 150px !important;
+	overflow-x: auto !important;
 }
 
 /** Story Items */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div {
 	position: static !important;
 	flex-flow: row nowrap !important;
+	width: auto !important;
 	margin-right: 5px !important;
 }
 
 /** Story Items Inner */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > a,
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > div:last-child * {
-	max-width: none !important;
 	width: auto !important;
+	max-width: none !important;
 }
 
 /** Nav */
@@ -336,7 +337,7 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 										Spinner
 =============================================*/
-#react-root:not(.profile) #mainFeed > div:not(#rcr-anchor) > div > div:last-child {
+#react-root:not(.profile) #mainFeed > div:not(#rcr-anchor):not(:last-child) > div > div:last-child {
 	height: 30px;
 	contain: strict;
 	z-index: 2;
