@@ -167,7 +167,7 @@ header + div + div > section:last-child {
 /*=============================================
 						Improved Autoload
 =============================================*/
-section > div > div > div:not(#rcr-anchor):not(:last-child) {
+#mainFeed > div:not(#rcr-anchor) > div:only-child > div:first-child + div {
 	width: 1px;
 	height: 1px;
 	transform: translateY(calc(var(--boxHeight) * -2.75));
@@ -337,14 +337,8 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 										Spinner
 =============================================*/
-#react-root:not(.profile) #mainFeed > div:not(#rcr-anchor):not(:last-child) > div > div:last-child {
-	height: 30px;
-	contain: strict;
-	z-index: 2;
-}
-
-/** Profile spinner */
-.profile main > article > div > div:last-child {
+#react-root:not(.profile) #mainFeed > div:not(#rcr-anchor) > div:only-child > div:last-child,
+/** Profile spinner */ .profile main > article > div > div:last-child {
 	height: 30px;
 	contain: strict;
 	z-index: 2;
