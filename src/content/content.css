@@ -37,7 +37,7 @@ header > a {
 }
 
 /** Make the flex box layout row instead of column */
-#mainFeed > div > div > div {
+#mainFeed > div:not(#rcr-anchor) > div > div:first-child > div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -165,17 +165,6 @@ header + div + div > section:last-child {
 }
 
 /*=============================================
-						Improved Autoload
-=============================================*/
-#mainFeed > div:not(#rcr-anchor) > div:only-child > div:first-child + div {
-	width: 1px;
-	height: 1px;
-	transform: translateY(calc(var(--boxHeight) * -2.75));
-	contain: strict;
-	z-index: 2;
-}
-
-/*=============================================
 								Media Controls
 =============================================*/
 /** Always show media controls when playing */
@@ -250,6 +239,8 @@ nav input + span + div + div > div:first-of-type {
 =============================================*/
 #mainFeed > div:first-child:not(#rcr-anchor) {
 	max-width: none !important;
+	margin-right: 0 !important;
+	float: none !important;
 }
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child {
@@ -262,7 +253,7 @@ nav input + span + div + div > div:first-of-type {
 	width: 100% !important;
 	max-width: 100% !important;
 	height: auto !important;
-	max-height: 150px;
+	max-height: 150px !important;
 	margin-bottom: 0 !important;
 }
 
@@ -294,8 +285,10 @@ nav input + span + div + div > div:first-of-type {
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
 	flex: 9999 0px !important;
 	flex-direction: row !important;
+	flex-wrap: nowrap !important;
 	order: 2 !important;
 	width: 100% !important;
+	max-width: 100% !important;
 
 	height: auto !important;
 	padding: 0 0 5px 0 !important;
@@ -306,6 +299,7 @@ nav input + span + div + div > div:first-of-type {
 /** Other stories container */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
 	flex-direction: row !important;
+	flex-wrap: nowrap !important;
 	width: 100% !important;
 	max-width: 100% !important;
 	height: auto !important;
@@ -337,7 +331,7 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 										Spinner
 =============================================*/
-#react-root:not(.profile) #mainFeed > div:not(#rcr-anchor) > div:only-child > div:last-child,
+#react-root:not(.profile) #mainFeed > div:not(#rcr-anchor) > div > div:last-child > div,
 /** Profile spinner */ .profile main > article > div > div:last-child {
 	height: 30px;
 	contain: strict;
@@ -415,7 +409,7 @@ footer > div > nav {
 =============================================*/
 #rcr-anchor {
 	justify-content: flex-start;
-	margin-bottom: -35px;
+	margin-bottom: -20px;
 	overflow: auto;
 }
 
