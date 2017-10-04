@@ -6,18 +6,13 @@
 
 body {
 	font-size: 15px !important; /** we're on desktop, okay? */
-	text-rendering: optimizeSpeed;
 	overflow-y: unset !important; /** de-opts scrolling */
 }
 
 /*----------  Performance  ----------*/
-* {
-	box-shadow: none !important;
-}
-
 /** Outer parent of the image */
 header + div {
-	contain: layout;
+	contain: layout style;
 }
 
 form > textarea {
@@ -34,6 +29,7 @@ header > a {
 	margin: 0 !important;
 	padding: 0 !important;
 	z-index: 1;
+	flex-direction: column;
 }
 
 /** Make the flex box layout row instead of column */
@@ -42,7 +38,7 @@ header > a {
 	flex-wrap: wrap;
 	justify-content: center;
 	margin-top: 10px;
-	contain: layout;
+	contain: layout style;
 }
 
 /** Make boxes equaly high and wide */
@@ -51,7 +47,7 @@ header > a {
 	max-width: var(--boxWidth);
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
-	contain: layout;
+	contain: layout style;
 	z-index: 1;
 }
 
@@ -101,7 +97,7 @@ div[role='dialog'] header + div + div,
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: baseline;
-	contain: layout;
+	contain: layout style;
 }
 
 /** Views / likes */
@@ -169,7 +165,8 @@ header + div + div > section:last-child {
 =============================================*/
 /** Always show media controls when playing */
 video::-webkit-media-controls-overlay-enclosure,
-video[loop]::-webkit-media-controls-enclosure {
+video[loop]::-webkit-media-controls-enclosure,
+video[loop]::-webkit-media-controls {
 	z-index: 3;
 }
 
@@ -219,9 +216,9 @@ a.videoSpritePlayButton + div {
 /*=============================================
 										Nav Bar
 =============================================*/
-/** See issues#16 */
 nav > div + div > div {
-	contain: layout;
+	contain: layout style; /** See issues#16 */
+	z-index: 9 !important;
 }
 
 /** Hide "Open in App" */
@@ -245,7 +242,7 @@ nav input + span + div + div > div:first-of-type {
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child {
 	/** contain: content; - unsure about side-effects yet */
-	display: none; /**! @TODO: Fix stories */
+	/*display: none; /**! @TODO: Fix stories */
 
 	position: static !important;
 	flex-direction: row !important;
@@ -357,7 +354,7 @@ div[role='dialog'] article,
 .post article {
 	min-height: 50vh;
 	max-height: 90vh;
-	contain: content;
+	contain: layout style;
 }
 
 /** Center the image */
@@ -368,8 +365,10 @@ div[role='dialog'] article,
 }
 
 /** Improve picture quality */
-#react-root:not(.home) div > img {
+div > img {
+	/* autoprefixer: off */
 	image-rendering: -webkit-optimize-contrast;
+	/* autoprefixer: on */
 }
 
 /*=============================================
@@ -415,6 +414,7 @@ footer > div > nav {
 	justify-content: flex-start;
 	margin-bottom: -20px;
 	overflow: auto;
+	contain: content;
 }
 
 #rcr-anchor > div {
