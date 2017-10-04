@@ -42,9 +42,7 @@ export default class PostsContainer extends Component {
 		return data
 	}
 
-	populateData = () => {
-		return Storage.get(this.props.id, []).then(this.handleData)
-	}
+	populateData = async () => this.handleData(await Storage.get(this.props.id, []))
 
 	storageListener = (changes, area) => {
 		const id = this.props.id
