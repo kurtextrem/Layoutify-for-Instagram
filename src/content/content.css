@@ -242,8 +242,6 @@ nav input + span + div + div > div:first-of-type {
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child {
 	/** contain: content; - unsure about side-effects yet */
-	/*display: none; /**! @TODO: Fix stories */
-
 	position: static !important;
 	flex-direction: row !important;
 	flex-wrap: wrap !important;

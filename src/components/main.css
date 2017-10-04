@@ -32,7 +32,7 @@ main {
 }
 
 .card-deck {
-	contain: content;
+	contain: layout style;
 }
 
 .card {
@@ -43,7 +43,7 @@ main {
 	margin-right: var(--boxMarginRight);
 	margin-bottom: 10px;
 
-	contain: content;
+	contain: layout style;
 	z-index: 1;
 
 	animation: fadeIn 200ms;
