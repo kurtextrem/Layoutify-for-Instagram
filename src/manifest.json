@@ -37,5 +37,6 @@
 		"webRequestBlocking",
 		"cookies"
 	],
+	"incognito": "split",
 	"content_security_policy": "script-src 'self' http://localhost:8080; object-src 'self'"
 }
