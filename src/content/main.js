@@ -2,7 +2,8 @@
 	'use strict'
 
 	const document = window.document,
-		location = document.location
+		location = document.location,
+		documentElement = document.documentElement
 
 	// block middle mouse button
 	window.addEventListener(
@@ -37,6 +38,9 @@
 		observer.observe(elem, { childList: true, subtree: true })
 	}
 
+	/**
+	 * Observe for node changes and add video controls if needed.
+	 */
 	const root = document.getElementById('react-root')
 	observe(root, function observation(mutations) {
 		for (let i = 0; i < mutations.length; ++i) {
@@ -50,34 +54,18 @@
 		window.requestIdleCallback(onChange)
 	})
 
-	if (document.readyState === 'interactive' || document.readyState === 'complete') {
-		window.requestIdleCallback(onReady)
-	} else {
-		document.addEventListener('DOMContentLoaded', function() {
-			window.requestIdleCallback(onReady)
-		})
-	}
-
-	const documentElement = document.documentElement
-
-	function onReady() {
-		addControls()
-
-		const elem = document.querySelector('div > article')
-		if (elem !== null) documentElement.style.setProperty('--boxHeight', elem.offsetHeight + 'px') // give boxes equal height
-
-		addClass()
-
-		addExtendedButton()
-		addListener()
-	}
-
+	/**
+	 * Callback when nodes are removed/inserted.
+	 */
 	function onChange() {
 		addControls()
 
 		checkURL()
 	}
 
+	/**
+	 * Add controls to all videos.
+	 */
 	function addControls() {
 		let addAuto = false
 		if (location.pathname.indexOf('/p/') !== -1) addAuto = true
@@ -102,6 +90,9 @@
 		}
 	}
 
+	/**
+	 * Adds the correct class to the react root node.
+	 */
 	function addClass() {
 		const main = document.querySelector('#react-root')
 		if (location.pathname === '/') {
@@ -159,7 +150,7 @@
 		anchor.after(el)
 	}
 
-	var listenerActions = {
+	const listenerActions = {
 		load(request) {
 			return Instagram[request.which].fetch()
 		},
@@ -182,6 +173,42 @@
 			if (listenerActions[request.action] !== undefined && Instagram[request.which] !== undefined) {
 				listenerActions[request.action](request)
 			}
+		})
+	}
+
+	function injectNight() {
+		const date = new Date()
+		if (date.getHours() >= 20) {
+			let style = document.createElement('link')
+			style.rel = 'stylesheet'
+			style.href = chrome.extension.getURL('content/night.css')
+			document.body.appendChild(style)
+			style = null
+		}
+	}
+
+	/**
+	 * Callback when DOM is ready.
+	 */
+	function onReady() {
+		addControls()
+
+		const elem = document.querySelector('div > article')
+		if (elem !== null) documentElement.style.setProperty('--boxHeight', elem.offsetHeight + 'px') // give boxes equal height
+
+		addClass()
+
+		addExtendedButton()
+		addListener()
+
+		injectNight()
+	}
+
+	if (document.readyState === 'interactive' || document.readyState === 'complete') {
+		window.requestIdleCallback(onReady)
+	} else {
+		document.addEventListener('DOMContentLoaded', function() {
+			window.requestIdleCallback(onReady)
 		})
 	}
 })(window)

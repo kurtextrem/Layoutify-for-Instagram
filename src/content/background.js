@@ -52,6 +52,7 @@ function saveSession(value) {
 getSessionId()
 
 // hook into web request and modify headers before sending the request
+const headerObj = { requestHeaders: null }
 chrome.webRequest.onBeforeSendHeaders.addListener(
 	function listener(details) {
 		getSessionId() // just update for next time
@@ -68,7 +69,9 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 				header.value = header.value + '; sessionid=' + sessionid
 			}
 		}
-		return { requestHeaders: headers }
+
+		headerObj.requestHeaders = headers
+		return headerObj
 	},
 	{
 		urls: ['https://i.instagram.com/api/v1/feed/liked/*', 'https://i.instagram.com/api/v1/feed/saved/*'],
