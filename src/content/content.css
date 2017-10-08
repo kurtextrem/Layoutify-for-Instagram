@@ -76,7 +76,7 @@ div > main:only-child {
 
 div[role='dialog'] header + div + div,
 .post header + div + div {
-	top: 63px !important;
+	top: 55px !important;
 }
 
 /*----------  Improve new post layout  ----------*/
@@ -111,6 +111,7 @@ div > section + section {
 div > section + div + div {
 	flex: 99999999 0 auto; /* higher than views / likes to push it to the right */
 	order: 0 !important;
+	margin-bottom: 4px !important;
 }
 
 /** Larger timestamp */
@@ -124,8 +125,8 @@ header + div + div > div:first-of-type {
 	flex-grow: 1;
 	order: 2 !important;
 	width: 100%;
-	max-height: 80%;
-	padding-top: 5px !important;
+	max-height: calc(100% - 153px);
+	padding-top: 0 !important;
 	padding-bottom: 0 !important;
 }
 
@@ -288,9 +289,8 @@ nav input + span + div + div > div:first-of-type {
 	order: 2 !important;
 	width: 100% !important;
 	max-width: 100% !important;
-
 	height: auto !important;
-	padding: 0 0 5px 0 !important;
+	padding: 0 0 5px !important;
 	overflow-x: auto !important;
 	overflow-y: auto !important;
 }
