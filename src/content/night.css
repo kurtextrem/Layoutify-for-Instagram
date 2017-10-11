@@ -1,3 +1,24 @@
+/*----------  Night mode  ----------
+
+--- Color scheme ---
+
+Text color:
+	Light grey: #757575
+
+Usernames:
+	Blue: #1976D2
+
+Article background,
+Searchbar selected:
+	Dark: #212121
+
+
+Navbar background,
+Feed background:
+	Darkest: #181818
+
+*/
+
 :root {
 	/* emptied */
 }
@@ -151,8 +172,9 @@ header + div + div > section:last-child {
 	border: none;
 }
 
+/* URL Usernames in comments */
 #mainFeed > div > div > div > div > article > div > div > ul > li > span > span > a {
-	color: #0D47A1;
+	color: #1976D2;
 }
 
 #mainFeed header + div + div > section:last-child {
@@ -269,10 +291,83 @@ nav input + span + div + div > div:first-of-type {
 }
 
 /** Searchbar **/
+#react-root > section > nav > div > div > div > div > div:nth-child(2),
 #react-root > section > nav > div > div > div > div > input {
+	color: #757575;
 	background-color: #212121;
     border: none;
 }
+
+/* Search results */
+/* List */
+#react-root > section > nav > div > div > div > div > div > div {
+	border: none;
+}
+#react-root > section > nav > div > div > div > div > div > div > div {
+	background: #212121;
+}
+
+/* List items */
+#react-root > section > nav > div > div > div > div > div > div > div > a {
+	border-bottom: none;
+}
+#react-root > section > nav > div > div > div > div > div > div > div > a:hover,
+/* Hotfix, maybe disable this behaviour using JS? */
+._5tsk5 {
+	background: #181818;
+}
+
+#react-root > section > nav > div > div > div > div > div > div > div > a > div > div > div {
+	color: #757575;
+}
+
+/* Notifications */
+/* List */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div {
+	background: #212121;
+	border: none;
+	box-shadow: none;
+}
+
+/* Arrow */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div {
+	background: #212121;
+	box-shadow: none;
+}
+
+/* List items */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div > ul > li {
+	background: #212121;
+}
+
+#react-root > section > nav > div > div > div > div > div > div > div > div > div > ul > li:after {
+	border: none;
+}
+
+/* Text */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div > ul > li > div {
+	color: #757575;
+}
+
+/* Usernames */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div > ul > li > div > a {
+	color: #1976D2;
+}
+
+/* "Follow" button */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div > ul > li > div > span > button {
+	background: #181818;
+	border-color: #1976D2;
+	color: #757575;
+}
+
+/* "Subscribed" button */
+/*._t78yp {
+	background: #181818;
+	border-color: #dbdbdb;
+	color: #757575;
+} */
+
 
 /*=============================================
 					Stories experiment issues#20
@@ -351,6 +446,7 @@ section > footer + div {
 =============================================*/
 div[role='dialog'] article,
 .post article {
+	background: #212121;
 }
 
 /** Center the image */
@@ -362,6 +458,44 @@ div[role='dialog'] article,
 /** Improve picture quality */
 div > img {
 	/* emptied */
+}
+
+/*=============================================
+									Post Viewer
+=============================================*/
+/* Username */
+body > div > div > div > div > div > article > header > div > div > div > a {
+	color: #1976D2 !important;
+}
+
+/* Location */
+body > div > div > div > div > div > article > header > div > div > a {
+	color: #757575 !important;
+}
+
+/* Likes */
+body > div > div > div > div > div > article > div > section > div > a {
+	color: #757575 !important;
+}
+
+/* Comments: Usernames */
+body > div > div > div > div > div > article > div > div > ul > li > a {
+	color: #757575 !important;
+}
+
+/* Hashtags */
+body > div > div > div > div > div > article > div > div > ul > li > span > a {
+	color: #1976D2 !important; 
+}
+
+/* Comment textarea */
+body > div > div > div > div > div > article > div > section > form > textarea {
+	color: #757575 !important;
+}
+
+/* No border-top */
+body > div > div > div > div > div > article > div > section {
+	border-top: none !important;
 }
 
 /*=============================================
@@ -392,6 +526,42 @@ footer > div > nav {
 }
 
 /*=============================================
+									Settings
+=============================================*/
+/* Main */
+#react-root > section > main > div {
+	/*background-color: #212121;*/
+	border: none;
+	color: #757575;
+}
+
+/* Sidebar */
+#react-root > section > main > div > ul > li > a {
+	color: #757575;
+}
+#react-root > section > main > div > ul > li > a:hover {
+	background-color: #191919;
+}
+
+/* Checkboxes */
+#react-root > section > main > div > article > div > div > div > label > div::before,
+#react-root > section > main > div > article > div > div > label > div::before {
+	border-bottom: 2px solid #757575;
+	border-left: 2px solid #757575;
+}
+
+/* Textareas */
+#react-root > section > main > div > article > div > form > textarea {
+	color: #757575;
+}
+
+/* Selected item */
+._t0stc {
+	background: #181818;
+}
+
+
+/*=============================================
 						"Chrome IG Story" fixes
 =============================================*/
 #rcr-anchor {
@@ -401,6 +571,17 @@ footer > div > nav {
 #rcr-anchor > div {
 	/* emptied */
 }
+
+/* Username color */
+div[id^="igs_"] > span {
+	color: #757575 !important;
+}
+
+/* Edge Fade */
+.trayContainerEdgeFade {
+	background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(24,24,24,1) 100%);
+}
+
 
 /*=============================================
 									Media Querys
