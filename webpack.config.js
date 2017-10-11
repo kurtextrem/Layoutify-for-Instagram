@@ -130,9 +130,7 @@ if (isProd) {
 			],
 		}),
 		new UglifyJSPlugin({
-			parallel: {
-				cache: true,
-			},
+			parallel: true,
 			sourceMap: true,
 			uglifyOptions: {
 				ecma: 6,

@@ -23,6 +23,17 @@ header > a {
 	contain: strict;
 }
 
+/** Improve picture quality */
+div > img {
+	/* autoprefixer: off */
+	image-rendering: -webkit-optimize-contrast;
+	/* autoprefixer: on */
+
+	/** Moves the img over the "prevent right click copy"-element */
+	contain: strict;
+	z-index: 1;
+}
+
 /** Remove width limit */
 #mainFeed {
 	max-width: none !important;
@@ -41,19 +52,13 @@ header > a {
 	contain: layout style;
 }
 
-/** Make boxes equaly high and wide */
+/** Make boxes equal in height and width */
 #mainFeed div > article {
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
 	contain: layout style;
-	z-index: 1;
-}
-
-/** Moves the img over the "prevent right click copy"-element */
-div > img {
-	contain: strict;
 	z-index: 1;
 }
 
@@ -362,11 +367,9 @@ div[role='dialog'] article,
 	justify-content: center;
 }
 
-/** Improve picture quality */
-div > img {
-	/* autoprefixer: off */
-	image-rendering: -webkit-optimize-contrast;
-	/* autoprefixer: on */
+.post > section > main > div > div {
+	flex-grow: 1;
+	flex-shrink: 1;
 }
 
 /*=============================================

@@ -10,7 +10,7 @@ module.exports = (isProd, options = {}) => ({
 			{
 				modules: options.modules || false,
 				targets: {
-					browsers: isProd ? 'Chrome > 54' : 'Chrome > 60', //'unreleased Chrome versions',
+					browsers: isProd ? 'Chrome > 54' : 'unreleased Chrome versions',
 				},
 				loose: true,
 				useBuiltIns: false,
@@ -44,6 +44,8 @@ module.exports = (isProd, options = {}) => ({
 					{ removeImport: true, additionalLibraries: ['react-immutable-proptypes'] },
 				],
 				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
+				//[resolve('babel-plugin-transform-hoist-nested-functions'), { methods: true }],
+				//resolve('babel-plugin-transform-class-properties'),
 
 				// 'module:fast-async', - enabled from Chrome 55
 				resolve('babel-plugin-closure-elimination'),
