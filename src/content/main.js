@@ -125,7 +125,7 @@
 			a = el.firstChild
 
 		a.className = ''
-		a.classList.add('coreSpriteEllipsis', 'extended--btn')
+		a.classList.add('coreSpriteOptionsEllipsis', 'extended--btn')
 
 		let clickedExtendedBtn = true
 		if (window.localStorage.clickedExtendedBtn === undefined) {
@@ -140,13 +140,13 @@
 		a.onclick = function(e) {
 			e.preventDefault()
 
-			Instagram.liked.start().then(Instagram.liked.fetch())
-			Instagram.saved.start().then(Instagram.saved.fetch())
+			Instagram.liked.start().then(Instagram.liked.fetch)
+			Instagram.saved.start().then(Instagram.saved.fetch)
 
 			chrome.runtime.sendMessage(null, { action: 'click' })
 			if (!clickedExtendedBtn) window.localStorage.clickedExtendedBtn = true
 		}
-		el.style.top = '-8px'
+		el.style.transform = 'translateY(4px) scale(1.2)'
 		anchor.after(el)
 	}
 
