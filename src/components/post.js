@@ -1,7 +1,7 @@
 import Dots from './Dots'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
-import { Button, CardBlock, CardText } from 'reactstrap'
+import { Button, CardBody, CardText } from 'reactstrap'
 import { Chrome, updateCDN } from './Utils'
 import { Component, h } from 'preact'
 
@@ -164,9 +164,9 @@ export default class Post extends Component {
 					) : null}
 				</a>
 				{isCarousel ? <Dots index={state.carouselIndex} len={this.carouselLen} /> : null}
-				<CardBlock className="overflow-auto p-3 card-body">
+				<CardBody className="overflow-auto p-3 card-body">
 					<CardText>{caption}</CardText>
-				</CardBlock>
+				</CardBody>
 				<PostFooter
 					active={state.active}
 					btnClick={this.onBtnClick}

@@ -49,12 +49,16 @@ module.exports = (isProd, options = {}) => ({
 
 				// 'module:fast-async', - enabled from Chrome 55
 				resolve('babel-plugin-closure-elimination'),
+				resolve('babel-plugin-transform-console-log-variable-names'),
+				resolve('babel-plugin-console-groupify'),
 				resolve('./pure-plugin.js'),
 				// 'emotion/babel'
 			]
 		: [
 				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
 				resolve('babel-plugin-transform-react-jsx-source'),
+				resolve('babel-plugin-transform-console-log-variable-names'),
+				resolve('babel-plugin-console-groupify'),
 				// 'emotion/babel'
 				// 'runtyper'
 			],

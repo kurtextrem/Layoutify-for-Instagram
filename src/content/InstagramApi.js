@@ -136,25 +136,31 @@
 			this.nextMaxId = null
 			this.items = []
 
-			this.start = () => {
-				if (this.firstNextMaxId === undefined) {
-					return Storage.get(this.endpoint, { items: [], nextMaxId: '' }).then(data => {
-						this.firstNextMaxId = data.nextMaxId
-						this.items = data.items
-						return data
-					})
-				}
-				return Promise.resolve(this.items)
+			this.start = this.start.bind(this)
+			this.fetch = this.fetch.bind(this)
+			this.storeNext = this.storeNext.bind(this)
+			this.normalize = this.normalize.bind(this)
+			this.storeData = this.storeData.bind(this)
+		}
+
+		start() {
+			if (this.firstNextMaxId === undefined) {
+				return Storage.get(this.endpoint, { items: [], nextMaxId: '' }).then(data => {
+					this.firstNextMaxId = data.nextMaxId
+					this.items = data.items
+					return data
+				})
 			}
+			return Promise.resolve(this.items)
 		}
 
 		fetch() {
 			if (this.nextMaxId === '') return Promise.resolve(this.items) // nothing more to fetch
 
 			return fetch(API + 'feed/' + this.endpoint + '/?' + (this.nextMaxId ? 'max_id=' + this.nextMaxId + '&' : '')) // maxId means "show everything before X"
-				.then(this.storeNext.bind(this))
-				.then(this.normalize.bind(this))
-				.then(this.storeData.bind(this))
+				.then(this.storeNext)
+				.then(this.normalize)
+				.then(this.storeData)
 		}
 
 		storeNext(data) {
