@@ -33,6 +33,7 @@ main {
 
 .card-deck {
 	contain: layout style;
+	position: relative;
 }
 
 .card {

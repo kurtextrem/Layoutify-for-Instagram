@@ -44,12 +44,24 @@ div > img {
 }
 
 /** Make the flex box layout row instead of column */
-#mainFeed > div:not(#rcr-anchor) > div > div:first-child > div {
+#mainFeed > div:not(#rcr-anchor) > div > div > div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
 	margin-top: 10px;
 	contain: layout style;
+	width: 100%;
+	max-width: 100%;
+}
+
+#mainFeed > div:not(#rcr-anchor) > div > div {
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-top: 10px;
+	contain: layout style;
+	width: 100%;
+	max-width: 100%;
 }
 
 /** Make boxes equal in height and width */
