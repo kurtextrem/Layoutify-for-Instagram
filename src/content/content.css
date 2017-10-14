@@ -138,7 +138,7 @@ div > a > time {
 }
 
 /** Grow comments */
-header + div + div > div:first-of-type {
+#react-root:not(.profile) header + div + div > div:first-of-type {
 	flex-grow: 1;
 	order: 2 !important;
 	width: 100%;
