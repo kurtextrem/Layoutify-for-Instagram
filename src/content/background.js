@@ -1,36 +1,42 @@
 'use strict'
 
-const API = 'https://www.instagram.com/'
-const UA = 'Instagram 10.8.0 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US)'
-
+const cookieObj = {
+	url: 'https://www.instagram.com/',
+	name: '',
+}
 const url = chrome.runtime.getURL('index.html')
 
-let tab = null
+let tab = null /* store tab id */
+/**
+ * Called after a tab has been created.
+ *
+ * @param {Number} newTab
+ */
 function create(newTab) {
 	tab = newTab
 }
 
-function update() {
-	if (chrome.runtime.lastError) createTab(this, true)
+/**
+ * Called after a tab has been updated.
+ */
+function updated() {
+	if (chrome.runtime.lastError) createTab(this, true) // only create new tab when there was an error
 }
 
-const updateObj = { active: true, url: '' }
-const createObj = { url: '' }
+/**
+ * Creates a new tab.
+ *
+ * @param {Number} id
+ * @param {Boolean} force
+ */
 function createTab(id, force) {
 	if (tab !== null && !force) {
-		updateObj.url = url + '?tabid=' + id
-		chrome.tabs.update(tab.id, updateObj, update.bind(id))
+		chrome.tabs.update(tab.id, { active: true, url: url + '?tabid=' + id }, updated.bind(id))
 	} else {
-		createObj.url = url + '?tabid=' + id
-		chrome.tabs.create(createObj, create)
+		chrome.tabs.create({ url: url + '?tabid=' + id }, create)
 	}
 }
 
-chrome.runtime.onMessage.addListener(function listener(request, sender, sendResponse) {
-	if (request.action === 'click') createTab(sender.tab.id, false)
-})
-
-const cookieObj = { url: API, name: '' }
 function getCookie(name) {
 	return new Promise((resolve, reject) => {
 		cookieObj.name = name
@@ -42,17 +48,20 @@ function getCookie(name) {
 }
 
 let sessionid = ''
-function getSessionId() {
-	getCookie('sessionid').then(saveSession)
-}
 function saveSession(value) {
 	return (sessionid = value)
+}
+function getSessionId() {
+	getCookie('sessionid').then(saveSession)
 }
 
 getSessionId()
 
-// hook into web request and modify headers before sending the request
-const headerObj = { requestHeaders: null }
+chrome.runtime.onMessage.addListener(function listener(request, sender, sendResponse) {
+	if (request.action === 'click') createTab(sender.tab.id, false)
+})
+
+// Hook into web request and modify headers before sending the request
 chrome.webRequest.onBeforeSendHeaders.addListener(
 	function listener(details) {
 		getSessionId() // just update for next time
@@ -60,18 +69,17 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 		const headers = details.requestHeaders
 
 		for (let i = 0; i < headers.length; ++i) {
-			var header = headers[i]
+			const header = headers[i]
 
 			if (header.name === 'User-Agent') {
-				header.value = UA
+				header.value = 'Instagram 10.8.0 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US)'
 			} else if (header.name === 'Cookie') {
 				// add auth cookies to authenticate API requests
 				header.value = header.value + '; sessionid=' + sessionid
 			}
 		}
 
-		headerObj.requestHeaders = headers
-		return headerObj
+		return { requestHeaders: headers }
 	},
 	{
 		urls: ['https://i.instagram.com/api/v1/feed/liked/*', 'https://i.instagram.com/api/v1/feed/saved/*'],
