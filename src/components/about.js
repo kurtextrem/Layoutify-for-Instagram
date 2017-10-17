@@ -3,14 +3,14 @@ import { Component, h } from 'preact'
 import { Storage } from './Utils'
 
 export default class About extends Component {
-	shouldComponentUpdate() {
-		return false
-	}
-
 	onBtnClick = e => {
 		Storage.remove('liked')
 		Storage.remove('saved')
 		e.target.innerText = 'Cleared!'
+	}
+
+	shouldComponentUpdate() {
+		return false
 	}
 
 	render() {

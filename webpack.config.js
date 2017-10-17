@@ -9,7 +9,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
-const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
@@ -22,6 +21,7 @@ const WebpackMessages = require('webpack-messages')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin')
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
+const WebpackMonitor = require('webpack-monitor')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -36,7 +36,7 @@ function getMin(module) {
 }
 const preactCompat = isProd ? 'preact-compat' : getMin('preact-compat') // if we take the min build in prod we also include prop-types
 
-var html = {
+const html = {
 	title: 'Improved Layout for Instagram',
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
@@ -61,7 +61,7 @@ if (isProd) {
 	// html.hash = true
 }
 
-var plugins = [
+const plugins = [
 	new WebpackMessages(),
 	new ProgressBarPlugin({
 		messageTemplate:
@@ -172,6 +172,11 @@ if (isProd) {
 			openAnalyzer: false,
 			reportFilename: '../report.html',
 		}),
+		/*new WebpackMonitor({
+			capture: true,
+			launch: true,
+			target: '../stats.json',
+		}),*/
 		new ZipPlugin({ filename: 'dist.zip', path: '../', exclude: 'ssr-bundle.js' })
 	)
 } else {

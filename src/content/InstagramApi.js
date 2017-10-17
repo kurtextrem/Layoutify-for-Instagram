@@ -98,11 +98,11 @@
 	const Storage = new storage()
 
 	function getCookies(wanted) {
-		var cookies = document.cookie.split('; '),
+		let cookies = document.cookie.split('; '),
 			result = {}
 
-		for (var i = 0; i < cookies.length; ++i) {
-			var cookie = cookies[i].split('='),
+		for (let i = 0; i < cookies.length; ++i) {
+			const cookie = cookies[i].split('='),
 				index = wanted.indexOf(cookie[0])
 			if (index !== -1) {
 				result[wanted[index]] = cookie[1]
@@ -183,21 +183,22 @@
 		 * To do this, we compare the last elem's id of the new data set with `len` elems of the old.
 		 *
 		 * @param 	{Object} 	data
-		 * @return 	{boolean} Whether the function found a matching item or not
+		 * @return 	{Boolean} Whether the function found a matching item or not
 		 */
 		compareData(data) {
 			if (data.items === undefined || !data.items.length) return true // prevent adding undefined or similar
 
-			var len = data.items.length,
-				lastId = data.items[len - 1].id,
-				maxLen = Math.min(len, this.items.length), // don't exceed either array len
-				match = false
+			const items = data.items,
+				len = items.length,
+				lastId = items[len - 1].id,
+				maxLen = Math.min(len, this.items.length) // don't exceed either array len
+			let match = false
 			for (let i = 0; i < maxLen; ++i) {
 				if (lastId === this.items[i].id) {
 					// next elements are older
 					match = true
-					data.items.push(...this.items.slice(i + 1))
-					this.items = data.items
+					items.push(...this.items.slice(i + 1))
+					this.items = items
 					break
 				}
 			}
