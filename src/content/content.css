@@ -81,6 +81,8 @@ div[role='dialog'] article > header,
 #react-root:not(.profile) article > header {
 	height: 50px !important;
 	contain: strict;
+	width: 306px !important;
+	right: 8px !important;
 }
 
 div > main:first-child {
@@ -105,7 +107,6 @@ div[role='dialog'] header + div + div,
 
 #mainFeed header + div + div {
 	margin-top: 8px;
-	padding-bottom: 4rem; /** Append height of heart / write comment to the bottom */
 }
 
 /** Row layout */
@@ -113,8 +114,13 @@ div[role='dialog'] header + div + div,
 #react-root:not(.profile) header + div + div {
 	flex-direction: row;
 	flex-wrap: wrap;
-	align-content: baseline;
+	align-content: normal;
 	contain: layout style;
+}
+
+div[role='dialog'] header + div + div,
+.post header + div + div {
+	padding-right: 8px;
 }
 
 /** Views / likes */
@@ -122,6 +128,7 @@ div > section + section {
 	flex: 9999 0 auto;
 	order: 1 !important;
 	max-width: 100%;
+	align-self: flex-start;
 }
 
 /** Posted date */
@@ -129,6 +136,7 @@ div > section + div + div {
 	flex: 99999999 0 auto; /* higher than views / likes to push it to the right */
 	order: 0 !important;
 	margin-bottom: 4px !important;
+	height: 0;
 }
 
 /** Larger timestamp */
@@ -138,20 +146,26 @@ div > a > time {
 }
 
 /** Grow comments */
-#react-root:not(.profile) header + div + div > div:first-of-type {
+header + div + div > div:first-of-type {
 	flex-grow: 1;
 	order: 2 !important;
 	width: 100%;
-	max-height: calc(100% - 153px);
+	height: 100%;
+	max-height: calc(100% - 5.3em);
 	padding-top: 0 !important;
-	padding-bottom: 0 !important;
+	padding-bottom: 5px !important;
+	padding-right: 0 !important;
+	margin-right: 0 !important;
 }
 
-/** Heart */
+/** Heart / Comment / Save */
 header + div + div > section:first-child {
-	position: absolute;
-	bottom: 13px;
-	background-color: white;
+	order: 4 !important;
+	width: auto;
+	margin-top: 0 !important;
+	border-top: 1px solid #efefef;
+	align-self: flex-end;
+	min-height: 56px;
 }
 
 /** Center heart */
@@ -160,22 +174,28 @@ header + div + div > section:first-child {
 }
 
 /** Hide useless comment icon */
-section > a[role='button'] + a[role='button'] {
+section > a[role='button']:first-child + a[role='button'] {
 	display: none;
+}
+
+/** Save button */
+section > a[role='button']:not(:first-child) + a[role='button']:last-child {
+	margin-left: none;
 }
 
 /** Add comment */
 header + div + div > section:last-child {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	width: 83%;
+	flex: 1;
+	order: 5;
+	width: auto;
 	margin-top: 0;
-	background-color: white;
+	align-self: flex-end;
 }
 
-#mainFeed header + div + div > section:last-child {
-	width: 84%;
+/** Multiple dots */
+div > div + .coreSpriteRightChevron + div,
+div > div + .coreSpriteLeftChevron + div {
+	margin-bottom: 0;
 }
 
 /*=============================================
@@ -379,9 +399,28 @@ div[role='dialog'] article,
 	justify-content: center;
 }
 
+.post > section > main {
+	justify-content: center;
+}
+
+/** Sometimes IG sets a max-width on elements */
+.post > section > main > div {
+	max-width: 49vw !important;
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	flex-grow: 0;
+}
+
 .post > section > main > div > div {
 	flex-grow: 1;
 	flex-shrink: 1;
+}
+
+/** More image, less wasted space */
+.post header + div {
+	margin-right: 322px !important;
 }
 
 /*=============================================
@@ -397,6 +436,7 @@ div[role='dialog'] article,
 =============================================*/
 footer > div {
 	max-width: fit-content !important;
+	padding: 0 !important;
 }
 
 footer > div > nav {
