@@ -116,11 +116,18 @@ div[role='dialog'] header + div + div,
 	flex-wrap: wrap;
 	align-content: normal;
 	contain: layout style;
+
+	/* @TODO: Min Chrome v60 */
+	/*display: grid;*/
+	grid-template-rows: 5% auto 10%;
+	grid-template-columns: 50px 50px auto;
+	height: fit-content;
 }
 
 div[role='dialog'] header + div + div,
 .post header + div + div {
-	padding-right: 8px;
+	padding-right: 8px !important;
+	height: auto !important;
 }
 
 /** Views / likes */
@@ -129,6 +136,8 @@ div > section + section {
 	order: 1 !important;
 	max-width: 100%;
 	align-self: flex-start;
+
+	justify-self: end;
 }
 
 /** Posted date */
@@ -137,6 +146,9 @@ div > section + div + div {
 	order: 0 !important;
 	margin-bottom: 4px !important;
 	height: 0;
+
+	grid-column-start: 1;
+	grid-column-end: 4;
 }
 
 /** Larger timestamp */
@@ -156,6 +168,9 @@ header + div + div > div:first-of-type {
 	padding-bottom: 5px !important;
 	padding-right: 0 !important;
 	margin-right: 0 !important;
+
+	grid-column-start: 1;
+	grid-column-end: 5;
 }
 
 /** Heart / Comment / Save */
@@ -183,13 +198,16 @@ section > a[role='button']:not(:first-child) + a[role='button']:last-child {
 	margin-left: none;
 }
 
-/** Add comment */
+/** "Add comment" */
 header + div + div > section:last-child {
 	flex: 1;
 	order: 5;
 	width: auto;
 	margin-top: 0;
 	align-self: flex-end;
+
+	grid-column-start: 2;
+	grid-column-end: 5;
 }
 
 /** Multiple dots */
