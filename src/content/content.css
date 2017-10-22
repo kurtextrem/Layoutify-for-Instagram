@@ -44,7 +44,7 @@ div > img {
 }
 
 /** Make the flex box layout row instead of column */
-#mainFeed > div:not(#rcr-anchor) > div > div > div {
+#mainFeed > div:not(#rcr-anchor) > div > div:first-child > div {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -68,9 +68,11 @@ div > img {
 #mainFeed div > article {
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
+	max-height: 70rem;
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
 	contain: layout style;
+	height: auto;
 	z-index: 1;
 }
 
@@ -100,11 +102,6 @@ div[role='dialog'] header + div + div,
 
 /*----------  Improve new post layout  ----------*/
 
-/** Make the comments/description take the space it needs */
-#react-root:not(.profile) header + div + div {
-	flex: 1 0 auto;
-}
-
 #mainFeed header + div + div {
 	margin-top: 8px;
 }
@@ -112,16 +109,17 @@ div[role='dialog'] header + div + div,
 /** Row layout */
 div[role='dialog'] header + div + div,
 #react-root:not(.profile) header + div + div {
+	flex: auto;
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: normal;
 	contain: layout style;
 
 	/* @TODO: Min Chrome v60 */
-	/*display: grid;*/
+	/*display: grid;
 	grid-template-rows: 5% auto 10%;
-	grid-template-columns: 50px 50px auto;
-	height: fit-content;
+	grid-template-columns: 50px 50px auto;*/
+	height: max-content;
 }
 
 div[role='dialog'] header + div + div,
@@ -132,20 +130,18 @@ div[role='dialog'] header + div + div,
 
 /** Views / likes */
 div > section + section {
-	flex: 9999 0 auto;
+	flex: 999 1 50%;
 	order: 1 !important;
 	max-width: 100%;
 	align-self: flex-start;
-
-	justify-self: end;
+	text-align: right;
 }
 
 /** Posted date */
 div > section + div + div {
-	flex: 99999999 0 auto; /* higher than views / likes to push it to the right */
+	flex: 1 1 auto; /* higher than views / likes to push it to the right */
 	order: 0 !important;
 	margin-bottom: 4px !important;
-	height: 0;
 
 	grid-column-start: 1;
 	grid-column-end: 4;
@@ -163,11 +159,12 @@ header + div + div > div:first-of-type {
 	order: 2 !important;
 	width: 100%;
 	height: 100%;
-	max-height: calc(100% - 5.3em);
+	max-height: calc(100% - 115px);
 	padding-top: 0 !important;
-	padding-bottom: 5px !important;
+	padding-bottom: 0 !important;
 	padding-right: 0 !important;
 	margin-right: 0 !important;
+	margin-bottom: 0 !important;
 
 	grid-column-start: 1;
 	grid-column-end: 5;
@@ -387,7 +384,7 @@ nav input + span + div + div > div:first-of-type {
 =============================================*/
 #react-root:not(.profile) #mainFeed > div:not(#rcr-anchor) > div > div:last-child > div,
 /** Profile spinner */ .profile main > article > div > div:last-child {
-	height: 30px;
+	height: 32px;
 	contain: strict;
 	z-index: 2;
 }
