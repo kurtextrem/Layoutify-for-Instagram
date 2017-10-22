@@ -40,9 +40,9 @@ main {
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
 	max-height: var(--maxBoxHeight);
-	margin-left: var(--boxMarginRight);
-	margin-right: var(--boxMarginRight);
-	margin-bottom: 10px;
+	margin-left: var(--boxMarginRight) !important;
+	margin-right: var(--boxMarginRight) !important;
+	margin-bottom: 10px !important;
 
 	contain: layout style;
 	z-index: 1;

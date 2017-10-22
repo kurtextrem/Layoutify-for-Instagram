@@ -24,6 +24,11 @@ export default class Header extends Component {
 							</Link>
 						</NavItem>
 					</Nav>
+					<Nav navbar className="d-none">
+						<Link activeClassName="active" href="/about" className="nav-link">
+							Settings <i className="material-icons">cog</i>
+						</Link>
+					</Nav>
 					<Nav navbar className="">
 						<Link activeClassName="active" href="/about" className="nav-link">
 							<i className="material-icons">help</i>
