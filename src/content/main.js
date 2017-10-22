@@ -95,6 +95,9 @@
 	 */
 	function addClass() {
 		const main = document.querySelector('#react-root')
+
+		if (location.pathname.indexOf('/liked_by/') !== -1) return // nothing to do
+
 		if (location.pathname === '/') {
 			// home page
 			main.classList.add('home')
