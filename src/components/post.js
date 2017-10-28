@@ -143,6 +143,7 @@ export default class Post extends Component {
 					data-src={url}
 					alt={'If you see this, the post has probably been deleted'}
 					className="img-fluid"
+					async="on"
 				/>
 			)
 		}
