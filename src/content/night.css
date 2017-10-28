@@ -98,7 +98,7 @@ div[role='dialog'] header + div + div,
 
 /** Make the comments/description take the space it needs */
 #react-root:not(.profile) header + div + div {
-	/* emptied */
+	background: #212121;
 }
 
 #mainFeed header + div + div {
@@ -278,6 +278,12 @@ nav > div > div > div:last-of-type:not(:only-child) {
 /** Search arrow */
 nav input + span + div + div > div:first-of-type {
 	border: solid 11px #e6e6e6;
+}
+#react-root > section > nav > div > div > div > div > div:nth-child(4) > div {
+  background: #212121;
+}
+#react-root > section > nav > div > div > div > div > div:nth-child(4) > div:after {
+  content: none;
 }
 
 /** Black navbar **/
@@ -498,12 +504,77 @@ body > div > div > div > div > div > article > div > section {
 	border-top: none !important;
 }
 
+/* Standalone */
+/* Background of post */
+#react-root > section > main > div > div > article {
+  background: #212121;
+  border: none;
+}
+
+/* Usernames */
+#react-root > section > main > div > div > article > header > div > div > div > a,
+#react-root > section > main > div > div > article > div > div > ul > li:nth-child(1) > a,
+#react-root > section > main > div > div > article > div > div > ul > li:nth-child(1) > span > a,
+#react-root > section > main > div > div > article > div > div > ul > li > span > a {
+  color: #1976D2;
+}
+
+/* Usernames comment, like counter, text input, location */
+#react-root > section > main > div > div > article > div > div > ul > li > a,
+#react-root > section > main > div > div > article > div > section > div > a,
+#react-root > section > main > div > div > article > div > section > form > textarea,
+#react-root > section > main > div > div > article > header > div > div > a {
+  color: #757575;
+}
+
+
 /*=============================================
 									Profile
 =============================================*/
 /** Show likes and so on on hover */
 .profile a:hover > div:last-child {
 	/* emptied */
+}
+
+/* Optimize profile picture */
+#react-root > section > main > article > header > div > div {
+  background-color: #181818;
+}
+
+/* List subscribers/subscribed */
+body > div:nth-child(12) > div > div > div > div > div,
+body > div:nth-child(12) > div > div > div > div > div > ul {
+  color: #757575;
+}
+
+/* Usernames */
+body > div:nth-child(12) > div > div > div > div > div > ul > li {
+  border-bottom: none;
+}
+body > div:nth-child(12) > div > div > div > div > div > ul > li > div > div > div > div > a {
+  color: #1976D2;
+}
+
+/*=============================================
+									Explore
+=============================================*/
+/* Usernames */
+#react-root > section > main > div > div > div > div > div > div > a {
+  color: #1976D2;
+}
+
+/* "See all" */
+#react-root > section > main > div > ul {
+  background: #212121;
+  border: none;
+}
+/* No border */
+#react-root > section > main > div > ul > li {
+  border-bottom: none;
+}
+/* Usernames list */
+#react-root > section > main > div > ul > li > div > div > div > div > div > a {
+  color: #757575;
 }
 
 /*=============================================
