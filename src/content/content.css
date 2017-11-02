@@ -239,7 +239,8 @@ video[loop]::-webkit-media-controls {
 /** Makes the multiple videos/images dots visible */
 /** issues#17 */
 div > div + a + div,
-div > div + [style='position: static;'] > a,
+div > div + [style][href],
+div > div + [style][href] ~ a,
 /** Sprites */ .coreSpriteLikeAnimationHeart,
 .coreSpriteSidecarIconLarge,
 .coreSpriteUserTagIndicator,
@@ -526,7 +527,7 @@ footer > div > nav {
 ::-webkit-scrollbar-thumb {
 	/*transition: background-color 1s linear;*/
 }
-/*--enable-native-gpu-memory-buffers --yield-between-content-script-runs --native-crx-bindings=1 --disable-gpu-driver-bug-workarounds*/
+
 ::-webkit-scrollbar-thumb:vertical,
 ::-webkit-scrollbar-thumb:horizontal {
 	min-height: 30px;
