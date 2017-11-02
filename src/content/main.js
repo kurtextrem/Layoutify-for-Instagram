@@ -185,13 +185,18 @@
 	function injectNight() {
 		const date = new Date()
 		if (date.getHours() >= 20) {
-			let style = document.createElement('link')
-			style.rel = 'stylesheet'
-			style.href = chrome.extension.getURL('content/night.css')
-			document.body.appendChild(style)
-			style = null
+			injectCSS('night')
 		}
 	}
+
+	function injectCSS(file) {
+		let style = document.createElement('link')
+		style.rel = 'stylesheet'
+		style.href = chrome.extension.getURL('content/' + file + '.css')
+		document.body.appendChild(style)
+		style = null
+	}
+	injectCSS('content') // inject as early as possible
 
 	/**
 	 * Callback when DOM is ready.

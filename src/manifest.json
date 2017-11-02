@@ -18,7 +18,6 @@
 			"*://instagram.com/*"
 		],
 		"js": ["content/InstagramApi.js", "content/main.js"],
-		"css": ["content/content.css"],
 		"run_at": "document_idle",
 		"all_frames": true
 	}],
@@ -40,5 +39,5 @@
 	"incognito": "split",
 	"content_security_policy": "script-src 'self' http://localhost:8080; object-src 'self'",
 
-	"web_accessible_resources": ["content/night.css"]
+	"web_accessible_resources": ["content/night.css", "content/content.css"]
 }

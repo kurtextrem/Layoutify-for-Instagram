@@ -7,6 +7,7 @@
 body {
 	font-size: 15px !important; /** we're on desktop, okay? */
 	overflow-y: unset !important; /** de-opts scrolling */
+	overflow: auto;
 }
 
 /*----------  Performance  ----------*/
@@ -45,20 +46,21 @@ div > img {
 
 /** Make the flex box layout row instead of column */
 #mainFeed > div:not(#rcr-anchor) > div > div:first-child > div {
-	flex-direction: row;
+	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
-	margin-top: 10px;
+	margin-top: 10px !important;
 	contain: layout style;
 	width: 100%;
 	max-width: 100%;
 }
 
+/** Previous DOM structure */
 #mainFeed > div:not(#rcr-anchor) > div > div {
-	flex-direction: row;
+	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
-	margin-top: 10px;
+	margin-top: 10px !important;
 	contain: layout style;
 	width: 100%;
 	max-width: 100%;
@@ -66,8 +68,9 @@ div > img {
 
 /** Make boxes equal in height and width */
 #mainFeed div > article {
-	min-width: var(--boxWidth);
-	max-width: var(--boxWidth);
+	width: var(--boxWidth) !important;
+	min-width: var(--boxWidth) !important;
+	max-width: var(--boxWidth) !important;
 	max-height: 70rem;
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
@@ -523,7 +526,7 @@ footer > div > nav {
 ::-webkit-scrollbar-thumb {
 	/*transition: background-color 1s linear;*/
 }
-
+/*--enable-native-gpu-memory-buffers --yield-between-content-script-runs --native-crx-bindings=1 --disable-gpu-driver-bug-workarounds*/
 ::-webkit-scrollbar-thumb:vertical,
 ::-webkit-scrollbar-thumb:horizontal {
 	min-height: 30px;
