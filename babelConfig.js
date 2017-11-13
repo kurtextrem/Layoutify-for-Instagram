@@ -6,7 +6,7 @@ module.exports = (isProd, options = {}) => ({
 	comments: !isProd,
 	presets: [
 		[
-			resolve('babel-preset-env'),
+			resolve('@babel/preset-env'),
 			{
 				modules: options.modules || false,
 				targets: {
@@ -16,11 +16,11 @@ module.exports = (isProd, options = {}) => ({
 				useBuiltIns: false,
 				exclude: [
 					'transform-regenerator', // for fast-async
-					'transform-es2015-typeof-symbol',
+					'transform-typeof-symbol',
 				],
 			},
 		],
-		'stage-0',
+		resolve('@babel/preset-stage-0'),
 	],
 	plugins: isProd
 		? [
@@ -38,12 +38,12 @@ module.exports = (isProd, options = {}) => ({
 						},
 					},
 				],
-				resolve('babel-plugin-transform-react-constant-elements'),
+				resolve('@babel/plugin-transform-react-constant-elements'),
 				[
 					resolve('babel-plugin-transform-react-remove-prop-types'),
 					{ removeImport: true, additionalLibraries: ['react-immutable-proptypes'] },
 				],
-				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
+				[resolve('@babel/plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
 				//[resolve('babel-plugin-transform-hoist-nested-functions'), { methods: true }],
 				//resolve('babel-plugin-transform-class-properties'),
 
@@ -55,8 +55,8 @@ module.exports = (isProd, options = {}) => ({
 				// 'emotion/babel'
 			]
 		: [
-				[resolve('babel-plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
-				resolve('babel-plugin-transform-react-jsx-source'),
+				[resolve('@babel/plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
+				resolve('@babel/plugin-transform-react-jsx-source'),
 				resolve('babel-plugin-transform-console-log-variable-names'),
 				// resolve('babel-plugin-console-groupify'),
 				// 'emotion/babel'
