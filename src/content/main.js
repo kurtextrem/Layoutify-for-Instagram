@@ -104,7 +104,7 @@
 			main.classList.remove('profile', 'post')
 		} else if (
 			location.pathname.indexOf('/p/') !== -1 &&
-			((location.search.indexOf('taken-by') === -1 && location.search.indexOf('explore') === -1) || window.history.length === 1)
+			((location.search.indexOf('-by=') === -1 && location.search.indexOf('explore') === -1) || window.history.length === 1)
 		) {
 			// single post
 			main.classList.add('post')

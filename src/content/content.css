@@ -222,7 +222,8 @@ div > div + .coreSpriteLeftChevron + div {
 /** Always show media controls when playing */
 video::-webkit-media-controls-overlay-enclosure,
 video[loop]::-webkit-media-controls-enclosure,
-video[loop]::-webkit-media-controls {
+video[loop]::-webkit-media-controls,
+video::-internal-media-controls-overflow-menu-list {
 	z-index: 3;
 }
 
