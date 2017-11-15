@@ -501,7 +501,11 @@ footer > div > nav {
 /** 3 column layout on smaller screens */
 @media (max-width: 1366px) {
 	:root {
-		--boxWidth: 30vw;
+		--boxWidth: 49vw; /** 24 for 4 */
+	}
+
+	#mainFeed > div:not(#rcr-anchor) > div > div:first-child > div {
+		justify-content: space-around;
 	}
 }
 
