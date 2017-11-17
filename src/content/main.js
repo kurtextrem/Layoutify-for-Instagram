@@ -30,29 +30,41 @@
 		true
 	)
 
-	let observer = null
-	function observe(elem, fn) {
+	/**
+	 * Creates a new observer, starts observing and returns the observer.
+	 *
+	 * @param {Node} elem Element to observe
+	 * @param {MutationCallback} fn Mutation Callback
+	 * @return {MutationObserver}
+	 */
+	function observe(elem, fn, options) {
 		if (!elem) return
 
-		observer = new MutationObserver(fn)
-		observer.observe(elem, { childList: true, subtree: true })
+		const observer = new MutationObserver(fn)
+		observer.observe(elem, options)
+
+		return observer
 	}
 
 	/**
 	 * Observe for node changes and add video controls if needed.
 	 */
 	const root = document.getElementById('react-root')
-	observe(root, function observation(mutations) {
-		for (let i = 0; i < mutations.length; ++i) {
-			const mutation = mutations[i].addedNodes
+	observe(
+		root,
+		mutations => {
+			for (let i = 0; i < mutations.length; ++i) {
+				const mutation = mutations[i].addedNodes
 
-			if (mutation.length === 1 && mutation[0].nodeName === 'VIDEO') {
-				mutation[0].controls = 'true'
+				if (mutation.length === 1 && mutation[0].nodeName === 'VIDEO') {
+					mutation[0].controls = 'true'
+				}
 			}
-		}
 
-		window.requestIdleCallback(onChange)
-	})
+			window.requestIdleCallback(onChange)
+		},
+		{ childList: true, subtree: true }
+	)
 
 	/**
 	 * Callback when nodes are removed/inserted.
@@ -96,16 +108,17 @@
 	function addClass() {
 		const main = document.querySelector('#react-root')
 
-		if (location.pathname.indexOf('/liked_by/') !== -1) return // nothing to do
+		if (
+			window.history.length !== 1 &&
+			(location.search.indexOf('-by=') !== -1 || location.search.indexOf('explore') !== -1 || location.pathname.indexOf('/stories/') !== -1)
+		)
+			return // nothing to do
 
 		if (location.pathname === '/') {
 			// home page
 			main.classList.add('home')
 			main.classList.remove('profile', 'post')
-		} else if (
-			location.pathname.indexOf('/p/') !== -1 &&
-			((location.search.indexOf('-by=') === -1 && location.search.indexOf('explore') === -1) || window.history.length === 1)
-		) {
+		} else if (location.pathname.indexOf('/p/') !== -1) {
 			// single post
 			main.classList.add('post')
 			main.classList.remove('profile', 'home')
@@ -198,6 +211,39 @@
 	}
 	injectCSS('content') // inject as early as possible
 
+	function addNamesToStories() {
+		const list = document.querySelectorAll(
+			'#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > a > div > div > span'
+		)
+
+		for (let i = 0; i < list.length; ++i) {
+			const elem = list[i]
+			elem.parentElement.parentElement.parentElement.parentElement.id = 'igs_' + elem.innerText.replace(/\./g, 'dot')
+		}
+	}
+
+	function changeStyle(target) {
+		const bottom = target.style.paddingBottom,
+			top = target.style.paddingTop === '0px' && bottom === '0px' ? '100px' : target.style.paddingTop
+
+		console.log(top, bottom)
+		target.style.paddingLeft = top
+		target.style.paddingRight = bottom
+	}
+
+	function fixVirtualList() {
+		observe(
+			document.querySelector('#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div'),
+			mutations => {
+				if (!mutations.length) return
+
+				window.requestIdleCallback(changeStyle.bind(null, mutations[0].target))
+				window.requestIdleCallback(addNamesToStories)
+			},
+			{ childList: true, subtree: true }
+		)
+	}
+
 	/**
 	 * Callback when DOM is ready.
 	 */
@@ -208,6 +254,7 @@
 		if (elem !== null) documentElement.style.setProperty('--boxHeight', elem.offsetHeight + 'px') // give boxes equal height
 
 		addClass()
+		fixVirtualList()
 
 		addExtendedButton()
 		addListener()
@@ -216,10 +263,10 @@
 	}
 
 	if (document.readyState === 'interactive' || document.readyState === 'complete') {
-		window.requestIdleCallback(onReady)
+		window.requestAnimationFrame(onReady)
 	} else {
 		document.addEventListener('DOMContentLoaded', function() {
-			window.requestIdleCallback(onReady)
+			window.requestAnimationFrame(onReady)
 		})
 	}
 })(window)
