@@ -86,8 +86,7 @@ div[role='dialog'] article > header,
 #react-root:not(.profile) article > header {
 	height: 50px !important;
 	contain: strict;
-	width: 306px !important;
-	right: 8px !important;
+	padding: 16px 8px;
 }
 
 div > main:first-child {
@@ -120,8 +119,8 @@ div[role='dialog'] header + div + div,
 
 	/* @TODO: Min Chrome v60 */
 	/*display: grid;
-	grid-template-rows: 5% auto 10%;
-	grid-template-columns: 50px 50px auto;*/
+	grid-template-rows: 5% auto 10%; ??
+	grid-gap: 5px;*/
 	height: max-content;
 }
 
@@ -138,6 +137,8 @@ div > section + section {
 	max-width: 100%;
 	align-self: flex-start;
 	text-align: right;
+
+	grid-column: 2 / span 3;
 }
 
 /** Posted date */
@@ -145,9 +146,6 @@ div > section + div + div {
 	flex: 1 1 auto; /* higher than views / likes to push it to the right */
 	order: 0 !important;
 	margin-bottom: 4px !important;
-
-	grid-column-start: 1;
-	grid-column-end: 4;
 }
 
 /** Larger timestamp */
@@ -169,8 +167,8 @@ header + div + div > div:first-of-type {
 	margin-right: 0 !important;
 	margin-bottom: 0 !important;
 
-	grid-column-start: 1;
-	grid-column-end: 5;
+	grid-column-end: span 4;
+	/* max-height & height unset */
 }
 
 /** Heart / Comment / Save */
