@@ -187,7 +187,7 @@ header + div + div > section:first-child {
 }
 
 /** Hide useless comment icon */
-section > a[role='button']:first-child + a[role='button'] {
+section > a[role='button']:first-child + a[role='button']:not([aria-disabled]) {
 	display: none;
 }
 
@@ -400,10 +400,12 @@ nav input + span + div + div > div:first-of-type {
 	width: 100%;
 	text-align: center;
 	display: block;
+	padding-bottom: 0;
 }
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child > nav {
 	display: inline-block;
+	margin-bottom: 0;
 }
 
 /*=============================================
