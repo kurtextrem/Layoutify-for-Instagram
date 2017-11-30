@@ -103,7 +103,6 @@ div[role='dialog'] header + div + div,
 }
 
 /*----------  Improve new post layout  ----------*/
-
 #mainFeed header + div + div {
 	margin-top: 8px;
 }
@@ -315,7 +314,6 @@ nav input + span + div + div > div:first-of-type {
 	flex: 1 100%;
 }
 */
-
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr {
 	display: none;
 }
@@ -324,6 +322,7 @@ nav input + span + div + div > div:first-of-type {
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div:first-child {
 	/**! @TODO: Temporary */
 	display: none;
+
 	flex: 1 auto;
 	order: 1;
 	width: auto;
@@ -525,7 +524,7 @@ footer > div > nav {
 /** 3 column layout on smaller screens */
 @media (max-width: 1366px) {
 	:root {
-		--boxWidth: 49vw;
+		--boxWidth: 49vw; /** 24 for 4 */
 		--boxMarginRight: -1px;
 	}
 	#mainFeed > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
@@ -570,5 +569,5 @@ footer > div > nav {
 ::-webkit-scrollbar-thumb:vertical:active,
 ::-webkit-scrollbar-thumb:horizontal:active {
 	border-radius: 100px;
-	background-color: #727272;
+	background-color: #727272; /* Some darker color when you click it */
 }

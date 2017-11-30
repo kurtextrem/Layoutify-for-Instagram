@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extTitle__",
-	"version": "2.3.10",
+	"version": "2.3.11",
 	"manifest_version": 2,
 
 	"description": "__MSG_extDesc__",
@@ -12,15 +12,14 @@
 	},
 	"author": "Jacob „kurtextrem\" Groß",
 
-	"content_scripts": [{
-		"matches": [
-			"*://*.instagram.com/*",
-			"*://instagram.com/*"
-		],
-		"js": ["content/InstagramApi.js", "content/main.js"],
-		"run_at": "document_idle",
-		"all_frames": true
-	}],
+	"content_scripts": [
+		{
+			"matches": ["*://*.instagram.com/*", "*://instagram.com/*"],
+			"js": ["content/InstagramApi.js", "content/main.js"],
+			"run_at": "document_idle",
+			"all_frames": true
+		}
+	],
 	"background": {
 		"scripts": ["content/background.js"],
 		"persistent": true
@@ -28,14 +27,7 @@
 	"options_page": "index.html",
 	"minimum_chrome_version": "55",
 
-	"permissions": [
-		"*://*.instagram.com/*",
-		"*://instagram.com/*",
-		"storage",
-		"webRequest",
-		"webRequestBlocking",
-		"cookies"
-	],
+	"permissions": ["*://*.instagram.com/*", "*://instagram.com/*", "storage", "webRequest", "webRequestBlocking", "cookies"],
 	"incognito": "split",
 	"content_security_policy": "script-src 'self' http://localhost:8080; object-src 'self'",
 

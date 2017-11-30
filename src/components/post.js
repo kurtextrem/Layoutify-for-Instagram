@@ -141,9 +141,9 @@ export default class Post extends Component {
 					height={candidate.height}
 					src={isCarousel || !props.initial ? url : ''}
 					data-src={url}
-					alt={'If you see this, the post has probably been deleted'}
+					alt="If you see this, the post has probably been deleted"
 					className="img-fluid"
-					async="on"
+					decoding="async"
 				/>
 			)
 		}

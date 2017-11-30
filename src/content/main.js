@@ -217,7 +217,7 @@
 		)
 
 		for (let i = 0; i < list.length; ++i) {
-			const elem = list[i]
+			var elem = list[i]
 			elem.parentElement.parentElement.parentElement.parentElement.id = 'igs_' + elem.innerText.replace(/\./g, 'dot')
 		}
 	}
@@ -233,11 +233,11 @@
 
 	function fixVirtualList() {
 		observe(
-			document.querySelector('#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div'),
+			document.querySelector('#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div'), // virtual stories list
 			mutations => {
 				if (!mutations.length) return
 
-				window.requestIdleCallback(changeStyle.bind(null, mutations[0].target))
+				window.requestIdleCallback(changeStyle.bind(undefined, mutations[0].target))
 				window.requestIdleCallback(addNamesToStories)
 			},
 			{ childList: true, subtree: true }
