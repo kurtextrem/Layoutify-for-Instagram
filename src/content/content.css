@@ -6,8 +6,8 @@
 
 body {
 	font-size: 15px !important; /** we're on desktop, okay? */
-	overflow-y: unset !important; /** de-opts scrolling */
 	overflow: auto;
+	overflow-y: unset !important; /** de-opts scrolling */
 }
 
 /*----------  Performance  ----------*/
@@ -26,22 +26,22 @@ header > a {
 
 /** Improve picture quality */
 div > img {
+	contain: strict;
+
+	/** Moves the img over the "prevent right click copy"-element */
+	z-index: 1;
 	/* autoprefixer: off */
 	image-rendering: -webkit-optimize-contrast;
 	/* autoprefixer: on */
-
-	/** Moves the img over the "prevent right click copy"-element */
-	contain: strict;
-	z-index: 1;
 }
 
 /** Remove width limit */
 #mainFeed {
+	flex-direction: column;
 	max-width: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
 	z-index: 1;
-	flex-direction: column;
 }
 
 /** Make the flex box layout row instead of column */
@@ -49,10 +49,10 @@ div > img {
 	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
-	margin-top: 10px !important;
-	contain: layout style;
 	width: 100%;
 	max-width: 100%;
+	margin-top: 10px !important;
+	contain: layout style;
 }
 
 /** Previous DOM structure */
@@ -60,10 +60,10 @@ div > img {
 	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
-	margin-top: 10px !important;
-	contain: layout style;
 	width: 100%;
 	max-width: 100%;
+	margin-top: 10px !important;
+	contain: layout style;
 }
 
 /** Make boxes equal in height and width */
@@ -71,11 +71,11 @@ div > img {
 	width: var(--boxWidth) !important;
 	min-width: var(--boxWidth) !important;
 	max-width: var(--boxWidth) !important;
+	height: auto;
 	max-height: 70rem;
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
 	contain: layout style;
-	height: auto;
 	z-index: 1;
 }
 
@@ -85,8 +85,8 @@ div > img {
 div[role='dialog'] article > header,
 #react-root:not(.profile) article > header {
 	height: 50px !important;
-	contain: strict;
 	padding: 16px 8px;
+	contain: strict;
 }
 
 div > main:first-child {
@@ -115,27 +115,26 @@ div[role='dialog'] header + div + div,
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: normal;
-	contain: layout style;
-
 	/* @TODO: Min Chrome v60 */
 	/*display: grid;
 	grid-template-rows: 5% auto 10%; ??
 	grid-gap: 5px;*/
 	height: max-content;
+	contain: layout style;
 }
 
 div[role='dialog'] header + div + div,
 .post header + div + div {
-	padding-right: 8px !important;
 	height: auto !important;
+	padding-right: 8px !important;
 }
 
 /** Views / likes */
 div > section + section {
 	flex: 999 1 50%;
+	align-self: flex-start;
 	order: 1 !important;
 	max-width: 100%;
-	align-self: flex-start;
 	text-align: right;
 
 	grid-column: 2 / span 3;
@@ -143,7 +142,8 @@ div > section + section {
 
 /** Posted date */
 div > section + div + div {
-	flex: 1 1 auto; /* higher than views / likes to push it to the right */
+	flex: 1 1 auto;
+	/* higher than views / likes to push it to the right */
 	order: 0 !important;
 	margin-bottom: 4px !important;
 }
@@ -161,11 +161,11 @@ header + div + div > div:first-of-type {
 	width: 100%;
 	height: 100%;
 	max-height: calc(100% - 115px);
-	padding-top: 0 !important;
-	padding-bottom: 0 !important;
-	padding-right: 0 !important;
 	margin-right: 0 !important;
 	margin-bottom: 0 !important;
+	padding-top: 0 !important;
+	padding-right: 0 !important;
+	padding-bottom: 0 !important;
 
 	grid-column-end: span 4;
 	/* max-height & height unset */
@@ -173,12 +173,12 @@ header + div + div > div:first-of-type {
 
 /** Heart / Comment / Save */
 header + div + div > section:first-child {
+	align-self: flex-end;
 	order: 4 !important;
 	width: auto;
+	min-height: 56px;
 	margin-top: 0 !important;
 	border-top: 1px solid #efefef;
-	align-self: flex-end;
-	min-height: 56px;
 }
 
 /** Center heart */
@@ -199,10 +199,10 @@ section > a[role='button']:not(:first-child) + a[role='button']:last-child {
 /** "Add comment" */
 header + div + div > section:last-child {
 	flex: 1;
+	align-self: flex-end;
 	order: 5;
 	width: auto;
 	margin-top: 0;
-	align-self: flex-end;
 
 	grid-column-start: 2;
 	grid-column-end: 5;
@@ -298,11 +298,11 @@ nav input + span + div + div > div:first-of-type {
 }
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child {
-	/** contain: content; - unsure about side-effects yet */
-	order: -1;
 	position: static;
 	flex-direction: row;
 	flex-wrap: wrap;
+	/** contain: content; - unsure about side-effects yet */
+	order: -1;
 	width: 100%;
 	max-width: 100%;
 	height: auto;
@@ -322,13 +322,12 @@ nav input + span + div + div > div:first-of-type {
 
 /** Owners Story */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div:first-child {
+	/**! @TODO: Temporary */
+	display: none;
 	flex: 1 auto;
 	order: 1;
 	width: auto;
 	margin-right: 5px;
-
-	/**! @TODO: Temporary */
-	display: none;
 }
 
 /* Stories / watch all */
@@ -343,10 +342,10 @@ nav input + span + div + div > div:first-of-type {
 }
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
+	width: 100%;
 	height: 80px !important; /** @TODO: Enlargen story items */
 	overflow-y: hidden !important;
 	overflow-x: scroll !important;
-	width: 100%;
 }
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
@@ -395,12 +394,12 @@ nav input + span + div + div > div:first-of-type {
 
 /** Nav */
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child {
+	display: block;
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-	text-align: center;
-	display: block;
 	padding-bottom: 0;
+	text-align: center;
 }
 
 #mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child > nav {
@@ -414,6 +413,7 @@ nav input + span + div + div > div:first-of-type {
 /*#react-root:not(.profile) #mainFeed > div:not(#rcr-anchor) > div:not([class]) > div:last-child > div,*/
 /** Profile spinner */
 .profile main > article > div > div:last-child {
+	order: 3;
 	height: 32px;
 	contain: strict;
 	z-index: 2;
@@ -450,12 +450,12 @@ div[role='dialog'] article,
 
 /** Sometimes IG sets a max-width on elements */
 .post > section > main > div {
-	max-width: 49vw !important;
-	padding-left: 0;
-	padding-right: 0;
-	padding-top: 10px;
-	padding-bottom: 10px;
 	flex-grow: 0;
+	max-width: 49vw !important;
+	padding-top: 10px;
+	padding-right: 0;
+	padding-bottom: 10px;
+	padding-left: 0;
 }
 
 .post > section > main > div > div {
@@ -522,14 +522,12 @@ footer > div > nav {
 /*=============================================
 									Media Querys
 =============================================*/
-
 /** 3 column layout on smaller screens */
 @media (max-width: 1366px) {
 	:root {
-		--boxWidth: 49vw; /** 24 for 4 */
+		--boxWidth: 49vw;
 		--boxMarginRight: -1px;
 	}
-
 	#mainFeed > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
 		justify-content: space-around;
 	}
@@ -549,6 +547,7 @@ footer > div > nav {
 ::-webkit-scrollbar:horizontal {
 	height: 9px;
 }
+
 /* hover effect for both scrollbar area, and scrollbar 'thumb' */
 ::-webkit-scrollbar:hover {
 	background-color: rgba(0, 0, 0, 0.07);
@@ -571,5 +570,5 @@ footer > div > nav {
 ::-webkit-scrollbar-thumb:vertical:active,
 ::-webkit-scrollbar-thumb:horizontal:active {
 	border-radius: 100px;
-	background-color: #727272; /* Some darker color when you click it */
+	background-color: #727272;
 }
