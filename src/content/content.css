@@ -37,7 +37,7 @@ div > img {
 
 /** Remove width limit */
 main > section {
-	flex-direction: column;
+	flex-direction: column !important;
 	max-width: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
@@ -296,7 +296,7 @@ main > section > div:first-child:not(#rcr-anchor) {
 	float: none;
 }
 
-main > section > div:first-child:not(#rcr-anchor) + div:last-child {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	position: static;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -307,19 +307,20 @@ main > section > div:first-child:not(#rcr-anchor) + div:last-child {
 	height: auto;
 	/*max-height: 150px;*/
 	margin-bottom: 0;
+	contain: layout style;
 }
 
 /** All children
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
 	flex: 1 100%;
 }
 */
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr {
 	display: none;
 }
 
 /** Owners Story */
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > div:first-child {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child {
 	/**! @TODO: Temporary */
 	display: none;
 
@@ -330,29 +331,30 @@ main > section > div:first-child:not(#rcr-anchor) + div:last-child > div:first-c
 }
 
 /* Stories / watch all */
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div {
 	justify-content: start;
 	order: -1;
 	width: 100%;
 }
 
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div > :last-child {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div > :last-child {
 	margin: 0 5px;
 }
 
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div {
 	width: 100%;
 	height: 80px !important; /** @TODO: Enlargen story items */
 	overflow-y: hidden !important;
 	overflow-x: scroll !important;
+	margin-bottom: -5px;
 }
 
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div {
 	flex-direction: row;
 }
 
 /** Other Stories
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div {
 	flex: 9999 0px;
 	flex-direction: row;
 	flex-wrap: nowrap;
@@ -366,7 +368,7 @@ main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of
 }
 
 /** Other stories container
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div {
 	flex-direction: row;
 	flex-wrap: nowrap;
 	width: 100%;
@@ -377,7 +379,7 @@ main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of
 }
 
 /** Story Items
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div {
 	position: static;
 	flex-flow: row nowrap;
 	width: auto;
@@ -385,14 +387,14 @@ main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of
 }
 
 /** Story Items Inner
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > a,
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > div:last-child * {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div > a,
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div > div:last-child * {
 	width: auto;
 	max-width: none;
 }
 
 /** Nav */
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:last-child {
 	display: block;
 	position: absolute;
 	bottom: 0;
@@ -401,7 +403,7 @@ main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:la
 	text-align: center;
 }
 
-main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child > nav {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:last-child > nav {
 	display: inline-block;
 	margin-bottom: 0;
 }

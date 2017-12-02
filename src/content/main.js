@@ -92,13 +92,14 @@
 		}
 	}
 
-	let url = location.href
+	let prevUrl = location.href
 	function checkURL() {
-		if (location.href !== url) {
-			console.log('url change', url, location.href)
-			url = location.href
+		if (location.href !== prevUrl) {
+			console.log('url change', prevUrl, location.href)
+			prevUrl = location.href
 
 			addClass()
+			if (prevUrl.indexOf('/stories/')) fixVirtualList()
 		}
 	}
 
@@ -213,7 +214,7 @@
 
 	function addNamesToStories() {
 		const list = document.querySelectorAll(
-			'#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > a > div > div > span'
+			'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div > a > div > div > span'
 		)
 
 		for (let i = 0; i < list.length; ++i) {
@@ -231,9 +232,12 @@
 		target.style.paddingRight = bottom
 	}
 
+	let vl
 	function fixVirtualList() {
-		observe(
-			document.querySelector('#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div'), // virtual stories list
+		if (vl !== undefined) vl.disconnect()
+
+		vl = observe(
+			document.querySelector('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div'), // virtual stories list
 			mutations => {
 				if (!mutations.length) return
 
