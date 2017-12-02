@@ -36,7 +36,7 @@ div > img {
 }
 
 /** Remove width limit */
-#mainFeed {
+main > section {
 	flex-direction: column;
 	max-width: none !important;
 	margin: 0 !important;
@@ -45,7 +45,7 @@ div > img {
 }
 
 /** Make the flex box layout row instead of column */
-#mainFeed > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
+main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
 	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -56,7 +56,7 @@ div > img {
 }
 
 /** Previous DOM structure */
-#mainFeed > div:not(#rcr-anchor) > div:not([class]) > div {
+main > section > div:not(#rcr-anchor) > div:not([class]) > div {
 	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -67,7 +67,7 @@ div > img {
 }
 
 /** Make boxes equal in height and width */
-#mainFeed div > article {
+main > section div > article {
 	width: var(--boxWidth) !important;
 	min-width: var(--boxWidth) !important;
 	max-width: var(--boxWidth) !important;
@@ -103,7 +103,7 @@ div[role='dialog'] header + div + div,
 }
 
 /*----------  Improve new post layout  ----------*/
-#mainFeed header + div + div {
+main > section header + div + div {
 	margin-top: 8px;
 }
 
@@ -181,7 +181,7 @@ header + div + div > section:first-child {
 }
 
 /** Center heart */
-#mainFeed header + div + div > section:first-child > a {
+main > section header + div + div > section:first-child > a {
 	margin: auto;
 }
 
@@ -225,7 +225,7 @@ video::-internal-media-controls-overflow-menu-list {
 }
 
 /** Hide media controls when not playing on home */
-#mainFeed video:not([loop])::-webkit-media-controls-enclosure {
+main > section video:not([loop])::-webkit-media-controls-enclosure {
 	opacity: 0;
 }
 
@@ -290,13 +290,13 @@ nav input + span + div + div > div:first-of-type {
 					Stories experiment issues#20
 =============================================*/
 /** Fix main feed */
-#mainFeed > div:first-child:not(#rcr-anchor) {
+main > section > div:first-child:not(#rcr-anchor) {
 	max-width: none;
 	margin-right: 0;
 	float: none;
 }
 
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child {
 	position: static;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -310,16 +310,16 @@ nav input + span + div + div > div:first-of-type {
 }
 
 /** All children
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > div {
 	flex: 1 100%;
 }
 */
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr {
 	display: none;
 }
 
 /** Owners Story */
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div:first-child {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > div:first-child {
 	/**! @TODO: Temporary */
 	display: none;
 
@@ -330,29 +330,29 @@ nav input + span + div + div > div:first-of-type {
 }
 
 /* Stories / watch all */
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div {
 	justify-content: start;
 	order: -1;
 	width: 100%;
 }
 
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div > :last-child {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div > :last-child {
 	margin: 0 5px;
 }
 
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
 	width: 100%;
 	height: 80px !important; /** @TODO: Enlargen story items */
 	overflow-y: hidden !important;
 	overflow-x: scroll !important;
 }
 
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
 	flex-direction: row;
 }
 
 /** Other Stories
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
 	flex: 9999 0px;
 	flex-direction: row;
 	flex-wrap: nowrap;
@@ -366,7 +366,7 @@ nav input + span + div + div > div:first-of-type {
 }
 
 /** Other stories container
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
 	flex-direction: row;
 	flex-wrap: nowrap;
 	width: 100%;
@@ -377,7 +377,7 @@ nav input + span + div + div > div:first-of-type {
 }
 
 /** Story Items
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div {
 	position: static;
 	flex-flow: row nowrap;
 	width: auto;
@@ -385,14 +385,14 @@ nav input + span + div + div > div:first-of-type {
 }
 
 /** Story Items Inner
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > a,
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > div:last-child * {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > a,
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > div:last-child * {
 	width: auto;
 	max-width: none;
 }
 
 /** Nav */
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child {
 	display: block;
 	position: absolute;
 	bottom: 0;
@@ -401,7 +401,7 @@ nav input + span + div + div > div:first-of-type {
 	text-align: center;
 }
 
-#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child > nav {
+main > section > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child > nav {
 	display: inline-block;
 	margin-bottom: 0;
 }
@@ -409,7 +409,7 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 										Spinner
 =============================================*/
-/*#react-root:not(.profile) #mainFeed > div:not(#rcr-anchor) > div:not([class]) > div:last-child > div,*/
+/*#react-root:not(.profile) main > section > div:not(#rcr-anchor) > div:not([class]) > div:last-child > div,*/
 /** Profile spinner */
 .profile main > article > div > div:last-child {
 	order: 3;
@@ -527,7 +527,7 @@ footer > div > nav {
 		--boxWidth: 49vw; /** 24 for 4 */
 		--boxMarginRight: -1px;
 	}
-	#mainFeed > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
+	main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
 		justify-content: space-around;
 	}
 }
