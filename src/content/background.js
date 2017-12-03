@@ -1,11 +1,5 @@
 'use strict'
 
-const cookieObj = {
-	url: 'https://www.instagram.com/',
-	name: '',
-}
-const url = chrome.runtime.getURL('index.html')
-
 let tab = null /* store tab id */
 /**
  * Called after a tab has been created.
@@ -31,19 +25,24 @@ function updated() {
  */
 function createTab(id, force) {
 	if (tab !== null && !force) {
-		chrome.tabs.update(tab.id, { active: true, url: url + '?tabid=' + id }, updated.bind(id))
+		chrome.tabs.update(tab.id, { active: true, url: chrome.runtime.getURL('index.html') + '?tabid=' + id }, updated.bind(id))
 	} else {
-		chrome.tabs.create({ url: url + '?tabid=' + id }, create)
+		chrome.tabs.create({ url: chrome.runtime.getURL('index.html') + '?tabid=' + id }, create)
 	}
 }
 
 function getCookie(name) {
 	return new Promise((resolve, reject) => {
-		cookieObj.name = name
-		chrome.cookies.get(cookieObj, function cookies(cookie) {
-			if (cookie !== null) resolve(cookie.value)
-			reject()
-		})
+		chrome.cookies.get(
+			{
+				url: 'https://www.instagram.com/',
+				name,
+			},
+			function cookies(cookie) {
+				if (cookie !== null) resolve(cookie.value)
+				reject()
+			}
+		)
 	})
 }
 
