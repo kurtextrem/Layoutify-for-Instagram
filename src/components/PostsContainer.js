@@ -4,9 +4,10 @@ import Sentinel from './Sentinel'
 import { CardDeck } from 'reactstrap'
 import { Chrome, Storage } from './Utils'
 import { Component, h } from 'preact'
+import { bind } from 'decko'
 
 const loading = <Loading />
-const Posts = (items, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
+const Posts = (items, renderPost) => items.map(x => renderPost(x)) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
 
 export default class PostsContainer extends Component {
 	constructor(props) {
@@ -32,19 +33,25 @@ export default class PostsContainer extends Component {
 		window.setTimeout(() => this.setTimeout(200), 200)
 	}
 
-	handleScroll = () => {
+	@bind
+	handleScroll() {
 		Chrome.send('load', { which: this.props.id })
 	}
 
-	handleData = data => {
+	@bind
+	handleData(data) {
 		++this.initial
 		this.setState((prevState, props) => ({ items: data.items, nextMaxId: data.nextMaxId, timeout: 400 }))
 		return data
 	}
 
-	populateData = async () => this.handleData(await Storage.get(this.props.id, []))
+	@bind
+	async populateData() {
+		return this.handleData(await Storage.get(this.props.id, []))
+	}
 
-	storageListener = (changes, area) => {
+	@bind
+	storageListener(changes, area) {
 		const id = this.props.id
 		if (changes[id] !== undefined && changes[id].newValue !== undefined) {
 			console.log('new data', changes)
@@ -52,7 +59,8 @@ export default class PostsContainer extends Component {
 		}
 	}
 
-	renderPost = post => {
+	@bind
+	renderPost(post) {
 		const { id, defaultClass, toggleClass } = this.props
 		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} initial={this.initial < 2} />
 	}

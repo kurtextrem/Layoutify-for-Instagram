@@ -1,4 +1,5 @@
 import { Component, h } from 'preact'
+import { bind } from 'decko'
 
 export default class Sentinel extends Component {
 	constructor(props) {
@@ -17,13 +18,17 @@ export default class Sentinel extends Component {
 		this.ref = null
 	}
 
-	onUpdate = entries => {
+	@bind
+	onUpdate(entries) {
 		const entry = entries[0]
 		if (entry.isIntersecting) this.onVisible()
 		else this.onHide()
 	}
 
-	setRef = ref => (this.ref = ref)
+	@bind
+	setRef(ref) {
+		this.ref = ref
+	}
 
 	shouldComponentUpdate() {
 		return false

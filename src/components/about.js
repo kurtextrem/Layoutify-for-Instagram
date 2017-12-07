@@ -1,9 +1,11 @@
 import { Button } from 'reactstrap'
 import { Component, h } from 'preact'
 import { Storage } from './Utils'
+import { bind } from 'decko'
 
 export default class About extends Component {
-	onBtnClick = e => {
+	@bind
+	onBtnClick(e) {
 		Storage.remove('liked')
 		Storage.remove('saved')
 		e.target.innerText = 'Cleared!'
@@ -38,6 +40,10 @@ export default class About extends Component {
 						rel="noopener">
 						Chrome Webstore
 					</a>.
+				</p>
+				<p>
+					Follow me on <a href="https://instagram.com/jacobgross_">Instagram</a> or <a href="https://twitter.com/kurtextrem">Twitter</a> for
+					updates!
 				</p>
 
 				<h3>Clear Outdated Data</h3>

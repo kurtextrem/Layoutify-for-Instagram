@@ -4,6 +4,7 @@ import PostHeader from './PostHeader'
 import { Button, CardBody, CardText } from 'reactstrap'
 import { Chrome, updateCDN } from './Utils'
 import { Component, h } from 'preact'
+import { bind } from 'decko'
 
 let observer
 if (typeof IntersectionObserver !== 'undefined')
@@ -41,7 +42,8 @@ export default class Post extends Component {
 		}
 	}
 
-	handleArrowClick = e => {
+	@bind
+	handleArrowClick(e) {
 		e.stopPropagation()
 		e.preventDefault()
 
@@ -64,7 +66,8 @@ export default class Post extends Component {
 		})
 	}
 
-	onBtnClick = e => {
+	@bind
+	onBtnClick(e) {
 		e.stopPropagation()
 		e.preventDefault()
 
@@ -78,7 +81,10 @@ export default class Post extends Component {
 		}
 	}
 
-	setRef = ref => (this.ref = ref)
+	@bind
+	setRef(ref) {
+		return (this.ref = ref)
+	}
 
 	preload(index) {
 		console.log('preloading', this.props.data.carousel_media[index].image_versions2.candidates[0].url)

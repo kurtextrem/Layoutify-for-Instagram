@@ -1,5 +1,6 @@
 'use strict'
 
+require('v8-compile-cache')
 const path = require('path')
 const webpack = require('webpack')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
@@ -21,7 +22,8 @@ const WebpackMessages = require('webpack-messages')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin')
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
-const WebpackMonitor = require('webpack-monitor')
+// const WebpackMonitor = require('webpack-monitor')
+// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -44,28 +46,11 @@ const html = {
 	ssr: params => (isProd ? prerender('dist', params) : ''),
 }
 
-if (isProd) {
-	html.minify = {
-		removeComments: true,
-		collapseWhitespace: true,
-		removeRedundantAttributes: true,
-		useShortDoctype: true,
-		removeEmptyAttributes: true,
-		removeStyleLinkTypeAttributes: true,
-		removeScriptTypeAttributes: true,
-		keepClosingSlash: true,
-		minifyJS: true,
-		minifyCSS: true,
-		minifyURLs: true,
-	}
-	// html.hash = true
-}
-
 const plugins = [
 	new WebpackMessages(),
 	new ProgressBarPlugin({
 		messageTemplate:
-			'\u001b[90m\u001b[49m\u001b[39m [:bar] \u001b[32m\u001b[1m:percent\u001b[22m\u001b[39m (:elapseds) \u001b[2m:msg\u001b[22m',
+			'\u001B[90m\u001B[49m\u001B[39m [:bar] \u001B[32m\u001B[1m:percent\u001B[22m\u001B[39m (:elapseds) \u001B[2m:msg\u001B[22m',
 		progressOptions: {
 			renderThrottle: 100,
 			clear: true,
@@ -88,9 +73,23 @@ const plugins = [
 		preload: ['.js', '.css'],
 	}),
 	new CopyWebpackPlugin([{ from: '*.html' }, { from: '*.json' }, { from: 'img/*.png' }, { from: 'content/*' }, { from: '_locales/**' }]),
+	// new HardSourceWebpackPlugin(),
 ]
 
 if (isProd) {
+	html.minify = {
+		removeComments: true,
+		collapseWhitespace: true,
+		removeRedundantAttributes: true,
+		useShortDoctype: true,
+		removeEmptyAttributes: true,
+		removeStyleLinkTypeAttributes: true,
+		removeScriptTypeAttributes: true,
+		keepClosingSlash: true,
+		minifyURLs: true,
+	}
+	// html.hash = true
+
 	pureFuncs.push(
 		'classCallCheck',
 		'_classCallCheck',
@@ -124,8 +123,8 @@ if (isProd) {
 			include: /babel-helper$/,
 			patterns: [
 				{
-					regex: /throw\s+(new\s+)?(Type|Reference)?Error\s*\(/g,
-					value: s => `return;${Array(s.length - 7).join(' ')}(`,
+					regex: /throw\s+(new\s+)?(Type|Reference)?Er{2}or\s*\(/g,
+					value: s => `return;${new Array(s.length - 7).join(' ')}(`,
 				},
 			],
 		}),
@@ -227,7 +226,7 @@ const first = {
 				options: babelConfig,
 			},
 			{
-				test: /\.css$/,
+				test: /\.cs{2}$/, // .css
 				use: isProd
 					? ExtractTextPlugin.extract({
 							fallback: 'style-loader',
