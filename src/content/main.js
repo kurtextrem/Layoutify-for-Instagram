@@ -109,24 +109,25 @@
 	function addClass() {
 		const main = document.querySelector('#react-root')
 
-		if (
-			window.history.length !== 1 &&
-			(location.search.indexOf('-by=') !== -1 || location.search.indexOf('explore') !== -1 || location.pathname.indexOf('/stories/') !== -1)
-		)
-			return // nothing to do
+		if (window.history.length !== 1 && (location.search.indexOf('-by=') !== -1 || location.pathname.indexOf('/stories/') !== -1)) return // nothing to do
 
-		if (location.pathname === '/') {
+		const pathname = location.pathname
+		if (pathname === '/') {
 			// home page
 			main.classList.add('home')
-			main.classList.remove('profile', 'post')
-		} else if (location.pathname.indexOf('/p/') !== -1) {
+			main.classList.remove('profile', 'post', 'explore')
+		} else if (pathname.indexOf('/p/') !== -1) {
 			// single post
 			main.classList.add('post')
-			main.classList.remove('profile', 'home')
+			main.classList.remove('profile', 'home', 'explore')
+		} else if (pathname.indexOf('/explore/') !== -1) {
+			// search results
+			main.classList.add('explore')
+			main.classList.remove('profile', 'home', 'post')
 		} else {
 			// profile page
 			main.classList.add('profile')
-			main.classList.remove('post', 'home')
+			main.classList.remove('post', 'home', 'explore')
 		}
 	}
 
