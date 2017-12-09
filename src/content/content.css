@@ -224,9 +224,8 @@ video::-internal-media-controls-overflow-menu-list {
 	z-index: 3;
 }
 
-/** Hide media controls when not playing on home */
-main > section video:not([loop])::-webkit-media-controls-enclosure {
-	opacity: 0;
+video[loop] {
+	z-index: 2;
 }
 
 /** Always show media controls on single posts */
