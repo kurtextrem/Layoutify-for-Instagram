@@ -83,7 +83,7 @@ main > section div > article {
 						Slimmer Post Header
 =============================================*/
 div[role='dialog'] article > header,
-#react-root:not(.profile) article > header {
+#react-root:not(.profile):not(.explore) article > header {
 	height: 50px !important;
 	padding: 16px 8px;
 	contain: strict;
