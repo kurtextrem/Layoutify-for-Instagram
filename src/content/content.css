@@ -340,6 +340,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 	margin: 0 5px;
 }
 
+/** Story items container */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div {
 	width: 100%;
 	height: 80px !important; /** @TODO: Enlargen story items */
@@ -348,8 +349,10 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 	margin-bottom: -5px;
 }
 
+/** Stories virtual list */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div {
 	flex-direction: row;
+	contain: strict;
 }
 
 /** Other Stories
@@ -412,7 +415,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:la
 =============================================*/
 /*#react-root:not(.profile) main > section > div:not(#rcr-anchor) > div:not([class]) > div:last-child > div,*/
 /** Profile spinner */
-.profile main > article > div > div:last-child {
+.profile main > article > div > div:last-child:not(:first-child) {
 	order: 3;
 	height: 32px;
 	contain: strict;

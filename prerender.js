@@ -1,9 +1,9 @@
 const { resolve } = require('path')
 
-module.exports = function prerender(outputDir, params) {
+function prerender(outputDir, params) {
 	params = params || {}
 
-	const entry = resolve(outputDir, './ssr-bundle.js'),
+	const entry = './' + outputDir + '/ssr-bundle.js',
 		url = params.url || '/'
 
 	global.window = {
@@ -34,8 +34,7 @@ module.exports = function prerender(outputDir, params) {
 	try {
 		m = require(entry)
 	} catch (e) {
-		console.warn("Couldn't find", entry)
-		return
+		console.error(e.message)
 	}
 
 	const app = (m && m.default) || m
@@ -49,3 +48,4 @@ module.exports = function prerender(outputDir, params) {
 
 	return renderToString(preact.h(app, {}))
 }
+module.exports = prerender

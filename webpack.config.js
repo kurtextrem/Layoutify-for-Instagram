@@ -23,7 +23,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin')
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 // const WebpackMonitor = require('webpack-monitor')
-// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -73,7 +73,7 @@ const plugins = [
 		preload: ['.js', '.css'],
 	}),
 	new CopyWebpackPlugin([{ from: '*.html' }, { from: '*.json' }, { from: 'img/*.png' }, { from: 'content/*' }, { from: '_locales/**' }]),
-	// new HardSourceWebpackPlugin(),
+	new HardSourceWebpackPlugin(),
 ]
 
 if (isProd) {
@@ -211,7 +211,7 @@ const first = {
 
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: isProd ? '/' : 'http://localhost:8080/',
+		publicPath: isProd ? '' : 'http://localhost:8080/',
 		filename: 'bundle.js',
 		pathinfo: true,
 		//devtoolModuleFilenameTemplate: info => (isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`),
@@ -309,7 +309,6 @@ const second = {
 
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: '/',
 		filename: 'ssr-bundle.js',
 		libraryTarget: 'commonjs2',
 	},
@@ -317,6 +316,14 @@ const second = {
 	context: first.context,
 	module: first.module,
 	resolve: first.resolve,
+	plugins: [
+		new webpack.DefinePlugin({
+			'process.env': JSON.stringify({ NODE_ENV: ENV }), // Preact checks for `!process.env`
+			'process.env.NODE_ENV': JSON.stringify(ENV),
+			'typeof window': JSON.stringify('object'),
+			'typeof process': JSON.stringify('object'), // Preact checks for `type process === 'undefined'`
+		}),
+	]
 }
 
 module.exports = isProd ? [first, second] : first

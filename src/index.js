@@ -5,9 +5,9 @@ import './components/main.css'
 
 options.syncComponentUpdates = false
 
-let root = document.body.firstChild
+let root = document.body.firstElementChild
 
-const init = app => (root = render(h(app), document.body, root))
+const init = app => root = render(h(app), document.body, root)
 
 if (module.hot) {
 	require('preact/devtools')
