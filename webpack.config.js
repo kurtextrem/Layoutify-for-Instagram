@@ -24,6 +24,7 @@ const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin')
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 // const WebpackMonitor = require('webpack-monitor')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+const AutoDllPlugin = require('autodll-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -43,7 +44,7 @@ const html = {
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	inject: true,
-	ssr: params => (isProd ? prerender('dist', params) : '<div id="app"></div>'),
+	ssr: params => '<div id="react-root">' + (isProd ? prerender('dist', params) : '') + '</div>',
 }
 
 const plugins = [
@@ -187,12 +188,19 @@ if (isProd) {
 		new FriendlyErrorsPlugin(),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
-		new webpack.optimize.CommonsChunkPlugin({
+		new AutoDllPlugin({
+			inject: true, // will inject the DLL bundles to index.html
+			filename: '[name]_[hash].js',
+			entry: {
+				vendor: ['nervjs', 'nerv-devtool', 'decko'],
+			},
+		}),
+		/*new webpack.optimize.CommonsChunkPlugin({
 			name: 'vendor',
 			chunks: require('./vendor'),
 			filename: 'bundle2.js',
 			minChunks: Infinity,
-		}),
+		}),*/
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'manifest',
 			filename: 'bundle1.js',

@@ -32,10 +32,6 @@ module.exports = (isProd, options = {}) => ({
 							transform: 'reactstrap/lib/${member}',
 							preventFullImport: true,
 						},
-						history: {
-							transform: 'history/es/${member}',
-							preventFullImport: true,
-						},
 					},
 				],
 				resolve('@babel/plugin-transform-react-constant-elements'),

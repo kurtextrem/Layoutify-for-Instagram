@@ -1,13 +1,13 @@
-import HashRouter, { Route } from 'react-hash-routing'
 import { Component, createElement } from 'nervjs'
 import { Container, Nav, NavItem, NavLink, Navbar, NavbarBrand } from 'reactstrap'
+import { HashRouter, Route } from './HashRouter'
 
 export default class Header extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			location: '',
+			location: location.hash.replace('#/', ''),
 		}
 	}
 
@@ -42,7 +42,7 @@ export default class Header extends Component {
 			<Navbar color="faded" light toggleable className="mb-2 navbar-expand bg-light">
 				<HashRouter onLocationChanged={this.handleLocationChanged} />
 				<Container>
-					<NavbarBrand href="/">Improved for IG</NavbarBrand>
+					<NavbarBrand href="/index.html">Improved for IG</NavbarBrand>
 					<Nav navbar className="mr-auto">
 						<NavItem>
 							<NavLink className={location === 'liked' || location === '' ? 'active' : ''} href="#/">

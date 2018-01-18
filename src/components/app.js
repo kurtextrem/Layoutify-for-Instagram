@@ -1,9 +1,9 @@
 import About from './About'
-import HashRouter, { Route } from 'react-hash-routing'
 import Header from './Header'
 import Liked from './Liked'
 import Saved from './Saved'
 import { Component, createElement } from 'nervjs'
+import { HashRouter, Route } from './HashRouter'
 
 export default class App extends Component {
 	handleLocationChanged(childKey, params, cb) {
