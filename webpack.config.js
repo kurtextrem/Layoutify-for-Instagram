@@ -114,7 +114,7 @@ if (isProd) {
 		new webpack.NoEmitOnErrorsPlugin(),
 		new ExtractTextPlugin('styles.css'),
 		new StyleExtHtmlWebpackPlugin(),
-		new ShakePlugin(),
+		//new ShakePlugin(), // https://github.com/indutny/webpack-common-shake/issues/23
 		new webpack.optimize.ModuleConcatenationPlugin(),
 		// strip out babel-helper invariant checks
 		new ReplacePlugin({
