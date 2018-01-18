@@ -1,4 +1,4 @@
-import { Component, h } from 'preact'
+import { Component, createElement } from 'nervjs'
 
 export default class Dots extends Component {
 	renderDot(i) {
@@ -9,10 +9,12 @@ export default class Dots extends Component {
 		return nextProps.index !== this.props.index
 	}
 
-	render(props) {
-		const dots = new Array(props.len)
+	render() {
+		const { len } = this.props,
+			dots = new Array(len)
+
 		dots[0] = this.renderDot(0)
-		for (let i = 1; i < props.len; ++i) {
+		for (let i = 1; i < len; ++i) {
 			dots[i] = this.renderDot(i)
 		}
 

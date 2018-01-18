@@ -34,16 +34,16 @@ babelConfig.cacheDirectory = true
 
 // by using min versions we speed up HMR
 function getMin(module) {
-	return path.resolve(__dirname, `node_modules/${module}/dist/${module}.min.js`)
+	return path.resolve(__dirname, `node_modules/${module}/dist/${module.replace('js', '')}.min.js`)
 }
-const preactCompat = isProd ? 'preact-compat' : getMin('preact-compat') // if we take the min build in prod we also include prop-types
+const nerv = isProd ? 'nervjs' : getMin('nervjs') // if we take the min build in prod we also include prop-types
 
 const html = {
 	title: 'Improved Layout for Instagram',
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	inject: true,
-	ssr: params => (isProd ? prerender('dist', params) : ''),
+	ssr: params => (isProd ? prerender('dist', params) : '<div id="app"></div>'),
 }
 
 const plugins = [
@@ -57,10 +57,8 @@ const plugins = [
 		},
 	}),
 	new webpack.DefinePlugin({
-		'process.env': JSON.stringify({ NODE_ENV: ENV }), // Preact checks for `!process.env`
 		'process.env.NODE_ENV': JSON.stringify(ENV),
 		'typeof window': JSON.stringify('object'),
-		'typeof process': JSON.stringify('object'), // Preact checks for `type process === 'undefined'`
 		POLYFILL_OBJECT_ASSIGN: false,
 		POLYFILL_OBJECT_VALUES: false,
 		POLYFILL_PROMISES: false,
@@ -129,38 +127,44 @@ if (isProd) {
 			],
 		}),
 		new UglifyJSPlugin({
+			cache: true,
 			parallel: true,
 			sourceMap: true,
 			uglifyOptions: {
-				ecma: 6,
 				mangle: true,
 				comments: false,
 				compress: {
 					arrows: false,
-					ecma: 6,
-					unsafe_comps: true,
-					properties: true,
-					keep_fargs: false,
-					pure_getters: true,
-					collapse_vars: true,
-					reduce_vars: true,
-					unsafe: true,
-					warnings: false,
-					dead_code: true,
-					drop_debugger: true,
-					comparisons: true,
+					booleans: false,
+					collapse_vars: false,
+					comparisons: false,
+					computed_props: false,
+					hoist_funs: false,
+					hoist_props: false,
+					hoist_vars: false,
+					if_return: false,
+					inline: false,
+					join_vars: false,
+					keep_infinity: true,
+					loops: false,
+					negate_iife: false,
+					properties: false,
+					reduce_funcs: false,
+					reduce_vars: false,
+					sequences: false,
+					side_effects: false,
+					switches: false,
+					top_retain: false,
+					toplevel: false,
+					typeofs: false,
+					unused: false,
+
+					// Switch off all types of compression except those needed to convince
+					// react-devtools that we're using a production build
 					conditionals: true,
+					dead_code: true,
 					evaluate: true,
-					booleans: true,
-					loops: true,
-					unused: true,
-					hoist_funs: true,
-					if_return: true,
-					join_vars: true,
-					cascade: true,
-					drop_console: false,
-					negate_iife: true,
-					passes: 2,
+
 					pure_funcs: pureFuncs,
 				},
 			},
@@ -183,6 +187,12 @@ if (isProd) {
 		new FriendlyErrorsPlugin(),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'vendor',
+			chunks: require('./vendor'),
+			filename: 'bundle2.js',
+			minChunks: Infinity,
+		}),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'manifest',
 			filename: 'bundle1.js',
@@ -217,6 +227,8 @@ const first = {
 		//devtoolModuleFilenameTemplate: info => (isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`),
 	},
 
+	recordsPath: path.resolve(__dirname, './records.json'),
+
 	module: {
 		rules: [
 			{
@@ -239,27 +251,21 @@ const first = {
 			? undefined
 			: [
 					// faster HMR
-					new RegExp(getMin('preact-compat')),
+					new RegExp(nerv),
 					new RegExp('proptypes/disabled'),
-					new RegExp(getMin('preact')),
 				],
 	},
 
 	resolve: {
 		alias: {
-			preact$: isProd ? 'preact' : getMin('preact'),
-			react: preactCompat,
-			'react-dom': preactCompat,
-			'preact-compat': preactCompat,
-			'react-addons-css-transition-group': isProd ? 'preact-css-transition-group' : getMin('preact-css-transition-group'),
-			'react-addons-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
-			'react-transition-group': isProd ? 'preact-transition-group' : getMin('preact-transition-group'),
+			react: nerv,
+			'react-dom': nerv,
+			'create-react-class': 'nerv-create-class',
 			'prop-types$': 'proptypes/disabled',
-			'create-react-class': 'preact-compat/lib/create-react-class',
 		},
 	},
 
-	devtool: isProd ? false /*'source-map'*/ /* 'cheap-module-source-map'*/ : 'cheap-module-source-map',
+	devtool: isProd ? false /*'source-map'*/ /* 'cheap-module-source-map'*/ : 'cheap-module-source-map', //'nosources-source-map', // + map Chrome Dev Tools workspace to your local folder
 
 	devServer: {
 		contentBase: path.join(__dirname, 'dist/'),
@@ -307,6 +313,8 @@ const second = {
 
 	entry: './components/App',
 
+	recordsPath: path.resolve(__dirname, './records_html.json'),
+
 	output: {
 		path: path.join(__dirname, 'dist'),
 		filename: 'ssr-bundle.js',
@@ -323,7 +331,7 @@ const second = {
 			'typeof window': JSON.stringify('object'),
 			'typeof process': JSON.stringify('object'), // Preact checks for `type process === 'undefined'`
 		}),
-	]
+	],
 }
 
 module.exports = isProd ? [first, second] : first

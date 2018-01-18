@@ -11,13 +11,14 @@ function prerender(outputDir, params) {
 			createElement() {
 				return {}
 			},
-			location: { href: url, pathname: url, replace() {} },
+			location: { href: url, pathname: url, replace() {}, hash: '#' + url },
 		},
 		history: {},
 		navigator: { userAgent: '' },
 		pushState: {},
 		setTimeout() {},
 	}
+	global.navigator = global.window.navigator
 	global.window.location = global.window.document.location
 	global.history = global.window.history
 	global.document = global.window.document
@@ -34,7 +35,7 @@ function prerender(outputDir, params) {
 	try {
 		m = require(entry)
 	} catch (e) {
-		console.error(e.message)
+		console.error(e)
 	}
 
 	const app = (m && m.default) || m
@@ -43,9 +44,11 @@ function prerender(outputDir, params) {
 		return ''
 	}
 
-	const preact = require('preact'),
-		renderToString = require('preact-render-to-string')
+	const nerv = require('nervjs'),
+		dom = require('nerv-server')
 
-	return renderToString(preact.h(app, {}))
+	return dom.renderToString(nerv.createElement(app))
 }
 module.exports = prerender
+
+//console.log(prerender('dist'))

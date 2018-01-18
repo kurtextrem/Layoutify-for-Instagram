@@ -3,7 +3,7 @@ import Post from './Post'
 import Sentinel from './Sentinel'
 import { CardDeck } from 'reactstrap'
 import { Chrome, Storage } from './Utils'
-import { Component, h } from 'preact'
+import { Component, createElement } from 'nervjs'
 import { bind } from 'decko'
 
 const loading = <Loading />
@@ -110,8 +110,8 @@ export default class PostsContainer extends Component {
 		)
 	}
 
-	render(props, state) {
-		const { items, timeout } = state
+	render() {
+		const { items, timeout } = this.state
 
 		if (timeout === 200) return loading
 		if (timeout === 400 && (!items || items.length === 0)) {
@@ -121,8 +121,7 @@ export default class PostsContainer extends Component {
 
 		return (
 			<CardDeck className="justify-content-center">
-				{Posts(items, this.renderPost) // https://github.com/developit/preact/issues/45
-				}
+				{Posts(items, this.renderPost)}
 				<Sentinel onVisible={this.handleScroll} />
 			</CardDeck>
 		)

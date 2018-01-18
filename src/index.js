@@ -1,25 +1,23 @@
 import App from './components/App'
-import Preact, { h, options, render } from 'preact'
+//import Nerv, { options, render } from 'nervjs'
+import { createElement, hydrate, render } from 'nervjs'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './components/main.css'
 
-options.syncComponentUpdates = false
-
-let root = document.body.firstElementChild
-
-const init = app => root = render(h(app), document.body, root)
+const init = (fn, app, container) => fn(createElement(app), container)
 
 if (module.hot) {
-	require('preact/devtools')
-	require('preact/debug')
+	require('nerv-devtools')
 	//	const { whyDidYouUpdate } = require('why-did-you-update')
-	//	whyDidYouUpdate(Preact)
+	//	whyDidYouUpdate(Nerv)
 
 	module.hot.accept('./components/App', () =>
 		requestAnimationFrame(() => {
-			init(App)
+			init(render, App, document.body.firstElementChild)
 		})
 	)
 }
 
-init(App)
+//if (document.body.firstElementChild === undefined) init(render, App, document.body)
+//else
+init(hydrate, App, document.body.firstElementChild)

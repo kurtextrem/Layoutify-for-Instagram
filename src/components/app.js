@@ -1,25 +1,45 @@
 import About from './About'
+import HashRouter, { Route } from 'react-hash-routing'
 import Header from './Header'
 import Liked from './Liked'
 import Saved from './Saved'
-import { Component, h } from 'preact'
-import { Router } from 'preact-router'
-import { createHashHistory } from 'history'
-
-const hashHistory = createHashHistory()
+import { Component, createElement } from 'nervjs'
 
 export default class App extends Component {
+	handleLocationChanged(childKey, params, cb) {
+		switch (childKey) {
+			case 'liked':
+				cb()
+				break
+			case 'saved':
+				cb()
+				break
+			case 'about':
+				cb()
+				break
+			default:
+				cb()
+				break
+		}
+	}
+
 	render() {
 		return (
 			<div id="app">
 				<Header />
 
 				<main className="d-flex justify-content-center">
-					<Router history={hashHistory}>
-						<Liked path="/" default />
-						<Saved path="/saved" />
-						<About path="/about" />
-					</Router>
+					<HashRouter onLocationChanged={this.handleLocationChanged}>
+						<Route key="liked" hash="#/">
+							<Liked />
+						</Route>
+						<Route key="saved" hash="#/saved">
+							<Saved />
+						</Route>
+						<Route key="about" hash="#/about">
+							<About />
+						</Route>
+					</HashRouter>
 				</main>
 			</div>
 		)

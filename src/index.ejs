@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="dns-prefetch" href="https://fonts.googleapis.com">
-	<link rel="preload" as="style" href="https://fonts.googleapis.com/icon?family=Material+Icons"><!-- onload="this.rel='stylesheet'" -->
+	<link rel="preload" as="style" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<!-- onload="this.rel='stylesheet'" -->
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title><%= htmlWebpackPlugin.options.title %></title>
+	<title>
+		<%= htmlWebpackPlugin.options.title %>
+	</title>
 	<link rel="shortcut icon" type="image/png" href="img/icon-128.png">
 </head>
+
 <body>
 	<%= htmlWebpackPlugin.options.ssr({
 		url: '/'
-	}) %>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	})
+	%>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </body>
+
 </html>

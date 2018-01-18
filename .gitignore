@@ -8,3 +8,5 @@ report.html
 test
 shrinkwrap.yaml
 .releaseit.json
+records.json
+records_html.json

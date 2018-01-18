@@ -1,4 +1,4 @@
-import { Component, h } from 'preact'
+import { Component, createElement } from 'nervjs'
 
 export default class Loading extends Component {
 	constructor(props) {
@@ -13,7 +13,7 @@ export default class Loading extends Component {
 
 	render() {
 		return (
-			<div class="ball-pulse-sync">
+			<div className="ball-pulse-sync">
 				<div />
 				<div />
 				<div />

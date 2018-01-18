@@ -1,5 +1,5 @@
 import { Button } from 'reactstrap'
-import { Component, h } from 'preact'
+import { Component, createElement } from 'nervjs'
 import { Storage } from './Utils'
 import { bind } from 'decko'
 

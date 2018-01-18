@@ -43,7 +43,7 @@ module.exports = (isProd, options = {}) => ({
 					resolve('babel-plugin-transform-react-remove-prop-types'),
 					{ removeImport: true, additionalLibraries: ['react-immutable-proptypes'] },
 				],
-				[resolve('@babel/plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
+				[resolve('@babel/plugin-transform-react-jsx'), { pragma: 'createElement', useBuiltIns: true }],
 				//[resolve('babel-plugin-transform-hoist-nested-functions'), { methods: true }],
 
 				// 'module:fast-async', - enabled from Chrome 55
@@ -54,7 +54,7 @@ module.exports = (isProd, options = {}) => ({
 				// 'emotion/babel'
 			]
 		: [
-				[resolve('@babel/plugin-transform-react-jsx'), { pragma: 'h', useBuiltIns: true }],
+				[resolve('@babel/plugin-transform-react-jsx'), { pragma: 'createElement', useBuiltIns: true }],
 				resolve('@babel/plugin-transform-react-jsx-source'),
 				resolve('babel-plugin-transform-console-log-variable-names'),
 				resolve('babel-plugin-console-groupify'),

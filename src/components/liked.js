@@ -1,5 +1,5 @@
 import PostsContainer from './PostsContainer'
-import { h } from 'preact'
+import { createElement } from 'nervjs'
 
 const Liked = () => <PostsContainer id="liked" defaultClass="favorite" toggleClass="favorite_border" />
 export default Liked

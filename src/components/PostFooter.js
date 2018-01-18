@@ -1,5 +1,5 @@
 import { Button, CardFooter } from 'reactstrap'
-import { Component, h } from 'preact'
+import { Component, createElement } from 'nervjs'
 
 export default class PostFooter extends Component {
 	shouldComponentUpdate(nextProps) {
@@ -7,8 +7,8 @@ export default class PostFooter extends Component {
 		return false
 	}
 
-	render(props) {
-		const { active, btnClick, defaultClass, toggleClass, parent } = props
+	render() {
+		const { active, btnClick, defaultClass, toggleClass, parent } = this.props
 		return (
 			<CardFooter className={parent}>
 				<Button className={'action--btn ' + (active ? 'active' : 'inactive')} color="link" onClick={btnClick}>

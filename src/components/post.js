@@ -3,7 +3,7 @@ import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import { Button, CardBody, CardText } from 'reactstrap'
 import { Chrome, updateCDN } from './Utils'
-import { Component, h } from 'preact'
+import { Component, createElement } from 'nervjs'
 import { bind } from 'decko'
 
 let observer
@@ -106,14 +106,15 @@ export default class Post extends Component {
 		this.ref = null
 	}
 
-	render(props, state) {
-		const post = props.data
+	render() {
+		const { data, initial, defaultClass, toggleClass, parent } = this.props
+		const { carouselIndex, active } = this.state
 		const isCarousel = this.isCarousel
 
-		const caption = post.caption && post.caption.text // could be either undefined or null
-		const user = post.user
+		const caption = data.caption && data.caption.text // could be either undefined or null
+		const user = data.user
 
-		const media = isCarousel ? post.carousel_media[state.carouselIndex] : post
+		const media = isCarousel ? data.carousel_media[carouselIndex] : data
 
 		let mediaElement = null,
 			candidate = null
@@ -125,7 +126,7 @@ export default class Post extends Component {
 			mediaElement = (
 				<video
 					ref={this.setRef}
-					src={isCarousel || !props.initial ? url : ''}
+					src={isCarousel || !initial ? url : ''}
 					data-src={url}
 					poster={media.image_versions2.candidates[0].url}
 					type="video/mp4"
@@ -145,7 +146,7 @@ export default class Post extends Component {
 					ref={this.setRef}
 					width={candidate.width}
 					height={candidate.height}
-					src={isCarousel || !props.initial ? url : ''}
+					src={isCarousel || !initial ? url : ''}
 					data-src={url}
 					alt="If you see this, the post has probably been deleted"
 					className="img-fluid"
@@ -155,32 +156,26 @@ export default class Post extends Component {
 		}
 
 		return (
-			<article class="card">
-				<PostHeader user={user} code={post.code} taken_at={post.taken_at} />
-				<a href={`https://www.instagram.com/p/${post.code}`} target="_blank" rel="noopener" className={isCarousel ? 'post--carousel' : ''}>
+			<article className="card">
+				<PostHeader user={user} code={data.code} taken_at={data.taken_at} />
+				<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener" className={isCarousel ? 'post--carousel' : ''}>
 					{isCarousel ? (
 						<Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}>
-							<i class="material-icons">keyboard_arrow_left</i>
+							<i className="material-icons">keyboard_arrow_left</i>
 						</Button>
 					) : null}
 					{mediaElement}
 					{isCarousel ? (
 						<Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}>
-							<i class="material-icons">keyboard_arrow_right</i>
+							<i className="material-icons">keyboard_arrow_right</i>
 						</Button>
 					) : null}
 				</a>
-				{isCarousel ? <Dots index={state.carouselIndex} len={this.carouselLen} /> : null}
+				{isCarousel ? <Dots index={carouselIndex} len={this.carouselLen} /> : null}
 				<CardBody className="overflow-auto p-3 card-body">
 					<CardText>{caption}</CardText>
 				</CardBody>
-				<PostFooter
-					active={state.active}
-					btnClick={this.onBtnClick}
-					defaultClass={props.defaultClass}
-					toggleClass={props.toggleClass}
-					parent={props.parent}
-				/>
+				<PostFooter active={active} btnClick={this.onBtnClick} defaultClass={defaultClass} toggleClass={toggleClass} parent={parent} />
 			</article>
 		)
 	}

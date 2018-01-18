@@ -1,5 +1,5 @@
 import TimeAgo from 'react-timeago'
-import { Component, h } from 'preact'
+import { Component, createElement } from 'nervjs'
 import { Media } from 'reactstrap'
 import { updateCDN } from './Utils'
 
@@ -16,8 +16,8 @@ export default class PostHeader extends Component {
 		return false // carousel?
 	}
 
-	render(props, state) {
-		const user = props.user
+	render() {
+		const { user, code } = this.props
 		return (
 			<header className="media align-items-center card-block grow-0 pl-2 pr-2">
 				<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener">
@@ -28,8 +28,8 @@ export default class PostHeader extends Component {
 						{user.full_name || user.username}
 					</a>
 				</Media>
-				<a href={`https://www.instagram.com/p/${props.code}`} target="_blank" rel="noopener">
-					<TimeAgo className="text-muted" date={state.date} />
+				<a href={`https://www.instagram.com/p/${code}`} target="_blank" rel="noopener">
+					<TimeAgo className="text-muted" date={this.state.date} />
 				</a>
 			</header>
 		)
