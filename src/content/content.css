@@ -154,7 +154,7 @@ div > a > time {
 }
 
 /** Grow comments */
-header + div + div > div:first-of-type {
+header + div + div > div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	order: 2 !important;
 	width: 100%;
@@ -413,13 +413,18 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:la
 /*=============================================
 										Spinner
 =============================================*/
-/*#react-root:not(.profile) main > section > div:not(#rcr-anchor) > div:not([class]) > div:last-child > div,*/
 /** Profile spinner */
-.profile main > article > div > div:last-child:not(:first-child) {
+.home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child),
+.profile main > article > header + div + div:last-child {
 	order: 3;
-	height: 32px;
+	margin: 10px 0;
 	contain: strict;
 	z-index: 2;
+	height: 60px;
+}
+
+.home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) > div {
+	top: 30%;
 }
 
 /*=============================================
