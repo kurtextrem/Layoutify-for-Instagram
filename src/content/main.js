@@ -105,6 +105,11 @@
 
 	/**
 	 * Adds the correct class to the react root node.
+	 *
+	 * .home on the main homepage
+	 * .profile on user profiles
+	 * .post when a single post is open (also as modal)
+	 * .explore if the explore tab is open
 	 */
 	function addClass() {
 		const main = document.querySelector('#react-root')
