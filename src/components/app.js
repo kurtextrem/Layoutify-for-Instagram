@@ -41,6 +41,9 @@ export default class App extends Component {
 						</Route>
 					</HashRouter>
 				</main>
+				<a href="#" id="backToTop">
+					<i className="material-icons">keyboard_arrow_up</i>
+				</a>
 			</div>
 		)
 	}
