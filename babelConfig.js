@@ -34,18 +34,19 @@ module.exports = (isProd, options = {}) => ({
 						},
 					},
 				],
-				resolve('@babel/plugin-transform-react-constant-elements'),
 				[
 					resolve('babel-plugin-transform-react-remove-prop-types'),
 					{ removeImport: true, additionalLibraries: ['react-immutable-proptypes'] },
 				],
+				resolve('babel-plugin-transform-react-pure-class-to-function'),
 				[resolve('@babel/plugin-transform-react-jsx'), { pragma: 'createElement', useBuiltIns: true }],
-				//[resolve('babel-plugin-transform-hoist-nested-functions'), { methods: true }],
+				//resolve('@babel/plugin-transform-react-constant-elements'), // see https://github.com/facebookincubator/create-react-app/issues/553#issuecomment-359196326
+				//[resolve('babel-plugin-transform-hoist-nested-functions'), { methods: true }], // see ^^^
+				resolve('babel-plugin-closure-elimination'), // @TODO: Benchmark w/ & w/o, see ^^^
 
 				// 'module:fast-async', - enabled from Chrome 55
-				resolve('babel-plugin-closure-elimination'),
 				resolve('babel-plugin-transform-console-log-variable-names'),
-				resolve('babel-plugin-console-groupify'), // @TODO: breaks webpack build 10/17/2017
+				//resolve('babel-plugin-console-groupify'), // too much noise
 				resolve('./pure-plugin.js'),
 				// 'emotion/babel'
 			]

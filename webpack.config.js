@@ -15,16 +15,16 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
-const ShakePlugin = require('webpack-common-shake').Plugin
 const pureFuncs = require('side-effects-safe').pureFuncs
 const ReplacePlugin = require('webpack-plugin-replace')
 const WebpackMessages = require('webpack-messages')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin')
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
-// const WebpackMonitor = require('webpack-monitor')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
-const AutoDllPlugin = require('autodll-webpack-plugin')
+const ShakePlugin = require('webpack-common-shake').Plugin
+// const WebpackMonitor = require('webpack-monitor')
+// const AutoDllPlugin = require('autodll-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
@@ -188,19 +188,19 @@ if (isProd) {
 		new FriendlyErrorsPlugin(),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
-		new AutoDllPlugin({
+		/*new AutoDllPlugin({ // disabled as per https://github.com/mzgoddard/hard-source-webpack-plugin/issues/251
 			inject: true, // will inject the DLL bundles to index.html
 			filename: '[name]_[hash].js',
 			entry: {
 				vendor: ['nervjs', 'nerv-devtool', 'decko'],
 			},
-		}),
-		/*new webpack.optimize.CommonsChunkPlugin({
+		}),*/
+		new webpack.optimize.CommonsChunkPlugin({
 			name: 'vendor',
 			chunks: require('./vendor'),
 			filename: 'bundle2.js',
 			minChunks: Infinity,
-		}),*/
+		}),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'manifest',
 			filename: 'bundle1.js',
