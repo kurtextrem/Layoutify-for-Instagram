@@ -112,11 +112,13 @@
 	 * .explore if the explore tab is open
 	 */
 	function addClass() {
-		const main = document.querySelector('#react-root')
-
-		if (window.history.length !== 1 && (location.search.indexOf('-by=') !== -1 || location.pathname.indexOf('/stories/') !== -1)) return // nothing to do
-
 		const pathname = location.pathname
+
+		if (location.pathname.indexOf('/stories/') !== -1) return
+		if (window.history.length !== 1 && location.search.indexOf('-by=') !== -1 && document.querySelector('div[role="dialog"]') === null)
+			return
+
+		const main = document.querySelector('#react-root')
 		if (pathname === '/') {
 			// home page
 			main.classList.add('home')

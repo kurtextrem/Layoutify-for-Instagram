@@ -6,7 +6,6 @@
 
 body {
 	font-size: 15px !important; /** we're on desktop, okay? */
-	overflow: auto;
 	overflow-y: unset !important; /** de-opts scrolling */
 }
 
@@ -55,7 +54,10 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div
 	contain: layout style;
 }
 
-/** Previous DOM structure */
+/**
+ * Previous DOM structure
+ * @deprecated @TODO
+ */
 main > section > div:not(#rcr-anchor) > div:not([class]) > div {
 	flex-direction: row !important;
 	flex-wrap: wrap;
@@ -414,8 +416,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:la
 										Spinner
 =============================================*/
 /** Profile spinner */
-.home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child),
-.profile main > article > header + div + div:last-child {
+.home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) {
 	order: 3;
 	margin: 10px 0;
 	contain: strict;

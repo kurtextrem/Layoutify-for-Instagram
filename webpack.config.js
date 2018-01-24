@@ -72,7 +72,9 @@ const plugins = [
 		preload: ['.js', '.css'],
 	}),
 	new CopyWebpackPlugin([{ from: '*.html' }, { from: '*.json' }, { from: 'img/*.png' }, { from: 'content/*' }, { from: '_locales/**' }]),
-	new HardSourceWebpackPlugin(),
+	new HardSourceWebpackPlugin({
+		cacheDirectory: '../node_modules/.cache/hard-source/[confighash]',
+	}),
 ]
 
 if (isProd) {
