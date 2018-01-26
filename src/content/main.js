@@ -54,10 +54,20 @@
 		root,
 		mutations => {
 			for (let i = 0; i < mutations.length; ++i) {
-				const mutation = mutations[i].addedNodes
+				var mutation = mutations[i].addedNodes
 
-				if (mutation.length === 1 && mutation[0].nodeName === 'VIDEO') {
-					mutation[0].controls = 'true'
+				if (mutation.length === 1) {
+					var node = mutation[0],
+						nodeName = mutation[0].nodeName
+
+					//console.log(mutations[i])
+					if (nodeName === 'VIDEO') node.controls = 'true'
+					else if (nodeName === 'DIV') {
+						var img = node.querySelector('img')
+						if (img !== null) img.decoding = 'async'
+					} else if (nodeName === 'IMG') {
+						node.decoding = 'async'
+					}
 				}
 			}
 
