@@ -3,44 +3,14 @@ import { Container, Nav, NavItem, NavLink, Navbar, NavbarBrand } from 'reactstra
 import { HashRouter } from './HashRouter'
 
 export default class Header extends Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			location: location.hash.replace('#/', ''),
-		}
-	}
-
-	handleLocationChanged(childKey, params, cb) {
-		switch (childKey) {
-			case 'liked':
-				this.setState(prevState => ({ location: 'liked' }))
-				cb()
-				break
-			case 'saved':
-				this.setState(prevState => ({ location: 'saved' }))
-				cb()
-				break
-			case 'about':
-				this.setState(prevState => ({ location: 'about' }))
-				cb()
-				break
-			default:
-				this.setState(prevState => ({ location: 'liked' }))
-				cb()
-				break
-		}
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextState.location !== this.state.location
+	shouldComponentUpdate(nextProps) {
+		return nextProps.location !== this.props.location
 	}
 
 	render() {
-		const { location } = this.state
+		const { location } = this.props
 		return (
 			<Navbar color="faded" light toggleable className="mb-2 navbar-expand bg-light">
-				<HashRouter onLocationChanged={this.handleLocationChanged} />
 				<Container>
 					<NavbarBrand href="/index.html">Improved for IG</NavbarBrand>
 					<Nav navbar className="mr-auto">

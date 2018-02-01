@@ -4,20 +4,34 @@ import Liked from './Liked'
 import Saved from './Saved'
 import { Component, createElement } from 'nervjs'
 import { HashRouter, Route } from './HashRouter'
+import { bind } from 'decko'
 
 export default class App extends Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			location: location.hash.replace('#/', ''),
+		}
+	}
+
+	@bind
 	handleLocationChanged(childKey, params, cb) {
 		switch (childKey) {
 			case 'liked':
+				this.setState(prevState => ({ location: 'liked' }))
 				cb()
 				break
 			case 'saved':
+				this.setState(prevState => ({ location: 'saved' }))
 				cb()
 				break
 			case 'about':
+				this.setState(prevState => ({ location: 'about' }))
 				cb()
 				break
 			default:
+				this.setState(prevState => ({ location: 'liked' }))
 				cb()
 				break
 		}
@@ -26,7 +40,7 @@ export default class App extends Component {
 	render() {
 		return (
 			<div id="app">
-				<Header />
+				<Header location={this.state.location} />
 
 				<main className="d-flex justify-content-center">
 					<HashRouter onLocationChanged={this.handleLocationChanged}>
