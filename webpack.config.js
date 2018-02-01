@@ -25,7 +25,7 @@ const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const ShakePlugin = require('webpack-common-shake').Plugin
 // const WebpackMonitor = require('webpack-monitor')
 // const AutoDllPlugin = require('autodll-webpack-plugin')
-// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
+const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
 const isProd = ENV === 'production'
@@ -172,7 +172,7 @@ if (isProd) {
 				},
 			},
 		}),
-		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // doesn't support `class` yet
+		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
@@ -211,7 +211,8 @@ if (isProd) {
 		new WriteFilePlugin({
 			test: /(content\/|manifest.json)/,
 			log: false,
-		})
+		}),
+		new webpack.HotModuleReplacementPlugin()
 	)
 }
 
