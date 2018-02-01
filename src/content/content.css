@@ -346,9 +346,9 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div {
 	width: 100%;
 	height: 80px !important; /** @TODO: Enlargen story items */
+	margin-bottom: -5px;
 	overflow-y: hidden !important;
 	overflow-x: scroll !important;
-	margin-bottom: -5px;
 }
 
 /** Stories virtual list */
@@ -418,10 +418,10 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:la
 /** Profile spinner */
 .home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) {
 	order: 3;
+	height: 60px;
 	margin: 10px 0;
 	contain: strict;
 	z-index: 2;
-	height: 60px;
 }
 
 .home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) > div {
@@ -441,9 +441,9 @@ section > footer + div {
 /** Enlargen modal */
 div[role='dialog'] article,
 .post article {
-	margin-bottom: 0;
 	min-height: 50vh;
 	max-height: 90vh;
+	margin-bottom: 0;
 	contain: layout style;
 }
 

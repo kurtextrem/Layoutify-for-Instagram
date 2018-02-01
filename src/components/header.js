@@ -1,6 +1,6 @@
 import { Component, createElement } from 'nervjs'
 import { Container, Nav, NavItem, NavLink, Navbar, NavbarBrand } from 'reactstrap'
-import { HashRouter, Route } from './HashRouter'
+import { HashRouter } from './HashRouter'
 
 export default class Header extends Component {
 	constructor(props) {
@@ -32,8 +32,8 @@ export default class Header extends Component {
 		}
 	}
 
-	shouldComponentUpdate() {
-		return false
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextState.location !== this.state.location
 	}
 
 	render() {
