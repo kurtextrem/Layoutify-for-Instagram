@@ -288,7 +288,7 @@ nav input + span + div + div > div:first-of-type {
 }
 
 /*=============================================
-					Stories experiment issues#20
+										Stories
 =============================================*/
 /** Fix main feed */
 main > section > div:first-child:not(#rcr-anchor) {
@@ -461,7 +461,7 @@ div[role='dialog'] article,
 /** Sometimes IG sets a max-width on elements */
 .post > section > main > div {
 	flex-grow: 0;
-	max-width: 75vw !important;
+	max-width: 59vw !important;
 	padding-top: 10px;
 	padding-right: 0;
 	padding-bottom: 10px;
@@ -540,6 +540,9 @@ footer > div > nav {
 	}
 	main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
 		justify-content: space-around;
+	}
+	.post > section > main > div {
+		max-width: 75vw !important;
 	}
 }
 
