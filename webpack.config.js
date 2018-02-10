@@ -67,7 +67,6 @@ const plugins = [
 		POLYFILL_URL: false,
 	}),
 	new HtmlWebpackPlugin(html),
-	new HtmlWebpackHarddiskPlugin(),
 	new ScriptExtHtmlWebpackPlugin({
 		preload: ['.js', '.css'],
 	}),
@@ -187,6 +186,7 @@ if (isProd) {
 	)
 } else {
 	plugins.push(
+		new HtmlWebpackHarddiskPlugin(),
 		new FriendlyErrorsPlugin(),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
