@@ -1,3 +1,4 @@
+import ImgWorker from './ImgWorker'
 import TimeAgo from 'react-timeago'
 import { Component, createElement } from 'nervjs'
 import { Media } from 'reactstrap'

@@ -27,12 +27,12 @@ export class Storage {
 	static set = (key, value) =>
 		new Promise((resolve, reject) => {
 			chrome.storage[Storage.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
-		});
+		})
 
 	static get = (key, defaultValue) =>
 		new Promise((resolve, reject) => {
 			chrome.storage[Storage.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
-		});
+		})
 
 	static remove = key =>
 		new Promise((resolve, reject) => {
@@ -65,4 +65,10 @@ export class Chrome {
 const regex = /-fr[atx]\d-\d/
 export function updateCDN(url) {
 	return url.replace(regex, '-frt3-1') // 10.08.2017
+}
+
+export function shallowDiffers(a, b) {
+	for (const key in a) if (a[key] !== b[key]) return true
+	for (const key in b) if (!(key in a)) return true
+	return false
 }

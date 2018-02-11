@@ -1,4 +1,5 @@
 import Dots from './Dots'
+import ImgWorker from './ImgWorker'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import { Button, CardBody, CardText } from 'reactstrap'
