@@ -1,7 +1,7 @@
+import bind from 'autobind-decorator'
 import { Button } from 'reactstrap'
 import { Component, createElement } from 'nervjs'
 import { Storage } from './Utils'
-import { bind } from 'decko'
 
 export default class About extends Component {
 	@bind

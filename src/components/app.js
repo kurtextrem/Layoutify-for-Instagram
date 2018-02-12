@@ -2,9 +2,9 @@ import About from './About'
 import Header from './Header'
 import Liked from './Liked'
 import Saved from './Saved'
+import bind from 'autobind-decorator'
 import { Component, createElement } from 'nervjs'
 import { HashRouter, Route } from './HashRouter'
-import { bind } from 'decko'
 
 export default class App extends Component {
 	constructor(props) {

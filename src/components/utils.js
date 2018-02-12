@@ -72,3 +72,19 @@ export function shallowDiffers(a, b) {
 	for (const key in b) if (!(key in a)) return true
 	return false
 }
+
+export const webWorkerScript = `
+const handleResponse = response => response.blob()
+const postMsg = url => self.postMessage(url)
+self.addEventListener('message', event => {
+	const url = event.data,
+		bound = postMsg.bind(undefined, url)
+	self.fetch(url, { mode: 'no-cors' }).then(handleResponse).then(bound).catch(bound).catch(console.error)
+})
+`
+
+let workerBlob = null
+export function getWorkerBlob() {
+	if (workerBlob === null) workerBlob = URL.createObjectURL(new Blob([webWorkerScript], { type: 'application/javascript' }))
+	return workerBlob
+}

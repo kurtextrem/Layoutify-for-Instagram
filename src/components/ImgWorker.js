@@ -1,15 +1,6 @@
+import bind from 'autobind-decorator'
 import { Component, createElement } from 'nervjs'
-import { bind } from 'decko'
-import { shallowDiffers } from './Utils'
-
-const webWorkerScript = `
-	const handleResponse = response => response.blob()
-	const postMsg = url => self.postMessage(url)
-  self.addEventListener('message', event => {
-		const url = event.data
-    self.fetch(url, { mode: 'no-cors' }).then(handleResponse).then(postMsg.bind(null, url)).catch(console.error)
-  })
-`
+import { getWorkerBlob, shallowDiffers } from './Utils'
 
 const wrappedComponent = WrappedComponent => props => {
 	return <WrappedComponent {...props} />
@@ -21,8 +12,8 @@ let workerPoolCreated = false,
 const workerPool = []
 
 function createWorkerPool() {
-	const blobURL = URL.createObjectURL(new Blob([webWorkerScript], { type: 'application/javascript' }))
-	poolLen = 1 // window.navigator.hardwareConcurrency || 4
+	const blobURL = getWorkerBlob()
+	poolLen = window.navigator.hardwareConcurrency || 4
 	for (let i = 0; i < poolLen; ++i) {
 		workerPool.push({
 			worker: new Worker(blobURL),
@@ -94,8 +85,8 @@ export default class ImgWorker extends Component {
 	renderPlaceholder() {
 		const { placeholder, style, placeholderAlt, width, height, decoding, className } = this.props
 		if (placeholder !== undefined) {
-			if (typeof placeholder === 'function') return wrappedComponent(placeholder)
 			if (typeof placeholder === 'object') return placeholder
+			if (typeof placeholder === 'function') return wrappedComponent(placeholder)
 		}
 		return (
 			<img
@@ -142,7 +133,7 @@ export default class ImgWorker extends Component {
 	}
 
 	render() {
-		const { style, src, placeholderAlt, placeholder /*, ...props */ } = this.props // eslint-disable-line
+		const { style, src, placeholderAlt, placeholder /*, ...props */ } = this.props // eslint-disable-line no-unused-vars
 		const { isLoading } = this.state
 		return isLoading ? this.renderPlaceholder() : <img src={this.img.src} style={{ ...style }} {...this.props} /> // props instead of this.props
 	}

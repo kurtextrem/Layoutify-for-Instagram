@@ -2,17 +2,12 @@ import Dots from './Dots'
 import ImgWorker from './ImgWorker'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
+import bind from 'autobind-decorator'
 import { Button, CardBody, CardText } from 'reactstrap'
-import { Chrome, updateCDN } from './Utils'
+import { Chrome, getWorkerBlob, updateCDN } from './Utils'
 import { Component, createElement } from 'nervjs'
-import { bind } from 'decko'
 
-let observer
-if (typeof IntersectionObserver !== 'undefined')
-	observer = new IntersectionObserver(onChange, {
-		rootMargin: '0px 0px 400px 0px', // eagerly load next rows
-	})
-
+let observer = null
 function onChange(changes) {
 	for (let i = 0; i < changes.length; ++i) {
 		const change = changes[i]
@@ -25,6 +20,17 @@ function onChange(changes) {
 			observer.unobserve(change.target)
 		}
 	}
+}
+
+let initiated = false,
+	worker = null
+function init() {
+	initiated = true
+	if (window.IntersectionObserver !== undefined)
+		observer = new window.IntersectionObserver(onChange, {
+			rootMargin: '0px 0px 400px 0px', // eagerly load next rows
+		})
+	if (window.Worker !== undefined) worker = new Worker(getWorkerBlob())
 }
 
 export default class Post extends Component {
@@ -41,6 +47,8 @@ export default class Post extends Component {
 			carouselIndex: 0,
 			active: true,
 		}
+
+		if (!initiated) init()
 	}
 
 	@bind
@@ -48,13 +56,7 @@ export default class Post extends Component {
 		e.stopPropagation()
 		e.preventDefault()
 
-		if (!this.preloaded) {
-			for (let i = 1; i < this.carouselLen; ++i) {
-				this.preload(i)
-			}
-			this.preloaded = true
-		}
-
+		this.preloadAll()
 		this.setState((prevState, props) => {
 			let newIndex = prevState.carouselIndex
 			if (e.currentTarget.classList.contains('arrow--left')) --newIndex
@@ -87,9 +89,19 @@ export default class Post extends Component {
 		return (this.ref = ref)
 	}
 
-	preload(index) {
+	@bind
+	async preloadAll() {
+		if (this.preloaded) return
+
+		this.preloaded = true
+		for (let i = 1; i < this.carouselLen; ++i) {
+			this.preload(i)
+		}
+	}
+
+	async preload(index) {
 		console.log('preloading', this.props.data.carousel_media[index].image_versions2.candidates[0].url)
-		new Image().src = this.props.data.carousel_media[index].image_versions2.candidates[0].url
+		worker.postMessage(this.props.data.carousel_media[index].image_versions2.candidates[0].url)
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -157,7 +169,7 @@ export default class Post extends Component {
 		}
 
 		return (
-			<article className="card">
+			<article className="card" onMouseEnter={isCarousel ? this.preloadAll : undefined}>
 				<PostHeader user={user} code={data.code} taken_at={data.taken_at} />
 				<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener" className={isCarousel ? 'post--carousel' : ''}>
 					{isCarousel ? (

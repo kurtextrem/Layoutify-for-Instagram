@@ -1,10 +1,10 @@
 import Loading from './Loading'
 import Post from './Post'
 import Sentinel from './Sentinel'
+import bind from 'autobind-decorator'
 import { CardDeck } from 'reactstrap'
 import { Chrome, Storage } from './Utils'
 import { Component, createElement } from 'nervjs'
-import { bind } from 'decko'
 
 const loading = <Loading />
 const Posts = (items, renderPost) => items.map(x => renderPost(x)) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
