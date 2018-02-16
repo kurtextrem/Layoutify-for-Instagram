@@ -22,10 +22,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin')
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
-const ShakePlugin = require('webpack-common-shake').Plugin
+// const ShakePlugin = require('webpack-common-shake').Plugin
 // const WebpackMonitor = require('webpack-monitor')
 // const AutoDllPlugin = require('autodll-webpack-plugin')
-const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
+// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
 const isProd = ENV === 'production'
@@ -37,7 +37,7 @@ babelConfig.cacheDirectory = true
 function getMin(module) {
 	return path.resolve(__dirname, `node_modules/${module}/dist/${module.replace('js', '')}.min.js`)
 }
-const nerv = isProd ? 'nervjs' : getMin('nervjs') // if we take the min build in prod we also include prop-types
+const nerv = isProd ? 'nervjs' : getMin('nervjs') // around 20 KB smaller bundle in prod
 
 const html = {
 	title: 'Improved Layout for Instagram',
@@ -182,6 +182,13 @@ if (isProd) {
 			launch: true,
 			target: '../stats.json',
 		}),*/
+		/*new AutoDllPlugin({ // disabled as per https://github.com/mzgoddard/hard-source-webpack-plugin/issues/251
+			inject: true, // will inject the DLL bundles to index.html
+			filename: '[name]_[hash].js',
+			entry: {
+				vendor: ['nervjs', 'nerv-devtool', 'decko'],
+			},
+		}),*/
 		new ZipPlugin({ filename: 'dist.zip', path: '../', exclude: 'ssr-bundle.js' })
 	)
 } else {
@@ -217,6 +224,8 @@ if (isProd) {
 }
 
 const first = {
+	//mode: isProd ? 'production' : 'development',
+
 	context: path.join(__dirname, 'src'),
 
 	entry: isProd
@@ -239,6 +248,19 @@ const first = {
 	},
 
 	recordsPath: path.resolve(__dirname, './records.json'),
+
+	/*optimization: {
+		splitChunks: {
+			cacheGroups: {
+				vendor: {
+					chunks: 'initial',
+					test: path.resolve(__dirname, 'node_modules'),
+					name: 'vendor',
+					enforce: true,
+				},
+			},
+		},
+	},*/
 
 	module: {
 		rules: [
@@ -280,17 +302,7 @@ const first = {
 
 	devServer: {
 		contentBase: path.join(__dirname, 'dist/'),
-		compress: true,
-		disableHostCheck: true,
-		historyApiFallback: true,
-		hot: true,
-		// hotOnly: true,
 		publicPath: '/',
-		overlay: {
-			warnings: true,
-			errors: true,
-		},
-		watchContentBase: false,
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
@@ -320,6 +332,8 @@ const first = {
 }
 
 const second = {
+	//mode: first.mode,
+
 	target: 'node',
 
 	entry: './components/App',

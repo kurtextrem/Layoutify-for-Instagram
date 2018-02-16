@@ -2,10 +2,6 @@ import bind from 'autobind-decorator'
 import { Component, createElement } from 'nervjs'
 import { getWorkerBlob, shallowDiffers } from './Utils'
 
-const wrappedComponent = WrappedComponent => props => {
-	return <WrappedComponent {...props} />
-}
-
 /** Have we initiated the worker pool already? */
 let workerPoolCreated = false,
 	poolLen = 0
@@ -83,22 +79,15 @@ export default class ImgWorker extends Component {
 
 	@bind
 	renderPlaceholder() {
-		const { placeholder, style, placeholderAlt, width, height, decoding, className } = this.props
+		const { placeholder, placeholderAlt, ...attributes } = this.props
 		if (placeholder !== undefined) {
 			if (typeof placeholder === 'object') return placeholder
-			if (typeof placeholder === 'function') return wrappedComponent(placeholder)
+			if (typeof placeholder === 'function') {
+				const Component = placeholder
+				return <Component />
+			}
 		}
-		return (
-			<img
-				src={placeholder}
-				style={{ ...style }}
-				className={className}
-				alt={placeholderAlt}
-				width={width}
-				height={height}
-				decoding={decoding}
-			/>
-		)
+		return <img {...attributes} src={placeholder} alt={placeholderAlt} />
 	}
 
 	@bind
@@ -133,8 +122,8 @@ export default class ImgWorker extends Component {
 	}
 
 	render() {
-		const { style, src, placeholderAlt, placeholder /*, ...props */ } = this.props // eslint-disable-line no-unused-vars
+		const { src, placeholderAlt, placeholder, ...attributes } = this.props // eslint-disable-line no-unused-vars
 		const { isLoading } = this.state
-		return isLoading ? this.renderPlaceholder() : <img src={this.img.src} style={{ ...style }} {...this.props} /> // props instead of this.props
+		return isLoading ? this.renderPlaceholder() : <img {...attributes} src={this.img.src} /> // props instead of this.props
 	}
 }

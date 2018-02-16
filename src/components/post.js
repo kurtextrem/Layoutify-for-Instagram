@@ -1,5 +1,5 @@
 import Dots from './Dots'
-import ImgWorker from './ImgWorker'
+//import ImgWorker from './ImgWorker'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import bind from 'autobind-decorator'
@@ -12,11 +12,7 @@ function onChange(changes) {
 	for (let i = 0; i < changes.length; ++i) {
 		const change = changes[i]
 		if (change.isIntersecting) {
-			if (i < 8) change.target.src = change.target.dataset.src
-			else
-				window.requestIdleCallback(() => {
-					change.target.src = change.target.dataset.src
-				})
+			change.target.src = change.target.dataset.src // not in a rIC because of https://github.com/necolas/react-native-web/issues/759
 			observer.unobserve(change.target)
 		}
 	}

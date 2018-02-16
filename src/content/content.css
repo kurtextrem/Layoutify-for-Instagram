@@ -272,9 +272,16 @@ a.videoSpritePlayButton + div {
 /*=============================================
 										Nav Bar
 =============================================*/
+section > nav,
+section > nav > div:first-child,
+section > nav > div {
+	display: contents;
+}
+
 nav > div + div > div {
 	contain: layout style; /** See issues#16 */
 	z-index: 9 !important;
+	/*will-change: transform; composited already anyway */
 }
 
 /** Hide "Open in App" */
