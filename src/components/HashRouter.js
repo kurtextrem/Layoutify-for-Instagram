@@ -16,36 +16,19 @@ export class HashRouter extends Component {
 		this.params = []
 		this._childKey = null
 		this._params = []
-		this.state = {
-			style: {
-				opacity: 0,
-			},
-			render: null,
-		}
 
 		this.calcChildren(this.props)
+		this.state = {
+			render: this._matchedPage(),
+		}
 	}
 
 	@bind
 	onHashChange() {
-		/*this.setState({
-			style: {
-				opacity: 0,
-			},
-		})*/
 		const render = this._matchedPage()
 		if (render === null) return
 
 		this.props.onLocationChanged(this._childKey, this._params, () => {
-			/*window.setTimeout(() => {
-					this.setState({
-						style: {
-							transition: 'opacity 500ms',
-							opacity: 1,
-						},
-					})
-				}, 100)*/
-			// @TODO: Prevent re-render on same hash
 			this.setState(() => ({
 				render,
 			}))
@@ -56,9 +39,7 @@ export class HashRouter extends Component {
 	_matchedPage() {
 		const hash = window.location !== undefined ? window.location.hash : '#/'
 		const locArray = hash.split('/')
-		if (locArray.length !== 0 && locArray[0] === '#') {
-			locArray.shift()
-		}
+		if (locArray.length !== 0 && locArray[0] === '#') locArray.shift()
 
 		let locations = this.locations
 		let scores = this.scores

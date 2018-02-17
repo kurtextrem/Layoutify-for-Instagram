@@ -284,23 +284,6 @@ const first = {
 
 	devtool: isProd ? false /*'source-map'*/ /* 'cheap-module-source-map'*/ : 'cheap-module-source-map', //'nosources-source-map', // + map Chrome Dev Tools workspace to your local folder
 
-	devServer: {
-		contentBase: path.join(__dirname, 'dist/'),
-		publicPath: '/',
-		disableHostCheck: true,
-		historyApiFallback: true,
-		overlay: {
-			warnings: true,
-			errors: true,
-		},
-		watchContentBase: false,
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
-		},
-	},
-
 	plugins,
 
 	performance: {
@@ -321,6 +304,26 @@ const first = {
 			}
 		: {},
 }
+
+if (!isProd)
+	first.serve = {
+		publicPath: 'http://localhost:8080/',
+		/*contentBase: path.join(__dirname, 'dist/'),
+		disableHostCheck: true,
+		historyApiFallback: true,
+		overlay: {
+			warnings: true,
+			errors: true,
+		},
+		watchContentBase: false,*/
+		dev: {
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+				'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+			},
+		},
+	}
 
 const second = {
 	//mode: first.mode,

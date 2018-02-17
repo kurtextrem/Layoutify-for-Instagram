@@ -49,10 +49,10 @@ export default class App extends Component {
 				<main className="d-flex justify-content-center">
 					<HashRouter onLocationChanged={this.handleLocationChanged}>
 						<Route key="liked" hash="#/">
-							<Liked />
+							{Liked}
 						</Route>
 						<Route key="saved" hash="#/saved">
-							<Saved />
+							{Saved}
 						</Route>
 						<Route key="about" hash="#/about">
 							<About />

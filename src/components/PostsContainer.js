@@ -7,8 +7,27 @@ import { CardDeck } from 'reactstrap'
 import { Chrome, Storage } from './Utils'
 import { Component, createElement } from 'nervjs'
 
-const loading = <Loading />
-const Posts = (items, renderPost) => items.map(x => renderPost(x)) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
+let initiated = false,
+	loading,
+	Posts,
+	error
+
+/* @TODO: Convert to static props, to free memory when unmounted  */
+function init() {
+	if (initiated) return
+
+	initiated = true
+	loading = <Loading />
+	Posts = (items, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
+	error = (
+		<div>
+			No data available (have you tried clicking the three dots on top of{' '}
+			<a href="https://www.instagram.com" _target="blank" rel="noopener">
+				Instagram.com
+			</a>?)
+		</div>
+	)
+}
 
 export default class PostsContainer extends Component {
 	constructor(props) {
@@ -19,15 +38,8 @@ export default class PostsContainer extends Component {
 			nextMaxId: '',
 			timeout: 0,
 		}
-		this.error = (
-			<div>
-				No data available (have you tried clicking the three dots on top of{' '}
-				<a href="https://www.instagram.com" _target="blank" rel="noopener">
-					Instagram.com
-				</a>?)
-			</div>
-		)
 		this.initial = 0
+		init()
 
 		window.setTimeout(() => this.setTimeout(200), 200)
 	}
@@ -121,9 +133,7 @@ export default class PostsContainer extends Component {
 			)
 
 		if (timeout === 200) return loading
-		if (timeout === 400 && (!items || items.length === 0)) {
-			return this.error
-		}
+		if (timeout === 400 && (!items || items.length === 0)) return error
 		return null // first paint & items === null
 	}
 }

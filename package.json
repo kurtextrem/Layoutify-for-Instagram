@@ -88,12 +88,11 @@
 		"clean": "rimraf dist && mkdir dist",
 		"prebuild": "npm run clean",
 		"build": "npm run build-bundle",
-		"build-bundle": "cross-env NODE_ENV=production webpack --define process.env.NODE_ENV=\"'production'\" --color --display-optimization-bailout",
+		"build-bundle":
+			"cross-env NODE_ENV=production webpack --define process.env.NODE_ENV=\"'production'\" --color --display-optimization-bailout",
 		"start": "cross-env NODE_ENV=development webpack-serve"
 	},
-	"browsers": [
-		"Chrome > 54"
-	],
+	"browsers": ["Chrome > 54"],
 	"cssnano": {
 		"preset": "advanced"
 	}
