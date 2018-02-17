@@ -59,12 +59,6 @@ const plugins = [
 	}),
 	new webpack.DefinePlugin({
 		'process.env.NODE_ENV': JSON.stringify(ENV),
-		'typeof window': JSON.stringify('object'),
-		POLYFILL_OBJECT_ASSIGN: false,
-		POLYFILL_OBJECT_VALUES: false,
-		POLYFILL_PROMISES: false,
-		POLYFILL_FETCH: false,
-		POLYFILL_URL: false,
 	}),
 	new HtmlWebpackPlugin(html),
 	new ScriptExtHtmlWebpackPlugin({
@@ -218,8 +212,7 @@ if (isProd) {
 		new WriteFilePlugin({
 			test: /(content\/|manifest.json)/,
 			log: false,
-		}),
-		new webpack.HotModuleReplacementPlugin()
+		})
 	)
 }
 
@@ -228,16 +221,7 @@ const first = {
 
 	context: path.join(__dirname, 'src'),
 
-	entry: isProd
-		? './'
-		: [
-				// 'react-error-overlay',
-				'webpack/hot/only-dev-server',
-				// 'react-dev-utils/webpackHotDevClient',
-				// bundle the client for hot reloading
-				// only- means to only hot reload for successful updates
-				'./',
-			],
+	entry: './',
 
 	output: {
 		path: path.join(__dirname, 'dist'),
@@ -351,10 +335,7 @@ const second = {
 	resolve: first.resolve,
 	plugins: [
 		new webpack.DefinePlugin({
-			'process.env': JSON.stringify({ NODE_ENV: ENV }), // Preact checks for `!process.env`
 			'process.env.NODE_ENV': JSON.stringify(ENV),
-			'typeof window': JSON.stringify('object'),
-			'typeof process': JSON.stringify('object'), // Preact checks for `type process === 'undefined'`
 		}),
 	],
 }

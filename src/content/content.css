@@ -273,9 +273,13 @@ a.videoSpritePlayButton + div {
 										Nav Bar
 =============================================*/
 section > nav,
-section > nav > div:first-child,
-section > nav > div {
+section > nav > div:first-child {
 	display: contents;
+}
+
+section > nav > div {
+	width: 0;
+	height: 0;
 }
 
 nav > div + div > div {
