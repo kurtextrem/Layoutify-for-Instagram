@@ -11,7 +11,7 @@ export default class App extends Component {
 		super(props)
 
 		this.state = {
-			location: location.hash.replace('#/', ''),
+			location: window.location.hash.replace('#/', ''),
 		}
 	}
 
@@ -35,6 +35,10 @@ export default class App extends Component {
 				cb()
 				break
 		}
+	}
+
+	componentShouldUpdate(nextProps, nextState) {
+		return nextState.location !== this.state.location
 	}
 
 	render() {

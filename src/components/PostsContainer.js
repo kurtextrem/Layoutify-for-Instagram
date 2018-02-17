@@ -1,5 +1,6 @@
 import Loading from './Loading'
 import Post from './Post'
+import PropTypes from 'prop-types'
 import Sentinel from './Sentinel'
 import bind from 'autobind-decorator'
 import { CardDeck } from 'reactstrap'
@@ -12,8 +13,6 @@ const Posts = (items, renderPost) => items.map(x => renderPost(x)) // @TODO: Imp
 export default class PostsContainer extends Component {
 	constructor(props) {
 		super(props)
-
-		if (!props.id) throw new Error('Children must have an id set')
 
 		this.state = {
 			items: null,
@@ -113,17 +112,22 @@ export default class PostsContainer extends Component {
 	render() {
 		const { items, timeout } = this.state
 
+		if (items !== null)
+			return (
+				<CardDeck className="justify-content-center">
+					{Posts(items, this.renderPost)}
+					<Sentinel onVisible={this.handleScroll} />
+				</CardDeck>
+			)
+
 		if (timeout === 200) return loading
 		if (timeout === 400 && (!items || items.length === 0)) {
 			return this.error
 		}
-		if (items === null) return null // first paint
-
-		return (
-			<CardDeck className="justify-content-center">
-				{Posts(items, this.renderPost)}
-				<Sentinel onVisible={this.handleScroll} />
-			</CardDeck>
-		)
+		return null // first paint & items === null
 	}
+}
+
+PostsContainer.propTypes = {
+	id: PropTypes.string.isRequired,
 }

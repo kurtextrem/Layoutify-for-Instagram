@@ -1,6 +1,5 @@
 import { Component, createElement } from 'nervjs'
 import { Container, Nav, NavItem, NavLink, Navbar, NavbarBrand } from 'reactstrap'
-import { HashRouter } from './HashRouter'
 
 export default class Header extends Component {
 	shouldComponentUpdate(nextProps) {

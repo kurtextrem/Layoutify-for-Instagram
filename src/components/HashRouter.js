@@ -3,89 +3,79 @@
  */
 
 import PropTypes from 'prop-types'
+import bind from 'autobind-decorator'
 import { Children, Component, createElement } from 'nervjs'
 
 export class HashRouter extends Component {
 	constructor(props) {
 		super(props)
 
+		this.locations = []
+		this.scores = []
+		this.children = []
+		this.params = []
 		this._childKey = null
 		this._params = []
 		this.state = {
 			style: {
 				opacity: 0,
 			},
+			render: null,
 		}
+
+		this.calcChildren(this.props)
 	}
 
-	getDefaultProps() {
-		return {
-			onLocationChanged: (childKey, params, cb) => cb(),
-			className: '',
-		}
-	}
-
-	componentDidMount() {
-		window.addEventListener('hashchange', this.onHashChange.bind(this), false)
-		this.onHashChange()
-	}
-
+	@bind
 	onHashChange() {
-		const comp = this
-		this.setState({
+		/*this.setState({
 			style: {
 				opacity: 0,
 			},
-		})
-		const ret = this._matchedPage()
-		if (ret !== null) {
-			this.props.onLocationChanged(this._childKey, this._params, () => {
-				setTimeout(() => {
+		})*/
+		const render = this._matchedPage()
+		if (render === null) return
+
+		this.props.onLocationChanged(this._childKey, this._params, () => {
+			/*window.setTimeout(() => {
 					this.setState({
 						style: {
 							transition: 'opacity 500ms',
 							opacity: 1,
 						},
 					})
-				}, 100)
-				comp.forceUpdate()
-			})
-		}
+				}, 100)*/
+			// @TODO: Prevent re-render on same hash
+			this.setState(() => ({
+				render,
+			}))
+		})
 	}
 
+	@bind
 	_matchedPage() {
-		const hash = typeof window.location !== 'undefined' ? window.location.hash : '#/'
+		const hash = window.location !== undefined ? window.location.hash : '#/'
 		const locArray = hash.split('/')
-		if (locArray.length > 0) {
-			if (locArray[0] === '#') {
-				locArray.shift()
-			}
+		if (locArray.length !== 0 && locArray[0] === '#') {
+			locArray.shift()
 		}
-		const locations = []
-		const scores = []
-		const childes = []
-		const params = []
-		Children.map(this.props.children, child => {
-			const childArray = child.props.hash.split('/')
-			if (childArray.length > 0) {
-				childArray.shift()
-			}
-			locations.push(childArray)
-			scores.push(0)
-			childes.push(child)
-			params.push({})
-		})
+
+		let locations = this.locations
+		let scores = this.scores
+		let children = this.children
+		let params = this.params
 
 		let i
 		for (i = 0; i < locations.length; i++) {
 			if (locations[i].length !== locArray.length) {
-				locations.splice(i, 1)
-				scores.splice(i, 1)
-				childes.splice(i, 1)
-				params.splice(i, 1)
+				locations = locations.slice(i, 1)
+				scores = scores.slice(i, 1)
+				children = children.slice(i, 1)
+				params = params.slice(i, 1)
 				i--
 			}
 		}
+
 		const regexParam = /^{(.*)}$/
 		for (i = 0; i < locArray.length; i++) {
 			for (var j = 0; j < locations.length; j++) {
@@ -97,14 +87,14 @@ export class HashRouter extends Component {
 				} else {
 					locations.splice(j, 1)
 					scores.splice(j, 1)
-					childes.splice(j, 1)
+					children.splice(j, 1)
 					params.splice(j, 1)
 					j--
 				}
 			}
 		}
 
-		if (locations.length > 0) {
+		if (locations.length !== 0) {
 			let max = 0
 			let maxId = 0
 			for (i = 0; i < scores.length; i++) {
@@ -114,33 +104,65 @@ export class HashRouter extends Component {
 				}
 			}
 
-			this._childKey = childes[maxId].key
+			this._childKey = children[maxId].key
 			this._params = params[maxId]
 
-			return childes[maxId]
+			return children[maxId]
 		}
 		return null
 	}
 
-	componentWillUpdate() {
+	@bind
+	calcChildren(props) {
+		Children.forEach(props.children, child => {
+			const childArray = child.props.hash.split('/')
+			if (childArray.length !== 0) childArray.shift()
+			this.locations.push(childArray)
+			this.scores.push(0)
+			this.children.push(child)
+			this.params.push({})
+		})
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (nextState.render !== this.state.render) return true
+		if (nextProps.onLocationChanged !== this.props.onLocationChanged) return true
 		return false
 	}
 
+	componentWillReceiveProps(nextProps) {
+		this.calcChildren(nextProps)
+	}
+
+	componentDidMount() {
+		this.onHashChange()
+		window.addEventListener('hashchange', this.onHashChange)
+	}
+
+	componentWillUnmount() {
+		this.locations = null
+		this.scores = null
+		this.children = null
+		this.params = null
+		this._childKey = null
+		this._params = null
+		window.removeEventListener('hashchange', this.onHashChange)
+	}
+
 	render() {
-		return this._matchedPage()
+		return this.state.render
 	}
 }
 
 HashRouter.propTypes = {
 	onLocationChanged: PropTypes.func,
-	className: PropTypes.any,
 }
 
-export class Route extends Component {
-	render() {
-		return this.props.children
-	}
+HashRouter.defaultProps = {
+	onLocationChanged: (childKey, params, cb) => cb(),
 }
+
+export const Route = props => props.children
 
 Route.propTypes = {
 	key: PropTypes.string.isRequired,

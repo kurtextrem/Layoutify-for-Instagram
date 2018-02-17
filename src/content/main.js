@@ -62,7 +62,7 @@
 
 					//console.log(mutations[i])
 					if (nodeName === 'VIDEO') node.controls = 'true'
-					else if (nodeName === 'DIV') {
+					else if (nodeName === 'DIV' || nodeName === 'ARTICLE') {
 						var img = node.querySelector('img')
 						if (img !== null) img.decoding = 'async'
 					} else if (nodeName === 'IMG') {
@@ -71,7 +71,7 @@
 				}
 			}
 
-			window.requestIdleCallback(onChange)
+			window.requestAnimationFrame(onChange)
 		},
 		{ childList: true, subtree: true }
 	)
@@ -80,9 +80,8 @@
 	 * Callback when nodes are removed/inserted.
 	 */
 	function onChange() {
-		addControls()
-
-		checkURL()
+		window.requestAnimationFrame(checkURL) // chained rAF
+		window.requestIdleCallback(addControls)
 	}
 
 	/**
@@ -90,7 +89,7 @@
 	 */
 	function addControls() {
 		let addAuto = false
-		if (location.pathname.indexOf('/p/') !== -1) addAuto = true
+		if (location.pathname.indexOf('/p/') !== -1) addAuto = true // preload on single posts
 
 		const elems = root.querySelectorAll('video')
 		for (let i = 0; i < elems.length; ++i) {
@@ -175,7 +174,7 @@
 		a.nodeValue = '' // clear content
 		a.textContent = ''
 		a.title = 'Improved Layout for Instagram'
-		a.onclick = function(e) {
+		a.addEventListener('click', function(e) {
 			e.preventDefault()
 
 			Instagram.liked.start().then(Instagram.liked.fetch)
@@ -183,7 +182,7 @@
 
 			chrome.runtime.sendMessage(null, { action: 'click' })
 			if (!clickedExtendedBtn) window.localStorage.clickedExtendedBtn = true
-		}
+		})
 		el.style.transform = 'translateY(4px) scale(1.2)'
 		anchor.after(el)
 	}

@@ -45,8 +45,7 @@ module.exports = (isProd, options = {}) => ({
 				resolve('babel-plugin-closure-elimination'), // @TODO: Benchmark w/ & w/o, see ^^^
 
 				// 'module:fast-async', - enabled from Chrome 55
-				resolve('babel-plugin-transform-console-log-variable-names'),
-				//resolve('babel-plugin-console-groupify'), // too much noise
+				resolve('babel-plugin-annotate-pure-calls'),
 				resolve('./pure-plugin.js'),
 				// 'emotion/babel'
 			]
