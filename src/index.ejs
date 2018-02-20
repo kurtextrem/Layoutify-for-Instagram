@@ -2,7 +2,7 @@
 <html>
 <head>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="anonymous">
 	<link rel="preload" as="style" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<!-- onload="this.rel='stylesheet'" -->
 
@@ -16,8 +16,7 @@
 <body>
 	<%= htmlWebpackPlugin.options.ssr({
 		url: '/'
-	})
-	%>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	}) %>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </body>
 </html>

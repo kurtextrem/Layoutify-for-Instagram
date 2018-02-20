@@ -468,7 +468,7 @@ div[role='dialog'] article,
 /** Sometimes IG sets a max-width on elements */
 .post > section > main > div {
 	flex-grow: 0;
-	max-width: 59vw !important;
+	max-width: 51vw !important;
 	padding-top: 10px;
 	padding-right: 0;
 	padding-bottom: 10px;

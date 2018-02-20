@@ -22,6 +22,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin')
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
+const StylishRequire = require('webpack-stylish')
+const stylish = new StylishRequire()
 // const ShakePlugin = require('webpack-common-shake').Plugin
 // const WebpackMonitor = require('webpack-monitor')
 // const AutoDllPlugin = require('autodll-webpack-plugin')
@@ -31,7 +34,6 @@ const ENV = process.env.NODE_ENV || 'development'
 const isProd = ENV === 'production'
 
 const babelConfig = require('./babelConfig')(isProd, { modules: false })
-babelConfig.cacheDirectory = true
 
 // by using min versions we speed up HMR
 function getMin(module) {
@@ -48,7 +50,10 @@ const html = {
 }
 
 const plugins = [
-	new WebpackMessages(),
+	stylish,
+	new WebpackMessages({
+		name: 'client',
+	}),
 	new ProgressBarPlugin({
 		messageTemplate:
 			'\u001B[90m\u001B[49m\u001B[39m [:bar] \u001B[32m\u001B[1m:percent\u001B[22m\u001B[39m (:elapseds) \u001B[2m:msg\u001B[22m',
@@ -64,7 +69,23 @@ const plugins = [
 	new ScriptExtHtmlWebpackPlugin({
 		preload: ['.js', '.css'],
 	}),
-	new CopyWebpackPlugin([{ from: '*.html' }, { from: '*.json' }, { from: 'img/*.png' }, { from: 'content/*' }, { from: '_locales/**' }]),
+	new CopyWebpackPlugin([
+		{ from: '*.html' },
+		{
+			from: '*.json',
+			transform: (content, path) => {
+				if (path.indexOf('manifest.json') === -1) return content
+				return require('replace-buffer')(
+					content,
+					"script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
+					"script-src 'self'; object-src 'self'"
+				)
+			},
+		},
+		{ from: 'img/*.png' },
+		{ from: 'content/*' },
+		{ from: '_locales/**' },
+	]),
 	new HardSourceWebpackPlugin({
 		cacheDirectory: '../node_modules/.cache/hard-source/[confighash]',
 	}),
@@ -101,11 +122,13 @@ if (isProd) {
 
 	plugins.push(
 		new webpack.HashedModuleIdsPlugin(),
-		// new webpack.IgnorePlugin(/prop-types$/),
-		new webpack.LoaderOptionsPlugin({
-			minimize: true,
-			debug: false,
+		new DuplicatePackageCheckerPlugin({
+			emitError: true,
+			verbose: true,
+			showHelp: true,
+			strict: true,
 		}),
+		// new webpack.IgnorePlugin(/prop-types$/),
 		new OmitJSforCSSPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new ExtractTextPlugin('styles.css'),
@@ -199,12 +222,6 @@ if (isProd) {
 			},
 		}),*/
 		new webpack.optimize.CommonsChunkPlugin({
-			name: 'vendor',
-			chunks: require('./vendor'),
-			filename: 'bundle2.js',
-			minChunks: Infinity,
-		}),
-		new webpack.optimize.CommonsChunkPlugin({
 			name: 'manifest',
 			filename: 'bundle1.js',
 			minChunks: Infinity,
@@ -233,15 +250,20 @@ const first = {
 
 	recordsPath: path.resolve(__dirname, './records.json'),
 
-	/*optimization: {
+	/*optimization: isProd ? undefined : {
 		splitChunks: {
 			cacheGroups: {
-				vendor: {
-					chunks: 'initial',
-					test: path.resolve(__dirname, 'node_modules'),
-					name: 'vendor',
-					enforce: true,
+				commons: {
+					chunks: "initial",
+					minChunks: 2,
 				},
+				vendor: {
+					test: /node_modules/,
+					chunks: "initial",
+					name: "vendor",
+					priority: 10,
+					enforce: true
+				}
 			},
 		},
 	},*/
@@ -251,7 +273,7 @@ const first = {
 			{
 				test: /\.jsx?$/i,
 				exclude: /node_modules/,
-				loader: 'babel-loader',
+				loader: 'babel-loader?cacheDirectory',
 				options: babelConfig,
 			},
 			{
@@ -344,10 +366,15 @@ const second = {
 	module: first.module,
 	resolve: first.resolve,
 	plugins: [
+		stylish,
+		new WebpackMessages({
+			name: 'node',
+		}),
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': JSON.stringify(ENV),
 		}),
 	],
 }
 
+// @TODO: https://blog.box.com/blog/how-we-improved-webpack-build-performance-95/
 module.exports = isProd ? [first, second] : first

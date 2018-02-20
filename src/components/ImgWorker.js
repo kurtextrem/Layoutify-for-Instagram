@@ -9,7 +9,7 @@ const workerPool = []
 
 function createWorkerPool() {
 	const blobURL = getWorkerBlob()
-	poolLen = window.navigator.hardwareConcurrency || 4
+	poolLen = window.navigator.hardwareConcurrency - 2 || 2 // Let's "reserve" one CPU for main thread and other threads
 	for (let i = 0; i < poolLen; ++i) {
 		workerPool.push({
 			worker: new Worker(blobURL),
@@ -57,10 +57,14 @@ export default class ImgWorker extends Component {
 	@bind
 	initWorker() {
 		const workerObj = getNextWorker()
-		workerObj.worker.onmessage = event => {
-			this.loadImage(event.data)
-			setFree(workerObj.i)
-		}
+		workerObj.worker.addEventListener(
+			'message',
+			event => {
+				this.loadImage(event.data)
+				setFree(workerObj.i)
+			},
+			{ once: true }
+		)
 
 		return workerObj.worker
 	}
@@ -72,8 +76,8 @@ export default class ImgWorker extends Component {
 
 	componentWillUnmount() {
 		if (this.img !== null) {
-			this.img.onload = null
-			this.img.onerror = null
+			this.img.removeEventListener('load', this.onload)
+			this.img.removeEventListener('error', this.onerror)
 		}
 	}
 
@@ -101,8 +105,8 @@ export default class ImgWorker extends Component {
 				.then(this.onload)
 				.catch(this.onerror)
 		}
-		img.onload = this.onload
-		img.onerror = this.onerror
+		img.addEventListener('load', this.onload)
+		img.addEventListener('error', this.onerror)
 	}
 
 	@bind

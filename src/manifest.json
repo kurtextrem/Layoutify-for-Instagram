@@ -29,7 +29,7 @@
 
 	"permissions": ["*://*.instagram.com/*", "*://instagram.com/*", "storage", "webRequest", "webRequestBlocking", "cookies"],
 	"incognito": "split",
-	"content_security_policy": "script-src 'self' http://localhost:8080; object-src 'self'",
+	"content_security_policy": "script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
 
 	"web_accessible_resources": ["content/night.css", "content/content.css"]
 }

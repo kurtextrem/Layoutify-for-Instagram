@@ -10,6 +10,9 @@ const init = (fn, app, container) => fn(createElement(app), container)
 
 if (module.hot) {
 	require('nerv-devtools')
+	const { registerObserver } = require('react-perf-devtool')
+
+	registerObserver()
 	//const { whyDidYouUpdate } = require('why-did-you-update')
 	//whyDidYouUpdate(Nerv)
 
