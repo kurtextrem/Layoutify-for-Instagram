@@ -308,7 +308,6 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	position: static;
 	flex-direction: row;
 	flex-wrap: wrap;
-	/** contain: content; - unsure about side-effects yet */
 	order: -1;
 	width: 100%;
 	max-width: 100%;
@@ -491,6 +490,26 @@ div[role='dialog'] article,
 /** Show likes and so on on hover */
 .profile a:hover > div:last-child {
 	z-index: 3;
+}
+
+/*=============================================
+						Picture Only Mode
+=============================================*/
+#react-root.pictureOnly:not(.profile):not(.explore) article > header {
+	height: 40px !important;
+}
+
+#react-root.pictureOnly:not(.profile):not(.explore) article > header > div:last-child > div:last-child {
+	display: flex;
+}
+
+.pictureOnly header + div + div > div:first-of-type:not(:only-child) {
+	height: 0;
+}
+
+/** Hide comments */
+.pictureOnly header + div + div > div:first-of-type:not(:only-child) > ul {
+	display: none;
 }
 
 /*=============================================
