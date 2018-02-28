@@ -177,8 +177,14 @@
 		a.addEventListener('click', function(e) {
 			e.preventDefault()
 
-			Instagram.liked.start().then(Instagram.liked.fetch)
-			Instagram.saved.start().then(Instagram.saved.fetch)
+			Instagram.liked
+				.start()
+				.then(Instagram.liked.fetch)
+				.catch(console.error)
+			Instagram.saved
+				.start()
+				.then(Instagram.saved.fetch)
+				.catch(console.error)
 
 			chrome.runtime.sendMessage(null, { action: 'click' })
 			if (!clickedExtendedBtn) window.localStorage.clickedExtendedBtn = true
