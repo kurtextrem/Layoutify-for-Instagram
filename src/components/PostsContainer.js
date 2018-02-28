@@ -1,10 +1,10 @@
-import Loading from './Loading'
-import Post from './Post'
+import Loading from './loading'
+import Post from './post'
 import PropTypes from 'prop-types'
-import Sentinel from './Sentinel'
+import Sentinel from './sentinel'
 import bind from 'autobind-decorator'
 import { CardDeck } from 'reactstrap'
-import { Chrome, Storage } from './Utils'
+import { Chrome, Storage } from './utils'
 import { Component, createElement } from 'nervjs'
 
 let initiated = false,
