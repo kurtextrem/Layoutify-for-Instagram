@@ -234,9 +234,10 @@
 			'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div > a > div > div > span'
 		)
 
+		var regex = /\./g
 		for (let i = 0; i < list.length; ++i) {
 			var elem = list[i]
-			elem.parentElement.parentElement.parentElement.parentElement.id = 'igs_' + elem.innerText.replace(/\./g, 'dot')
+			elem.parentElement.parentElement.parentElement.parentElement.id = 'igs_' + elem.innerText.replace(regex, 'dot')
 		}
 	}
 

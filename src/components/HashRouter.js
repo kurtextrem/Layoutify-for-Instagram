@@ -143,7 +143,7 @@ HashRouter.defaultProps = {
 	onLocationChanged: (childKey, params, cb) => cb(),
 }
 
-export const Route = props => props.children
+export const Route = props => <div>{props.children}</div>
 
 Route.propTypes = {
 	key: PropTypes.string.isRequired,
