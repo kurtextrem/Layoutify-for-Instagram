@@ -1,4 +1,4 @@
-import App from './components/App'
+import App from './components/app'
 //import Nerv, { createElement, hydrate, render } from 'nervjs'
 import { createElement, hydrate, render } from 'nervjs'
 /* eslint-disable */

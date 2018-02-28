@@ -4,7 +4,7 @@ import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import bind from 'autobind-decorator'
 import { Button, CardBody, CardText } from 'reactstrap'
-import { Chrome, getWorkerBlob, updateCDN } from './Utils'
+import { Chrome, getWorkerBlob, updateCDN } from './utils'
 import { Component, createElement } from 'nervjs'
 
 let observer = null

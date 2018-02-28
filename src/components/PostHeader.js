@@ -2,7 +2,7 @@
 import TimeAgo from 'react-timeago'
 import { Component, createElement } from 'nervjs'
 import { Media } from 'reactstrap'
-import { updateCDN } from './Utils'
+import { updateCDN } from './utils'
 
 export default class PostHeader extends Component {
 	constructor(props) {
