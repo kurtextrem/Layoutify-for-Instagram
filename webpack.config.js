@@ -24,6 +24,7 @@ const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const StylishRequire = require('webpack-stylish')
+
 const stylish = new StylishRequire()
 // const ShakePlugin = require('webpack-common-shake').Plugin
 // const WebpackMonitor = require('webpack-monitor')
@@ -46,7 +47,7 @@ const html = {
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	inject: true,
-	ssr: params => '<div id="react-root">' + (isProd ? prerender('dist', params) : '') + '</div>',
+	ssr: params => `<div id="react-root">${isProd ? prerender('dist', params) : ''}</div>`,
 }
 
 const plugins = [
@@ -134,7 +135,7 @@ if (isProd) {
 		new ExtractTextPlugin('styles.css'),
 		new StyleExtHtmlWebpackPlugin(),
 		//new ShakePlugin(), // https://github.com/indutny/webpack-common-shake/issues/23
-		new webpack.optimize.ModuleConcatenationPlugin(),
+		//new webpack.optimize.ModuleConcatenationPlugin(), // @TODO: Broken using Nerv 1.12.4-beta.0 02.03.2018
 		// strip out babel-helper invariant checks
 		new ReplacePlugin({
 			include: /babel-helper$/,

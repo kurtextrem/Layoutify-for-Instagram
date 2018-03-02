@@ -144,7 +144,7 @@ HashRouter.defaultProps = {
 	onLocationChanged: (childKey, params, cb) => cb(),
 }
 
-export const Route = props => <div>{props.children}</div> // @TODO: <div> is a temporary solution until Nerve fixes the bug
+export const Route = props => props.children
 
 Route.propTypes = {
 	key: PropTypes.string.isRequired,

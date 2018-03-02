@@ -48,7 +48,7 @@
 		"loglevelnext": "^1.0.3",
 		"nerv-devtools": "^1.2.14-beta.0",
 		"nerv-server": "^1.2.14-beta.0",
-		"nervjs": "^1.2.13",
+		"nervjs": "^1.2.14-beta.0",
 		"object-assign": "^4.1.1",
 		"parallel-webpack": "^3.0.0-alpha.2",
 		"path-is-absolute": "^1.0.1",
