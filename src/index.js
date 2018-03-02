@@ -9,12 +9,12 @@ import './components/main.css'
 const init = (fn, app, container) => fn(createElement(app), container)
 
 if (module.hot) {
-	require('nerv-devtools')
+	/*require('nerv-devtools')
 	const { registerObserver } = require('react-perf-devtool')
+	const { whyDidYouUpdate } = require('why-did-you-update')
 
 	registerObserver()
-	//const { whyDidYouUpdate } = require('why-did-you-update')
-	//whyDidYouUpdate(Nerv)
+	whyDidYouUpdate(Nerv)*/
 
 	module.hot.accept('./components/App', () =>
 		requestAnimationFrame(() => {
@@ -23,6 +23,4 @@ if (module.hot) {
 	)
 }
 
-//if (document.body.firstElementChild === undefined) init(render, App, document.body)
-//else
 init(hydrate, App, document.body.firstElementChild)

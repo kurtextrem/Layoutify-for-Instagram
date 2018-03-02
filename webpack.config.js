@@ -74,7 +74,7 @@ const plugins = [
 		{
 			from: '*.json',
 			transform: (content, path) => {
-				if (path.indexOf('manifest.json') === -1) return content
+				if (path.indexOf('manifest.json') === -1 || !isProd) return content
 				return require('replace-buffer')(
 					content,
 					"script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
@@ -282,7 +282,7 @@ const first = {
 					? ExtractTextPlugin.extract({
 							fallback: 'style-loader',
 							use: ['css-loader', 'postcss-loader'],
-						})
+					  })
 					: ['style-loader', 'css-loader'],
 			},
 		],
@@ -292,7 +292,7 @@ const first = {
 					// faster HMR
 					new RegExp(nerv),
 					new RegExp('proptypes/disabled'),
-				],
+			  ],
 	},
 
 	resolve: {
@@ -323,7 +323,7 @@ const first = {
 				__filename: false,
 				__dirname: false,
 				setImmediate: false,
-			}
+		  }
 		: {},
 }
 
