@@ -14,29 +14,17 @@ export class HashRouter extends Component {
 		this.scores = []
 		this.children = []
 		this.params = []
-		this._childKey = null
-		this._params = []
+		this.childKey = null
+		this.currentParams = null
 
 		this.calcChildren(this.props)
 		this.state = {
-			render: this._matchedPage(),
+			render: this.getMatchedPage(),
 		}
 	}
 
 	@bind
-	onHashChange() {
-		const render = this._matchedPage()
-		if (render === null) return
-
-		this.props.onLocationChanged(this._childKey, this._params, () => {
-			this.setState(() => ({
-				render,
-			}))
-		})
-	}
-
-	@bind
-	_matchedPage() {
+	getMatchedPage() {
 		const hash = window.location !== undefined ? window.location.hash : '#/'
 		const locArray = hash.split('/')
 		if (locArray.length !== 0 && locArray[0] === '#') locArray.shift()
@@ -47,7 +35,7 @@ export class HashRouter extends Component {
 		let params = this.params
 
 		let i
-		for (i = 0; i < locations.length; i++) {
+		for (i = 0; i < locations.length; ++i) {
 			if (locations[i].length !== locArray.length) {
 				locations = locations.slice(i, 1)
 				scores = scores.slice(i, 1)
@@ -58,8 +46,8 @@ export class HashRouter extends Component {
 		}
 
 		const regexParam = /^{(.*)}$/
-		for (i = 0; i < locArray.length; i++) {
-			for (var j = 0; j < locations.length; j++) {
+		for (i = 0; i < locArray.length; ++i) {
+			for (var j = 0; j < locations.length; ++j) {
 				if (locArray[i] === locations[j][i]) {
 					scores[j] += 100
 				} else if (locations[j][i].match(regexParam, '$1') !== null) {
@@ -78,15 +66,15 @@ export class HashRouter extends Component {
 		if (locations.length !== 0) {
 			let max = 0
 			let maxId = 0
-			for (i = 0; i < scores.length; i++) {
+			for (i = 0; i < scores.length; ++i) {
 				if (scores[i] > max) {
 					max = scores[i]
 					maxId = i
 				}
 			}
 
-			this._childKey = children[maxId].key
-			this._params = params[maxId]
+			this.childKey = children[maxId].key
+			this.currentParams = params[maxId]
 
 			return children[maxId]
 		}
@@ -105,14 +93,16 @@ export class HashRouter extends Component {
 		})
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (nextState.render !== this.state.render) return true
-		if (nextProps.onLocationChanged !== this.props.onLocationChanged) return true
-		return false
-	}
+	@bind
+	onHashChange() {
+		const render = this.getMatchedPage()
+		if (render === null) return
 
-	componentWillReceiveProps(nextProps) {
-		this.calcChildren(nextProps)
+		this.props.onLocationChanged(this.childKey, this.currentParams, () => {
+			this.setState(() => ({
+				render,
+			}))
+		})
 	}
 
 	componentDidMount() {
@@ -120,13 +110,24 @@ export class HashRouter extends Component {
 		window.addEventListener('hashchange', this.onHashChange)
 	}
 
+	// getDerivedStateFromProps(nextProps, prevState)
+	componentWillReceiveProps(nextProps) {
+		this.calcChildren(nextProps)
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (nextState.render !== this.state.render) return true
+		if (nextProps.onLocationChanged !== this.props.onLocationChanged) return true
+		return false
+	}
+
 	componentWillUnmount() {
 		this.locations = null
 		this.scores = null
 		this.children = null
 		this.params = null
-		this._childKey = null
-		this._params = null
+		this.childKey = null
+		this.params = null
 		window.removeEventListener('hashchange', this.onHashChange)
 	}
 
@@ -143,7 +144,7 @@ HashRouter.defaultProps = {
 	onLocationChanged: (childKey, params, cb) => cb(),
 }
 
-export const Route = props => <div>{props.children}</div>
+export const Route = props => <div>{props.children}</div> // @TODO: <div> is a temporary solution until Nerve fixes the bug
 
 Route.propTypes = {
 	key: PropTypes.string.isRequired,

@@ -4,10 +4,12 @@
 		"experimentalDecorators": true,
 		"allowSyntheticDefaultImports": true,
 		"checkJs": true,
-		"jsx": "preserve"
+		"jsx": "preserve",
+		"baseUrl": "./src",
+		"paths": {
+			"**/*": ["**/*"]
+		}
 	},
-	"exclude": [
-		"node_modules",
-		"dist"
-	]
+	"exclude": ["node_modules", "dist"],
+	"include": ["src/**/*"]
 }

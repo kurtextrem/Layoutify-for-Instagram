@@ -69,31 +69,6 @@ export default class ImgWorker extends Component {
 		return workerObj.worker
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const { imgSrc } = this.state
-		if (imgSrc !== nextProps.src && imgSrc !== nextProps['data-src']) this.worker.postMessage(nextProps.src || nextProps['data-src'])
-	}
-
-	componentWillUnmount() {
-		if (this.img !== null) {
-			this.img.removeEventListener('load', this.onload)
-			this.img.removeEventListener('error', this.onerror)
-		}
-	}
-
-	@bind
-	renderPlaceholder() {
-		const { placeholder, placeholderAlt, ...attributes } = this.props
-		if (placeholder !== undefined) {
-			if (typeof placeholder === 'object') return placeholder
-			if (typeof placeholder === 'function') {
-				const Component = placeholder
-				return <Component />
-			}
-		}
-		return <img {...attributes} src={placeholder} alt={placeholderAlt} />
-	}
-
 	@bind
 	async loadImage(url) {
 		const img = this.img || new Image()
@@ -121,8 +96,33 @@ export default class ImgWorker extends Component {
 		this.onload()
 	}
 
+	componentWillReceiveProps(nextProps) {
+		const { imgSrc } = this.state
+		if (imgSrc !== nextProps.src && imgSrc !== nextProps['data-src']) this.worker.postMessage(nextProps.src || nextProps['data-src'])
+	}
+
 	shouldComponentUpdate(props, state) {
 		return shallowDiffers(props, this.props) || shallowDiffers(state, this.state)
+	}
+
+	componentWillUnmount() {
+		if (this.img !== null) {
+			this.img.removeEventListener('load', this.onload)
+			this.img.removeEventListener('error', this.onerror)
+		}
+	}
+
+	@bind
+	renderPlaceholder() {
+		const { placeholder, placeholderAlt, ...attributes } = this.props
+		if (placeholder !== undefined) {
+			if (typeof placeholder === 'object') return placeholder
+			if (typeof placeholder === 'function') {
+				const Comp = placeholder
+				return <Comp />
+			}
+		}
+		return <img {...attributes} src={placeholder} alt={placeholderAlt} />
 	}
 
 	render() {
