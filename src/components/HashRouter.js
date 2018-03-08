@@ -127,7 +127,7 @@ export class HashRouter extends Component {
 		this.children = null
 		this.params = null
 		this.childKey = null
-		this.params = null
+		this.currentParams = null
 		window.removeEventListener('hashchange', this.onHashChange)
 	}
 

@@ -24,12 +24,13 @@ const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const StylishRequire = require('webpack-stylish')
+const replaceBuffer = require('replace-buffer')
 
 const stylish = new StylishRequire()
 // const ShakePlugin = require('webpack-common-shake').Plugin
 // const WebpackMonitor = require('webpack-monitor')
 // const AutoDllPlugin = require('autodll-webpack-plugin')
-// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
+const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
 
 const ENV = process.env.NODE_ENV || 'development'
 const isProd = ENV === 'production'
@@ -76,7 +77,7 @@ const plugins = [
 			from: '*.json',
 			transform: (content, path) => {
 				if (path.indexOf('manifest.json') === -1 || !isProd) return content
-				return require('replace-buffer')(
+				return replaceBuffer(
 					content,
 					"script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
 					"script-src 'self'; object-src 'self'"
@@ -137,15 +138,22 @@ if (isProd) {
 		//new ShakePlugin(), // https://github.com/indutny/webpack-common-shake/issues/23
 		//new webpack.optimize.ModuleConcatenationPlugin(), // @TODO: Broken using Nerv 1.12.4-beta.0 02.03.2018
 		// strip out babel-helper invariant checks
-		new ReplacePlugin({
-			include: /babel-helper$/,
+		/*new ReplacePlugin({
 			patterns: [
 				{
 					regex: /throw\s+(new\s+)?(Type|Reference)?Er{2}or\s*\(/g,
-					value: s => `return;${new Array(s.length - 7).join(' ')}(`,
+					value: 'return;(',
+				},
+				{
+					regex: /isFunction(doc.createAt{2}ributeNS)/,
+					value: 'true',
 				},
 			],
-		}),
+			values: {
+				'process.env.NODE_ENV': JSON.stringify(ENV),
+				'typeof window': JSON.stringify('1'),
+			},
+		}), // broken 05.03.2018, enabling this again enables using prepack */
 		new UglifyJSPlugin({
 			cache: true,
 			parallel: true,
@@ -189,7 +197,7 @@ if (isProd) {
 				},
 			},
 		}),
-		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
+		//new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
