@@ -1,5 +1,5 @@
 /**
- * Created by AntonioGiordano on 06/07/16.
+ * Created by AntonioGiordano, partially rewritten by Jacob "Kurtextrem" Groß on 06/07/16.
  */
 
 import PropTypes from 'prop-types'

@@ -11,7 +11,7 @@ export default class PostFooter extends Component {
 		const { active, btnClick, defaultClass, toggleClass, parent } = this.props
 		return (
 			<CardFooter className={parent}>
-				<Button className={'action--btn ' + (active ? 'active' : 'inactive')} color="link" onClick={btnClick}>
+				<Button className={`action--btn ${active ? 'active' : 'inactive'}`} color="link" onClick={btnClick}>
 					<i className="material-icons">{active ? defaultClass : toggleClass}</i>
 				</Button>
 			</CardFooter>

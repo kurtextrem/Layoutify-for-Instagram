@@ -1,12 +1,12 @@
 import { Component, createElement } from 'nervjs'
 
 export default class Dots extends Component {
-	renderDot(i) {
-		return <span className={'dots--dot m-1 ' + (i === this.props.index ? 'active' : '')} />
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
 		return nextProps.index !== this.props.index
+	}
+
+	renderDot(i) {
+		return <span className={`dots--dot m-1 ${i === this.props.index ? 'active' : ''}`} />
 	}
 
 	render() {

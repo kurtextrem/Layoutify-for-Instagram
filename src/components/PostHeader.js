@@ -9,7 +9,7 @@ export default class PostHeader extends Component {
 		super(props)
 
 		this.state = {
-			date: new Date(Number(props.taken_at + '000')),
+			date: new Date(+`${props.taken_at}000`),
 		}
 	}
 

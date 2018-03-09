@@ -48,6 +48,11 @@ export default class Post extends Component {
 	}
 
 	@bind
+	setRef(ref) {
+		return (this.ref = ref)
+	}
+
+	@bind
 	handleArrowClick(e) {
 		e.stopPropagation()
 		e.preventDefault()
@@ -66,26 +71,6 @@ export default class Post extends Component {
 	}
 
 	@bind
-	onBtnClick(e) {
-		e.stopPropagation()
-		e.preventDefault()
-
-		if (this.state.active) {
-			// @todo: Modify our data
-			Chrome.send('remove', { which: this.props.parent, id: this.id })
-			this.setState((prevState, props) => ({ active: false }))
-		} else {
-			Chrome.send('add', { which: this.props.parent, id: this.id })
-			this.setState((prevState, props) => ({ active: true }))
-		}
-	}
-
-	@bind
-	setRef(ref) {
-		return (this.ref = ref)
-	}
-
-	@bind
 	async preloadAll() {
 		if (this.preloaded) return
 
@@ -100,14 +85,29 @@ export default class Post extends Component {
 		worker.postMessage(this.props.data.carousel_media[index].image_versions2.candidates[0].url)
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (this.isCarousel && this.state.carouselIndex !== nextState.carouselIndex) return true
-		if (this.state.active !== nextState.active) return true
-		return false
+	@bind
+	onBtnClick(e) {
+		e.stopPropagation()
+		e.preventDefault()
+
+		if (this.state.active) {
+			// @todo: Modify our data
+			Chrome.send('remove', { which: this.props.parent, id: this.id })
+			this.setState((prevState, props) => ({ active: false }))
+		} else {
+			Chrome.send('add', { which: this.props.parent, id: this.id })
+			this.setState((prevState, props) => ({ active: true }))
+		}
 	}
 
 	componentDidMount() {
 		if (this.props.initial) observer.observe(this.ref)
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		if (this.isCarousel && this.state.carouselIndex !== nextState.carouselIndex) return true
+		if (this.state.active !== nextState.active) return true
+		return false
 	}
 
 	componentWillUnmount() {
@@ -116,12 +116,9 @@ export default class Post extends Component {
 	}
 
 	render() {
-		const { data, initial, defaultClass, toggleClass, parent } = this.props
+		const { data: { user, caption: { text = '' } }, data, initial, defaultClass, toggleClass, parent } = this.props
 		const { carouselIndex, active } = this.state
 		const isCarousel = this.isCarousel
-
-		const caption = data.caption && data.caption.text // could be either undefined or null
-		const user = data.user
 
 		const media = isCarousel ? data.carousel_media[carouselIndex] : data
 
@@ -182,7 +179,7 @@ export default class Post extends Component {
 				</a>
 				{isCarousel ? <Dots index={carouselIndex} len={this.carouselLen} /> : null}
 				<CardBody className="overflow-auto p-3 card-body">
-					<CardText>{caption}</CardText>
+					<CardText>{text}</CardText>
 				</CardBody>
 				<PostFooter active={active} btnClick={this.onBtnClick} defaultClass={defaultClass} toggleClass={toggleClass} parent={parent} />
 			</article>

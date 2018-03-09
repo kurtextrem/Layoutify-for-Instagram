@@ -1,12 +1,7 @@
 import { Component, createElement } from 'nervjs'
 
+// could use props.width and props.height
 export default class Loading extends Component {
-	constructor(props) {
-		super(props)
-
-		// could use props.width and props.height
-	}
-
 	shouldComponentUpdate() {
 		return false
 	}
