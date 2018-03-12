@@ -41,6 +41,7 @@ export default class PostsContainer extends Component {
 		this.initial = 0
 		init()
 
+		this.populateData()
 		window.setTimeout(() => this.setTimeout(200), 200)
 	}
 
@@ -93,10 +94,6 @@ export default class PostsContainer extends Component {
 
 	componentDidMount() {
 		this.addStorageListener()
-
-		if (this.state.items === null) {
-			this.populateData()
-		}
 	}
 
 	componentWillUnmount() {

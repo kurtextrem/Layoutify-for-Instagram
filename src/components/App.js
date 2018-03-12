@@ -37,7 +37,7 @@ export default class App extends Component {
 		}
 	}
 
-	componentShouldUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps, nextState) {
 		return nextState.location !== this.state.location
 	}
 

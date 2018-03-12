@@ -8,15 +8,20 @@ let workerPoolCreated = false,
 const workerPool = []
 
 function createWorkerPool() {
-	const blobURL = getWorkerBlob()
-	poolLen = window.navigator.hardwareConcurrency - 2 || 2 // Let's "reserve" one CPU for main thread and other threads
-	for (let i = 0; i < poolLen; ++i) {
-		workerPool.push({
-			worker: new Worker(blobURL),
-			inUse: false,
-			i,
+	getWorkerBlob()
+		.then(blob => {
+			poolLen = window.navigator.hardwareConcurrency - 2 || 2 // Let's "reserve" one CPU for main thread and other threads
+			for (let i = 0; i < poolLen; ++i) {
+				workerPool.push({
+					worker: new Worker(blob),
+					inUse: false,
+					i,
+				})
+			}
+
+			return blob
 		})
-	}
+		.catch(console.error)
 }
 
 /** Returns the next available worker. */

@@ -9,18 +9,18 @@ import './components/main.css'
 const init = (fn, app, container) => fn(createElement(app), container)
 
 if (module.hot) {
-	/*require('nerv-devtools')
+	require('nerv-devtools')
 	const { registerObserver } = require('react-perf-devtool')
 	const { whyDidYouUpdate } = require('why-did-you-update')
 
 	registerObserver()
-	whyDidYouUpdate(Nerv)*/
+	whyDidYouUpdate(Nerv)
 
 	module.hot.accept('./components/App', () =>
 		requestAnimationFrame(() => {
-			init(render, App, document.body.firstElementChild)
+			init(render, App, document.body.children[2])
 		})
 	)
 }
 
-init(hydrate, App, document.body.firstElementChild)
+init(hydrate, App, document.body.children[2])

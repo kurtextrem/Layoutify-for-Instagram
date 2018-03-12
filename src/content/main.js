@@ -229,7 +229,7 @@
 	function injectCSS(file) {
 		let style = document.createElement('link')
 		style.rel = 'stylesheet'
-		style.href = chrome.extension.getURL('content/' + file + '.css')
+		style.href = chrome.extension.getURL(`content/${file}.css`)
 		document.body.appendChild(style)
 		style = null
 	}
@@ -243,7 +243,7 @@
 		var regex = /\./g
 		for (let i = 0; i < list.length; ++i) {
 			var elem = list[i]
-			elem.parentElement.parentElement.parentElement.parentElement.id = 'igs_' + elem.innerText.replace(regex, 'dot')
+			elem.parentElement.parentElement.parentElement.parentElement.id = `igs_${elem.innerText.replace(regex, 'dot')}`
 		}
 	}
 
@@ -279,7 +279,7 @@
 		addControls()
 
 		const elem = document.querySelector('div > article')
-		if (elem !== null) documentElement.style.setProperty('--boxHeight', elem.offsetHeight + 'px') // give boxes equal height
+		if (elem !== null) documentElement.style.setProperty('--boxHeight', `${elem.offsetHeight}px`) // give boxes equal height
 
 		addClass()
 		fixVirtualList()

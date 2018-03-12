@@ -26,7 +26,10 @@ function init() {
 		observer = new window.IntersectionObserver(onChange, {
 			rootMargin: '0px 0px 400px 0px', // eagerly load next rows
 		})
-	if (window.Worker !== undefined) worker = new Worker(getWorkerBlob())
+	if (window.Worker !== undefined)
+		getWorkerBlob()
+			.then(blob => (worker = new Worker(blob)))
+			.catch(console.error)
 }
 
 export default class Post extends Component {
@@ -116,9 +119,10 @@ export default class Post extends Component {
 	}
 
 	render() {
-		const { data: { user, caption: { text = '' } }, data, initial, defaultClass, toggleClass, parent } = this.props
+		const { data: { user = {}, caption = {} }, data, initial, defaultClass, toggleClass, parent } = this.props
 		const { carouselIndex, active } = this.state
 		const isCarousel = this.isCarousel
+		const text = (caption && caption.text) || ''
 
 		const media = isCarousel ? data.carousel_media[carouselIndex] : data
 

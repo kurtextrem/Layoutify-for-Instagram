@@ -110,7 +110,7 @@ export class HashRouter extends Component {
 		window.addEventListener('hashchange', this.onHashChange)
 	}
 
-	// getDerivedStateFromProps(nextProps, prevState)
+	// static getDerivedStateFromProps(nextProps, prevState)
 	componentWillReceiveProps(nextProps) {
 		this.calcChildren(nextProps)
 	}

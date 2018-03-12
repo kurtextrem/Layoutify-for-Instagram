@@ -81,12 +81,23 @@ const checkStatus = function(response) {
 self.addEventListener('message', event => {
 	const url = event.data,
 		bound = postMsg.bind(undefined, url)
-	self.fetch(url, { mode: 'no-cors' }).then(checkStatus).then(bound).catch((e) => console.error(e) && bound())
+	self.fetch(url).then(checkStatus).then(bound).catch(e => console.error(e) && bound())
 })
 `
 
+export function documentReady() {
+	return new Promise(function(resolve) {
+		if (document.readyState === 'complete') {
+			resolve()
+		} else {
+			document.addEventListener('DOMContentLoaded', resolve)
+		}
+	})
+}
+
 let workerBlob = null
-export function getWorkerBlob() {
+export async function getWorkerBlob() {
+	await documentReady() // creating a blob is synchronous and takes around 120ms on a powerful machine
 	if (workerBlob === null) workerBlob = URL.createObjectURL(new Blob([webWorkerScript], { type: 'application/javascript' }))
 	return workerBlob
 }
