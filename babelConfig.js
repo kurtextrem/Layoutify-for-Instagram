@@ -1,4 +1,5 @@
 'use strict'
+
 const resolve = require.resolve
 
 module.exports = (isProd, options = {}) => ({
@@ -48,7 +49,7 @@ module.exports = (isProd, options = {}) => ({
 				resolve('babel-plugin-annotate-pure-calls'),
 				resolve('./pure-plugin.js'),
 				// 'emotion/babel'
-			]
+		  ]
 		: [
 				[resolve('@babel/plugin-transform-react-jsx'), { pragma: 'createElement', useBuiltIns: true }],
 				resolve('@babel/plugin-transform-react-jsx-source'),
@@ -56,5 +57,5 @@ module.exports = (isProd, options = {}) => ({
 				resolve('babel-plugin-console-groupify'),
 				// 'emotion/babel'
 				// 'runtyper'
-			],
+		  ],
 })
