@@ -16,10 +16,9 @@ const WriteFilePlugin = require('write-file-webpack-plugin')
 const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
 const pureFuncs = require('side-effects-safe').pureFuncs
-const ReplacePlugin = require('webpack-plugin-replace')
+//const ReplacePlugin = require('webpack-plugin-replace')
 const WebpackMessages = require('webpack-messages')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const OmitJSforCSSPlugin = require('webpack-omit-js-for-css-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
@@ -63,9 +62,6 @@ const plugins = [
 			renderThrottle: 100,
 			clear: true,
 		},
-	}),
-	new webpack.DefinePlugin({
-		'process.env.NODE_ENV': JSON.stringify(ENV),
 	}),
 	new HtmlWebpackPlugin(html),
 	new ScriptExtHtmlWebpackPlugin({
@@ -131,12 +127,9 @@ if (isProd) {
 			strict: true,
 		}),
 		// new webpack.IgnorePlugin(/prop-types$/),
-		new OmitJSforCSSPlugin(),
-		new webpack.NoEmitOnErrorsPlugin(),
-		new ExtractTextPlugin('styles.css'),
-		new StyleExtHtmlWebpackPlugin(),
-		//new ShakePlugin(), // https://github.com/indutny/webpack-common-shake/issues/23
-		//new webpack.optimize.ModuleConcatenationPlugin(), // @TODO: Broken using Nerv 1.12.4-beta.0 02.03.2018
+		new MiniCssExtractPlugin(),
+		//new StyleExtHtmlWebpackPlugin() // @TODO: Broken @ webpack4
+		// new ShakePlugin(), // https://github.com/indutny/webpack-common-shake/issues/23  // @TODO: Broken @ webpack4
 		// strip out babel-helper invariant checks
 		/*new ReplacePlugin({
 			patterns: [
@@ -144,60 +137,12 @@ if (isProd) {
 					regex: /throw\s+(new\s+)?(Type|Reference)?Er{2}or\s*\(/g,
 					value: 'return;(',
 				},
-				{
-					regex: /isFunction(doc.createAt{2}ributeNS)/,
-					value: 'true',
-				},
 			],
 			values: {
 				'process.env.NODE_ENV': JSON.stringify(ENV),
-				'typeof window': JSON.stringify('1'),
 			},
-		}), // broken 05.03.2018, enabling this again enables using prepack */
-		new UglifyJSPlugin({
-			cache: true,
-			parallel: true,
-			sourceMap: true,
-			uglifyOptions: {
-				mangle: true,
-				comments: false,
-				compress: {
-					arrows: false,
-					booleans: false,
-					collapse_vars: false,
-					comparisons: false,
-					computed_props: false,
-					hoist_funs: false,
-					hoist_props: false,
-					hoist_vars: false,
-					if_return: false,
-					inline: false,
-					join_vars: false,
-					keep_infinity: true,
-					loops: false,
-					negate_iife: false,
-					properties: false,
-					reduce_funcs: false,
-					reduce_vars: false,
-					sequences: false,
-					side_effects: false,
-					switches: false,
-					top_retain: false,
-					toplevel: false,
-					typeofs: false,
-					unused: false,
-
-					// Switch off all types of compression except those needed to convince
-					// react-devtools that we're using a production build
-					conditionals: true,
-					dead_code: true,
-					evaluate: true,
-
-					pure_funcs: pureFuncs,
-				},
-			},
-		}),
-		//new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
+		}),*/
+		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
@@ -230,11 +175,6 @@ if (isProd) {
 				vendor: ['nervjs', 'nerv-devtool', 'decko'],
 			},
 		}),*/
-		new webpack.optimize.CommonsChunkPlugin({
-			name: 'manifest',
-			filename: 'bundle1.js',
-			minChunks: Infinity,
-		}),
 		new WriteFilePlugin({
 			test: /(content\/|manifest.json)/,
 			log: false,
@@ -243,7 +183,7 @@ if (isProd) {
 }
 
 const first = {
-	//mode: isProd ? 'production' : 'development',
+	mode: isProd ? 'production' : 'development',
 
 	context: path.join(__dirname, 'src'),
 
@@ -259,23 +199,71 @@ const first = {
 
 	recordsPath: path.resolve(__dirname, './records.json'),
 
-	/*optimization: isProd ? undefined : {
-		splitChunks: {
-			cacheGroups: {
-				commons: {
-					chunks: "initial",
-					minChunks: 2,
+	optimization: isProd
+		? {
+				minimizer: [
+					new UglifyJSPlugin({
+						cache: true,
+						parallel: true,
+						sourceMap: true,
+						uglifyOptions: {
+							mangle: true,
+							comments: false,
+							compress: {
+								arrows: false,
+								booleans: false,
+								collapse_vars: false,
+								comparisons: false,
+								computed_props: false,
+								hoist_funs: false,
+								hoist_props: false,
+								hoist_vars: false,
+								if_return: false,
+								inline: false,
+								join_vars: false,
+								keep_infinity: true,
+								loops: false,
+								negate_iife: false,
+								properties: false,
+								reduce_funcs: false,
+								reduce_vars: false,
+								sequences: false,
+								side_effects: false,
+								switches: false,
+								top_retain: false,
+								toplevel: false,
+								typeofs: false,
+								unused: false,
+
+								// Switch off all types of compression except those needed to convince
+								// react-devtools that we're using a production build
+								conditionals: true,
+								dead_code: true,
+								evaluate: true,
+
+								pure_funcs: pureFuncs,
+							},
+						},
+					}),
+				],
+		  }
+		: {
+				splitChunks: {
+					cacheGroups: {
+						commons: {
+							chunks: 'initial',
+							minChunks: 2,
+						},
+						vendor: {
+							test: /node_modules/,
+							chunks: 'initial',
+							name: 'vendor',
+							priority: 10,
+							enforce: true,
+						},
+					},
 				},
-				vendor: {
-					test: /node_modules/,
-					chunks: "initial",
-					name: "vendor",
-					priority: 10,
-					enforce: true
-				}
-			},
-		},
-	},*/
+		  },
 
 	module: {
 		rules: [
@@ -287,12 +275,7 @@ const first = {
 			},
 			{
 				test: /\.cs{2}$/, // .css
-				use: isProd
-					? ExtractTextPlugin.extract({
-							fallback: 'style-loader',
-							use: ['css-loader', 'postcss-loader'],
-					  })
-					: ['style-loader', 'css-loader'],
+				use: isProd ? [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] : ['style-loader', 'css-loader'],
 			},
 		],
 		noParse: isProd
@@ -357,7 +340,7 @@ if (!isProd)
 	}
 
 const second = {
-	//mode: first.mode,
+	mode: first.mode,
 
 	target: 'node',
 
@@ -378,9 +361,6 @@ const second = {
 		stylish,
 		new WebpackMessages({
 			name: 'node',
-		}),
-		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify(ENV),
 		}),
 	],
 }
