@@ -12,3 +12,4 @@ records.json
 records_html.json
 .eslintcache
 pnpm-debug.log
+stats.json

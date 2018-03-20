@@ -5,10 +5,16 @@
 		credentials: 'include',
 		mode: 'cors',
 	}
+
+	// credits to https://github.com/mgp25/Instagram-API/blob/master/src/Request.php#L377
 	const headers = new Headers()
-	headers.append('X-IG-Capabilities', '3ToAAA==')
+	headers.append('X-IG-App-ID', '567067343352427')
+	headers.append('X-IG-Capabilities', '3brTBw==')
 	headers.append('X-IG-Connection-Type', 'WIFI')
 	headers.append('X-IG-Connection-Speed', '3700kbps')
+	headers.append('X-IG-Bandwidth-Speed-KBPS', '-1.000')
+	headers.append('X-IG-Bandwidth-TotalBytes-B', '0')
+	headers.append('X-IG-Bandwidth-TotalTime-MS', '0')
 	headers.append('X-FB-HTTP-Engine', 'Liger')
 	headers.append('Accept', '*/*')
 	headers.append('Accept-Language', 'en-US')

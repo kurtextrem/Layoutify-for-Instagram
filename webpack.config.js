@@ -24,6 +24,7 @@ const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const StylishRequire = require('webpack-stylish')
 const replaceBuffer = require('replace-buffer')
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
 const stylish = new StylishRequire()
 // const ShakePlugin = require('webpack-common-shake').Plugin
@@ -168,6 +169,7 @@ if (isProd) {
 		new FriendlyErrorsPlugin(),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
+		new ErrorOverlayPlugin(),
 		/*new AutoDllPlugin({ // disabled as per https://github.com/mzgoddard/hard-source-webpack-plugin/issues/251
 			inject: true, // will inject the DLL bundles to index.html
 			filename: '[name]_[hash].js',
@@ -317,6 +319,10 @@ const first = {
 				setImmediate: false,
 		  }
 		: {},
+
+	stats: isProd ? {
+		reasons: true,
+	} : {}
 }
 
 if (!isProd)
