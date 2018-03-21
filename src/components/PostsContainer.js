@@ -9,8 +9,9 @@ import { Component, createElement } from 'nervjs'
 
 let initiated = false,
 	loading,
-	Posts,
 	error
+
+const Posts = (items, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
 
 /* @TODO: Convert to static props, to free memory when unmounted  */
 function init() {
@@ -18,7 +19,6 @@ function init() {
 
 	initiated = true
 	loading = <Loading />
-	Posts = (items, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
 	error = (
 		<div>
 			No data available (have you tried clicking the three dots on top of{' '}

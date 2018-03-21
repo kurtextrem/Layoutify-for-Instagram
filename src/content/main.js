@@ -102,14 +102,30 @@
 	}
 
 	let prevUrl = location.href
+	let currentClass = ''
+	/**
+	 * Checks the URL for changes.
+	 */
 	function checkURL() {
 		if (location.href !== prevUrl) {
-			console.log('url change', prevUrl, location.href)
 			prevUrl = location.href
-
-			addClass()
-			if (prevUrl.indexOf('/stories/')) fixVirtualList()
+			onNavigate()
 		}
+	}
+
+	/**
+	 * Callback when an url navigation has happened.
+	 */
+	function onNavigate() {
+		addClass()
+		if (currentClass === 'stories') fixVirtualList()
+		// always force highest quality
+		if (currentClass === 'profile') fullPhoto(document.querySelector('canvas + span > img'))
+		if (currentClass === 'post') {
+			const el = document.querySelectorAll('div > img')
+			fullPhoto(el[el.length - 1])
+		}
+		addControls()
 	}
 
 	/**
@@ -119,32 +135,42 @@
 	 * .profile on user profiles
 	 * .post when a single post is open (also as modal)
 	 * .explore if the explore tab is open
+	 * `stories` when stories are open
 	 */
 	function addClass() {
 		const pathname = location.pathname
 
-		if (location.pathname.indexOf('/stories/') !== -1) return
+		if (location.pathname.indexOf('/stories/') !== -1) return (currentClass = 'stories')
 		if (window.history.length !== 1 && location.search.indexOf('-by=') !== -1 && document.querySelector('div[role="dialog"]') === null)
-			return
+			return (currentClass = '')
 
 		const main = document.querySelector('#react-root')
+
+		// home page
 		if (pathname === '/') {
-			// home page
 			main.classList.add('home')
 			main.classList.remove('profile', 'post', 'explore')
-		} else if (pathname.indexOf('/p/') !== -1) {
-			// single post
+			return (currentClass = 'home')
+		}
+
+		// single post
+		if (pathname.indexOf('/p/') !== -1) {
 			main.classList.add('post')
 			main.classList.remove('profile', 'home', 'explore')
-		} else if (pathname.indexOf('/explore/') !== -1) {
-			// search results
+			return (currentClass = 'post')
+		}
+
+		// search results
+		if (pathname.indexOf('/explore/') !== -1) {
 			main.classList.add('explore')
 			main.classList.remove('profile', 'home', 'post')
-		} else {
-			// profile page
-			main.classList.add('profile')
-			main.classList.remove('post', 'home', 'explore')
+			return (currentClass = 'explore')
 		}
+
+		// profile page
+		main.classList.add('profile')
+		main.classList.remove('post', 'home', 'explore')
+		return (currentClass = 'profile')
 	}
 
 	const Instagram = {
@@ -272,17 +298,32 @@
 		)
 	}
 
+	function fullPhoto(el) {
+		if (!el) return
+
+		el.decoding = 'async'
+		if (el.srcset !== '') {
+			// photo
+			const split = el.srcset.split(',')
+			el.src = split[split.length - 1].replace(' 1080w', '')
+			return
+		}
+		el.src = replacePreviewSizes(el.src)
+	}
+
+	function replacePreviewSizes(input) {
+		return input.replace('/vp/', '/').replace(/s\d{3}x\d{3}/, 'e35')
+		//.replace(/-19/, '-15')
+	}
+
 	/**
 	 * Callback when DOM is ready.
 	 */
 	function onReady() {
-		addControls()
-
 		const elem = document.querySelector('div > article')
 		if (elem !== null) documentElement.style.setProperty('--boxHeight', `${elem.offsetHeight}px`) // give boxes equal height
 
-		addClass()
-		fixVirtualList()
+		onNavigate()
 
 		addExtendedButton()
 		addListener()

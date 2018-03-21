@@ -86,12 +86,9 @@ self.addEventListener('message', event => {
 `
 
 export function documentReady() {
-	return new Promise(function(resolve) {
-		if (document.readyState === 'complete') {
-			resolve()
-		} else {
-			document.addEventListener('DOMContentLoaded', resolve)
-		}
+	return new Promise(resolve => {
+		if (document.readyState === 'complete') resolve()
+		else document.addEventListener('DOMContentLoaded', resolve)
 	})
 }
 
