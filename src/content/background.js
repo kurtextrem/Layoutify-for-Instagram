@@ -71,7 +71,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 			const header = headers[i]
 
 			if (header.name === 'User-Agent') {
-				header.value = 'Instagram 10.8.0 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US)'
+				header.value = 'Instagram 27.0.0.7.97 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US)'
 			} else if (header.name === 'Cookie') {
 				// add auth cookies to authenticate API requests
 				header.value = header.value + '; sessionid=' + sessionid
