@@ -107,7 +107,7 @@ export default class ImgWorker extends Component {
 	}
 
 	shouldComponentUpdate(props, state) {
-		return shallowDiffers(props, this.props) || shallowDiffers(state, this.state)
+		return shallowDiffers(props, this.props) || state.isLoading !== this.state.isLoading
 	}
 
 	componentWillUnmount() {

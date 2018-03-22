@@ -26,10 +26,11 @@ function init() {
 		observer = new window.IntersectionObserver(onChange, {
 			rootMargin: '0px 0px 400px 0px', // eagerly load next rows
 		})
-	if (window.Worker !== undefined)
+	if (window.Worker !== undefined) {
 		getWorkerBlob()
 			.then(blob => (worker = new Worker(blob)))
 			.catch(console.error)
+	}
 }
 
 export default class Post extends Component {
@@ -84,8 +85,10 @@ export default class Post extends Component {
 	}
 
 	async preload(index) {
-		console.log('preloading', this.props.data.carousel_media[index].image_versions2.candidates[0].url)
-		worker.postMessage(this.props.data.carousel_media[index].image_versions2.candidates[0].url)
+		if (worker !== null) {
+			console.log('preloading', this.props.data.carousel_media[index].image_versions2.candidates[0].url)
+			worker.postMessage(updateCDN(this.props.data.carousel_media[index].image_versions2.candidates[0].url))
+		}
 	}
 
 	@bind

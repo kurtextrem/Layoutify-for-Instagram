@@ -78,15 +78,16 @@ const checkStatus = function(response) {
 	if (response.ok) return response
 	throw response
 }
+const opts = {headers: {accept: 'image/webp,image/apng,image/*,*/*;q=0.8'}, redirect: 'follow'}
 self.addEventListener('message', event => {
 	const url = event.data,
 		bound = postMsg.bind(undefined, url)
-	self.fetch(url).then(checkStatus).then(bound).catch(e => console.error(e) && bound())
+	self.fetch(url, opts).then(checkStatus).then(bound).catch(e => console.error(e) && bound())
 })
 `
 
 export function documentReady() {
-	return new Promise(resolve => {
+	return new Promise((resolve, reject) => {
 		if (document.readyState === 'complete') resolve()
 		else document.addEventListener('DOMContentLoaded', resolve)
 	})

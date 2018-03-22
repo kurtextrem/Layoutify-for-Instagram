@@ -51,7 +51,7 @@ function saveSession(value) {
 	return (sessionid = value)
 }
 function getSessionId() {
-	getCookie('sessionid').then(saveSession)
+	getCookie('sessionid').then(saveSession).catch(console.error)
 }
 
 getSessionId()
