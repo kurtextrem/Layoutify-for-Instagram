@@ -120,7 +120,7 @@
 		addClass()
 		if (currentClass === 'stories') fixVirtualList()
 		// always force highest quality
-		if (currentClass === 'profile') fullPhoto(document.querySelector('canvas + span > img'))
+		// if (currentClass === 'profile') fullPhoto(document.querySelector('canvas + span > img')) // @TODO: A day after I've released this feature, they denie access to higher quality photos. Coincidence?!
 		if (currentClass === 'post') {
 			const el = document.querySelectorAll('div > img')
 			fullPhoto(el[el.length - 1])
@@ -306,13 +306,13 @@
 			// photo
 			const split = el.srcset.split(',')
 			el.src = split[split.length - 1].replace(' 1080w', '')
-			return
+			// return
 		}
-		el.src = replacePreviewSizes(el.src)
+		// el.src = replacePreviewSizes(el.src)
 	}
 
 	function replacePreviewSizes(input) {
-		return input.replace('/vp/', '/').replace(/s\d{3}x\d{3}/, 'e35')
+		// return input.replace('/vp/', '/').replace(/s\d{3}x\d{3}/, 'e35')
 		//.replace(/-19/, '-15')
 	}
 
