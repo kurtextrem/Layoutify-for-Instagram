@@ -25,9 +25,9 @@ function updated() {
  */
 function createTab(id, force) {
 	if (tab !== null && !force) {
-		chrome.tabs.update(tab.id, { active: true, url: chrome.runtime.getURL('index.html') + '?tabid=' + id }, updated.bind(id))
+		chrome.tabs.update(tab.id, { active: true, url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` }, updated.bind(id))
 	} else {
-		chrome.tabs.create({ url: chrome.runtime.getURL('index.html') + '?tabid=' + id }, create)
+		chrome.tabs.create({ url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` }, create)
 	}
 }
 
@@ -51,7 +51,9 @@ function saveSession(value) {
 	return (sessionid = value)
 }
 function getSessionId() {
-	getCookie('sessionid').then(saveSession).catch(console.error)
+	getCookie('sessionid')
+		.then(saveSession)
+		.catch(console.error)
 }
 
 getSessionId()
@@ -74,7 +76,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 				header.value = 'Instagram 27.0.0.7.97 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US)'
 			} else if (header.name === 'Cookie') {
 				// add auth cookies to authenticate API requests
-				header.value = header.value + '; sessionid=' + sessionid
+				header.value = `${header.value}; sessionid=${sessionid}`
 			}
 		}
 

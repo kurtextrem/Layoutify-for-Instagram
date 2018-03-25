@@ -320,9 +320,11 @@ const first = {
 		  }
 		: {},
 
-	stats: isProd ? {
-		reasons: true,
-	} : {}
+	stats: isProd
+		? {
+				reasons: true,
+		  }
+		: {},
 }
 
 if (!isProd)

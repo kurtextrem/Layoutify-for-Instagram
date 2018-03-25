@@ -49,7 +49,7 @@
 		return response.text()
 	}
 
-	var fixMaxIdRegex = /"next_max_id": (\d+)/g
+	const fixMaxIdRegex = /"next_max_id": (\d+)/g
 	function fixMaxId(response) {
 		return response.replace(fixMaxIdRegex, '"next_max_id": "$1"')
 	}
@@ -104,7 +104,7 @@
 	const Storage = new storage()
 
 	function getCookies(wanted) {
-		let cookies = document.cookie.split('; '),
+		const cookies = document.cookie.split('; '),
 			result = {}
 
 		for (let i = 0; i < cookies.length; ++i) {
@@ -163,7 +163,7 @@
 		fetch() {
 			if (this.nextMaxId === '') return Promise.resolve(this.items) // nothing more to fetch
 
-			return fetch(API + 'feed/' + this.endpoint + '/?' + (this.nextMaxId ? 'max_id=' + this.nextMaxId + '&' : '')) // maxId means "show everything before X"
+			return fetch(`${API}feed/${this.endpoint}/?${this.nextMaxId ? `max_id=${this.nextMaxId}&` : ''}`) // maxId means "show everything before X"
 				.then(this.storeNext)
 				.then(this.normalize)
 				.then(this.storeData)
@@ -230,7 +230,7 @@
 		}
 
 		remove(id) {
-			var headers = new Headers(),
+			const headers = new Headers(),
 				cookies = getCookies(['csrftoken'])
 			headers.append('x-csrftoken', cookies.csrftoken)
 			headers.append('x-instagram-ajax', '1')
@@ -243,7 +243,7 @@
 		}
 
 		add(id) {
-			var headers = new Headers(),
+			const headers = new Headers(),
 				cookies = getCookies(['csrftoken'])
 			headers.append('x-csrftoken', cookies.csrftoken)
 			headers.append('x-instagram-ajax', '1')
