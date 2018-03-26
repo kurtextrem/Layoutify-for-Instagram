@@ -247,7 +247,7 @@ div > div + [style][href] ~ a,
 .coreSpriteUserTagIndicator,
 .coreSpriteVideoIconLarge,
 .coreSpriteRightChevron,
-.videoSpritePlayButton
+.videoSpritePlayButton,
 .coreSpriteLeftChevron {
 	z-index: 3;
 }

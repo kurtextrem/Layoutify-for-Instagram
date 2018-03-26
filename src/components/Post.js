@@ -145,7 +145,7 @@ export default class Post extends Component {
 					type="video/mp4"
 					width={candidate.width}
 					height={candidate.height}
-					preload="none"
+					preload="metadata"
 					className="img-fluid"
 					controls
 				/>

@@ -62,9 +62,10 @@ export class Chrome {
 	}
 }
 
-const regex = /-fr[atx]\d-\d/
+//const regex = /-fr[atx]\d-\d/
 export function updateCDN(url) {
-	return url.replace(regex, '-frt3-1') // 10.08.2017
+	return url
+	// return url.replace(regex, '-frt3-1') // 10.08.2017
 }
 
 export function shallowDiffers(a, b) {
