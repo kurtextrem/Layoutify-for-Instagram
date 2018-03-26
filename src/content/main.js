@@ -141,7 +141,11 @@
 		const pathname = location.pathname
 
 		if (location.pathname.indexOf('/stories/') !== -1) return (currentClass = 'stories')
-		if (window.history.length !== 1 && location.search.indexOf('-by=') !== -1 && document.querySelector('div[role="dialog"]') === null)
+		if (
+			(window.history.length !== 1 && location.search.indexOf('tagged') !== -1) ||
+			location.search.indexOf('taken-by=') !== -1 ||
+			document.querySelector('div[role="dialog"]') !== null
+		)
 			return (currentClass = '')
 
 		const main = document.querySelector('#react-root')

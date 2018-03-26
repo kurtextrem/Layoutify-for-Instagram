@@ -261,23 +261,23 @@ div > div + [style][href] ~ a,
 						Mark Videos in the Feed
 =============================================*/
 /** Outer div */
-article > div > div > div > div > div + div {
+.home article > div > div > div > div > div + div {
 	z-index: 3;
 	contain: content;
 }
 
 /** Small play button */
-article > div > div > div > div > div + div > div + div {
+.home article > div > div > div > div > div + div > div + div {
 	opacity: 1 !important;
 }
 
-article > div > div > div > div > div + div > div + div > span {
+.home article > div > div > div > div > div + div > div + div > span {
 	right: initial;
 	left: 0;
 }
 
 /** Hide "Click video for audio" */
-article > div > div > div > div > div + div > div:first-child {
+.home article > div > div > div > div > div + div > div:first-child {
 	display: none;
 }
 
