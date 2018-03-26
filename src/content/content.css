@@ -170,6 +170,8 @@ header + div + div > div:first-of-type:not(:only-child) {
 
 	grid-column-end: span 4;
 	/* max-height & height unset */
+
+	contain: content;
 }
 
 /** Heart / Comment / Save */
@@ -223,16 +225,16 @@ video::-webkit-media-controls-overlay-enclosure,
 video[loop]::-webkit-media-controls-enclosure,
 video[loop]::-webkit-media-controls,
 video::-internal-media-controls-overflow-menu-list {
-	z-index: 3;
+	z-index: 5;
 }
 
 video[loop] {
-	z-index: 2;
+	z-index: 4;
 }
 
 /** Always show media controls on single posts */
 .post video::-webkit-media-controls-enclosure {
-	z-index: 3;
+	z-index: 4;
 }
 
 /** Makes the multiple videos/images dots visible */
@@ -245,6 +247,7 @@ div > div + [style][href] ~ a,
 .coreSpriteUserTagIndicator,
 .coreSpriteVideoIconLarge,
 .coreSpriteRightChevron,
+.videoSpritePlayButton
 .coreSpriteLeftChevron {
 	z-index: 3;
 }
@@ -257,15 +260,24 @@ div > div + [style][href] ~ a,
 /*=============================================
 						Mark Videos in the Feed
 =============================================*/
-a.videoSpritePlayButton + div + div {
-	right: initial;
-	left: 0;
-	opacity: 1;
+/** Outer div */
+article > div > div > div > div > div + div {
+	z-index: 3;
 	contain: content;
 }
 
+/** Small play button */
+article > div > div > div > div > div + div > div + div {
+	opacity: 1 !important;
+}
+
+article > div > div > div > div > div + div > div + div > span {
+	right: initial;
+	left: 0;
+}
+
 /** Hide "Click video for audio" */
-a.videoSpritePlayButton + div {
+article > div > div > div > div > div + div > div:first-child {
 	display: none;
 }
 
