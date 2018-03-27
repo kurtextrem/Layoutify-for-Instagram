@@ -3,7 +3,8 @@
 
 	const document = window.document,
 		location = document.location,
-		documentElement = document.documentElement
+		documentElement = document.documentElement,
+		$ = e => document.querySelector(e)
 
 	// block middle mouse button
 	window.addEventListener(
@@ -71,7 +72,7 @@
 				}
 			}
 
-			window.requestAnimationFrame(onChange)
+			window.requestIdleCallback(onChange)
 		},
 		{ childList: true, subtree: true }
 	)
@@ -80,8 +81,8 @@
 	 * Callback when nodes are removed/inserted.
 	 */
 	function onChange() {
-		window.requestAnimationFrame(checkURL) // chained rAF
-		window.requestIdleCallback(addControls)
+		checkURL()
+		addControls()
 	}
 
 	/**
@@ -101,14 +102,16 @@
 		}
 	}
 
-	let prevUrl = location.href
-	let currentClass = ''
+	let hasNavigated = false,
+		prevUrl = location.href,
+		currentClass = ''
 	/**
 	 * Checks the URL for changes.
 	 */
 	function checkURL() {
 		if (location.href !== prevUrl) {
 			prevUrl = location.href
+			hasNavigated = true
 			onNavigate()
 		}
 	}
@@ -117,10 +120,10 @@
 	 * Callback when an url navigation has happened.
 	 */
 	function onNavigate() {
-		addClass()
+		window.requestAnimationFrame(() => window.requestAnimationFrame(addClass)) // double-rAF
 		if (currentClass === 'stories') fixVirtualList()
 		// always force highest quality
-		// if (currentClass === 'profile') fullPhoto(document.querySelector('canvas + span > img')) // @TODO: A day after I've released this feature, they denie access to higher quality photos. Coincidence?!
+		// if (currentClass === 'profile') fullPhoto($('canvas + span > img')) // @TODO: A day after I've released this feature, they denie access to higher quality photos. Coincidence?!
 		if (currentClass === 'post') {
 			const el = document.querySelectorAll('div > img')
 			fullPhoto(el[el.length - 1])
@@ -142,38 +145,37 @@
 
 		if (location.pathname.indexOf('/stories/') !== -1) return (currentClass = 'stories')
 		if (
-			(window.history.length !== 1 && location.search.indexOf('tagged') !== -1) ||
-			location.search.indexOf('taken-by=') !== -1 ||
-			document.querySelector('div[role="dialog"]') !== null
+			(hasNavigated && (location.search.indexOf('tagged') !== -1 || location.search.indexOf('taken-by=') !== -1)) ||
+			$('div[role="dialog"]') !== null
 		)
 			return (currentClass = '')
 
-		const main = document.querySelector('#react-root')
+		const $main = $('#react-root')
 
 		// home page
 		if (pathname === '/') {
-			main.classList.add('home')
-			main.classList.remove('profile', 'post', 'explore')
+			$main.classList.add('home')
+			$main.classList.remove('profile', 'post', 'explore')
 			return (currentClass = 'home')
 		}
 
 		// single post
 		if (pathname.indexOf('/p/') !== -1) {
-			main.classList.add('post')
-			main.classList.remove('profile', 'home', 'explore')
+			$main.classList.add('post')
+			$main.classList.remove('profile', 'home', 'explore')
 			return (currentClass = 'post')
 		}
 
 		// search results
 		if (pathname.indexOf('/explore/') !== -1) {
-			main.classList.add('explore')
-			main.classList.remove('profile', 'home', 'post')
+			$main.classList.add('explore')
+			$main.classList.remove('profile', 'home', 'post')
 			return (currentClass = 'explore')
 		}
 
 		// profile page
-		main.classList.add('profile')
-		main.classList.remove('post', 'home', 'explore')
+		$main.classList.add('profile')
+		$main.classList.remove('post', 'home', 'explore')
 		return (currentClass = 'profile')
 	}
 
@@ -185,7 +187,7 @@
 
 	function addExtendedButton() {
 		let anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')
-		if (!anchor.length) anchor = document.querySelector('header > div > button')
+		if (!anchor.length) anchor = $('header > div > button')
 
 		anchor = anchor[0].parentNode
 		const el = anchor.cloneNode(true),
@@ -291,7 +293,7 @@
 		if (vl !== undefined) vl.disconnect()
 
 		vl = observe(
-			document.querySelector('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div'), // virtual stories list
+			$('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div'), // virtual stories list
 			mutations => {
 				if (!mutations.length) return
 
@@ -324,8 +326,8 @@
 	 * Callback when DOM is ready.
 	 */
 	function onReady() {
-		const elem = document.querySelector('div > article')
-		if (elem !== null) documentElement.style.setProperty('--boxHeight', `${elem.offsetHeight}px`) // give boxes equal height
+		const $elem = $('div > article')
+		if ($elem !== null) documentElement.style.setProperty('--boxHeight', `${$elem.offsetHeight}px`) // give boxes equal height
 
 		onNavigate()
 

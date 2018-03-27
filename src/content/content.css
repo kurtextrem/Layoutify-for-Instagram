@@ -87,7 +87,7 @@ main > section div > article {
 div[role='dialog'] article > header,
 #react-root:not(.profile):not(.explore) article > header {
 	height: 50px !important;
-	padding: 16px 8px;
+	padding: 16px 4px !important;
 	contain: strict;
 }
 
@@ -463,6 +463,20 @@ div[role='dialog'] article,
 	max-height: 90vh;
 	margin-bottom: 0;
 	contain: layout style;
+}
+
+div[role='dialog'] > div > div {
+	/* max-width: 52vh !important; */
+	/* max-width: 935px; /* container size */
+}
+
+/** Arrow container */
+div[role='dialog'] > div:first-child > div > div {
+	/* max-width: 52vh !important; */
+}
+
+div[role='dialog'] article > header + div {
+	margin-right: 320px !important;
 }
 
 /** Center the image */
