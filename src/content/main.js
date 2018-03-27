@@ -6,6 +6,15 @@
 		documentElement = document.documentElement,
 		$ = e => document.querySelector(e)
 
+	function injectCSS(file) {
+		let style = document.createElement('link')
+		style.rel = 'stylesheet'
+		style.href = chrome.extension.getURL(`content/${file}.css`)
+		document.head.appendChild(style) // we don't need to append it to the body to prevent blocking rendering, as it requires a (huge) reflow anyway
+		style = null
+	}
+	injectCSS('content') // inject as early as possible
+
 	// block middle mouse button
 	window.addEventListener(
 		'click',
@@ -112,7 +121,7 @@
 		if (location.href !== prevUrl) {
 			prevUrl = location.href
 			hasNavigated = true
-			onNavigate()
+			window.requestIdleCallback(onNavigate)
 		}
 	}
 
@@ -258,15 +267,6 @@
 		}
 	}
 
-	function injectCSS(file) {
-		let style = document.createElement('link')
-		style.rel = 'stylesheet'
-		style.href = chrome.extension.getURL(`content/${file}.css`)
-		document.body.appendChild(style)
-		style = null
-	}
-	injectCSS('content') // inject as early as possible
-
 	function addNamesToStories() {
 		const list = document.querySelectorAll(
 			'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div > a > div > div > span'
@@ -337,11 +337,6 @@
 		injectNight()
 	}
 
-	if (document.readyState === 'interactive' || document.readyState === 'complete') {
-		window.requestAnimationFrame(onReady)
-	} else {
-		document.addEventListener('DOMContentLoaded', function() {
-			window.requestAnimationFrame(onReady)
-		})
-	}
+	if (document.readyState === 'interactive' || document.readyState === 'complete') onReady()
+	else document.addEventListener('DOMContentLoaded', onReady)
 })(window)
