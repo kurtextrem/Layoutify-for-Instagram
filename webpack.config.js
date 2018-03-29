@@ -248,6 +248,16 @@ const first = {
 						},
 					}),
 				],
+				splitChunks: {
+					cacheGroups: {
+						styles: {
+							name: 'main',
+							test: /\.cs{2}$/,
+							chunks: 'all',
+							enforce: true,
+						},
+					},
+				},
 		  }
 		: {
 				splitChunks: {
