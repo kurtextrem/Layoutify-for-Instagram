@@ -13,8 +13,8 @@ if (module.hot) {
 	const { registerObserver } = require('react-perf-devtool')
 	const { whyDidYouUpdate } = require('why-did-you-update')
 
-	registerObserver()
-	whyDidYouUpdate(Nerv)
+	//registerObserver()
+	//whyDidYouUpdate(Nerv)
 
 	module.hot.accept('./components/App', () =>
 		requestAnimationFrame(() => {

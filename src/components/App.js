@@ -1,6 +1,7 @@
 import About from './About'
 import Header from './Header'
 import Liked from './Liked'
+import Options from './Options'
 import Saved from './Saved'
 import bind from 'autobind-decorator'
 import { Component, createElement } from 'nervjs'
@@ -17,24 +18,8 @@ export default class App extends Component {
 
 	@bind
 	handleLocationChanged(childKey, params, cb) {
-		switch (childKey) {
-			case 'liked':
-				this.setState(prevState => ({ location: 'liked' }))
-				cb()
-				break
-			case 'saved':
-				this.setState(prevState => ({ location: 'saved' }))
-				cb()
-				break
-			case 'about':
-				this.setState(prevState => ({ location: 'about' }))
-				cb()
-				break
-			default:
-				this.setState(prevState => ({ location: 'liked' }))
-				cb()
-				break
-		}
+		this.setState(prevState => ({ location: childKey }))
+		cb()
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -53,6 +38,9 @@ export default class App extends Component {
 						</Route>
 						<Route key="saved" hash="#/saved">
 							{Saved}
+						</Route>
+						<Route key="options" hash="#/options">
+							<Options />
 						</Route>
 						<Route key="about" hash="#/about">
 							<About />
