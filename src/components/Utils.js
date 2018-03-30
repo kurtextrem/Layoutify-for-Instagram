@@ -60,7 +60,13 @@ export class Chrome {
 		}
 		return false
 	}
+
+	static i18n(key) {
+		return chrome.i18n.getMessage(key) || `i18n::${key}`
+	}
 }
+
+export const i18n = Chrome.i18n
 
 //const regex = /-fr[atx]\d-\d/
 export function updateCDN(url) {
@@ -100,3 +106,19 @@ export async function getWorkerBlob() {
 	if (workerBlob === null) workerBlob = URL.createObjectURL(new Blob([webWorkerScript], { type: 'application/javascript' }))
 	return workerBlob
 }
+
+// based on https://code.lengstorf.com/get-form-values-as-json/
+const reducerFunction = (data, element) => {
+	const type = element.type
+	if (type === undefined) data.push(element.value)
+	else if (type === 'checkbox')
+		// option
+		data[element.name] = element.checked
+	else if (type.indexOf('select') !== -1) data[element.name] = [].reduce.call(element.options, reducerFunction, [])
+	else if (type === 'button' || element.name.indexOf('_add') !== -1 || type === 'submit') undefined
+	else if (type === 'number') data[element.name] = +element.value
+	else data[element.name] = element.value // number, text, etc
+
+	return data
+}
+export const formToJSON = elements => [].reduce.call(elements, reducerFunction, {})

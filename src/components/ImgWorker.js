@@ -45,9 +45,6 @@ function setFree(index) {
 export default class ImgWorker extends Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-			isLoading: true,
-		}
 		this.img = null
 
 		if (!workerPoolCreated) {
@@ -57,6 +54,10 @@ export default class ImgWorker extends Component {
 
 		this.worker = this.initWorker()
 		this.worker.postMessage(props.src || props['data-src'])
+	}
+
+	state = {
+		isLoading: true,
 	}
 
 	@bind

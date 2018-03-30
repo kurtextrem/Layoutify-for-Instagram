@@ -33,16 +33,38 @@ export default class PostsContainer extends Component {
 	constructor(props) {
 		super(props)
 
-		this.state = {
-			items: null,
-			nextMaxId: '',
-			timeout: 0,
-		}
 		this.initial = 0
 		init()
 
 		this.populateData()
 		window.setTimeout(() => this.setTimeout(200), 200)
+	}
+
+	state = {
+		items: null,
+		nextMaxId: '',
+		timeout: 0,
+	}
+
+	setTimeout(timeout) {
+		if (this.state.items === null) {
+			this.setState((prevState, props) => ({ timeout }))
+			window.setTimeout(() => this.setTimeout(400), 400)
+		}
+	}
+
+	@bind
+	storageListener(changes, area) {
+		const id = this.props.id
+		if (changes[id] !== undefined && changes[id].newValue !== undefined) {
+			console.log('new data', changes)
+			this.populateData()
+		}
+	}
+
+	@bind
+	async populateData() {
+		return this.handleData(await Storage.get(this.props.id, []))
 	}
 
 	@bind
@@ -57,33 +79,6 @@ export default class PostsContainer extends Component {
 		return data
 	}
 
-	@bind
-	async populateData() {
-		return this.handleData(await Storage.get(this.props.id, []))
-	}
-
-	@bind
-	storageListener(changes, area) {
-		const id = this.props.id
-		if (changes[id] !== undefined && changes[id].newValue !== undefined) {
-			console.log('new data', changes)
-			this.populateData()
-		}
-	}
-
-	@bind
-	renderPost(post) {
-		const { id, defaultClass, toggleClass } = this.props
-		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} initial={this.initial < 2} />
-	}
-
-	setTimeout(timeout) {
-		if (this.state.items === null) {
-			this.setState((prevState, props) => ({ timeout }))
-			window.setTimeout(() => this.setTimeout(400), 400)
-		}
-	}
-
 	addStorageListener() {
 		chrome.storage.onChanged.addListener(this.storageListener)
 	}
@@ -94,10 +89,6 @@ export default class PostsContainer extends Component {
 
 	componentDidMount() {
 		this.addStorageListener()
-	}
-
-	componentWillUnmount() {
-		this.removeStorageListener()
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -116,6 +107,16 @@ export default class PostsContainer extends Component {
 			(items === null && nextState.items !== null) || // first items
 			(items && nextState.items && nextState.items.length !== items.length)
 		)
+	}
+
+	componentWillUnmount() {
+		this.removeStorageListener()
+	}
+
+	@bind
+	renderPost(post) {
+		const { id, defaultClass, toggleClass } = this.props
+		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} initial={this.initial < 2} />
 	}
 
 	render() {

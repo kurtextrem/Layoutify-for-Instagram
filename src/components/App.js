@@ -1,6 +1,6 @@
 import About from './About'
-import Header from './Header'
 import Liked from './Liked'
+import Nav from './Nav'
 import Options from './Options'
 import Saved from './Saved'
 import bind from 'autobind-decorator'
@@ -8,12 +8,8 @@ import { Component, createElement } from 'nervjs'
 import { HashRouter, Route } from './HashRouter'
 
 export default class App extends Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			location: window.location.hash.replace('#/', ''),
-		}
+	state = {
+		location: window.location.hash.replace('#/', ''),
 	}
 
 	@bind
@@ -29,7 +25,7 @@ export default class App extends Component {
 	render() {
 		return (
 			<div id="app">
-				<Header location={this.state.location} />
+				<Nav location={this.state.location} />
 
 				<main className="d-flex justify-content-center">
 					<HashRouter onLocationChanged={this.handleLocationChanged}>

@@ -43,12 +43,12 @@ export default class Post extends Component {
 		this.preloaded = false
 		this.ref = null
 
-		this.state = {
-			carouselIndex: 0,
-			active: true,
-		}
-
 		if (!initiated) init()
+	}
+
+	state = {
+		carouselIndex: 0,
+		active: true,
 	}
 
 	@bind

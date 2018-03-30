@@ -1,14 +1,14 @@
 import bind from 'autobind-decorator'
 import { Button, Col, Container, Form, FormGroup, Input, Label } from 'reactstrap'
 import { Component, createElement } from 'nervjs'
-import { Storage } from './Utils'
+import { Storage, formToJSON, i18n } from './Utils'
 
 const Options = (items, render) => Object.keys(items).map(render)
 const OPTS = {
-	night: false,
-	picturesOnly: false,
 	blockPosts: null, // []
 	blockStories: null, // []
+	night: false,
+	picturesOnly: false,
 	hideStories: false,
 	hideRecommended: false,
 	highlightOP: true,
@@ -34,12 +34,12 @@ export default class About extends Component {
 	}
 
 	save(e) {
-		const target = e.target
-		console.log(e)
+		console.log(formToJSON(e.currentTarget.elements))
+		Storage.set('options', formToJSON(e.currentTarget.elements)).catch(console.error)
 	}
 
 	shouldComponentUpdate() {
-		return true
+		return false
 	}
 
 	@bind
@@ -48,37 +48,37 @@ export default class About extends Component {
 		if (typeof value === 'boolean')
 			return (
 				<FormGroup key={id} row>
-					<Label for={id} sm={2}>
-						{id}
+					<Label for={id} sm={3}>
+						{i18n(id)}
 					</Label>
-					<Col sm={10}>
-						<Input type="checkbox" name={id} id={id} checked={value ? '' : undefined} />
+					<Col sm={9}>
+						<Input type="checkbox" name={id} id={id} checked={value ? true : undefined} />
 					</Col>
 				</FormGroup>
 			)
 		if (Array.isArray(value) || value === null)
 			return (
 				<FormGroup key={id} row>
-					<Label for={id} sm={2}>
-						{id}
+					<Label for={id} sm={3}>
+						{i18n(id)}
 					</Label>
-					<Col sm={10}>
+					<Col sm={9}>
 						<Input type="select" name={id} multiple>
 							{value !== null && value.map(v => <value key={v} value={v} />)}
 						</Input>
-						<input type="text" name={`${id}_add`} />
-						<Button>Add</Button>
+						<input type="text" name={`${id}_add`} placeholder="Username" />
+						<Button type="button">Add</Button>
 					</Col>
 				</FormGroup>
 			)
 		if (Number.isInteger(value))
 			return (
 				<FormGroup key={id} row>
-					<Label for={id} sm={2}>
-						{id}
+					<Label for={id} sm={3}>
+						{i18n(id)}
 					</Label>
-					<Col sm={10}>
-						<Input type="number" min="2" max="6" step="2" value={value} />
+					<Col sm={9}>
+						<Input type="number" name={id} min="2" max="6" step="2" value={value} />
 					</Col>
 				</FormGroup>
 			)
