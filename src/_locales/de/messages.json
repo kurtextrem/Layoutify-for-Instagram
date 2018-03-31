@@ -6,5 +6,45 @@
 	"extDesc": {
 		"message": "Das Web-Design von Instagram.com ist nicht für den Desktop optimiert. Diese Erweiterung ändert das.",
 		"description": "Extension description."
+	},
+	"blockPosts": {
+		"message": "Hide Posts from",
+		"description": "Block Posts from Users setting."
+	},
+	"blockStories": {
+		"message": "Hide Stories from",
+		"description": "Block Stories from Users setting."
+	},
+	"night": {
+		"message": "Enable Night Theme",
+		"description": "Night mode setting."
+	},
+	"picturesOnly": {
+		"message": "Show pictures only",
+		"description": "setting"
+	},
+	"hideStories": {
+		"message": "Hide all Stories",
+		"description": "setting"
+	},
+	"hideRecommended": {
+		"message": "Hide recommended friends",
+		"description": "setting"
+	},
+	"highlightOP": {
+		"message": "Highlight Author in comments",
+		"description": "setting"
+	},
+	"only3Dot": {
+		"message": "Remove all style modifications",
+		"description": "setting"
+	},
+	"rows": {
+		"message": "Posts per row",
+		"description": "setting"
+	},
+	"indicateFollowing": {
+		"message": "Following indicator",
+		"description": "setting"
 	}
 }

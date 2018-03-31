@@ -5,16 +5,16 @@ import { Storage, formToJSON, i18n } from './Utils'
 
 const Options = (items, render) => Object.keys(items).map(render)
 const OPTS = {
-	blockPosts: null, // []
+	// blockPosts: null, // [] // @TODO: This probably breaks the VL
 	blockStories: null, // []
-	night: false,
+	//night: false,  // @TODO: Night mode not yet ready
 	picturesOnly: false,
 	hideStories: false,
-	hideRecommended: false,
-	highlightOP: true,
+	//hideRecommended: false, // @TODO: Implement
+	//highlightOP: true, // @TODO: Implement
 	only3Dot: false,
 	rows: window.innerWidth < 1367 ? 2 : 4,
-	// indicateFollowing: true
+	// indicateFollowing: true // @TODO: Implement
 }
 
 export default class About extends Component {
@@ -27,19 +27,56 @@ export default class About extends Component {
 				return data
 			})
 			.catch(console.error)
+
+		this.ref = null
 	}
 
 	state = {
 		options: OPTS,
 	}
 
-	save(e) {
-		console.log(formToJSON(e.currentTarget.elements))
-		Storage.set('options', formToJSON(e.currentTarget.elements)).catch(console.error)
+	@bind
+	setRef(ref) {
+		return (this.ref = ref)
 	}
 
-	shouldComponentUpdate() {
-		return false
+	save(e) {
+		const target = e.currentTarget !== undefined ? e.currentTarget : e
+		console.log(formToJSON(target.elements))
+		Storage.set('options', formToJSON(target.elements)).catch(console.error)
+	}
+
+	@bind
+	add(e) {
+		if (e.keyCode !== undefined && e.keyCode !== 13) return
+
+		let input
+
+		input = e.currentTarget
+		if (input.tagName !== 'INPUT') input = e.currentTarget.previousSibling
+
+		const select = input.previousSibling,
+			opt = document.createElement('option')
+		opt.value = input.value
+		opt.textContent = input.value
+		opt.title = 'Right click to remove'
+		opt.addEventListener('dblclick', this.remove)
+		opt.addEventListener('contextmenu', this.remove)
+
+		select.appendChild(opt)
+		input.value = ''
+		this.save(this.ref.children[0])
+	}
+
+	@bind
+	remove(e) {
+		e.preventDefault()
+		e.currentTarget.remove()
+		this.save(this.ref.children[0])
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextState !== this.state
 	}
 
 	@bind
@@ -64,10 +101,17 @@ export default class About extends Component {
 					</Label>
 					<Col sm={9}>
 						<Input type="select" name={id} multiple>
-							{value !== null && value.map(v => <value key={v} value={v} />)}
+							{value !== null &&
+								value.map(v => (
+									<option key={v} value={v} onDoubleClick={this.remove} onContextMenu={this.remove}>
+										{v}
+									</option>
+								))}
 						</Input>
-						<input type="text" name={`${id}_add`} placeholder="Username" />
-						<Button type="button">Add</Button>
+						<Input type="text" name={`${id}_add`} placeholder="Instagrame Username" onKeyUp={this.add} />
+						<Button type="button" onClick={this.add}>
+							Add
+						</Button>
 					</Col>
 				</FormGroup>
 			)
@@ -88,7 +132,7 @@ export default class About extends Component {
 	render() {
 		const { options } = this.state
 		return (
-			<Container>
+			<Container ref={this.setRef}>
 				<Form onChange={this.save}>{Options(options || {}, this.renderOptions)}</Form>
 			</Container>
 		)

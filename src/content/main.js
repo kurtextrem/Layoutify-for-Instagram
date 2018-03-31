@@ -8,6 +8,7 @@
 
 	function injectCSS(file) {
 		let style = document.createElement('link')
+		style.id = 'ige_style'
 		style.rel = 'stylesheet'
 		style.href = chrome.extension.getURL(`content/${file}.css`)
 		document.head.appendChild(style) // we don't need to append it to the body to prevent blocking rendering, as it requires a (huge) reflow anyway
@@ -16,29 +17,11 @@
 	injectCSS('content') // inject as early as possible
 
 	// block middle mouse button
-	window.addEventListener(
-		'click',
-		function(e) {
-			if (e.button > 0) e.stopPropagation()
-		},
-		true
-	)
+	window.addEventListener('click', e => (e.button > 0 ? e.stopPropagation() : undefined), true)
 
 	// prevent vid restart
-	window.addEventListener(
-		'blur',
-		function(e) {
-			e.stopPropagation()
-		},
-		true
-	)
-	window.addEventListener(
-		'visibilitychange',
-		function(e) {
-			e.stopPropagation()
-		},
-		true
-	)
+	window.addEventListener('blur', e => e.stopPropagation(), true)
+	window.addEventListener('visibilitychange', e => e.stopPropagation(), true)
 
 	/**
 	 * Creates a new observer, starts observing and returns the observer.
@@ -48,7 +31,7 @@
 	 * @return {MutationObserver}
 	 */
 	function observe(elem, fn, options) {
-		if (!elem) return
+		if (elem === null) return
 
 		const observer = new MutationObserver(fn)
 		observer.observe(elem, options)
@@ -262,7 +245,7 @@
 
 	function injectNight() {
 		const date = new Date()
-		if (date.getHours() >= 20) {
+		if (date.getHours() >= 19) {
 			injectCSS('night')
 		}
 	}
@@ -304,22 +287,67 @@
 		)
 	}
 
+	const connection = navigator.connection.type
 	function fullPhoto(el) {
 		if (!el) return
 
 		el.decoding = 'async'
-		if (el.srcset !== '') {
-			// photo
+		if (el.srcset !== '' && connection === 'wifi') {
 			const split = el.srcset.split(',')
 			el.src = split[split.length - 1].replace(' 1080w', '')
-			// return
 		}
-		// el.src = replacePreviewSizes(el.src)
 	}
 
-	function replacePreviewSizes(input) {
-		// return input.replace('/vp/', '/').replace(/s\d{3}x\d{3}/, 'e35')
-		//.replace(/-19/, '-15')
+	const OPTS_MODE = {
+		blockStories(value) {
+			for (let i = 0; i < value.length; ++i) {
+				document.getElementById(`igs_${value[i]}`).style.display = 'none'
+			}
+		},
+		//highlightOP(arg) {},
+		rows(i) {
+			if (i !== 4) documentElement.style.setProperty('--boxWidth', `${100 / i - 1}vw`)
+		},
+
+		// boolean toggles
+		klass(cls) {
+			root.classList.add(cls)
+		},
+		/*night(arg) {
+			injectNight()
+		},*/
+		only3Dot(arg) {
+			$('#ige_style').remove()
+		},
+	}
+	const OPTS = {
+		// blockPosts: null, // []
+		blockStories: OPTS_MODE.blockStories, // []
+		//night: OPTS_MODE.night,
+		picturesOnly: OPTS_MODE.klass,
+		hideStories: OPTS_MODE.klass,
+		hideRecommended: OPTS_MODE.klass,
+		highlightOP: OPTS_MODE.highlightOP,
+		only3Dot: OPTS_MODE.only3Dot,
+		rows: OPTS_MODE.rows,
+		// indicateFollowing: true
+	}
+	function loadOptions() {
+		window.IG_Storage.get('options', null)
+			.then(function cb(options) {
+				if (options === null) return options
+
+				for (const optName in options) {
+					const oFn = OPTS[optName]
+					if (oFn === undefined) break
+
+					const optValue = options[optName]
+					if (typeof optValue === 'boolean') optValue && oFn(`ige_${optName}`)
+					else oFn(optValue)
+				}
+				return options
+			})
+			.catch(console.error)
 	}
 
 	/**
@@ -330,11 +358,10 @@
 		if ($elem !== null) documentElement.style.setProperty('--boxHeight', `${$elem.offsetHeight}px`) // give boxes equal height
 
 		onNavigate()
+		loadOptions()
 
 		addExtendedButton()
 		addListener()
-
-		injectNight()
 	}
 
 	if (document.readyState === 'interactive' || document.readyState === 'complete') onReady()

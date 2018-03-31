@@ -87,8 +87,12 @@ main > section div > article {
 div[role='dialog'] article > header,
 #react-root:not(.profile):not(.explore) article > header {
 	height: 50px !important;
-	padding: 16px 4px !important;
+	padding: 16px 8px !important;
 	contain: strict;
+}
+
+div[role='dialog'] article > header {
+	padding: 16px 4px !important;
 }
 
 div > main:first-child {
@@ -519,26 +523,6 @@ div[role='dialog'] article,
 }
 
 /*=============================================
-						Picture Only Mode
-=============================================*/
-#react-root.pictureOnly:not(.profile):not(.explore) article > header {
-	height: 40px !important;
-}
-
-#react-root.pictureOnly:not(.profile):not(.explore) article > header > div:last-child > div:last-child {
-	display: flex;
-}
-
-.pictureOnly header + div + div > div:first-of-type:not(:only-child) {
-	height: 0;
-}
-
-/** Hide comments */
-.pictureOnly header + div + div > div:first-of-type:not(:only-child) > ul {
-	display: none;
-}
-
-/*=============================================
 									Footer
 =============================================*/
 footer > div {
@@ -568,6 +552,33 @@ footer > div > nav {
 }
 
 /*=============================================
+										Options
+=============================================*/
+
+/*----------  Picture Only Mode  ----------*/
+#react-root.ige_picturesOnly:not(.profile):not(.explore) article > header {
+	height: 40px !important;
+}
+
+#react-root.ige_picturesOnly:not(.profile):not(.explore) article > header > div:last-child > div:last-child {
+	display: flex;
+}
+
+.ige_picturesOnly header + div + div > div:first-of-type:not(:only-child) {
+	height: 0;
+}
+
+/* Hide comments */
+.ige_picturesOnly header + div + div > div:first-of-type:not(:only-child) > ul {
+	display: none;
+}
+
+/*----------  Hide Stories  ----------*/
+.ige_hideStories main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
+	display: none;
+}
+
+/*=============================================
 						"Chrome IG Story" fixes
 =============================================*/
 #rcr-anchor {
@@ -584,7 +595,6 @@ footer > div > nav {
 /*=============================================
 									Media Querys
 =============================================*/
-/** 3 column layout on smaller screens */
 @media (max-width: 1366px) {
 	:root {
 		--boxWidth: 49vw; /** 24 for 4 */

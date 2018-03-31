@@ -58,7 +58,7 @@
 		return JSON.parse(response)
 	}
 
-	class storage {
+	class Storage {
 		constructor() {
 			this.STORAGE = 'local'
 		}
@@ -101,7 +101,7 @@
 		}
 	}
 
-	const Storage = new storage()
+	window.IG_Storage = new Storage()
 
 	function getCookies(wanted) {
 		const cookies = document.cookie.split('; '),
@@ -151,7 +151,7 @@
 
 		start() {
 			if (this.firstNextMaxId === undefined) {
-				return Storage.get(this.endpoint, { items: [], nextMaxId: '' }).then(data => {
+				return window.IG_Storage.get(this.endpoint, { items: [], nextMaxId: '' }).then(data => {
 					this.firstNextMaxId = data.nextMaxId
 					this.items = data.items
 					return data
@@ -171,7 +171,7 @@
 
 		storeNext(data) {
 			console.log(data)
-			this.nextMaxId = data.next_max_id !== undefined ? String(data.next_max_id) : ''
+			this.nextMaxId = data.next_max_id !== undefined ? `${data.next_max_id}` : ''
 
 			return data
 		}
@@ -224,7 +224,7 @@
 			// Add (older) items
 			if (!match) this.items.push(...data.items)
 
-			Storage.set(this.endpoint, { items: this.items, nextMaxId: this.nextMaxId })
+			window.IG_Storage.set(this.endpoint, { items: this.items, nextMaxId: this.nextMaxId })
 
 			return this.items
 		}
