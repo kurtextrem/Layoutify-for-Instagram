@@ -1,3 +1,694 @@
+/*----------  Night mode  ----------
+
+--- Color scheme ---
+
+Text color:
+	Light grey: #757575
+
+Usernames:
+	Blue: #1976D2
+
+Article background,
+Searchbar selected:
+	Dark: #212121
+
+
+Navbar background,
+Feed background:
+	Darkest: #181818
+
+*/
+
+:root {
+	/* emptied */
+}
+
+body {
+	/* emptied */
+}
+
+body, footer {
+	background-color: #181818 !important;
+}
+
+/*----------  Performance  ----------*/
+/** Remove width limit */
+#mainFeed {
+	background-color: #181818;
+}
+
+/** Make the flex box layout row instead of column */
+#mainFeed > div:not(#rcr-anchor) > div > div:first-child > div {
+	/* emptied */
+}
+
+/** Make boxes equaly high and wide */
+#mainFeed div > article {
+	background: #212121;
+	border: none;
+	
+}
+
+/** Moves the img over the "prevent right click copy"-element */
+div > img {
+	/* emptied */
+}
+
+
+
 /*=============================================
-								Night Mode CSS
+						Slimmer Post Header
 =============================================*/
+div[role='dialog'] article > header,
+#react-root:not(.profile) article > header {
+	/* emptied */
+}
+
+div > main:first-child {
+	/* emptied */
+}
+
+div > main:only-child {
+	/* emptied */
+}
+
+div[role='dialog'] header + div + div,
+.post header + div + div {
+	/* emptied */
+}
+
+/*----------  Improve new post layout  ----------*/
+
+/** Invert all sprites **/
+/*
+[class*="coreSprite"] {
+	filter: invert(100%);
+}
+*/
+
+/** Invert **/
+.coreSpriteHeartOpen, .coreSpriteOptionsEllipsis, .coreSpriteMobileNavSettings {
+	filter: invert(60%);
+}
+
+/** Color username in header **/
+#mainFeed > div > div > div > div > article > header > div > div > div > a {
+	color: #1976D2;
+}
+
+/** Make the comments/description take the space it needs */
+#react-root:not(.profile) header + div + div {
+	background: #212121;
+}
+
+#mainFeed header + div + div {
+	/* emptied */
+}
+
+/** Row layout */
+div[role='dialog'] header + div + div,
+#react-root:not(.profile) header + div + div {
+	/* emptied */
+}
+
+/** Location, sponsored post, username in comments, liked by x, n likes, comment textarea **/
+#mainFeed > div > div > div > div > article > header > div > div > a,
+#mainFeed > div > div > div > div > article > header > div > div > span,
+#mainFeed > div > div > div > div > article > div > section > div,
+#mainFeed > div > div > div > div > article > div > section > div > a,
+#mainFeed > div > div > div > div > article > div > div > ul > li > a,
+#mainFeed > div > div > div > div > article > div > section > form > textarea {
+	color: #757575;
+}
+
+/** No border for header **/
+#mainFeed > div > div > div > div > article > header {
+	border: none;
+}
+
+/** Views / likes */
+div > section + section {
+	/* emptied */
+}
+
+/** Posted date */
+div > section + div + div {
+	/* emptied */
+}
+
+/** Larger timestamp */
+div > a > time {
+	/* emptied */
+}
+
+/** Grow comments */
+header + div + div > div:first-of-type {
+	/* emptied */
+	color: #757575;
+}
+
+/** Heart */
+header + div + div > section:first-child {
+	background-color: #212121;
+}
+
+/** Center heart */
+#mainFeed header + div + div > section:first-child > a {
+	/* emptied */
+}
+
+/** Hide useless comment icon */
+section > a[role='button'] + a[role='button'] {
+	/* emptied */
+}
+
+/** Add comment */
+header + div + div > section:last-child {
+	background-color: #212121;
+}
+
+/** Hide border above comment section **/
+#mainFeed > div > div > div > div > article > div > section {
+	border: none;
+}
+
+/* URL Usernames in comments */
+#mainFeed > div > div > div > div > article > div > div > ul > li > span > span > a {
+	color: #1976D2;
+}
+
+#mainFeed header + div + div > section:last-child {
+	/* emptied */
+}
+
+/** Dialog **/
+body > div > div > div > div > div > ul > li > button {
+	background: #212121 !important;
+	color: #757575 !important;
+}
+
+body > div > div > div > div > div > ul > li > button:hover {
+    background-color: #efefef !important;
+}
+
+body > div > div > div > div > div > ul > li {
+	border-bottom: none !important;
+}
+
+/*** Profile ***/
+#react-root > section > main {
+	background-color: #181818;
+}
+
+/** Bio **/
+#react-root > section > main > article > header > div,
+#react-root > section > main > article > header > div > ul > li > span > span,
+#react-root > section > main > article > header > div > ul > li > a > span,
+#react-root > section > main > article > header > div > div > a > span > button {
+	color: #757575;
+}
+
+/*** Explore ***/
+#react-root > section > main > div > div > div > div {
+	background: #212121;
+    border: none;
+}
+/*=============================================
+								Media Controls
+=============================================*/
+/** Always show media controls when playing */
+video::-webkit-media-controls-overlay-enclosure,
+video[loop]::-webkit-media-controls-enclosure,
+video[loop]::-webkit-media-controls {
+	/* emptied */
+}
+
+/** Hide media controls when not playing on home */
+#mainFeed video:not([loop])::-webkit-media-controls-enclosure {
+	/* emptied */
+}
+
+/** Always show media controls on single posts */
+.post video::-webkit-media-controls-enclosure {
+	/* emptied */
+}
+
+/** Makes the multiple videos/images dots visible */
+/** issues#17 */
+div > div + a + div,
+div > div + [style='position: static;'] > a,
+/** Sprites */ .coreSpriteLikeAnimationHeart,
+.coreSpriteSidecarIconLarge,
+.coreSpriteUserTagIndicator,
+.coreSpriteVideoIconLarge,
+.coreSpriteRightChevron,
+.coreSpriteLeftChevron {
+	/* emptied */
+}
+
+/** Move multiple videos/images dots and make them more visible */
+.post td > div {
+	/* emptied */
+}
+
+/*=============================================
+						Mark Videos in the Feed
+=============================================*/
+a.videoSpritePlayButton + div + div {
+	/* emptied */
+}
+
+/** Hide "Click video for audio" */
+a.videoSpritePlayButton + div {
+	/* emptied */
+}
+
+/*=============================================
+										Nav Bar
+=============================================*/
+nav > div + div > div {
+	background-color: #181818 !important;
+}
+
+/** Hide "Open in App" */
+nav > div > div > div:last-of-type:not(:only-child) {
+	/* emptied */
+}
+
+/** Search arrow */
+nav input + span + div + div > div:first-of-type {
+	border: solid 11px #e6e6e6;
+}
+#react-root > section > nav > div > div > div > div > div:nth-child(4) > div {
+  background: #212121;
+}
+#react-root > section > nav > div > div > div > div > div:nth-child(4) > div:after {
+  content: none;
+}
+
+/** Black navbar **/
+#react-root > section > nav {
+	background-color: #181818;
+}
+
+/** Logos in navbar **/
+.coreSpriteDesktopNavActivity, .coreSpriteDesktopNavExplore, .coreSpriteDesktopNavLogoAndWordmark, .coreSpriteDesktopNavProfile {
+	filter: invert(60%);
+}
+
+/** Searchbar **/
+#react-root > section > nav > div > div > div > div > div:nth-child(2),
+#react-root > section > nav > div > div > div > div > input {
+	color: #757575;
+	background-color: #212121;
+    border: none;
+}
+
+/* Search results */
+/* List */
+#react-root > section > nav > div > div > div > div > div > div {
+	border: none;
+}
+#react-root > section > nav > div > div > div > div > div > div > div {
+	background: #212121;
+}
+
+/* List items */
+#react-root > section > nav > div > div > div > div > div > div > div > a {
+	border-bottom: none;
+}
+#react-root > section > nav > div > div > div > div > div > div > div > a:hover,
+/* Hotfix, maybe disable this behaviour using JS? */
+._5tsk5 {
+	background: #181818;
+}
+
+#react-root > section > nav > div > div > div > div > div > div > div > a > div > div > div {
+	color: #757575;
+}
+
+/* Notifications */
+/* List */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div {
+	background: #212121;
+	border: none;
+	box-shadow: none;
+}
+
+/* Arrow */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div {
+	background: #212121;
+	box-shadow: none;
+}
+
+/* List items */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div > ul > li {
+	background: #212121;
+}
+
+#react-root > section > nav > div > div > div > div > div > div > div > div > div > ul > li:after {
+	border: none;
+}
+
+/* Text */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div > ul > li > div {
+	color: #757575;
+}
+
+/* Usernames */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div > ul > li > div > a {
+	color: #1976D2;
+}
+
+/* "Follow" button */
+#react-root > section > nav > div > div > div > div > div > div > div > div > div > ul > li > div > span > button {
+	background: #181818;
+	border-color: #1976D2;
+	color: #757575;
+}
+
+/* "Subscribed" button */
+/*._t78yp {
+	background: #181818;
+	border-color: #dbdbdb;
+	color: #757575;
+} */
+
+
+/*=============================================
+					Stories experiment issues#20
+=============================================*/
+#mainFeed > div:first-child:not(#rcr-anchor) {
+	/* emptied */
+}
+
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child {
+	/* emptied */
+}
+
+/** All children */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div {
+	/* emptied */
+}
+
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr {
+	/* emptied */
+}
+
+/** Owners Story */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > div:first-child {
+	/* emptied */
+}
+
+/* Stories / watch all */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div {
+	/* emptied */
+}
+
+/** Other Stories */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div {
+	/* emptied */
+}
+
+/** Other stories container */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div {
+	/* emptied */
+}
+
+/** Story Items */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div {
+	/* emptied */
+}
+
+/** Story Items Inner */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > a,
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr:first-of-type + div + div > div > div > div:last-child * {
+	/* emptied */
+}
+
+/** Nav */
+/**! @TODO: Temporary solution, best would be moving it down to the loading spinner via absolute positioning */
+#mainFeed > div:first-child:not(#rcr-anchor) + div:last-child > hr + div:last-child {
+	/* emptied */
+}
+
+/*=============================================
+										Spinner
+=============================================*/
+#react-root:not(.profile) #mainFeed > div:not(#rcr-anchor) > div > div:last-child > div,
+/** Profile spinner */ .profile main > article > div > div:last-child {
+	/* emptied */
+}
+
+/*=============================================
+										Toast
+=============================================*/
+section > footer + div {
+	/* emptied */
+}
+
+/*=============================================
+										Post
+=============================================*/
+div[role='dialog'] article,
+.post article {
+	background: #212121;
+}
+
+/** Center the image */
+div[role='dialog'] article,
+#react-root:not(.home) article {
+	/* emptied */
+}
+
+/** Improve picture quality */
+div > img {
+	/* emptied */
+}
+
+/*=============================================
+									Post Viewer
+=============================================*/
+/* Username */
+body > div > div > div > div > div > article > header > div > div > div > a {
+	color: #1976D2 !important;
+}
+
+/* Location */
+body > div > div > div > div > div > article > header > div > div > a {
+	color: #757575 !important;
+}
+
+/* Likes */
+body > div > div > div > div > div > article > div > section > div > a {
+	color: #757575 !important;
+}
+
+/* Comments: Usernames */
+body > div > div > div > div > div > article > div > div > ul > li > a {
+	color: #757575 !important;
+}
+
+/* Hashtags */
+body > div > div > div > div > div > article > div > div > ul > li > span > a {
+	color: #1976D2 !important; 
+}
+
+/* Comment textarea */
+body > div > div > div > div > div > article > div > section > form > textarea {
+	color: #757575 !important;
+}
+
+/* No border-top */
+body > div > div > div > div > div > article > div > section {
+	border-top: none !important;
+}
+
+/* Standalone */
+/* Background of post */
+#react-root > section > main > div > div > article {
+  background: #212121;
+  border: none;
+}
+
+/* Usernames */
+#react-root > section > main > div > div > article > header > div > div > div > a,
+#react-root > section > main > div > div > article > div > div > ul > li:nth-child(1) > a,
+#react-root > section > main > div > div > article > div > div > ul > li:nth-child(1) > span > a,
+#react-root > section > main > div > div > article > div > div > ul > li > span > a {
+  color: #1976D2;
+}
+
+/* Usernames comment, like counter, text input, location */
+#react-root > section > main > div > div > article > div > div > ul > li > a,
+#react-root > section > main > div > div > article > div > section > div > a,
+#react-root > section > main > div > div > article > div > section > form > textarea,
+#react-root > section > main > div > div > article > header > div > div > a {
+  color: #757575;
+}
+
+
+/*=============================================
+									Profile
+=============================================*/
+/** Show likes and so on on hover */
+.profile a:hover > div:last-child {
+	/* emptied */
+}
+
+/* Optimize profile picture */
+#react-root > section > main > article > header > div > div {
+  background-color: #181818;
+}
+
+/* List subscribers/subscribed */
+body > div:nth-child(12) > div > div > div > div > div,
+body > div:nth-child(12) > div > div > div > div > div > ul {
+  color: #757575;
+}
+
+/* Usernames */
+body > div:nth-child(12) > div > div > div > div > div > ul > li {
+  border-bottom: none;
+}
+body > div:nth-child(12) > div > div > div > div > div > ul > li > div > div > div > div > a {
+  color: #1976D2;
+}
+
+/*=============================================
+									Explore
+=============================================*/
+/* Usernames */
+#react-root > section > main > div > div > div > div > div > div > a {
+  color: #1976D2;
+}
+
+/* "See all" */
+#react-root > section > main > div > ul {
+  background: #212121;
+  border: none;
+}
+/* No border */
+#react-root > section > main > div > ul > li {
+  border-bottom: none;
+}
+/* Usernames list */
+#react-root > section > main > div > ul > li > div > div > div > div > div > a {
+  color: #757575;
+}
+
+/*=============================================
+									Footer
+=============================================*/
+footer > div {
+	/* emptied */
+}
+
+footer > div > nav {
+	/* emptied */
+}
+
+/*=============================================
+									Extended
+=============================================*/
+/** Extended Marker */
+.extended--btn__new::after {
+	/* emptied */
+}
+
+/*=============================================
+									Settings
+=============================================*/
+/* Main */
+#react-root > section > main > div {
+	/*background-color: #212121;*/
+	border: none;
+	color: #757575;
+}
+
+/* Sidebar */
+#react-root > section > main > div > ul > li > a {
+	color: #757575;
+}
+#react-root > section > main > div > ul > li > a:hover {
+	background-color: #191919;
+}
+
+/* Checkboxes */
+#react-root > section > main > div > article > div > div > div > label > div::before,
+#react-root > section > main > div > article > div > div > label > div::before {
+	border-bottom: 2px solid #757575;
+	border-left: 2px solid #757575;
+}
+
+/* Textareas */
+#react-root > section > main > div > article > div > form > textarea {
+	color: #757575;
+}
+
+/* Selected item */
+._t0stc {
+	background: #181818;
+}
+
+
+/*=============================================
+						"Chrome IG Story" fixes
+=============================================*/
+#rcr-anchor {
+	/* emptied */
+}
+
+#rcr-anchor > div {
+	/* emptied */
+}
+
+/* Username color */
+div[id^="igs_"] > span {
+	color: #757575 !important;
+}
+
+/* Edge Fade */
+.trayContainerEdgeFade {
+	background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(24,24,24,1) 100%);
+}
+
+
+/*=============================================
+									Media Querys
+=============================================*/
+
+/** 3 column layout on smaller screens */
+@media (max-width: 1366px) {
+	/* emptied */
+}
+
+/*=============================================
+								Mac OS Scrollbar
+=============================================*/
+::-webkit-scrollbar {
+	/* emptied */
+}
+
+::-webkit-scrollbar:horizontal {
+	/* emptied */
+}
+/* hover effect for both scrollbar area, and scrollbar 'thumb' */
+::-webkit-scrollbar:hover {
+	/* emptied */
+}
+
+/* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+::-webkit-scrollbar-thumb {
+	/*transition: background-color 1s linear;*/
+}
+
+::-webkit-scrollbar-thumb:vertical,
+::-webkit-scrollbar-thumb:horizontal {
+	/* emptied */
+}
+
+::-webkit-scrollbar-thumb:vertical:active,
+::-webkit-scrollbar-thumb:horizontal:active {
+	/* emptied */
+}
