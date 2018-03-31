@@ -1,3 +1,217 @@
 /*=============================================
 								Night Mode CSS
 =============================================*/
+
+:root {
+	--blue: #1976D2;
+	
+	--light-grey: #999;
+	--grey: #3b3b3b;
+	--dark: #262626;
+	--very-dark: #181818;
+}
+
+
+/*=============================================
+									Feed
+=============================================*/
+
+/* Body */
+body,
+/* Navbar */
+#react-root > section > nav > div > div,
+/* Main */
+#react-root > section > main,
+/* Footer */
+#react-root > section > footer {
+	background-color: var(--very-dark);
+}
+
+/* Icons in Navbar */
+.coreSpriteDesktopNavLogoAndWordmark,
+.coreSpriteDesktopNavExplore,
+.coreSpriteDesktopNavActivity,
+.coreSpriteDesktopNavProfile,
+.coreSpriteOptionsEllipsis,
+.coreSpriteHeartOpen {
+	filter: invert(60%);
+}
+
+/* Stories: show all stories */
+#react-root > section > main > section > div > div > a,
+/* Stories: usernames */
+#react-root > section > main > section > div > div > div > div > a > div > div > span,
+
+/* Username Uploader */
+#react-root > section > main > section > div > div > div > article > header > div > div > div > a,
+/* Comments: tagged usernames */
+#react-root > section > main > section > div > div > div > article > div > div > ul > li > span > span > a {
+	color: var(--blue);
+}
+
+/* Header of post */
+#react-root > section > main > section > div > div > div > article,
+/* Description/comments/comment input */
+#react-root:not(.profile) header + div + div {
+	background: var(--dark);
+}
+
+/* Stories: "Stories" */
+#react-root > section > main > section > div > div > span,
+/* Stories: time */
+#react-root > section > main > section > div > div > div > div > a > div > div > time,
+/* Location */
+#react-root > section > main > section > div > div > div > article > header > div > div > a,
+/* Date */
+#react-root > section > main > section > div > div > div > article > div > div > a,
+/* Counter: likes */
+#react-root > section > main > section > div > div > div > article > div > section > div > a,
+/* Counter: views */
+#react-root > section > main > section > div > div > div > article > div > section > div,
+/* Comments: usernames */
+#react-root > section > main > section > div > div > div > article > div > div > ul > li > a,
+/* Comments: comments */
+#react-root > section > main > section > div > div > div > article > div > div,
+/* Comments: input */
+#react-root > section > main > section > div > div > div > article > div > section > form > textarea {
+	color: var(--light-grey);
+}
+
+/* No borders: around post and in header of post */
+#react-root > section > main > section > div > div > div > article,
+#react-root > section > main > section > div > div > div > article > header,
+/* above like button and comment input */
+#react-root > section > main > section > div > div > div > article > div > section {
+	border: none;
+}
+
+
+/*=============================================
+									Profile
+=============================================*/
+
+/* Username */
+#react-root > section > main > article > header > section > div > h1,
+/* Follow button */
+#react-root > section > main > article > header > section > div > span > span > button,
+/* Posts, followers, following */
+#react-root > section > main > article > header > section > ul,
+#react-root > section > main > article > header > section > ul > li > span > span,
+#react-root > section > main > article > header > section > ul > li > a > span,
+/* Description */
+#react-root > section > main > article > header > section > div,
+/* Suggested: usernames */
+#react-root > section > main > article > div > div > div > div > div > ul > li > div > div > div > a {
+	color: var(--light-grey);
+}
+
+/* 3 dots next to follow button */
+body > div > div > div > div > ul > li > button {
+	background: var(--very-dark)!important;
+	color: var(--light-grey)!important;
+}
+
+/* Followed by */
+#react-root > section > main > article > header > section > div > span > a {
+	color: var(--blue);
+}
+
+.coreSpriteDropdownArrowGrey9 {
+	filter: invert(60%);
+}
+
+/* Suggested */
+#react-root > section > main > article > div {
+	background-color: var(--dark);
+	border: none;
+}
+#react-root > section > main > article > div > div > div > div > div > ul > li > div > div {
+	background: var(--grey);
+	border: none;
+}
+
+
+/*=============================================
+									Viewer (popup)
+=============================================*/
+
+/* Header, comments, ... */
+body > div > div > div > div > article {
+	background-color: var(--dark);
+}
+
+/* Header: username */
+body > div > div > div > div > article > header > div > div > div > a,
+/* Header: little dot */
+body > div > div > div > div > article > header > div > div > div > span,
+/* Header: follow button */
+body > div > div > div > div > article > header > div > div > div > span > button,
+/* Header: location */
+body > div > div > div > div > article > header > div > div > a,
+/* Header: time */
+body > div > div > div > div > article > div > div > a > time,
+/* Header: likes */
+body > div > div > div > div > article > div > section > div > a > span,
+body > div > div > div> div > article > div > section > div > a,
+
+/* Comments: usernames */
+body > div > div > div > div > article > div > div > ul > li > a,
+body > div > div > div > div > article > div> div > ul > li > span,
+/* Comments: input */
+body > div > div > div > div > article > div > section > form > textarea {
+	color: var(--light-grey)!important;
+}
+
+/* Comments: tagged users */
+body > div > div > div > div > article > div > div > ul > li > span > a {
+	color: var(--blue)!important;
+}
+
+/* No borders below header and comments */
+body > div > div > div > div > article > header,
+body > div > div > div > div > article > div > section {
+	border: none!important;
+}
+
+
+/*=============================================
+									Viewer (separate page)
+=============================================*/
+
+/* Header, comments, ... */
+#react-root > section > main > div > div > article {
+	background-color: var(--dark);
+}
+
+/* Header: username */
+#react-root > section > main > div > div > article > header > div > div > div > a, 
+/* Header: little dot */
+#react-root > section > main > div > div > article > header > div > div > div > span,
+/* Header: follow button */
+#react-root > section > main > div > div > article > header > div > div > div > span > button,
+/* Header: location */
+#react-root > section > main > div > div > article > header > div > div > a,
+/* Header: time */
+#react-root > section > main > div > div > article > div > div > a > time,
+/* Header: likes */
+#react-root > section > main > div > div > article > div > section > div > a,
+
+/* Comments: usernames */
+#react-root > section > main > div > div > article > div > div > ul > li > a,
+#react-root > section > main > div > div > article > div > div > ul > li > span > span,
+/* Comments: input */
+#react-root > section > main > div > div > article > div > section > form > textarea {
+	color: var(--light-grey)!important;
+}
+
+/* Comments: tagged users */
+#react-root > section > main > div > div > article > div > div > ul > li > span > a {
+	color: var(--blue)!important;
+}
+
+/* No borders around post, below header and comments */
+#react-root > section > main > div > div > article,
+#react-root > section > main > div > div > article > header,
+#react-root > section > main > div > div > article > div > section {
+	border: none;
+}
