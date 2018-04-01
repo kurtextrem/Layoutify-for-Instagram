@@ -243,13 +243,6 @@
 		})
 	}
 
-	function injectNight() {
-		const date = new Date()
-		if (date.getHours() >= 19) {
-			injectCSS('night')
-		}
-	}
-
 	function addNamesToStories() {
 		const list = document.querySelectorAll(
 			'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div > a > div > div > span'
@@ -298,6 +291,7 @@
 		}
 	}
 
+	let OPTIONS = null
 	const OPTS_MODE = {
 		blockStories(value) {
 			for (let i = 0; i < value.length; ++i) {
@@ -313,9 +307,11 @@
 		klass(cls) {
 			root.classList.add(cls)
 		},
-		/*night(arg) {
-			injectNight()
-		},*/
+		night(arg) {
+			const hour = new Date().getHours()
+			if ((hour >= OPTIONS.nightModeStart && hour < OPTIONS.nightModeEnd) || OPTIONS.nightModeStart === OPTIONS.nightModeEnd)
+				injectCSS('night')
+		},
 		only3Dot(arg) {
 			$('#ige_style').remove()
 		},
@@ -323,7 +319,9 @@
 	const OPTS = {
 		// blockPosts: null, // []
 		blockStories: OPTS_MODE.blockStories, // []
-		//night: OPTS_MODE.night,
+		night: OPTS_MODE.night,
+		nightModeStart: undefined,
+		nightModeEnd: undefined,
 		picturesOnly: OPTS_MODE.klass,
 		hideStories: OPTS_MODE.klass,
 		hideRecommended: OPTS_MODE.klass,
@@ -332,10 +330,12 @@
 		rows: OPTS_MODE.rows,
 		// indicateFollowing: true
 	}
+
 	function loadOptions() {
 		window.IG_Storage.get('options', null)
 			.then(function cb(options) {
 				if (options === null) return options
+				OPTIONS = options
 
 				for (const optName in options) {
 					const oFn = OPTS[optName]

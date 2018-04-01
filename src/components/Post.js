@@ -117,7 +117,7 @@ export default class Post extends Component {
 	}
 
 	componentWillUnmount() {
-		if (this.props.initial && this.ref !== undefined) observer.unobserve(this.ref)
+		if (this.props.initial && this.ref) observer.unobserve(this.ref)
 		this.ref = null
 	}
 

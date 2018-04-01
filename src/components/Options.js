@@ -1,5 +1,5 @@
 import bind from 'autobind-decorator'
-import { Button, Col, Container, Form, FormGroup, Input, Label } from 'reactstrap'
+import { Button, Col, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap'
 import { Component, createElement } from 'nervjs'
 import { Storage, formToJSON, i18n } from './Utils'
 
@@ -7,7 +7,9 @@ const Options = (items, render) => Object.keys(items).map(render)
 const OPTS = {
 	// blockPosts: null, // [] // @TODO: This probably breaks the VL
 	blockStories: null, // []
-	//night: false,  // @TODO: Night mode not yet ready
+	night: false,
+	nightModeStart: 0,
+	nightModeEnd: 0,
 	picturesOnly: false,
 	hideStories: false,
 	//hideRecommended: false, // @TODO: Implement
@@ -15,6 +17,26 @@ const OPTS = {
 	only3Dot: false,
 	rows: window.innerWidth < 1367 ? 2 : 4,
 	// indicateFollowing: true // @TODO: Implement
+}
+
+const OPTS_ADDITIONAL = {
+	rows: {
+		min: 2,
+		step: 2,
+		max: 6,
+	},
+	nightModeStart: {
+		min: 0,
+		step: 1,
+		max: 24,
+		help: true,
+	},
+	nightModeEnd: {
+		min: 0,
+		step: 1,
+		max: 24,
+		help: true,
+	},
 }
 
 export default class About extends Component {
@@ -79,54 +101,61 @@ export default class About extends Component {
 		return nextState !== this.state
 	}
 
+	renderLabel(id) {
+		return (
+			<Label for={id} sm={3}>
+				{i18n(id)}
+			</Label>
+		)
+	}
+
+	renderHelp(id) {
+		return <FormText color="muted">{i18n(`${id}_help`)}</FormText>
+	}
+
 	@bind
-	renderOptions(id) {
-		const value = this.state.options[id]
-		if (typeof value === 'boolean')
-			return (
-				<FormGroup key={id} row>
-					<Label for={id} sm={3}>
-						{i18n(id)}
-					</Label>
-					<Col sm={9}>
-						<Input type="checkbox" name={id} id={id} checked={value ? true : undefined} />
-					</Col>
-				</FormGroup>
-			)
+	renderOption(key) {
+		return (
+			<option key={key} keyalue={key} onDoubleClick={this.remove} onContextMenu={this.remove}>
+				{key}
+			</option>
+		)
+	}
+
+	@bind
+	renderBasedOnType(id, value, additional) {
+		if (typeof value === 'boolean') return <Input type="checkbox" name={id} id={id} checked={value ? true : undefined} />
 		if (Array.isArray(value) || value === null)
+			// @TODO: Fragments
 			return (
-				<FormGroup key={id} row>
-					<Label for={id} sm={3}>
-						{i18n(id)}
-					</Label>
-					<Col sm={9}>
-						<Input type="select" name={id} multiple>
-							{value !== null &&
-								value.map(v => (
-									<option key={v} value={v} onDoubleClick={this.remove} onContextMenu={this.remove}>
-										{v}
-									</option>
-								))}
-						</Input>
-						<Input type="text" name={`${id}_add`} placeholder="Instagrame Username" onKeyUp={this.add} />
-						<Button type="button" onClick={this.add}>
-							Add
-						</Button>
-					</Col>
-				</FormGroup>
+				<div>
+					<Input type="select" name={id} multiple>
+						{value !== null && value.map(this.renderOption)}
+					</Input>
+					<Input type="text" name={`${id}_add`} placeholder="Instagrame Username" onKeyUp={this.add} />
+					<Button type="button" onClick={this.add}>
+						Add
+					</Button>
+				</div>
 			)
 		if (Number.isInteger(value))
-			return (
-				<FormGroup key={id} row>
-					<Label for={id} sm={3}>
-						{i18n(id)}
-					</Label>
-					<Col sm={9}>
-						<Input type="number" name={id} min="2" max="6" step="2" value={value} />
-					</Col>
-				</FormGroup>
-			)
+			return <Input type="number" name={id} min={additional.min} max={additional.max} step={additional.step} value={value} />
 		return null
+	}
+
+	@bind
+	renderOptions(id) {
+		const additional = OPTS_ADDITIONAL[id]
+
+		return (
+			<FormGroup key={id} row>
+				{this.renderLabel(id)}
+				<Col sm={9}>
+					{this.renderBasedOnType(id, this.state.options[id], additional)}
+					{additional !== undefined && additional.help && this.renderHelp(id)}
+				</Col>
+			</FormGroup>
+		)
 	}
 
 	render() {
