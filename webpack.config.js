@@ -128,7 +128,7 @@ if (isProd) {
 			strict: true,
 		}),
 		// new webpack.IgnorePlugin(/prop-types$/),
-		new MiniCssExtractPlugin(),
+		new MiniCssExtractPlugin('main.css'),
 		//new StyleExtHtmlWebpackPlugin() // @TODO: Broken @ webpack4
 		// new ShakePlugin(), // https://github.com/indutny/webpack-common-shake/issues/23  // @TODO: Broken @ webpack4
 		// strip out babel-helper invariant checks
@@ -143,6 +143,19 @@ if (isProd) {
 				'process.env.NODE_ENV': JSON.stringify(ENV),
 			},
 		}),*/
+		new UglifyJSPlugin({
+			cache: true,
+			parallel: true,
+			uglifyOptions: {
+				ecma: 8,
+				compress: {
+					pure_funcs: pureFuncs,
+				},
+				output: {
+					comments: false,
+				},
+			},
+		}),
 		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
@@ -203,51 +216,7 @@ const first = {
 
 	optimization: isProd
 		? {
-				minimizer: [
-					new UglifyJSPlugin({
-						cache: true,
-						parallel: true,
-						sourceMap: true,
-						uglifyOptions: {
-							mangle: true,
-							comments: false,
-							compress: {
-								arrows: false,
-								booleans: false,
-								collapse_vars: false,
-								comparisons: false,
-								computed_props: false,
-								hoist_funs: false,
-								hoist_props: false,
-								hoist_vars: false,
-								if_return: false,
-								inline: false,
-								join_vars: false,
-								keep_infinity: true,
-								loops: false,
-								negate_iife: false,
-								properties: false,
-								reduce_funcs: false,
-								reduce_vars: false,
-								sequences: false,
-								side_effects: false,
-								switches: false,
-								top_retain: false,
-								toplevel: false,
-								typeofs: false,
-								unused: false,
-
-								// Switch off all types of compression except those needed to convince
-								// react-devtools that we're using a production build
-								conditionals: true,
-								dead_code: true,
-								evaluate: true,
-
-								pure_funcs: pureFuncs,
-							},
-						},
-					}),
-				],
+				minimizer: [],
 				splitChunks: {
 					cacheGroups: {
 						styles: {
@@ -287,7 +256,18 @@ const first = {
 			},
 			{
 				test: /\.cs{2}$/, // .css
-				use: isProd ? [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] : ['style-loader', 'css-loader'],
+				use: isProd
+					? [
+							MiniCssExtractPlugin.loader,
+							{
+								loader: 'css-loader',
+								options: {
+									importLoaders: 1,
+								},
+							},
+							'postcss-loader',
+					  ]
+					: ['style-loader', 'css-loader'],
 			},
 		],
 		noParse: isProd

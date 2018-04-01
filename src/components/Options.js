@@ -28,13 +28,13 @@ const OPTS_ADDITIONAL = {
 	nightModeStart: {
 		min: 0,
 		step: 1,
-		max: 24,
+		max: 23,
 		help: true,
 	},
 	nightModeEnd: {
 		min: 0,
 		step: 1,
-		max: 24,
+		max: 23,
 		help: true,
 	},
 }
@@ -116,7 +116,7 @@ export default class About extends Component {
 	@bind
 	renderOption(key) {
 		return (
-			<option key={key} keyalue={key} onDoubleClick={this.remove} onContextMenu={this.remove}>
+			<option key={key} value={key} onDoubleClick={this.remove} onContextMenu={this.remove}>
 				{key}
 			</option>
 		)
