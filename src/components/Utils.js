@@ -1,4 +1,13 @@
 export class XHR {
+	static checkStatus(response) {
+		if (response.ok) return response
+
+		const error = new Error(`HTTP Error ${response.statusText}`)
+		error.status = response.statusText
+		error.response = response
+		throw error
+	}
+
 	static parseJSON(response) {
 		return response.json()
 	}
@@ -8,36 +17,53 @@ export class XHR {
 			.fetch(url, options)
 			.then(XHR.checkStatus)
 			.then(XHR.parseJSON)
-	}
-
-	static checkStatus(response) {
-		if (response.ok) return response
-
-		const error = new Error(`HTTP Error ${response.statusText}`)
-		error.status = response.statusText
-		error.response = response
-		console.log(error)
-		throw error
+			.catch(console.error)
 	}
 }
 
-export class Storage {
+class Storage {
+	static instance = undefined
+
 	static STORAGE = 'local'
 
-	static set = (key, value) =>
-		new Promise((resolve, reject) => {
+	static getInstance(storage) {
+		if (this.instance === undefined) this.instance = new Storage(storage)
+		return this.instance
+	}
+
+	constructor(storage) {
+		if (Storage.instance !== undefined) return Storage.instance
+
+		Storage.STORAGE = storage
+	}
+
+	promise(cb) {
+		return new Promise((resolve, reject) => {
+			if (chrome.storage[Storage.STORAGE] === undefined) return reject('') // @TODO: Don't emit on SSR
+
+			try {
+				return cb(resolve, reject)
+			} catch (e) {
+				return reject(e)
+			}
+		})
+	}
+
+	set(key, value) {
+		return this.promise((resolve, reject) =>
 			chrome.storage[Storage.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
-		})
+		)
+	}
 
-	static get = (key, defaultValue) =>
-		new Promise((resolve, reject) => {
+	get(key, defaultValue) {
+		return this.promise((resolve, reject) =>
 			chrome.storage[Storage.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
-		})
+		)
+	}
 
-	static remove = key =>
-		new Promise((resolve, reject) => {
-			chrome.storage[Storage.STORAGE].remove(key, data => Storage.check(data, resolve, reject))
-		})
+	remove(key) {
+		return this.promise((resolve, reject) => chrome.storage[Storage.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
+	}
 
 	static check(data, resolve, reject) {
 		if (chrome.runtime.lastError) {
@@ -48,6 +74,8 @@ export class Storage {
 		return resolve(data)
 	}
 }
+const storage = new Storage('local')
+export { storage as Storage }
 
 export class Chrome {
 	static send(action, additional = {}) {

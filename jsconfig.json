@@ -5,7 +5,12 @@
 		"experimentalDecorators": true,
 		"checkJs": true,
 		"forceConsistentCasingInFileNames": true,
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": "./src",
+		"paths": {
+			"**/*": ["**/*"]
+		}
 	},
-	"exclude": ["dist"]
+	"exclude": ["node_modules", "dist"],
+	"include": ["src/**/*"]
 }

@@ -63,8 +63,10 @@ export default class PostsContainer extends Component {
 	}
 
 	@bind
-	async populateData() {
-		return this.handleData(await Storage.get(this.props.id, []))
+	populateData() {
+		return Storage.get(this.props.id, [])
+			.then(this.handleData)
+			.catch(console.error)
 	}
 
 	@bind
