@@ -19,6 +19,22 @@
 		"message": "Enable Night Theme",
 		"description": "Night mode setting."
 	},
+	"nightModeStart": {
+		"message": "Night Mode Start Hour",
+		"description": ""
+	},
+	"nightModeStart_help": {
+		"message": "Set this and end to the same number to enable night mode permanently.",
+		"description": ""
+	},
+	"nightModeEnd": {
+		"message": "Night Mode End Hour",
+		"description": ""
+	},
+	"nightModeEnd_help": {
+		"message": "Set this and start to the same number to enable night mode permanently.",
+		"description": ""
+	},
 	"picturesOnly": {
 		"message": "Show pictures only",
 		"description": "setting"

@@ -20,7 +20,7 @@
 		"description": "Night mode setting."
 	},
 	"nightModeStart": {
-		"message": "Night Mode Start Time",
+		"message": "Night Mode Start Hour",
 		"description": ""
 	},
 	"nightModeStart_help": {
@@ -28,7 +28,7 @@
 		"description": ""
 	},
 	"nightModeEnd": {
-		"message": "Night Mode End Time",
+		"message": "Night Mode End Hour",
 		"description": ""
 	},
 	"nightModeEnd_help": {
