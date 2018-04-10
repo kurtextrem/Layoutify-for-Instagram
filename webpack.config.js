@@ -23,6 +23,8 @@ const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const replaceBuffer = require('replace-buffer')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+//const glob = require('glob')
+//const PurifyCSSPlugin = require('purifycss-webpack')
 
 // const ShakePlugin = require('webpack-common-shake').Plugin
 // const WebpackMonitor = require('webpack-monitor')
@@ -138,6 +140,17 @@ if (isProd) {
 			},
 		}),*/
 		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
+		/*new PurifyCSSPlugin({
+			paths: glob
+				.sync(path.join(__dirname, 'src/components/*.js'))
+				.concat(glob.sync(path.join(__dirname, 'dist/*.html')))
+				.concat(glob.sync(path.join(__dirname, 'node_modules/reactstrap/dist/*.js'))),
+			verbose: true,
+			minimize: true,
+			purifyOptions: {
+				whitelist: ['*card*'],
+			},
+		}),*/
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
