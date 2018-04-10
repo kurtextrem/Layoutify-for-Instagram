@@ -339,7 +339,7 @@
 
 				for (const optName in options) {
 					const oFn = OPTS[optName]
-					if (oFn === undefined) break
+					if (oFn === undefined) continue
 
 					const optValue = options[optName]
 					if (typeof optValue === 'boolean') optValue && oFn(`ige_${optName}`)

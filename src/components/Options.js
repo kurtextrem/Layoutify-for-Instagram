@@ -23,7 +23,7 @@ const OPTS_ADDITIONAL = {
 	rows: {
 		min: 2,
 		step: 2,
-		max: 6,
+		max: 4,
 	},
 	nightModeStart: {
 		min: 0,
