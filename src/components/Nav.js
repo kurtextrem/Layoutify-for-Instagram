@@ -16,7 +16,7 @@ export default class Nav extends Component {
 			<Navbar color="faded" light toggleable className="mb-2 navbar-expand bg-light">
 				<Container>
 					<NavbarBrand href="/index.html">Improved for IG</NavbarBrand>
-					<NavI navbar className="mr-auto">
+					<NavI navbar className="grow-1">
 						<NavItem>
 							<NavLink className={getActive(location, 'liked') || location === '' ? 'active' : ''} href="#/">
 								Liked <i className="material-icons">favorite</i>
@@ -27,21 +27,22 @@ export default class Nav extends Component {
 								Saved <i className="material-icons">turned_in</i>
 							</NavLink>
 						</NavItem>
-					</NavI>
-					<NavI navbar className="d-">
-						<NavLink className={getActive(location, 'options')} href="#/options">
-							Options <i className="material-icons">build</i>
-						</NavLink>
-					</NavI>
-					<NavI navbar className="d-none">
-						<NavLink className={getActive(location, 'changelog')} href="#/about">
-							Changelog <i className="material-icons">description</i>
-						</NavLink>
-					</NavI>
-					<NavI navbar>
-						<NavLink className={getActive(location, 'about')} href="#/about">
-							<i className="material-icons">help</i>
-						</NavLink>
+
+						<NavItem className="ml-auto">
+							<NavLink className={getActive(location, 'options')} href="#/options">
+								Options <i className="material-icons">build</i>
+							</NavLink>
+						</NavItem>
+						<NavItem className="d-none">
+							<NavLink className={getActive(location, 'changelog')} href="#/about">
+								Changelog <i className="material-icons">description</i>
+							</NavLink>
+						</NavItem>
+						<NavItem>
+							<NavLink className={getActive(location, 'about')} href="#/about">
+								<i className="material-icons">help</i>
+							</NavLink>
+						</NavItem>
 					</NavI>
 				</Container>
 			</Navbar>

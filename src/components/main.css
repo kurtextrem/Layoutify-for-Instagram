@@ -31,8 +31,12 @@ main {
 	margin: 0 15px;
 }
 
+nav,
 .card-deck {
 	contain: layout style;
+}
+
+.card-deck {
 	position: relative;
 }
 
@@ -268,6 +272,13 @@ input[type='text'],
 input[type='number'] {
 	width: auto !important;
 	display: inline;
+}
+
+.star {
+	background: url(data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAQAAADI+WwIAAAAY0lEQVR42mOAAWM24xvGPDAeQjjc+L9xDqbwMaDwbWNmGDfK+A9QAAkC+eEgiRDjn6iCMB3eSDqiEObyIwnrIoRdgdyfxouMvwHpCoRwNdDNukBa0XiX8WGEsLcxJ5wdAnIkAO/0NprFngtJAAAAAElFTkSuQmCC);
+	width: 10px;
+	height: 10px;
+	display: inline-block;
 }
 
 /** Mac OS Scrollbar */

@@ -26,14 +26,18 @@ export default class About extends Component {
 					</a>.
 				</p>
 				<p>
-					This is a beta version. If you find any issues, please report any bugs on{' '}
+					If you find any issues, please report any bugs on{' '}
 					<a href="https://github.com/kurtextrem/Improved-for-Instagram/issues" target="_blank" rel="noopener">
 						GitHub
 					</a>{' '}
 					or mail me: <a href="mailto:kurtextrem@gmail.com">kurtextrem@gmail.com</a>.
 				</p>
 				<p>
-					I'd also very much appreciate ratings in the{' '}
+					I'd also very much appreciate <span class="star" />
+					<span class="star" />
+					<span class="star" />
+					<span class="star" />
+					<span class="star" /> ratings in the{' '}
 					<a
 						href="https://chrome.google.com/webstore/detail/improved-layout-for-insta/nekeeojpcbiehcignddhindbgacbghmi/reviews"
 						target="_blank"
@@ -61,6 +65,12 @@ export default class About extends Component {
 						this
 					</a>{' '}
 					tutorial.
+				</p>
+
+				<h3>Thanks to</h3>
+				<p>
+					Kelvin R. for contributing the night theme and all the bug reporters that have sent me mails. I always try my best to respond as
+					soon as possible.
 				</p>
 
 				<h3>Legal</h3>
