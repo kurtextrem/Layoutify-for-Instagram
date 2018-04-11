@@ -597,7 +597,6 @@ footer > div > nav {
 =============================================*/
 @media (max-width: 1366px) {
 	:root {
-		--boxWidth: 49vw; /** 24 for 4 */
 		--boxMarginRight: -1px;
 	}
 	main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {

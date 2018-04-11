@@ -350,6 +350,8 @@
 			.catch(console.error)
 	}
 
+	OPTS_MODE.rows(window.innerWidth < 1367 ? 2 : 4)
+
 	/**
 	 * Callback when DOM is ready.
 	 */
