@@ -324,6 +324,7 @@
 		nightModeEnd: undefined,
 		picturesOnly: OPTS_MODE.klass,
 		hideStories: OPTS_MODE.klass,
+		noSpaceBetweenPosts: OPTS_MODE.klass,
 		hideRecommended: OPTS_MODE.klass,
 		highlightOP: OPTS_MODE.highlightOP,
 		only3Dot: OPTS_MODE.only3Dot,

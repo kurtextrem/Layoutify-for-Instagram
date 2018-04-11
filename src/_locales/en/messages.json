@@ -62,5 +62,9 @@
 	"indicateFollowing": {
 		"message": "Following indicator",
 		"description": "setting"
+	},
+	"noSpaceBetweenPosts": {
+		"message": "No Space between Posts",
+		"description": "setting"
 	}
 }

@@ -12,6 +12,7 @@ const OPTS = {
 	nightModeEnd: 0,
 	picturesOnly: false,
 	hideStories: false,
+	noSpaceBetweenPosts: false,
 	//hideRecommended: false, // @TODO: Implement
 	//highlightOP: true, // @TODO: Implement
 	only3Dot: false,

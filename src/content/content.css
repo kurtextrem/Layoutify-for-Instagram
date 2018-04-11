@@ -578,6 +578,27 @@ footer > div > nav {
 	display: none;
 }
 
+/*----------  NoSpaceBetweenPosts  ----------*/
+.ige_noSpaceBetweenPosts main > section div > article {
+	margin-right: 0 !important;
+	margin-bottom: -1px !important;
+	border-radius: 0 !important;
+	border-bottom: 0 !important;
+}
+
+.ige_noSpaceBetweenPosts main > section div > article:not(:nth-child(4n)) {
+	border-right: 0 !important;
+}
+
+/* @TODO: Make this work for 2 row layout too */
+.ige_noSpaceBetweenPosts main > section div > article:not(:first-child):not(:nth-child(5n)) {
+	border-left: 0 !important;
+}
+
+.ige_noSpaceBetweenPosts main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+	justify-content: center;
+}
+
 /*=============================================
 						"Chrome IG Story" fixes
 =============================================*/
@@ -597,10 +618,9 @@ footer > div > nav {
 =============================================*/
 @media (max-width: 1366px) {
 	:root {
-		--boxMarginRight: -1px;
 	}
-	main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
-		justify-content: space-around;
+	main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+		justify-content: space-evenly;
 	}
 	.post > section > main > div {
 		max-width: 75vw !important;
