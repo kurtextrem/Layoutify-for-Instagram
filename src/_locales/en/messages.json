@@ -66,5 +66,21 @@
 	"noSpaceBetweenPosts": {
 		"message": "No Space between Posts",
 		"description": "setting"
+	},
+	"rowsFourBoxWidth": {
+		"message": "4-Row Posts Width",
+		"description": "setting"
+	},
+	"rowsFourBoxWidth_help": {
+		"message": "Only applies when the row option is set to 4.",
+		"description": "setting"
+	},
+	"rowsTwoBoxWidth": {
+		"message": "2-Row Posts Width",
+		"description": "setting"
+	},
+	"rowsTwoBoxWidth_help": {
+		"message": "Only applies when the row option is set to 2.",
+		"description": "setting"
 	}
 }

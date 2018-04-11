@@ -31,7 +31,6 @@ div > img {
 	z-index: 1;
 	/* autoprefixer: off */
 	image-rendering: -webkit-optimize-contrast;
-	/* autoprefixer: on */
 }
 
 /** Remove width limit */

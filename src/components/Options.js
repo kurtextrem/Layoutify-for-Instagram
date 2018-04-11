@@ -17,6 +17,8 @@ const OPTS = {
 	//highlightOP: true, // @TODO: Implement
 	only3Dot: false,
 	rows: window.innerWidth < 1367 ? 2 : 4,
+	rowsFourBoxWidth: 23,
+	rowsTwoBoxWidth: 40,
 	// indicateFollowing: true // @TODO: Implement
 }
 
@@ -25,6 +27,18 @@ const OPTS_ADDITIONAL = {
 		min: 2,
 		step: 2,
 		max: 4,
+	},
+	rowsFourBoxWidth: {
+		min: 20,
+		step: 1,
+		max: 24,
+		help: true,
+	},
+	rowsTwoBoxWidth: {
+		min: 34,
+		step: 1,
+		max: 49,
+		help: true,
 	},
 	nightModeStart: {
 		min: 0,

@@ -291,6 +291,10 @@
 		}
 	}
 
+	function setBoxWidth(i) {
+		documentElement.style.setProperty('--boxWidth', `${i}vw`)
+	}
+
 	let OPTIONS = null
 	const OPTS_MODE = {
 		blockStories(value) {
@@ -299,8 +303,13 @@
 			}
 		},
 		//highlightOP(arg) {},
+		_boxWidth(i) {},
 		rows(i) {
-			if (i !== 4) documentElement.style.setProperty('--boxWidth', `${100 / i - 1}vw`)
+			if (i !== 4) setBoxWidth(100 / i - 1)
+		},
+		boxWidth(i) {
+			if (OPTIONS.rows === 2 && i > 25 && i !== 49) setBoxWidth(i)
+			if (OPTIONS.rows === 4 && i < 25 && i !== 23) setBoxWidth(i)
 		},
 
 		// boolean toggles
@@ -329,6 +338,8 @@
 		highlightOP: OPTS_MODE.highlightOP,
 		only3Dot: OPTS_MODE.only3Dot,
 		rows: OPTS_MODE.rows,
+		rowsFourBoxWidth: OPTS_MODE.boxWidth,
+		rowsTwoBoxWidth: OPTS_MODE.boxWidth,
 		// indicateFollowing: true
 	}
 
