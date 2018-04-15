@@ -1,10 +1,10 @@
+import PropTypes from 'prop-types'
 import { Button, CardFooter } from 'reactstrap'
 import { Component, createElement } from 'nervjs'
 
 export default class PostFooter extends Component {
 	shouldComponentUpdate(nextProps) {
-		if (this.props.active !== nextProps.active) return true
-		return false
+		return this.props.active !== nextProps.active
 	}
 
 	render() {
@@ -17,4 +17,12 @@ export default class PostFooter extends Component {
 			</CardFooter>
 		)
 	}
+}
+
+PostFooter.propTypes = {
+	active: PropTypes.bool.isRequired,
+	btnClick: PropTypes.func.isRequired,
+	defaultClass: PropTypes.string.isRequired,
+	toggleClass: PropTypes.string.isRequired,
+	parent: PropTypes.string.isRequired,
 }

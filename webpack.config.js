@@ -148,7 +148,7 @@ if (isProd) {
 			verbose: true,
 			minimize: true,
 			purifyOptions: {
-				whitelist: ['*card*'],
+				whitelist: ['*card*', '*dots*'],
 			},
 		}),*/
 		new BundleAnalyzerPlugin({
@@ -304,19 +304,7 @@ const first = {
 		hints: isProd ? 'warning' : false,
 	},
 
-	node: isProd
-		? {
-				fs: false,
-				net: false,
-				tls: false,
-				console: false,
-				process: false,
-				Buffer: false,
-				__filename: false,
-				__dirname: false,
-				setImmediate: false,
-		  }
-		: {},
+	node: false,
 
 	stats:
 		isProd && STATS

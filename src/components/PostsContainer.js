@@ -1,5 +1,6 @@
 import Loading from './Loading'
 import Post from './Post'
+import PostDummy from './PostDummy'
 import PropTypes from 'prop-types'
 import Sentinel from './Sentinel'
 import bind from 'autobind-decorator'
@@ -134,7 +135,14 @@ export default class PostsContainer extends Component {
 
 		if (timeout === 200) return loading
 		if (timeout === 400 && (!items || items.length === 0)) return error
-		return null // first paint & items === null
+		return (
+			<CardDeck className="justify-content-center">
+				<PostDummy />
+				<PostDummy />
+				<PostDummy />
+				<PostDummy />
+			</CardDeck>
+		) // first paint & items === null
 	}
 }
 

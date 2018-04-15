@@ -1,4 +1,5 @@
 //import ImgWorker from './ImgWorker'
+import PropTypes from 'prop-types'
 import TimeAgo from 'react-timeago'
 import { Component, createElement } from 'nervjs'
 import { Media } from 'reactstrap'
@@ -35,4 +36,14 @@ export default class PostHeader extends Component {
 			</header>
 		)
 	}
+}
+
+PostHeader.propTypes = {
+	user: PropTypes.shape({
+		username: PropTypes.string.isRequired,
+		profile_pic_url: PropTypes.string.isRequired,
+		full_name: PropTypes.string,
+	}).isRequired,
+	taken_at: PropTypes.number.isRequired,
+	code: PropTypes.func.isRequired,
 }
