@@ -7,6 +7,10 @@ import bind from 'autobind-decorator'
 import { Children, Component, createElement } from 'nervjs'
 
 export class HashRouter extends Component {
+	static defaultProps = {
+		onLocationChanged: (childKey, params, cb) => cb(),
+	}
+
 	constructor(props) {
 		super(props)
 
@@ -138,10 +142,6 @@ export class HashRouter extends Component {
 
 HashRouter.propTypes = {
 	onLocationChanged: PropTypes.func,
-}
-
-HashRouter.defaultProps = {
-	onLocationChanged: (childKey, params, cb) => cb(),
 }
 
 export const Route = props => props.children

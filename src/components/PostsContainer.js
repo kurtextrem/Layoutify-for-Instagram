@@ -127,25 +127,30 @@ export default class PostsContainer extends Component {
 
 		if (items !== null)
 			return (
-				<CardDeck className="justify-content-center">
-					{Posts(items, this.renderPost)}
+				<div className="position-relative">
+					<CardDeck className="justify-content-center">{Posts(items, this.renderPost)}</CardDeck>
 					<Sentinel onVisible={this.handleScroll} />
-				</CardDeck>
+				</div>
 			)
 
 		if (timeout === 200) return loading
 		if (timeout === 400 && (!items || items.length === 0)) return error
 		return (
-			<CardDeck className="justify-content-center">
-				<PostDummy />
-				<PostDummy />
-				<PostDummy />
-				<PostDummy />
-			</CardDeck>
+			<div className="position-relative">
+				<CardDeck className="justify-content-center">
+					<PostDummy />
+					<PostDummy />
+					<PostDummy />
+					<PostDummy />
+				</CardDeck>
+				{null}
+			</div>
 		) // first paint & items === null
 	}
 }
 
 PostsContainer.propTypes = {
 	id: PropTypes.string.isRequired,
+	defaultClass: PropTypes.string.isRequired,
+	toggleClass: PropTypes.string.isRequired,
 }

@@ -1,6 +1,7 @@
 'use strict'
 
-let tab = null /* store tab id */
+/** Stores tab id */
+let tab
 /**
  * Called after a tab has been created.
  *

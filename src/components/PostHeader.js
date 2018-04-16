@@ -23,7 +23,7 @@ export default class PostHeader extends Component {
 		return (
 			<header className="media align-items-center card-block grow-0 pl-2 pr-2">
 				<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener">
-					<img src={updateCDN(user.profile_pic_url)} className="img-fluid profile-pic rounded mr-2" decoding="async" />
+					<img src={updateCDN(user.profile_pic_url)} className="img-fluid profile-pic rounded mr-2" alt="❌" decoding="async" />
 				</a>
 				<Media body>
 					<a href={`https://instagram.com/${user.username}`} target="_blank" rel="noopener">
