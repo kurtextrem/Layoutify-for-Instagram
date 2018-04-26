@@ -25,7 +25,7 @@ function updated() {
  * @param {Boolean} force
  */
 function createTab(id, force) {
-	if (tab !== null && !force) {
+	if (tab !== undefined && !force) {
 		chrome.tabs.update(tab.id, { active: true, url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` }, updated.bind(id))
 	} else {
 		chrome.tabs.create({ url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` }, create)

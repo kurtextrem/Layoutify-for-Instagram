@@ -33,6 +33,10 @@ div > img {
 	image-rendering: -webkit-optimize-contrast;
 }
 
+img + video {
+	z-index: 2;
+}
+
 /** Remove width limit */
 main > section {
 	flex-direction: column !important;
@@ -159,7 +163,7 @@ div > a > time {
 }
 
 /** Grow comments */
-header + div + div > div:first-of-type:not(:only-child) {
+#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	order: 2 !important;
 	width: 100%;
@@ -233,6 +237,10 @@ video::-internal-media-controls-overflow-menu-list {
 
 video[loop] {
 	z-index: 4;
+}
+
+video::-webkit-media-controls {
+	display: flex !important;
 }
 
 /** Always show media controls on single posts */
