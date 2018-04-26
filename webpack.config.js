@@ -47,7 +47,7 @@ const html = {
 	title: 'Improved Layout for Instagram',
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
-	inject: true,
+	inject: 'head',
 	ssr: params => `<div id="react-root">${isProd ? prerender('dist', params) : ''}</div>`,
 }
 
@@ -62,7 +62,8 @@ const plugins = [
 	}),
 	new HtmlWebpackPlugin(html),
 	new ScriptExtHtmlWebpackPlugin({
-		preload: ['.js', '.css'],
+		preload: ['.css'],
+		defaultAttribute: 'async',
 	}),
 	new CopyWebpackPlugin([
 		{ from: '*.html' },
@@ -196,7 +197,7 @@ const first = {
 
 	context: path.join(__dirname, 'src'),
 
-	entry: './',
+	entry: './index.js',
 
 	output: {
 		path: path.join(__dirname, 'dist'),

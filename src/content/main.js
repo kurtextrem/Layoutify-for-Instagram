@@ -135,7 +135,6 @@
 	function addClass() {
 		const pathname = location.pathname
 
-		if (location.pathname.indexOf('/stories/') !== -1) return (currentClass = 'stories')
 		if (
 			(hasNavigated && (location.search.indexOf('tagged') !== -1 || location.search.indexOf('taken-by=') !== -1)) ||
 			$('div[role="dialog"]') !== null
@@ -147,27 +146,32 @@
 		// home page
 		if (pathname === '/') {
 			$main.classList.add('home')
-			$main.classList.remove('profile', 'post', 'explore')
+			$main.classList.remove('profile', 'post', 'explore', 'stories')
 			return (currentClass = 'home')
+		}
+
+		if (pathname.indexOf('/stories/') !== -1) {
+			$main.classList.add('stories')
+			return (currentClass = 'stories')
 		}
 
 		// single post
 		if (pathname.indexOf('/p/') !== -1) {
 			$main.classList.add('post')
-			$main.classList.remove('profile', 'home', 'explore')
+			$main.classList.remove('profile', 'home', 'explore', 'stories')
 			return (currentClass = 'post')
 		}
 
 		// search results
 		if (pathname.indexOf('/explore/') !== -1) {
 			$main.classList.add('explore')
-			$main.classList.remove('profile', 'home', 'post')
+			$main.classList.remove('profile', 'home', 'post', 'stories')
 			return (currentClass = 'explore')
 		}
 
 		// profile page
 		$main.classList.add('profile')
-		$main.classList.remove('post', 'home', 'explore')
+		$main.classList.remove('post', 'home', 'explore', 'stories')
 		return (currentClass = 'profile')
 	}
 
