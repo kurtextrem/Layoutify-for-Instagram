@@ -143,7 +143,7 @@ export default class PostsContainer extends Component {
 					<PostDummy />
 					<PostDummy />
 				</CardDeck>
-				{null}
+				{''}
 			</div>
 		) // first paint & items === null
 	}

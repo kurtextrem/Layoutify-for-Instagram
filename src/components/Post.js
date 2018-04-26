@@ -7,7 +7,7 @@ import { Button, CardBody, CardText } from 'reactstrap'
 import { Chrome, getWorkerBlob, updateCDN } from './Utils'
 import { Component, createElement } from 'nervjs'
 
-let observer = null
+let observer
 function onChange(changes) {
 	for (let i = 0; i < changes.length; ++i) {
 		const change = changes[i]
@@ -19,7 +19,7 @@ function onChange(changes) {
 }
 
 let initiated = false,
-	worker = null
+	worker
 function init() {
 	initiated = true
 	if (window.IntersectionObserver !== undefined)
@@ -122,15 +122,21 @@ export default class Post extends Component {
 	}
 
 	render() {
-		const { data: { user = {}, caption = {} }, data, initial, defaultClass, toggleClass, parent } = this.props
+		const {
+			data: { user = {}, caption = {} },
+			data,
+			initial,
+			defaultClass,
+			toggleClass,
+			parent,
+		} = this.props
 		const { carouselIndex, active } = this.state
 		const isCarousel = this.isCarousel
 		const text = (caption && caption.text) || ''
 
 		const media = isCarousel ? data.carousel_media[carouselIndex] : data
 
-		let mediaElement = null,
-			candidate = null
+		let mediaElement, candidate
 		if (media.media_type === 2) {
 			// video
 			candidate = media.video_versions[0]

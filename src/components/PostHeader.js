@@ -10,7 +10,7 @@ export default class PostHeader extends Component {
 		super(props)
 
 		this.state = {
-			date: new Date(+`${props.taken_at}000`),
+			date: props.taken_at !== 0 ? new Date(+`${props.taken_at}000`) : null,
 		}
 	}
 
@@ -20,6 +20,8 @@ export default class PostHeader extends Component {
 
 	render() {
 		const { user, code } = this.props
+		const { date } = this.state
+
 		return (
 			<header className="media align-items-center card-block grow-0 pl-2 pr-2">
 				<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener">
@@ -31,7 +33,7 @@ export default class PostHeader extends Component {
 					</a>
 				</Media>
 				<a href={`https://www.instagram.com/p/${code}`} target="_blank" rel="noopener">
-					<TimeAgo className="text-muted" date={this.state.date} />
+					{date !== null ? <TimeAgo className="text-muted" date={date} /> : <time className="text-muted" />}
 				</a>
 			</header>
 		)
