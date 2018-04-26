@@ -7,6 +7,7 @@ import './components/main.css'
 /* eslint-enable */
 
 const init = (fn, app, container) => fn(createElement(app), container)
+const ready = () => init(hydrate, App, document.body.children[2])
 
 if (module.hot) {
 	require('nerv-devtools')
@@ -23,4 +24,5 @@ if (module.hot) {
 	)
 }
 
-init(hydrate, App, document.body.children[2])
+if (document.readyState === 'interactive' || document.readyState === 'complete') ready()
+else document.addEventListener('DOMContentLoaded', ready)
