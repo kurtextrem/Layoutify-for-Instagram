@@ -284,12 +284,13 @@
 		)
 	}
 
-	const connection = navigator.connection.type
+	const connection = navigator.connection.type,
+		speed = navigator.connection.downlink
 	function fullPhoto(el) {
 		if (!el) return
 
 		el.decoding = 'async'
-		if (el.srcset !== '' && connection === 'wifi') {
+		if (el.srcset !== '' && connection === 'wifi' && speed > 3.0) {
 			const split = el.srcset.split(',')
 			el.src = split[split.length - 1].replace(' 1080w', '')
 		}
