@@ -7,7 +7,7 @@ color.
 
 [Chrome Web Store](https://chrome.google.com/webstore/detail/nekeeojpcbiehcignddhindbgacbghmi)
 
-![Screenshot](https://raw.githubusercontent.com/kurtextrem/Instagram-Extended/master/Screen.png "Logo Title Text 1")
+![Screenshot](https://raw.githubusercontent.com/kurtextrem/Instagram-Extended/master/src/webstore/night.png "Logo Title Text 1")
 
 ## Legal
 
