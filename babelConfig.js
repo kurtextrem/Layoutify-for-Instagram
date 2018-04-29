@@ -6,7 +6,7 @@ module.exports = (isProd, options = {}) => ({
 	babelrc: false,
 	comments: !isProd,
 	presets: [
-		resolve('@babel/preset-stage-0'),
+		[resolve('@babel/preset-stage-0'), { decoratorsLegacy: true }],
 		[
 			resolve('@babel/preset-env'),
 			{
