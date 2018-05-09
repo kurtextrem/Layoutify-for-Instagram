@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, FormGroup, FormText, Input, Label } from 
 import { Component, createElement } from 'nervjs'
 import { Storage, formToJSON, i18n } from './Utils'
 
-const Options = (items, render) => Object.keys(items).map(render)
+const Options = (items = {}, render) => Object.keys(items).map(render)
 const OPTS = {
 	// blockPosts: null, // [] // @TODO: This probably breaks the VL
 	blockStories: null, // []
@@ -145,7 +145,7 @@ export default class About extends Component {
 			return (
 				<div>
 					<Input type="select" name={id} multiple>
-						{value !== null && value.map(this.renderOption)}
+						{value && value.map(this.renderOption)}
 					</Input>
 					<Input type="text" name={`${id}_add`} placeholder="Instagrame Username" onKeyUp={this.add} />
 					<Button type="button" onClick={this.add}>
@@ -177,7 +177,7 @@ export default class About extends Component {
 		const { options } = this.state
 		return (
 			<Container ref={this.setRef}>
-				<Form onChange={this.save}>{Options(options || {}, this.renderOptions)}</Form>
+				<Form onChange={this.save}>{Options(options, this.renderOptions)}</Form>
 			</Container>
 		)
 	}

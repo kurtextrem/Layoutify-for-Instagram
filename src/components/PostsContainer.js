@@ -12,7 +12,7 @@ let initiated = false,
 	loading,
 	error
 
-const Posts = (items, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
+const Posts = (items = {}, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
 
 /* @TODO: Convert to static props, to free memory when unmounted  */
 function init() {
@@ -125,7 +125,7 @@ export default class PostsContainer extends Component {
 	render() {
 		const { items, timeout } = this.state
 
-		if (items !== null)
+		if (items)
 			return (
 				<div className="position-relative">
 					<CardDeck className="justify-content-center">{Posts(items, this.renderPost)}</CardDeck>

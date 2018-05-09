@@ -15,7 +15,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
-const pureFuncs = require('side-effects-safe').pureFuncs
+const pureFuncs = require('side-effects-safe').pureFuncsWithTypicalException // pureFuncsWithUnusualException
 //const ReplacePlugin = require('webpack-plugin-replace')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
@@ -140,7 +140,9 @@ if (isProd) {
 				'process.env.NODE_ENV': JSON.stringify(ENV),
 			},
 		}),*/
-		// new PrepackWebpackPlugin({ prepack: { delayUnsupportedRequires: true } }), // 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
+		/*new PrepackWebpackPlugin({
+			prepack: { delayUnsupportedRequires: true, abstractEffectsInAdditionalFunctions: true, reactEnabled: true },
+		}), // 04.05.18: Not compatible with Webpack 4; 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
 		/*new PurifyCSSPlugin({
 			paths: glob
 				.sync(path.join(__dirname, 'src/components/*.js'))
