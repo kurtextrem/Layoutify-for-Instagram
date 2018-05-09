@@ -163,6 +163,7 @@ div > a > time {
 }
 
 /** Grow comments */
+div[role='dialog'] header + div + div > div:first-of-type:not(:only-child),
 #react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	order: 2 !important;
