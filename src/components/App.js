@@ -7,7 +7,7 @@ import bind from 'autobind-decorator'
 import { Component, createElement } from 'nervjs'
 import { HashRouter, Route } from './HashRouter'
 
-export default class App extends Component {
+class App extends Component {
 	state = {
 		location: window.location.hash.replace('#/', ''),
 	}
@@ -50,3 +50,12 @@ export default class App extends Component {
 		)
 	}
 }
+
+// __optimizeReactComponentTree is only known to Prepack
+// so we wrap it in a conditional so the code still works
+// for local development testing without Prpeack
+if (typeof __optimizeReactComponentTree !== 'undefined') {
+	__optimizeReactComponentTree(App)
+}
+
+export default App
