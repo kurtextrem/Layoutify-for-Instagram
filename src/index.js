@@ -13,8 +13,16 @@ if (module.hot) {
 	require('nerv-devtools')
 	const { registerObserver } = require('react-perf-devtool')
 	const { whyDidYouUpdate } = require('why-did-you-update')
+	const Perfume = require('perfume.js').default
+	window.perf = new Perfume({
+		firstPaint: true,
+		firstContentfulPaint: true,
+		logging: true,
+		logPrefix: '⚡️',
+		timeToInteractive: true,
+	})
 
-	//registerObserver()
+	registerObserver()
 	//whyDidYouUpdate(Nerv)
 
 	module.hot.accept('./components/App', () =>
