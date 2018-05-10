@@ -28,10 +28,11 @@
 	 *
 	 * @param {Node} elem Element to observe
 	 * @param {MutationCallback} fn Mutation Callback
-	 * @return {MutationObserver}
+	 * @param {MutationOptions} options Options
+	 * @return {MutationObserver} Callback
 	 */
 	function observe(elem, fn, options) {
-		if (elem === null) return
+		if (!elem) return
 
 		const observer = new MutationObserver(fn)
 		observer.observe(elem, options)
@@ -44,54 +45,51 @@
 	 */
 	const root = document.getElementById('react-root')
 	observe(
-		root,
+		document.body,
 		mutations => {
 			for (let i = 0; i < mutations.length; ++i) {
-				var mutation = mutations[i].addedNodes
+				const mutation = mutations[i],
+					added = mutation.addedNodes
 
-				if (mutation.length === 1) {
-					var node = mutation[0],
-						nodeName = mutation[0].nodeName
-
-					//console.log(mutations[i])
-					if (nodeName === 'VIDEO') node.controls = 'true'
-					else if (nodeName === 'DIV' || nodeName === 'ARTICLE') {
-						var img = node.querySelector('img')
-						if (img !== null) img.decoding = 'async'
-					} else if (nodeName === 'IMG') {
-						node.decoding = 'async'
-					}
+				for (let x = 0; x < added.length; ++x) {
+					const el = added[x]
+					Promise.resolve()
+						.then(handleNode.bind(undefined, el, mutation))
+						.catch(console.error)
 				}
 			}
-
-			window.requestIdleCallback(onChange)
 		},
 		{ childList: true, subtree: true }
 	)
+
+	const handleNodeFns = {
+		DIV(node) {
+			node.querySelectorAll('img').forEach(fullPhoto)
+			node.querySelectorAll('video').forEach(addControls)
+		},
+		ARTICLE(node) {
+			handleNodeFns.DIV(node)
+		},
+
+		VIDEO: addControls,
+		IMG: fullPhoto,
+
+		SECTION(node) {
+			handleNodeFns.DIV(node)
+		},
+	}
+
+	function handleNode(node, mutation) {
+		const nodeName = node.nodeName
+		if (mutation.target.id === 'react-root' && nodeName === 'SECTION') onChange()
+		handleNodeFns[nodeName] !== undefined && handleNodeFns[nodeName](node)
+	}
 
 	/**
 	 * Callback when nodes are removed/inserted.
 	 */
 	function onChange() {
 		checkURL()
-		addControls()
-	}
-
-	/**
-	 * Add controls to all videos.
-	 */
-	function addControls() {
-		let addAuto = false
-		if (location.pathname.indexOf('/p/') !== -1) addAuto = true // preload on single posts
-
-		const elems = root.querySelectorAll('video')
-		for (let i = 0; i < elems.length; ++i) {
-			const elem = elems[i]
-
-			elem.controls = true
-
-			if (addAuto) elem.preload = 'auto'
-		}
 	}
 
 	let hasNavigated = false,
@@ -104,7 +102,7 @@
 		if (location.href !== prevUrl) {
 			prevUrl = location.href
 			hasNavigated = true
-			window.requestIdleCallback(onNavigate)
+			onNavigate()
 		}
 	}
 
@@ -112,27 +110,26 @@
 	 * Callback when an url navigation has happened.
 	 */
 	function onNavigate() {
-		window.requestAnimationFrame(() => window.requestAnimationFrame(addClass)) // double-rAF
-		if (currentClass === 'stories') fixVirtualList()
-		// always force highest quality
-		// if (currentClass === 'profile') fullPhoto($('canvas + span > img')) // @TODO: A day after I've released this feature, they denie access to higher quality photos. Coincidence?!
-		if (currentClass === 'post') {
-			const el = document.querySelectorAll('div > img')
-			fullPhoto(el[el.length - 1])
-		}
-		addControls()
+		decideClass()
+		console.log(currentClass)
+		window.requestIdleCallback(() =>
+			window.requestAnimationFrame(() => {
+				window.requestAnimationFrame(addClass)
+				if (currentClass === 'stories') fixVirtualList()
+			})
+		) // double-rAF
 	}
 
 	/**
-	 * Adds the correct class to the react root node.
+	 * Sets the correct currentClass.
 	 *
 	 * .home on the main homepage
 	 * .profile on user profiles
 	 * .post when a single post is open (also as modal)
 	 * .explore if the explore tab is open
-	 * `stories` when stories are open
+	 * .stories when stories are open
 	 */
-	function addClass() {
+	function decideClass() {
 		const pathname = location.pathname
 
 		if (
@@ -141,38 +138,27 @@
 		)
 			return (currentClass = '')
 
-		const $main = $('#react-root')
-
 		// home page
-		if (pathname === '/') {
-			$main.classList.add('home')
-			$main.classList.remove('profile', 'post', 'explore', 'stories')
-			return (currentClass = 'home')
-		}
+		if (pathname === '/') return (currentClass = 'home')
 
-		if (pathname.indexOf('/stories/') !== -1) {
-			$main.classList.add('stories')
-			return (currentClass = 'stories')
-		}
+		// stories
+		if (pathname.indexOf('/stories/') !== -1) return (currentClass = 'stories')
 
 		// single post
-		if (pathname.indexOf('/p/') !== -1) {
-			$main.classList.add('post')
-			$main.classList.remove('profile', 'home', 'explore', 'stories')
-			return (currentClass = 'post')
-		}
+		if (pathname.indexOf('/p/') !== -1) return (currentClass = 'post')
 
 		// search results
-		if (pathname.indexOf('/explore/') !== -1) {
-			$main.classList.add('explore')
-			$main.classList.remove('profile', 'home', 'post', 'stories')
-			return (currentClass = 'explore')
-		}
+		if (pathname.indexOf('/explore/') !== -1) return (currentClass = 'explore')
 
 		// profile page
-		$main.classList.add('profile')
-		$main.classList.remove('post', 'home', 'explore', 'stories')
 		return (currentClass = 'profile')
+	}
+
+	function addClass() {
+		if (currentClass === '' || root.classList.contains(currentClass)) return
+
+		root.classList.remove('home', 'profile', 'post', 'explore', 'stories')
+		root.classList.add(currentClass)
 	}
 
 	const Instagram = {
@@ -285,16 +271,28 @@
 	}
 
 	const connection = navigator.connection.type,
-		speed = navigator.connection.downlink,
-		fullRegex = / \d+w/
+		speed = navigator.connection.downlink
+
+	/**
+	 *
+	 * @param {HTMLImageElement} el Image
+	 */
 	function fullPhoto(el) {
 		if (!el) return
 
 		el.decoding = 'async'
-		if (el.srcset !== '' && connection === 'wifi' && speed > 3.0) {
-			const split = el.srcset.split(',')
-			el.src = split[split.length - 1].replace(fullRegex, '')
-		}
+		if (connection === 'wifi' && speed > 3.0) window.requestIdleCallback(() => (el.sizes = '1080px'))
+	}
+
+	/**
+	 * Adds controls to videos and preloads if needed.
+	 * @param {HTMLVideoElement} el Video
+	 */
+	function addControls(el) {
+		if (!el) return
+
+		el.controls = 'true'
+		if (currentClass === 'post' || currentClass === 'profile') el.preload = 'auto'
 	}
 
 	function setBoxWidth(i) {
@@ -377,8 +375,18 @@
 		const $elem = $('div > article')
 		if ($elem !== null) documentElement.style.setProperty('--boxHeight', `${$elem.offsetHeight}px`) // give boxes equal height
 
-		onNavigate()
+		decideClass()
+		addClass()
 		loadOptions()
+		onNavigate()
+		window.requestIdleCallback(() =>
+			window.requestAnimationFrame(() => {
+				window.requestAnimationFrame(() => {
+					document.body.querySelectorAll('video').forEach(addControls)
+					document.body.querySelectorAll('img').forEach(fullPhoto)
+				})
+			})
+		) // double-rAF
 
 		addExtendedButton()
 		addListener()
