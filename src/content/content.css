@@ -250,11 +250,6 @@ div[role='dialog'] video:not([loop])::-webkit-media-controls-overlay-play-button
 	display: none;
 }
 
-/** Always show media controls on single posts */
-.post video[loop]::-webkit-media-controls-enclosure {
-	z-index: 4;
-}
-
 /** Makes the multiple videos/images dots visible */
 /** issues#17 */
 div > div + a + div,
