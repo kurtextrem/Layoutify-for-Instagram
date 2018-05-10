@@ -244,8 +244,14 @@ video::-webkit-media-controls {
 	display: flex !important;
 }
 
+/** @TODO: Replace IG's play button with the native one once its been rolled out */
+div[role='dialog'] video:not([loop])::-webkit-media-controls-overlay-play-button,
+#react-root:not(.stories) video:not([loop])::-webkit-media-controls-overlay-play-button {
+	display: none;
+}
+
 /** Always show media controls on single posts */
-.post video::-webkit-media-controls-enclosure {
+.post video[loop]::-webkit-media-controls-enclosure {
 	z-index: 4;
 }
 
