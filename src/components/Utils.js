@@ -21,6 +21,7 @@ export class XHR {
 	}
 }
 
+// @TODO: https://github.com/domenic/async-local-storage/blob/master/README.md
 class Storage {
 	static instance = undefined
 

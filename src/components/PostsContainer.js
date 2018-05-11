@@ -122,6 +122,7 @@ export default class PostsContainer extends Component {
 		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} initial={this.initial < 2} />
 	}
 
+	// @TODO: Implement https://github.com/valdrinkoshi/virtual-list
 	render() {
 		const { items, timeout } = this.state
 

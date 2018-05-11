@@ -3,7 +3,7 @@
 
 	const document = window.document,
 		location = document.location,
-		documentElement = document.documentElement,
+		docEl = document.documentElement,
 		$ = e => document.querySelector(e)
 
 	function injectCSS(file) {
@@ -32,12 +32,17 @@
 	 * @return {MutationObserver} Callback
 	 */
 	function observe(elem, fn, options) {
-		if (!elem) return
-
 		const observer = new MutationObserver(fn)
-		observer.observe(elem, options)
+		if (elem) observer.observe(elem, options)
 
-		return observer
+		return {
+			observe(el) {
+				observer.observe(el, options) // MutationObservers have no unobserve, so we just return an observe function.
+			},
+			disconnect() {
+				observer.disconnect()
+			},
+		}
 	}
 
 	/**
@@ -85,16 +90,10 @@
 		handleNodeFns[nodeName] !== undefined && handleNodeFns[nodeName](node)
 	}
 
-	/**
-	 * Callback when nodes are removed/inserted.
-	 */
-	function onChange() {
-		checkURL()
-	}
-
 	let hasNavigated = false,
 		prevUrl = location.href,
 		currentClass = ''
+
 	/**
 	 * Checks the URL for changes.
 	 */
@@ -104,20 +103,6 @@
 			hasNavigated = true
 			onNavigate()
 		}
-	}
-
-	/**
-	 * Callback when an url navigation has happened.
-	 */
-	function onNavigate() {
-		decideClass()
-		console.log(currentClass)
-		window.requestIdleCallback(() =>
-			window.requestAnimationFrame(() => {
-				window.requestAnimationFrame(addClass)
-				if (currentClass === 'stories') fixVirtualList()
-			})
-		) // double-rAF
 	}
 
 	/**
@@ -254,24 +239,42 @@
 		target.style.paddingRight = bottom
 	}
 
-	let vl
+	const vlObserver = observe(
+		undefined,
+		mutations => {
+			if (mutations.length === 0) return
+
+			window.requestIdleCallback(changeStyle.bind(undefined, mutations[0].target))
+			window.requestIdleCallback(addNamesToStories)
+		},
+		{ childList: true, subtree: true }
+	)
 	function fixVirtualList() {
-		if (vl !== undefined) vl.disconnect()
-
-		vl = observe(
-			$('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div'), // virtual stories list
-			mutations => {
-				if (!mutations.length) return
-
-				window.requestIdleCallback(changeStyle.bind(undefined, mutations[0].target))
-				window.requestIdleCallback(addNamesToStories)
-			},
-			{ childList: true, subtree: true }
-		)
+		const $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div')
+		if ($el !== null) vlObserver.observe($el) // virtual stories list
 	}
 
 	const connection = navigator.connection.type,
-		speed = navigator.connection.downlink
+		speed = navigator.connection.downlink,
+		fullsizeObserver = observe(
+			undefined,
+			mutations => {
+				for (let i = 0; i < mutations.length; ++i) {
+					const mutation = mutations[i].target
+
+					if (mutation.sizes !== '1080px') mutation.sizes = '1080px'
+				}
+			},
+			{ attributes: true, attributeFilter: ['sizes'] }
+		)
+
+	/**
+	 * Free observers to prevent memory leaks.
+	 */
+	function disconnectObservers() {
+		fullsizeObserver.disconnect()
+		vlObserver.disconnect()
+	}
 
 	/**
 	 *
@@ -281,7 +284,10 @@
 		if (!el) return
 
 		el.decoding = 'async'
-		if (connection === 'wifi' && speed > 3.0) window.requestIdleCallback(() => (el.sizes = '1080px'))
+		if (connection === 'wifi' && speed > 3.0) {
+			el.sizes = '1080px'
+			fullsizeObserver.observe(el)
+		}
 	}
 
 	/**
@@ -296,7 +302,7 @@
 	}
 
 	function setBoxWidth(i) {
-		documentElement.style.setProperty('--boxWidth', `${i}vw`)
+		docEl.style.setProperty('--boxWidth', `${i}vw`)
 	}
 
 	let OPTIONS = null
@@ -369,11 +375,34 @@
 	OPTS_MODE.rows(window.innerWidth < 1367 ? 2 : 4)
 
 	/**
+	 * Callback when nodes are removed/inserted.
+	 */
+	function onChange() {
+		checkURL()
+	}
+
+	/**
+	 * Callback when an url navigation has happened.
+	 */
+	function onNavigate() {
+		disconnectObservers()
+		decideClass()
+		window.requestIdleCallback(() =>
+			window.requestAnimationFrame(() => {
+				window.requestAnimationFrame(() => {
+					addClass()
+					if (currentClass === 'home') fixVirtualList()
+				})
+			})
+		) // double-rAF
+	}
+
+	/**
 	 * Callback when DOM is ready.
 	 */
 	function onReady() {
 		const $elem = $('div > article')
-		if ($elem !== null) documentElement.style.setProperty('--boxHeight', `${$elem.offsetHeight}px`) // give boxes equal height
+		if ($elem !== null) docEl.style.setProperty('--boxHeight', `${$elem.offsetHeight}px`) // give boxes equal height
 
 		decideClass()
 		addClass()
@@ -384,6 +413,7 @@
 				window.requestAnimationFrame(() => {
 					document.body.querySelectorAll('video').forEach(addControls)
 					document.body.querySelectorAll('img').forEach(fullPhoto)
+					if (currentClass === 'home') fixVirtualList()
 				})
 			})
 		) // double-rAF
