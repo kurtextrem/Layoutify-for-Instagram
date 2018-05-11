@@ -124,15 +124,15 @@ self.addEventListener('message', event => {
 
 export function documentReady() {
 	return new Promise((resolve, reject) => {
-		if (document.readyState === 'complete') resolve()
+		if (document.readyState === 'interactive' || document.readyState === 'complete') resolve()
 		else document.addEventListener('DOMContentLoaded', resolve)
 	})
 }
 
-let workerBlob = null
+let workerBlob
 export async function getWorkerBlob() {
 	await documentReady() // creating a blob is synchronous and takes around 120ms on a powerful machine
-	if (workerBlob === null) workerBlob = URL.createObjectURL(new Blob([webWorkerScript], { type: 'application/javascript' }))
+	if (workerBlob === undefined) workerBlob = URL.createObjectURL(new Blob([webWorkerScript], { type: 'application/javascript' }))
 	return workerBlob
 }
 

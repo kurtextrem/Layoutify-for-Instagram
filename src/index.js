@@ -1,13 +1,11 @@
 import App from './components/App'
 //import Nerv, { createElement, hydrate, render } from 'nervjs'
 import { createElement, hydrate, render } from 'nervjs'
+import { documentReady } from './components/Utils'
 /* eslint-disable */
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './components/main.css'
 /* eslint-enable */
-
-const init = (fn, app, container) => fn(createElement(app), container)
-const ready = () => init(hydrate, App, document.body.children[2])
 
 if (module.hot) {
 	require('nerv-devtools')
@@ -22,6 +20,14 @@ if (module.hot) {
 		timeToInteractive: true,
 	})
 
+	new PerformanceObserver((list, observer) => {
+		for (const entry of list.getEntries()) {
+			// const time = Math.round(entry.startTime + entry.duration)
+
+			window.perf.log(entry)
+		}
+	}).observe({ entryTypes: ['event', 'measure', 'mark'] })
+
 	registerObserver()
 	//whyDidYouUpdate(Nerv)
 
@@ -32,5 +38,9 @@ if (module.hot) {
 	)
 }
 
-if (document.readyState === 'interactive' || document.readyState === 'complete') ready()
-else document.addEventListener('DOMContentLoaded', ready)
+const init = (fn, app, container) => fn(createElement(app), container)
+const ready = () => init(hydrate, App, document.body.children[2])
+
+documentReady()
+	.then(ready)
+	.catch(console.error)
