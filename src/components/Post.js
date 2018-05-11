@@ -28,7 +28,7 @@ function init() {
 		})
 	if (window.Worker !== undefined) {
 		getWorkerBlob()
-			.then(blob => (worker = new Worker(blob)))
+			.then(blob => (worker = new window.Worker(blob)))
 			.catch(console.error)
 	}
 }
@@ -85,7 +85,7 @@ export default class Post extends Component {
 	}
 
 	async preload(index) {
-		if (worker !== null) {
+		if (worker !== undefined) {
 			console.log('preloading', this.props.data.carousel_media[index].image_versions2.candidates[0].url)
 			worker.postMessage(updateCDN(this.props.data.carousel_media[index].image_versions2.candidates[0].url))
 		}
