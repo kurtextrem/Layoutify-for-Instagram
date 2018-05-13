@@ -5,7 +5,6 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="anonymous">
 	<link rel="preload" as="style" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="preload" as="style" href="main.css">
-	<!-- onload="this.rel='stylesheet'" -->
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,8 +17,8 @@
 <body>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="main.css">
-	<%= htmlWebpackPlugin.options.ssr({
-		url: '/'
-	}) %>
+	<div id="react-root">
+		<%= htmlWebpackPlugin.options.ssr({ url: '/' }) %>
+	</div>
 </body>
 </html>

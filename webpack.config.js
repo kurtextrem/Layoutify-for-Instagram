@@ -47,8 +47,21 @@ const html = {
 	title: 'Improved Layout for Instagram',
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
+	cache: true,
 	inject: 'head',
-	ssr: params => `<div id="react-root">${isProd ? prerender('dist', params) : ''}</div>`,
+	minify: isProd
+		? {
+				removeComments: true,
+				collapseWhitespace: true,
+				removeRedundantAttributes: true,
+				useShortDoctype: true,
+				removeEmptyAttributes: true,
+				removeStyleLinkTypeAttributes: true,
+				removeScriptTypeAttributes: true,
+		  }
+		: false,
+	// hash: true,
+	ssr: params => (isProd ? prerender('dist', params) : ''),
 }
 
 const plugins = [
@@ -82,25 +95,9 @@ const plugins = [
 		{ from: 'content/*' },
 		{ from: '_locales/**' },
 	]),
-	new HardSourceWebpackPlugin({
-		cacheDirectory: '../node_modules/.cache/hard-source/[confighash]',
-	}),
 ]
 
 if (isProd) {
-	html.minify = {
-		removeComments: true,
-		collapseWhitespace: true,
-		removeRedundantAttributes: true,
-		useShortDoctype: true,
-		removeEmptyAttributes: true,
-		removeStyleLinkTypeAttributes: true,
-		removeScriptTypeAttributes: true,
-		keepClosingSlash: true,
-		minifyURLs: true,
-	}
-	// html.hash = true
-
 	pureFuncs.push(
 		'classCallCheck',
 		'_classCallCheck',
@@ -193,6 +190,12 @@ if (isProd) {
 		})
 	)
 }
+
+plugins.push(
+	new HardSourceWebpackPlugin({
+		cacheDirectory: '../node_modules/.cache/hard-source/[confighash]',
+	})
+)
 
 const first = {
 	mode: isProd ? 'production' : 'development',

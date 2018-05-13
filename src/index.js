@@ -11,6 +11,16 @@ if (module.hot) {
 	require('nerv-devtools')
 	const { registerObserver } = require('react-perf-devtool')
 	const { whyDidYouUpdate } = require('why-did-you-update')
+
+	registerObserver()
+	//whyDidYouUpdate(Nerv)
+
+	module.hot.accept('./components/App', () =>
+		requestAnimationFrame(() => {
+			init(render, App, document.body.children[2])
+		})
+	)
+
 	const Perfume = require('perfume.js').default
 	window.perf = new Perfume({
 		firstPaint: true,
@@ -23,19 +33,9 @@ if (module.hot) {
 	new PerformanceObserver((list, observer) => {
 		for (const entry of list.getEntries()) {
 			// const time = Math.round(entry.startTime + entry.duration)
-
 			window.perf.log(entry)
 		}
 	}).observe({ entryTypes: ['event', 'measure', 'mark'] })
-
-	registerObserver()
-	//whyDidYouUpdate(Nerv)
-
-	module.hot.accept('./components/App', () =>
-		requestAnimationFrame(() => {
-			init(render, App, document.body.children[2])
-		})
-	)
 }
 
 const init = (fn, app, container) => fn(createElement(app), container)
