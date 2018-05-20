@@ -223,35 +223,83 @@
 			'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div > a > div > div > span'
 		)
 
-		var regex = /\./g
+		const regex = /\./g
 		for (let i = 0; i < list.length; ++i) {
-			var elem = list[i]
-			elem.parentElement.parentElement.parentElement.parentElement.id = `igs_${elem.innerText.replace(regex, 'dot')}`
+			const elem = list[i]
+			elem.parentElement.parentElement.parentElement.parentElement.id = `igs_${elem.firstChild.data.replace(regex, 'dot')}` // faster than .textContent
 		}
 	}
 
-	function changeStyle(target) {
-		const bottom = target.style.paddingBottom,
-			top = target.style.paddingTop === '0px' && bottom === '0px' ? '100px' : target.style.paddingTop
+	let paddingLeft = 0,
+		paddingRight = 0,
+		paddingTop = 0,
+		paddingBottom = 0
 
-		console.log(top, bottom)
-		target.style.paddingLeft = top
-		target.style.paddingRight = bottom
+	/**
+	 * Switches bottom/top padding to right/left padding in order to fix horizontal endless scrolling in virtual lists.
+	 *
+	 * @param {HTMLDivElement} target elem
+	 */
+	function switchPadding(target) {
+		const bottom = +target.style.paddingBottom.replace('px', '')
+		const top = +target.style.paddingTop.replace('px', '')
+
+		if (bottom > paddingBottom) paddingRight -= paddingRight - bottom
+		else paddingRight += bottom - paddingRight
+		if (top > paddingTop) paddingLeft -= paddingLeft - top
+		else paddingLeft += top - paddingLeft
+		if (top <= 0 && bottom <= 0) {
+			target.style.paddingTop = 120
+			target.style.paddingBottom = 120
+			paddingLeft = 120
+			paddingRight = 120
+		}
+
+		// Can't set paddingBottom to 0, as it breaks the VL mechanism
+		target.style.paddingRight = `${paddingRight}px`
+		target.style.paddingLeft = `${paddingLeft}px`
+		paddingTop = top
+		paddingBottom = bottom
 	}
+
+	const switchPaddingThrottled = throttle(target => {
+		switchPadding(target)
+		window.requestIdleCallback(addNamesToStories)
+	}, 16)
 
 	const vlObserver = observe(
 		undefined,
 		mutations => {
 			if (mutations.length === 0) return
 
-			window.requestIdleCallback(changeStyle.bind(undefined, mutations[0].target))
-			window.requestIdleCallback(addNamesToStories)
+			const target = mutations[0].target
+			console.log(target.style.paddingTop, target.style.paddingBottom)
+
+			if (paddingRight === 0 || paddingLeft === 0) {
+				// initial value
+				paddingRight = +target.style.paddingBottom.replace('px', '')
+				paddingLeft = +target.style.paddingTop.replace('px', '')
+				paddingBottom = paddingRight
+				paddingTop = paddingLeft
+			}
+			switchPaddingThrottled(target)
 		},
-		{ childList: true, subtree: true }
+		{ attributes: true, attributeFilter: ['style'] }
 	)
 	function fixVirtualList() {
 		const $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div')
 		if ($el !== null) vlObserver.observe($el) // virtual stories list
+	}
+
+	function throttle(callback, wait) {
+		let time = Date.now()
+
+		return function throttle(arg) {
+			if (time + wait - Date.now() < 0) {
+				callback(arg)
+				time = Date.now()
+			}
+		}
 	}
 
 	const connection = navigator.connection.type,
