@@ -8,9 +8,9 @@ import './components/main.css'
 /* eslint-enable */
 
 if (module.hot) {
-	require('nerv-devtools')
-	const { registerObserver } = require('react-perf-devtool')
-	const { whyDidYouUpdate } = require('why-did-you-update')
+	import('nerv-devtools')
+	const { registerObserver } = import('react-perf-devtool')
+	const { whyDidYouUpdate } = import('why-did-you-update')
 
 	registerObserver()
 	//whyDidYouUpdate(Nerv)
@@ -21,7 +21,7 @@ if (module.hot) {
 		})
 	)
 
-	const Perfume = require('perfume.js').default
+	const Perfume = import('perfume.js').default
 	window.perf = new Perfume({
 		firstPaint: true,
 		firstContentfulPaint: true,
