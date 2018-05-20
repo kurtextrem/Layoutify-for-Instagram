@@ -261,7 +261,8 @@ div > div + [style][href] ~ a,
 .coreSpriteVideoIconLarge,
 .coreSpriteRightChevron,
 .videoSpritePlayButton,
-.coreSpriteLeftChevron {
+.coreSpriteLeftChevron,
+div > table /** Multiple videos/images dots */ {
 	z-index: 3;
 }
 
