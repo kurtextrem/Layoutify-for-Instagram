@@ -346,7 +346,7 @@
 		if (!el) return
 
 		el.controls = 'true'
-		if (currentClass === 'post' || currentClass === 'profile') el.preload = 'auto'
+		if (connection === 'wifi' && speed > 3.0) el.preload = 'auto'
 	}
 
 	function setBoxWidth(i) {
