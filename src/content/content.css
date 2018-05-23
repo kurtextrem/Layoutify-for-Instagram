@@ -590,8 +590,7 @@ footer > div > nav {
 
 /*----------  NoSpaceBetweenPosts  ----------*/
 .ige_noSpaceBetweenPosts main > section div > article {
-	margin-right: 0 !important;
-	margin-bottom: -1px !important;
+	margin: 0 !important;
 	border-radius: 0 !important;
 	border-bottom: 0 !important;
 }
