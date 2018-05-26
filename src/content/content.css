@@ -33,6 +33,11 @@ div > img {
 	image-rendering: -webkit-optimize-contrast;
 }
 
+/** Likes & comments amount */
+a:hover > div + div {
+	z-index: 2;
+}
+
 img + video {
 	z-index: 2;
 }
