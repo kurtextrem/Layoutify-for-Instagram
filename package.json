@@ -1,6 +1,6 @@
 {
 	"name": "improved-layout-for-instagram",
-	"version": "2.5.5",
+	"version": "2.5.9",
 	"dependencies": {
 		"@babel/core": "^7.0.0-beta.49",
 		"@babel/plugin-transform-react-jsx": "^7.0.0-beta.49",
@@ -89,7 +89,8 @@
 		"prebuild": "npm run clean",
 		"build": "npm run build-bundle",
 		"build-bundle": "cross-env NODE_ENV=production parallel-webpack --define process.env.NODE_ENV=\"'production'\"",
-		"build-stats": "cross-env NODE_ENV=production webpack --define process.env.NODE_ENV=\"'production'\" process.env.STATS_ENABLE=true --profile --json > stats.json",
+		"build-stats":
+			"cross-env NODE_ENV=production webpack --define process.env.NODE_ENV=\"'production'\" process.env.STATS_ENABLE=true --profile --json > stats.json",
 		"start": "cross-env NODE_ENV=development webpack-serve"
 	},
 	"cssnano": {
