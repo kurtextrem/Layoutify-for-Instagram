@@ -390,8 +390,14 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 
 /** Stories virtual list */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div {
-	flex-direction: row !important;
 	contain: strict;
+	height: 68px !important;
+	overflow-y: hidden !important;
+	overflow-x: scroll !important;
+}
+
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div {
+	flex-direction: row !important;
 }
 
 /** Other Stories

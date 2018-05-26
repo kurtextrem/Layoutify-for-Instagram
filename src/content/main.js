@@ -4,7 +4,8 @@
 	const document = window.document,
 		location = document.location,
 		docEl = document.documentElement,
-		$ = e => document.querySelector(e)
+		$ = e => document.querySelector(e),
+		WIDTH = window.innerWidth
 
 	function injectCSS(file) {
 		let style = document.createElement('link')
@@ -248,11 +249,11 @@
 		else paddingRight += bottom - paddingRight
 		if (top > paddingTop) paddingLeft -= paddingLeft - top
 		else paddingLeft += top - paddingLeft
-		if (top <= 0 && bottom <= 0) {
-			target.style.paddingTop = 120
-			target.style.paddingBottom = 120
-			paddingLeft = 120
-			paddingRight = 120
+		if (top <= 0 && bottom <= WIDTH) {
+			target.style.paddingTop = '0px'
+			target.style.paddingBottom = `${WIDTH}px`
+			paddingLeft = 0
+			paddingRight = WIDTH
 		}
 
 		// Can't set paddingBottom to 0, as it breaks the VL mechanism
@@ -265,7 +266,7 @@
 	const switchPaddingThrottled = throttle(target => {
 		switchPadding(target)
 		window.requestIdleCallback(addNamesToStories)
-	}, 16)
+	}, 10)
 
 	const vlObserver = observe(
 		undefined,
@@ -287,7 +288,7 @@
 		{ attributes: true, attributeFilter: ['style'] }
 	)
 	function fixVirtualList() {
-		const $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div')
+		const $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div')
 		if ($el !== null) vlObserver.observe($el) // virtual stories list
 	}
 
@@ -420,7 +421,7 @@
 			.catch(console.error)
 	}
 
-	OPTS_MODE.rows(window.innerWidth < 1367 ? 2 : 4)
+	OPTS_MODE.rows(WIDTH < 1367 ? 2 : 4)
 
 	/**
 	 * Callback when nodes are removed/inserted.
