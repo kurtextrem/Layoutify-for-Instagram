@@ -50,13 +50,13 @@ export class HashRouter extends Component {
 		}
 
 		const regexParam = /^{(.*)}$/
-		for (i = 0; i < locArray.length; ++i) {
+		for (const l in locArray) {
 			for (var j = 0; j < locations.length; ++j) {
-				if (locArray[i] === locations[j][i]) {
+				if (locArray[l] === locations[j][l]) {
 					scores[j] += 100
-				} else if (locations[j][i].match(regexParam, '$1') !== null) {
+				} else if (locations[j][l].match(regexParam, '$1') !== null) {
 					scores[j] += 1
-					params[j][locations[j][i].match(regexParam, '$1')[1]] = locArray[i]
+					params[j][locations[j][l].match(regexParam, '$1')[1]] = locArray[l]
 				} else {
 					locations.splice(j, 1)
 					scores.splice(j, 1)

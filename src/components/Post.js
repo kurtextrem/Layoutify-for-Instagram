@@ -9,7 +9,7 @@ import { Component, createElement } from 'nervjs'
 
 let observer
 function onChange(changes) {
-	for (let i = 0; i < changes.length; ++i) {
+	for (const i in changes) {
 		const change = changes[i]
 		if (change.isIntersecting) {
 			change.target.src = change.target.dataset.src // not in a rIC because of https://github.com/necolas/react-native-web/issues/759

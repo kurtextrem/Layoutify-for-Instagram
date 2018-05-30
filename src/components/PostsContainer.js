@@ -8,19 +8,12 @@ import { CardDeck } from 'reactstrap'
 import { Chrome, Storage } from './Utils'
 import { Component, createElement } from 'nervjs'
 
-let initiated = false,
-	loading,
-	error
-
 const Posts = (items = {}, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
 
-/* @TODO: Convert to static props, to free memory when unmounted  */
-function init() {
-	if (initiated) return
+export default class PostsContainer extends Component {
+	static loading = <Loading />
 
-	initiated = true
-	loading = <Loading />
-	error = (
+	static error = (
 		<div>
 			No data available (have you tried clicking the three dots on top of{' '}
 			<a href="https://www.instagram.com" _target="blank" rel="noopener">
@@ -28,14 +21,23 @@ function init() {
 			</a>?)
 		</div>
 	)
-}
 
-export default class PostsContainer extends Component {
+	static dummy = (
+		<div className="position-relative">
+			<CardDeck className="justify-content-center">
+				<PostDummy />
+				<PostDummy />
+				<PostDummy />
+				<PostDummy />
+			</CardDeck>
+			{''}
+		</div>
+	)
+
 	constructor(props) {
 		super(props)
 
 		this.initial = 0
-		init()
 
 		this.populateData()
 		window.setTimeout(() => this.setTimeout(200), 200)
@@ -134,19 +136,9 @@ export default class PostsContainer extends Component {
 				</div>
 			)
 
-		if (timeout === 200) return loading
-		if (timeout === 400 && (!items || items.length === 0)) return error
-		return (
-			<div className="position-relative">
-				<CardDeck className="justify-content-center">
-					<PostDummy />
-					<PostDummy />
-					<PostDummy />
-					<PostDummy />
-				</CardDeck>
-				{''}
-			</div>
-		) // first paint & items === null
+		if (timeout === 200) return PostsContainer.loading
+		if (timeout === 400 && (!items || items.length === 0)) return PostsContainer.error
+		return PostsContainer.dummy // first paint & items === null
 	}
 }
 

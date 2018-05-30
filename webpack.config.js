@@ -23,7 +23,7 @@ const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const replaceBuffer = require('replace-buffer')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
-//const glob = require('glob')
+//const glob = require('glob') // @TODO: tiny-glob
 //const PurifyCSSPlugin = require('purifycss-webpack')
 
 // const ShakePlugin = require('webpack-common-shake').Plugin

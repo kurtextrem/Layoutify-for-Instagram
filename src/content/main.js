@@ -53,11 +53,11 @@
 	observe(
 		document.body,
 		mutations => {
-			for (let i = 0; i < mutations.length; ++i) {
+			for (const i in mutations) {
 				const mutation = mutations[i],
 					added = mutation.addedNodes
 
-				for (let x = 0; x < added.length; ++x) {
+				for (var x in added) {
 					const el = added[x]
 					Promise.resolve()
 						.then(handleNode.bind(undefined, el, mutation))
@@ -308,7 +308,7 @@
 		fullsizeObserver = observe(
 			undefined,
 			mutations => {
-				for (let i = 0; i < mutations.length; ++i) {
+				for (const i in mutations) {
 					const mutation = mutations[i].target
 
 					if (mutation.sizes !== '1080px') mutation.sizes = '1080px'
@@ -357,7 +357,7 @@
 	let OPTIONS = null
 	const OPTS_MODE = {
 		blockStories(value) {
-			for (let i = 0; i < value.length; ++i) {
+			for (const i in value) {
 				document.getElementById(`igs_${value[i]}`).style.display = 'none'
 			}
 		},

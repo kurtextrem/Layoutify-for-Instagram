@@ -116,7 +116,7 @@
 		const cookies = document.cookie.split('; '),
 			result = {}
 
-		for (let i = 0; i < cookies.length; ++i) {
+		for (const i in cookies) {
 			const cookie = cookies[i].split('='),
 				index = wanted.indexOf(cookie[0])
 			if (index !== -1) {

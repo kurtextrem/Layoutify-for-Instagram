@@ -70,7 +70,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
 		const headers = details.requestHeaders
 
-		for (let i = 0; i < headers.length; ++i) {
+		for (const i in headers) {
 			const header = headers[i]
 
 			if (header.name === 'User-Agent') {

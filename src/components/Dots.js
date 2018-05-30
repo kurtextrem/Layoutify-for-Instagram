@@ -11,7 +11,7 @@ export default class Dots extends Component {
 
 	render() {
 		const { len } = this.props,
-			dots = new Array(len)
+			dots = [] // faster read
 
 		dots[0] = this.renderDot(0)
 		for (let i = 1; i < len; ++i) {
