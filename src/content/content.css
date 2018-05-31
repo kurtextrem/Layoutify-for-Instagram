@@ -224,12 +224,6 @@ header + div + div > section:last-child {
 	grid-column-end: 5;
 }
 
-/** Multiple dots */
-div > div + .coreSpriteRightChevron + div,
-div > div + .coreSpriteLeftChevron + div {
-	margin-bottom: 0;
-}
-
 /*=============================================
 								Media Controls
 =============================================*/
@@ -255,25 +249,16 @@ div[role='dialog'] video:not([loop])::-webkit-media-controls-overlay-play-button
 	display: none;
 }
 
-/** Makes the multiple videos/images dots visible */
-/** issues#17 */
+/** Tags not showing issues/#17 */
 div > div + a + div,
 div > div + [style][href],
 div > div + [style][href] ~ a,
-/** Sprites */ .coreSpriteLikeAnimationHeart,
-.coreSpriteSidecarIconLarge,
-.coreSpriteUserTagIndicator,
-.coreSpriteVideoIconLarge,
-.coreSpriteRightChevron,
-.videoSpritePlayButton,
-.coreSpriteLeftChevron,
-div > table /** Multiple videos/images dots */ {
+/** Sprites */
+div[role="button"] > div[role="button"] + div, /* Heart Animation */
+.coreSpriteSidecarIconLarge, /* @TODO: Update me */
+div[role="button"] > div ~ a, /* Multiple dots arrows */
+div[role="button"] > div ~ a ~ div /* Multiple videos/images dots */ {
 	z-index: 3;
-}
-
-/** Move multiple videos/images dots and make them more visible */
-.post td > div {
-	background: #9e9e9e !important;
 }
 
 /*=============================================
@@ -558,6 +543,11 @@ footer > div > nav {
 /*=============================================
 									Extended
 =============================================*/
+.extended--btn {
+	text-shadow: 0px 0px 2px #2196f3;
+	transform: translateY(1px) scale(2);
+}
+
 /** Extended Marker */
 .extended--btn__new::after {
 	position: absolute;

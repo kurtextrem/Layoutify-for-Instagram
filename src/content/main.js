@@ -154,15 +154,15 @@
 	console.log((window.Instagram = Instagram)) // for debugging
 
 	function addExtendedButton() {
-		let anchor = document.getElementsByClassName('coreSpriteDesktopNavProfile')
-		if (!anchor.length) anchor = $('header > div > button')
+		let $anchor = document.querySelectorAll('nav div > a:only-child')
+		if (!$anchor.length) return
 
-		anchor = anchor[0].parentNode
-		const el = anchor.cloneNode(true),
+		$anchor = $anchor[$anchor.length - 1].parentNode
+		const el = $anchor.cloneNode(true),
 			a = el.firstChild
 
 		a.className = ''
-		a.classList.add('coreSpriteOptionsEllipsis', 'extended--btn')
+		a.classList.add('extended--btn')
 
 		let clickedExtendedBtn = true
 		if (window.localStorage.clickedExtendedBtn === undefined) {
@@ -172,7 +172,7 @@
 
 		a.href = '#'
 		a.nodeValue = '' // clear content
-		a.textContent = ''
+		a.textContent = '⋯'
 		a.title = 'Improved Layout for Instagram'
 		a.addEventListener('click', function(e) {
 			e.preventDefault()
@@ -189,8 +189,7 @@
 			chrome.runtime.sendMessage(null, { action: 'click' })
 			if (!clickedExtendedBtn) window.localStorage.clickedExtendedBtn = true
 		})
-		el.style.transform = 'translateY(4px) scale(1.2)'
-		anchor.after(el)
+		$anchor.after(el)
 	}
 
 	const listenerActions = {

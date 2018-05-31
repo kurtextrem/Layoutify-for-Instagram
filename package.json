@@ -39,6 +39,7 @@
 		"html-webpack-harddisk-plugin": "^0.2.0",
 		"html-webpack-plugin": "^3.2.0",
 		"lodash": "^4.17.10",
+		"merge-options": "^1.0.1",
 		"mini-css-extract-plugin": "^0.4.0",
 		"nerv-devtools": "^1.2.18",
 		"nerv-server": "^1.2.15",
