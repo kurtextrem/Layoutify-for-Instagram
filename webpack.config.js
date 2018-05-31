@@ -172,7 +172,9 @@ if (isProd) {
 	)
 } else {
 	plugins.push(
-		new HtmlWebpackHarddiskPlugin(),
+		new HtmlWebpackHarddiskPlugin({
+			outputPath: path.resolve(__dirname, 'dist'),
+		}),
 		new FriendlyErrorsPlugin(),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
