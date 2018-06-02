@@ -154,6 +154,8 @@
 	console.log((window.Instagram = Instagram)) // for debugging
 
 	function addExtendedButton() {
+		if ($('.extended--btn') !== null) return
+
 		let $anchor = document.querySelectorAll('nav div > a:only-child')
 		if (!$anchor.length) return
 
@@ -440,6 +442,7 @@
 				window.requestAnimationFrame(() => {
 					addClass()
 					if (currentClass === 'home') fixVirtualList()
+					addExtendedButton()
 				})
 			})
 		) // double-rAF

@@ -26,6 +26,13 @@ module.exports = (isProd, options = {}) => ({
 	],
 	plugins: isProd
 		? [
+				/*[
+					resolve('@babel/plugin-transform-runtime'),
+					{
+						polyfill: false,
+						regenerator: false,
+					},
+				], // Increases bundle size */
 				[
 					resolve('babel-plugin-transform-imports'),
 					{

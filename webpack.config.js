@@ -23,6 +23,7 @@ const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const replaceBuffer = require('replace-buffer')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+// const Critters = require('critters-webpack-plugin')
 //const glob = require('glob') // @TODO: tiny-glob
 //const PurifyCSSPlugin = require('purifycss-webpack')
 
@@ -61,7 +62,7 @@ const html = {
 		  }
 		: false,
 	// hash: true,
-	ssr: params => (isProd ? prerender('dist', params) : ''),
+	ssr: params => (isProd ? prerender('dist', params) : ''), // @TODO: Replace with https://github.com/GoogleChromeLabs/prerender-loader
 }
 
 const plugins = [
@@ -123,6 +124,7 @@ if (isProd) {
 		}),
 		// new webpack.IgnorePlugin(/prop-types$/),
 		new MiniCssExtractPlugin('main.css'),
+		// new Critters(),
 		//new StyleExtHtmlWebpackPlugin() // @TODO: Broken @ webpack4
 		// new ShakePlugin(), // https://github.com/indutny/webpack-common-shake/issues/23  // @TODO: Broken @ webpack4
 		// strip out babel-helper invariant checks

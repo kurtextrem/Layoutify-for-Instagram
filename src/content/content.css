@@ -15,10 +15,7 @@ header + div {
 	contain: layout style;
 }
 
-form > textarea {
-	contain: strict;
-}
-
+form > textarea,
 header > a {
 	contain: strict;
 }
@@ -254,11 +251,19 @@ div > div + a + div,
 div > div + [style][href],
 div > div + [style][href] ~ a,
 /** Sprites */
-div[role="button"] > div[role="button"] + div, /* Heart Animation */
+div[role='button'] + div, /* Heart Animation */
 .coreSpriteSidecarIconLarge, /* @TODO: Update me */
-div[role="button"] > div ~ a, /* Multiple dots arrows */
-div[role="button"] > div ~ a ~ div /* Multiple videos/images dots */ {
+div[role='button'] ~ a, /* Multiple dots arrows */
+div[role='button'] ~ a ~ div /* Multiple videos/images dots */ {
 	z-index: 3;
+}
+
+div[role='button']:hover ~ a {
+	opacity: 1;
+}
+
+div[role='button'] > div {
+	contain: layout style;
 }
 
 /*=============================================
