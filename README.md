@@ -1,3 +1,5 @@
+<h1 align="center"> <br><img src="src/logo/logotype_horizontal.png?raw=true" alt="improvedforinstagram" width="512"> <br>
+
 # Improved Layout for Instagram.com
 
 The default Instagram.com layout is not optimized for the desktop. This extension improves this.
