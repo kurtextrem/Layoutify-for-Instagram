@@ -69,22 +69,20 @@ export default class About extends Component {
 
 				<h3>Thanks to</h3>
 				<p>
-					Kelvin R. for contributing the night theme and all the bug reporters that have sent me mails. I always try my best to respond as
+					Huuuuge thanks to <b><a href="https://github.com/KLVN" target="_blank" rel="noopener">Kelvin R.</a></b> for contributing the night theme.
+					<br />
+					Also huuuuge thanks to <b><a href="https://github.com/ihtiht" target="_blank" rel="noopener">Ibrahim Tenekeci</a></b> for the modern and nice new logo.
+					<br />
+					And to all the bug reporters that have sent me mails. I always try my best to respond as
 					soon as possible.
 				</p>
 
-				<h3>Legal</h3>
-				<p>
-					Plus Icon by{' '}
-					<a href="https://dribbble.com/enesdal" target="_blank" rel="noopener">
-						Enes Dal
-					</a>{' '}
-					Creative Commons (Attribution 3.0 Unported). I've added shadows and modified the color.
-				</p>
-				<p>
+				<small>
+					<b>Legal</b>
+					<br />
 					This project is in no way affiliated with, authorized, maintained, sponsored or endorsed by Instagram or any of its affiliates or
 					subsidiaries. This is an independent project. Use at your own risk.
-				</p>
+				</small>
 			</div>
 		)
 	}
