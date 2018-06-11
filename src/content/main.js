@@ -120,7 +120,7 @@
 
 		if (
 			(hasNavigated && (location.search.indexOf('tagged') !== -1 || location.search.indexOf('taken-by=') !== -1)) ||
-			$('div[role="dialog"]') !== null
+			$('body > div > div[role="dialog"]') !== null
 		)
 			return (currentClass = '')
 

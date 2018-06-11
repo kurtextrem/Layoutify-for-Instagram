@@ -89,14 +89,14 @@ main > section div > article {
 /*=============================================
 						Slimmer Post Header
 =============================================*/
-div[role='dialog'] article > header,
+body > div > div[role='dialog'] article > header,
 #react-root:not(.profile):not(.explore) article > header {
 	height: 50px !important;
 	padding: 16px 8px !important;
 	contain: strict;
 }
 
-div[role='dialog'] article > header {
+body > div > div[role='dialog'] article > header {
 	padding: 16px 4px !important;
 }
 
@@ -108,7 +108,7 @@ div > main:only-child {
 	flex-grow: 1;
 }
 
-div[role='dialog'] header + div + div,
+body > div > div[role='dialog'] header + div + div,
 .post header + div + div {
 	top: 55px !important;
 }
@@ -119,7 +119,7 @@ main > section header + div + div {
 }
 
 /** Row layout */
-div[role='dialog'] header + div + div,
+body > div > div[role='dialog'] header + div + div,
 #react-root:not(.profile) header + div + div {
 	flex: auto;
 	flex-direction: row;
@@ -133,7 +133,7 @@ div[role='dialog'] header + div + div,
 	contain: layout style;
 }
 
-div[role='dialog'] header + div + div,
+body > div > div[role='dialog'] header + div + div,
 .post header + div + div {
 	height: auto !important;
 	padding-right: 8px !important;
@@ -165,7 +165,7 @@ div > a > time {
 }
 
 /** Grow comments */
-div[role='dialog'] header + div + div > div:first-of-type:not(:only-child),
+body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child),
 #react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	order: 2 !important;
@@ -241,7 +241,7 @@ video::-webkit-media-controls {
 }
 
 /** @TODO: Replace IG's play button with the native one once its been rolled out */
-div[role='dialog'] video:not([loop])::-webkit-media-controls-overlay-play-button,
+body > div > div[role='dialog'] video:not([loop])::-webkit-media-controls-overlay-play-button,
 #react-root:not(.stories) video:not([loop])::-webkit-media-controls-overlay-play-button {
 	display: none;
 }
@@ -250,11 +250,21 @@ div[role='dialog'] video:not([loop])::-webkit-media-controls-overlay-play-button
 div > div + a + div,
 div > div + [style][href],
 div > div + [style][href] ~ a,
+
 /** Sprites */
 div[role='button'] + div, /* Heart Animation */
 .coreSpriteSidecarIconLarge, /* @TODO: Update me */
 div[role='button'] ~ a, /* Multiple dots arrows */
-div[role='button'] ~ a ~ div /* Multiple videos/images dots */ {
+div[role='button'] ~ a ~ div, /* Multiple videos/images dots */
+div[role='button'] > div[role='dialog'] > div + div > div + div > span, /* Tiny video icon */
+div[role='button'] > div[role='dialog'] > div + div > div + div + a, /* Big video icon */
+.coreSpriteLikeAnimationHeart,
+.coreSpriteSidecarIconLarge,
+.coreSpriteUserTagIndicator,
+.coreSpriteVideoIconLarge,
+.coreSpriteRightChevron,
+.videoSpritePlayButton,
+.coreSpriteLeftChevron {
 	z-index: 3;
 }
 
@@ -264,6 +274,12 @@ div[role='button']:hover ~ a {
 
 div[role='button'] > div {
 	contain: layout style;
+}
+
+/** Multiple dots */
+div > div + .coreSpriteRightChevron + div,
+div > div + .coreSpriteLeftChevron + div {
+	margin-bottom: 0;
 }
 
 /*=============================================
@@ -472,7 +488,7 @@ section > footer + div {
 										Post
 =============================================*/
 /** Enlargen modal */
-div[role='dialog'] article,
+body > div > div[role='dialog'] article,
 .post article {
 	min-height: 50vh;
 	max-height: 90vh;
@@ -480,22 +496,22 @@ div[role='dialog'] article,
 	contain: layout style;
 }
 
-div[role='dialog'] > div > div {
+body > div > div[role='dialog'] > div > div {
 	/* max-width: 52vh !important; */
 	/* max-width: 935px; /* container size */
 }
 
 /** Arrow container */
-div[role='dialog'] > div:first-child > div > div {
+body > div > div[role='dialog'] > div:first-child > div > div {
 	/* max-width: 52vh !important; */
 }
 
-div[role='dialog'] article > header + div {
+body > div > div[role='dialog'] article > header + div {
 	margin-right: 320px !important;
 }
 
 /** Center the image */
-div[role='dialog'] article,
+body > div > div[role='dialog'] article,
 #react-root:not(.home) article {
 	flex-grow: 1;
 	justify-content: center;

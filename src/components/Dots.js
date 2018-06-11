@@ -6,13 +6,14 @@ export default class Dots extends Component {
 	}
 
 	renderDot(i) {
-		return <span className={`dots--dot m-1 ${i === this.props.index ? 'active' : ''}`} />
+		return <span key={`${i}`} className={`dots--dot m-1 ${i === this.props.index}` ? 'active' : ''} />
 	}
 
 	render() {
 		const { len } = this.props,
 			dots = [] // faster read
 
+		dots.length = len
 		dots[0] = this.renderDot(0)
 		for (let i = 1; i < len; ++i) {
 			dots[i] = this.renderDot(i)
