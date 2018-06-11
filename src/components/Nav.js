@@ -1,5 +1,5 @@
 import { Component, createElement } from 'nervjs'
-import { Container, Nav as NavI, NavItem, NavLink, Navbar, NavbarBrand } from 'reactstrap'
+import { Container, Nav as NavI, NavItem, NavLink, Navbar } from 'reactstrap'
 
 function getActive(location, key) {
 	return location === key ? 'active' : ''
@@ -15,7 +15,8 @@ export default class Nav extends Component {
 		return (
 			<Navbar color="faded" light toggleable className="mb-2 navbar-expand bg-light">
 				<Container>
-					<NavbarBrand href="/index.html">Improved for IG</NavbarBrand>
+					<a href="/index.html"><img src="img/icon-128.png" alt="Improved for IG" decoding="async" id="logo" /></a>
+
 					<NavI navbar className="grow-1">
 						<NavItem>
 							<NavLink className={getActive(location, 'liked') || location === '' ? 'active' : ''} href="#/">
