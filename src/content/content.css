@@ -11,7 +11,8 @@ body {
 
 /*----------  Performance  ----------*/
 /** Outer parent of the image */
-header + div {
+header + div,
+video {
 	contain: layout style;
 }
 
@@ -177,11 +178,11 @@ body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only
 	padding-top: 0 !important;
 	padding-right: 0 !important;
 	padding-bottom: 0 !important;
-
-	grid-column-end: span 4;
 	/* max-height & height unset */
 
 	contain: content;
+
+	grid-column-end: span 4;
 }
 
 /** Heart / Comment / Save */
@@ -238,6 +239,8 @@ video[loop] {
 
 video::-webkit-media-controls {
 	display: flex !important;
+	contain: strict;
+	z-index: 1;
 }
 
 /** @TODO: Replace IG's play button with the native one once its been rolled out */
@@ -287,8 +290,8 @@ div > div + .coreSpriteLeftChevron + div {
 =============================================*/
 /** Outer div */
 .home article > div > div > div > div > div + div:not(:last-child) {
-	z-index: 3;
 	contain: content;
+	z-index: 3;
 }
 
 /** Small play button */
@@ -396,8 +399,8 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 
 /** Stories virtual list */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div {
-	contain: strict;
 	height: 68px !important;
+	contain: strict;
 	overflow-y: hidden !important;
 	overflow-x: scroll !important;
 }
@@ -565,8 +568,8 @@ footer > div > nav {
 									Extended
 =============================================*/
 .extended--btn {
-	text-shadow: 0px 0px 2px #2196f3;
 	transform: translateY(1px) scale(2);
+	text-shadow: 0px 0px 2px #2196f3;
 }
 
 /** Extended Marker */
@@ -613,8 +616,8 @@ footer > div > nav {
 /*----------  NoSpaceBetweenPosts  ----------*/
 .ige_noSpaceBetweenPosts main > section div > article {
 	margin: 0 !important;
-	border-radius: 0 !important;
 	border-bottom: 0 !important;
+	border-radius: 0 !important;
 }
 
 .ige_noSpaceBetweenPosts main > section div > article:not(:nth-child(4n)) {
