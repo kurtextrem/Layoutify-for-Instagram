@@ -355,7 +355,14 @@
 		docEl.style.setProperty('--boxWidth', `${i}vw`)
 	}
 
-	let OPTIONS = null
+	/**
+	 * Options
+	 */
+
+	/** Stores the current options */
+	let OPTIONS
+
+	/** Options handlers */
 	const OPTS_MODE = {
 		blockStories(value) {
 			for (const i in value) {
@@ -385,6 +392,10 @@
 			$('#ige_style').remove()
 		},
 	}
+
+	/**
+	 * Options mapper.
+	 */
 	const OPTS = {
 		// blockPosts: null, // []
 		blockStories: OPTS_MODE.blockStories, // []

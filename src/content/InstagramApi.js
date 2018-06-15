@@ -7,19 +7,20 @@
 	}
 
 	// credits to https://github.com/mgp25/Instagram-API/blob/master/src/Request.php#L377
-	const headers = new Headers()
-	headers.append('X-IG-App-ID', '567067343352427')
-	headers.append('X-IG-Capabilities', '3brTBw==')
-	headers.append('X-IG-Connection-Type', 'WIFI')
-	headers.append('X-IG-Connection-Speed', '3700kbps')
-	headers.append('X-IG-Bandwidth-Speed-KBPS', '-1.000')
-	headers.append('X-IG-Bandwidth-TotalBytes-B', '0')
-	headers.append('X-IG-Bandwidth-TotalTime-MS', '0')
-	headers.append('X-FB-HTTP-Engine', 'Liger')
-	headers.append('Accept', '*/*')
-	headers.append('Accept-Language', 'en-US')
-	headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-	headers.append('Connection', 'keep-alive')
+	const headers = new Headers({
+		'X-IG-App-ID': '567067343352427',
+		'X-IG-Capabilities': '3brTBw==',
+		'X-IG-Connection-Type': 'WIFI',
+		'X-IG-Connection-Speed': '3700kbps',
+		'X-IG-Bandwidth-Speed-KBPS': '-1.000',
+		'X-IG-Bandwidth-TotalBytes-B': '0',
+		'X-IG-Bandwidth-TotalTime-MS': '0',
+		'X-FB-HTTP-Engine': 'Liger',
+		Accept: '*/*',
+		'Accept-Language': 'en-US',
+		'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+		Connection: 'keep-alive',
+	})
 
 	function fetch(url, options) {
 		const opts = fetchOptions
@@ -239,11 +240,12 @@
 		}
 
 		remove(id) {
-			const headers = new Headers(),
-				cookies = getCookies(['csrftoken'])
-			headers.append('x-csrftoken', cookies.csrftoken)
-			headers.append('x-instagram-ajax', '1')
-			headers.append('x-requested-with', 'XMLHttpRequest')
+			const cookies = getCookies(['csrftoken']),
+				headers = new Headers({
+					'x-csrftoken': cookies.csrftoken,
+					'x-instagram-ajax': '1',
+					'x-requested-with': 'XMLHttpRequest',
+				})
 
 			return fetch(`${WEB_API}${this.action}s/${id}/un${this.action}/`, {
 				method: 'POST',
@@ -252,11 +254,12 @@
 		}
 
 		add(id) {
-			const headers = new Headers(),
-				cookies = getCookies(['csrftoken'])
-			headers.append('x-csrftoken', cookies.csrftoken)
-			headers.append('x-instagram-ajax', '1')
-			headers.append('x-requested-with', 'XMLHttpRequest')
+			const cookies = getCookies(['csrftoken']),
+				headers = new Headers({
+					'x-csrftoken': cookies.csrftoken,
+					'x-instagram-ajax': '1',
+					'x-requested-with': 'XMLHttpRequest',
+				})
 
 			return fetch(`${WEB_API}${this.action}s/${id}/${this.action}/`, {
 				method: 'POST',

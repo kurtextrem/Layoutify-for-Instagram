@@ -4,6 +4,11 @@ import { Component, createElement } from 'nervjs'
 import { Storage, formToJSON, i18n } from './Utils'
 
 const Options = (items = {}, render) => Object.keys(items).map(render)
+
+/**
+ * Options object.
+ * If you add something here, you need to add it to src/content/main.js as well
+ */
 const OPTS = {
 	// blockPosts: null, // [] // @TODO: This probably breaks the VL
 	blockStories: null, // []
@@ -13,13 +18,18 @@ const OPTS = {
 	picturesOnly: false,
 	hideStories: false,
 	noSpaceBetweenPosts: false,
-	//hideRecommended: false, // @TODO: Implement
-	//highlightOP: true, // @TODO: Implement
 	only3Dot: false,
 	rows: window.innerWidth < 1367 ? 2 : 4,
 	rowsFourBoxWidth: 23,
 	rowsTwoBoxWidth: 40,
-	// indicateFollowing: true // @TODO: Implement
+	// notifyNewPost: null, // []
+	// notifyNewStory: null, // []
+	// notifyInBackground: true,
+
+	//hideRecommended: false, // @TODO: Implement (easy)
+	//highlightOP: true, // @TODO: Implement (easy)
+	// indicateFollowing: true // @TODO: Implement (fairly easy)
+	// blockUnseen: false, // @TODO: Block URL "https://www.instagram.com/stories/reel/seen", however the chance that they remove this ability is fairly high
 }
 
 const OPTS_ADDITIONAL = {
