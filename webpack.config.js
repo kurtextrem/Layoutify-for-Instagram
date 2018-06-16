@@ -212,7 +212,7 @@ const first = {
 		path: path.join(__dirname, 'dist'),
 		publicPath: isProd ? '' : 'http://localhost:8080/',
 		filename: 'bundle.js',
-		pathinfo: true,
+		pathinfo: false, // @todo: check if false does impact development
 		//devtoolModuleFilenameTemplate: info => (isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`),
 	},
 

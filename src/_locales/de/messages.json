@@ -72,7 +72,7 @@
 		"description": "setting"
 	},
 	"rowsFourBoxWidth_help": {
-		"message": "Only applies when the row option is set to 4.",
+		"message": "Only applies when the 'Posts per row' option is set to 4.",
 		"description": "setting"
 	},
 	"rowsTwoBoxWidth": {
@@ -80,7 +80,7 @@
 		"description": "setting"
 	},
 	"rowsTwoBoxWidth_help": {
-		"message": "Only applies when the row option is set to 2.",
+		"message": "Only applies when the 'Posts per row' option is set to 2.",
 		"description": "setting"
 	}
 }

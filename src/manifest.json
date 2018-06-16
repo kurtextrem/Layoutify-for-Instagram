@@ -27,7 +27,16 @@
 	"options_page": "index.html",
 	"minimum_chrome_version": "55",
 
-	"permissions": ["*://*.instagram.com/*", "*://instagram.com/*", "storage", "webRequest", "webRequestBlocking", "cookies"],
+	"permissions": [
+		"*://*.instagram.com/*",
+		"*://instagram.com/*",
+		"storage",
+		"webRequest",
+		"webRequestBlocking",
+		"cookies",
+		"notifications",
+		"alarms"
+	],
 	"incognito": "split",
 	"content_security_policy": "script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
 

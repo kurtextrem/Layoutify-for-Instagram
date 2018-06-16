@@ -21,6 +21,8 @@ export class XHR {
 	}
 }
 
+export const fetch = XHR.fetch
+
 // @TODO: https://github.com/domenic/async-local-storage/blob/master/README.md
 class Storage {
 	static instance = undefined

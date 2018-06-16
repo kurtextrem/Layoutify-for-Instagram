@@ -391,6 +391,9 @@
 		only3Dot(arg) {
 			$('#ige_style').remove()
 		},
+		notify(arg) {
+			if (arg) chrome.runtime.sendMessage(null, { action: 'watchNow' })
+		},
 	}
 
 	/**
@@ -411,6 +414,10 @@
 		rows: OPTS_MODE.rows,
 		rowsFourBoxWidth: OPTS_MODE.boxWidth,
 		rowsTwoBoxWidth: OPTS_MODE.boxWidth,
+
+		watchPosts: undefined, // []
+		watchStories: undefined, // []
+		notifyInBackground: OPTS_MODE.notify,
 		// indicateFollowing: true
 	}
 

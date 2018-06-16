@@ -278,6 +278,10 @@ input[type='number'] {
 	display: inline;
 }
 
+.btn {
+	vertical-align: unset;
+}
+
 .star {
 	background: url(data:image/png;charset=utf-8;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAQAAADI+WwIAAAAY0lEQVR42mOAAWM24xvGPDAeQjjc+L9xDqbwMaDwbWNmGDfK+A9QAAkC+eEgiRDjn6iCMB3eSDqiEObyIwnrIoRdgdyfxouMvwHpCoRwNdDNukBa0XiX8WGEsLcxJ5wdAnIkAO/0NprFngtJAAAAAElFTkSuQmCC);
 	width: 10px;

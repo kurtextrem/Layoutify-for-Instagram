@@ -45,10 +45,6 @@ function getSessionId() {
 
 getSessionId()
 
-chrome.runtime.onMessage.addListener(function listener(request, sender, sendResponse) {
-	if (request.action === 'click') createTab(sender.tab.id, false)
-})
-
 // Hook into web request and modify headers before sending the request
 chrome.webRequest.onBeforeSendHeaders.addListener(
 	function listener(details) {
@@ -94,7 +90,7 @@ function fetch(url) {
 				'x-requested-with': 'XMLHttpRequest',
 			}),
 			credentials: 'include',
-			mode: 'cors'
+			mode: 'cors',
 		})
 		.then(checkStatus)
 		.then(e => e.json())
@@ -105,27 +101,47 @@ function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-chrome.runtime.onInstalled.addListener(() => {
-	chrome.alarms.clear('update', () => {
-		chrome.alarms.create('update', { delayInMinutes: 1, periodInMinutes: 5 })
-	})
+chrome.runtime.onMessage.addListener(function listener(request, sender, sendResponse) {
+	switch (request.action) {
+		case 'click':
+			createTab(sender.tab.id, false)
+			break
+
+		case 'watchNow':
+			getWatchlist()
+			break
+
+		case 'watchInBackground':
+			chrome.alarms.clear('update', () => {
+				chrome.alarms.create('update', { delayInMinutes: 1, periodInMinutes: 5 })
+			})
+			break
+
+		case 'stopWatchInBackground':
+			chrome.alarms.clear('update')
+			break
+
+		default:
+			break
+	}
 })
+
 chrome.alarms.onAlarm.addListener(() => {
-	chrome.storage['local'].get({ watchPosts: null, watchStories: null, watchData: null }, data => {
+	getWatchlist()
+})
+
+function getWatchlist() {
+	chrome.storage.local.get({ watchPosts: null, watchStories: null, watchData: {} }, data => {
 		if (chrome.runtime.lastError) return console.error(chrome.runtime.lastError)
 
-		if (data.watchPosts !== null)
-			checkForWatchedContent(data.watchPosts, 0, data.watchData)
-		if (data.watchStories !== null)
-			checkForWatchedContent(data.watchStories, 1, data.watchData)
-
-		return
+		if (data.watchPosts !== null) checkForWatchedContent(data.watchPosts, 0, data.watchData)
+		if (data.watchStories !== null) checkForWatchedContent(data.watchStories, 1, data.watchData)
 	})
-})
+}
 
 const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 	storiesParams = {
-		user_id: null,
+		user_id: '',
 		include_chaining: false,
 		include_reel: true,
 		include_suggested_users: false,
@@ -135,56 +151,47 @@ const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 //orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
 
 /**
- * watchData type
- * name: { // username
- * 	id: Integer, // user_id
- * 	post: String, // short_code
- * 	story: Integer, // latest_reel_media id
- * }
- */
-
-/**
  * Fetches and compares data with saved data.
- * 
- * @param {Object} users 
+ *
+ * @param {Array} users Instagram Username Array
  * @param {Integer} type 0 = Posts, 1 = Stories
  * @param {watchData} watchData Saved data
  */
 function checkForWatchedContent(users, type, watchData) {
-	const len = users.length - 1
-	for (let i = 0; i <= len; ++i) {
-		const user = users[i],
-			userObj = watchData[user]
+	function notify(user, userObj) {
+		let url
+		if (type === 0) url = `https://www.instagram.com/${curr}/?__a=1`
+		if (type === 1) {
+			const params = Object.assign({}, storiesParams) // eslint-disable-line
+			params.user_id = userObj.id
+			url = `https://www.instagram.com/graphql/query/?${new URLSearchParams({
+				query_hash: QUERY_HASH,
+				variables: JSON.stringify(storiesParams),
+			}).toString()}`
+		}
 
-		window.setTimeout(() => {
-			let url
-			if (type === 0)
-				url = `/${curr}/?__a=1`
-			if (type === 1) {
-				const params = Object.assign({}, storiesParams)
-				params.user_id = userObj.id
-				url = 'https://www.instagram.com/graphql/query/?' +
-					new URLSearchParams({ query_hash: QUERY_HASH, variables: JSON.stringify(storiesParams) }).toString()
-			}
-
-			fetch(url).then(json => {
-				let notify = ''
+		fetch(url)
+			.then(json => {
+				let shouldNotify = ''
 				const options = {
 					type: '',
 					title: '',
-					message: '',
+					message: 'Click to open the profile.',
 					iconUrl: '', // profile pic
 					imageUrl: '',
 				}
 
 				if (type === 0) {
-					const id = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node', 'shortcode'], json)
+					const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
+						id = node !== null ? node.shortcode : null
 					if (id !== userObj.post) {
 						userObj.post = id
-						notify = id
+						shouldNotify = id
 
 						options.type = 'image'
-						options.title = user + ' posted a new post'
+						options.title = `${user} posted a new post`
+						options.iconUrl = json.graphql.profile_pic_url_hd
+						options.imageUrl = node.thumbnail_src
 					}
 				}
 
@@ -192,26 +199,34 @@ function checkForWatchedContent(users, type, watchData) {
 					const reel = get(['data', 'user', 'reel'], json),
 						id = reel.latest_reel_media
 					if (reel.seen === null && id !== userObj.story) {
-						userObj.story = reel.latest_reel_media
-						notify = id
+						userObj.story = `${reel.latest_reel_media}`
+						shouldNotify = id
 
 						options.type = 'basic'
-						options.title = user + ' posted a new story'
+						options.title = `${user} posted a new story`
+						options.iconUrl = reel.owner.profile_pic_url
 					}
 				}
 
-				// notification perission setzen!
-				if (notify !== '')
-					chrome.notifications.create('ige_' + notify, options, _nId => {
-						if (chrome.runtime.lastError) return
-
-						// clear after 30 seconds or never?
+				if (shouldNotify !== '')
+					chrome.notifications.create(`ige_${shouldNotify}`, options, _nId => {
+						if (chrome.runtime.lastError) console.error(chrome.runtime.lastError)
+						// @todo: Maybe clear?
 					})
-
-				if (i === len) chrome.storage['local'].set({ watchData })
 
 				return json
 			})
+			.catch(e => console.error(e) && e)
+	}
+
+	const len = users.length - 1
+	for (let i = 0; i <= len; ++i) {
+		const user = users[i],
+			userObj = watchData[user]
+
+		window.setTimeout(() => {
+			notify(user, userObj)
+			if (i === len) chrome.storage.local.set({ watchData })
 		}, getRandom(400, 700))
 		// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
 	}
