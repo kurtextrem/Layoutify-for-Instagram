@@ -87,9 +87,15 @@ function checkStatus(response) {
 
 const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
 
-function fetch(url, headers) {
+function fetch(url) {
 	return window
-		.fetch(url, { headers, credentials: 'include', mode: 'cors' })
+		.fetch(url, {
+			headers: new Headers({
+				'x-requested-with': 'XMLHttpRequest',
+			}),
+			credentials: 'include',
+			mode: 'cors'
+		})
 		.then(checkStatus)
 		.then(e => e.json())
 		.catch(e => console.error(e) && e)
@@ -98,6 +104,24 @@ function fetch(url, headers) {
 function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
+
+chrome.runtime.onInstalled.addListener(() => {
+	chrome.alarms.clear('update', () => {
+		chrome.alarms.create('update', { delayInMinutes: 1, periodInMinutes: 5 })
+	})
+})
+chrome.alarms.onAlarm.addListener(() => {
+	chrome.storage['local'].get({ watchPosts: null, watchStories: null, watchData: null }, data => {
+		if (chrome.runtime.lastError) return console.error(chrome.runtime.lastError)
+
+		if (data.watchPosts !== null)
+			checkForWatchedContent(data.watchPosts, 0, data.watchData)
+		if (data.watchStories !== null)
+			checkForWatchedContent(data.watchStories, 1, data.watchData)
+
+		return
+	})
+})
 
 const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 	storiesParams = {
@@ -110,37 +134,85 @@ const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 	}
 //orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
 
-function checkForWatchedContent() {
-	const users = {}
-	const headers = new Headers({
-		'x-requested-with': 'XMLHttpRequest',
-	})
+/**
+ * watchData type
+ * name: { // username
+ * 	id: Integer, // user_id
+ * 	post: String, // short_code
+ * 	story: Integer, // latest_reel_media id
+ * }
+ */
 
-	for (const user in users) {
-		const rand = getRandom(400, 700)
+/**
+ * Fetches and compares data with saved data.
+ * 
+ * @param {Object} users 
+ * @param {Integer} type 0 = Posts, 1 = Stories
+ * @param {watchData} watchData Saved data
+ */
+function checkForWatchedContent(users, type, watchData) {
+	const len = users.length - 1
+	for (let i = 0; i <= len; ++i) {
+		const user = users[i],
+			userObj = watchData[user]
 
 		window.setTimeout(() => {
-			fetch(`/${user.name}/?__a=1`, headers).then(json => {
-				const id = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node', 'shortcode'], json)
-				if (id !== users[userId].post) notify()
-
-				return json
-			})
-		}, rand)
-
-		window.setTimeout(() => {
-			const params = Object.assign({}, storiesParams)
-			params.user_id = user.id
-			fetch(
-				'https://www.instagram.com/graphql/query/?' +
+			let url
+			if (type === 0)
+				url = `/${curr}/?__a=1`
+			if (type === 1) {
+				const params = Object.assign({}, storiesParams)
+				params.user_id = userObj.id
+				url = 'https://www.instagram.com/graphql/query/?' +
 					new URLSearchParams({ query_hash: QUERY_HASH, variables: JSON.stringify(storiesParams) }).toString()
-			).then(json => {
-				const reel = get(['data', 'user', 'reel'], json)
-				if (reel.seen === null && reel.latest_reel_media !== users[userId].story) notify()
+			}
+
+			fetch(url).then(json => {
+				let notify = ''
+				const options = {
+					type: '',
+					title: '',
+					message: '',
+					iconUrl: '', // profile pic
+					imageUrl: '',
+				}
+
+				if (type === 0) {
+					const id = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node', 'shortcode'], json)
+					if (id !== userObj.post) {
+						userObj.post = id
+						notify = id
+
+						options.type = 'image'
+						options.title = user + ' posted a new post'
+					}
+				}
+
+				if (type === 1) {
+					const reel = get(['data', 'user', 'reel'], json),
+						id = reel.latest_reel_media
+					if (reel.seen === null && id !== userObj.story) {
+						userObj.story = reel.latest_reel_media
+						notify = id
+
+						options.type = 'basic'
+						options.title = user + ' posted a new story'
+					}
+				}
+
+				// notification perission setzen!
+				if (notify !== '')
+					chrome.notifications.create('ige_' + notify, options, _nId => {
+						if (chrome.runtime.lastError) return
+
+						// clear after 30 seconds or never?
+					})
+
+				if (i === len) chrome.storage['local'].set({ watchData })
 
 				return json
 			})
-		}, rand + getRandom(100, 200))
+		}, getRandom(400, 700))
 		// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
 	}
 }

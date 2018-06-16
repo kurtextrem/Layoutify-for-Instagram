@@ -22,9 +22,9 @@ const OPTS = {
 	rows: window.innerWidth < 1367 ? 2 : 4,
 	rowsFourBoxWidth: 23,
 	rowsTwoBoxWidth: 40,
-	// notifyNewPost: null, // []
-	// notifyNewStory: null, // []
-	// notifyInBackground: true,
+	watchPosts: null, // []
+	watchStories: null, // []
+	notifyInBackground: true,
 
 	//hideRecommended: false, // @TODO: Implement (easy)
 	//highlightOP: true, // @TODO: Implement (easy)
