@@ -1,5 +1,6 @@
 'use strict'
 
+// const requireSoSlow = require('require-so-slow')
 require('v8-compile-cache')
 const path = require('path')
 const webpack = require('webpack')
@@ -16,21 +17,25 @@ const WriteFilePlugin = require('write-file-webpack-plugin')
 const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
 const pureFuncs = require('side-effects-safe').pureFuncsWithTypicalException // pureFuncsWithUnusualException
-//const ReplacePlugin = require('webpack-plugin-replace')
+// const ReplacePlugin = require('webpack-plugin-replace')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
+// const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const replaceBuffer = require('replace-buffer')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 // const Critters = require('critters-webpack-plugin')
-//const glob = require('glob') // @TODO: tiny-glob
-//const PurifyCSSPlugin = require('purifycss-webpack')
+// const glob = require('glob') // @TODO: tiny-glob
+// const PurifyCSSPlugin = require('purifycss-webpack')
 
 // const ShakePlugin = require('webpack-common-shake').Plugin
 // const WebpackMonitor = require('webpack-monitor')
 // const AutoDllPlugin = require('autodll-webpack-plugin')
-const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
+// const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
+
+// Profiling
+// const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
+// const smp = new SpeedMeasurePlugin({ granularLoaderData: false })
 
 const ENV = process.env.NODE_ENV || 'development'
 const isProd = ENV === 'production'
@@ -52,11 +57,11 @@ const html = {
 	inject: 'head',
 	minify: isProd
 		? {
-				removeComments: true,
+				removeComments: false,
 				collapseWhitespace: true,
-				removeRedundantAttributes: true,
-				useShortDoctype: true,
-				removeEmptyAttributes: true,
+				removeRedundantAttributes: false,
+				useShortDoctype: false,
+				removeEmptyAttributes: false,
 				removeStyleLinkTypeAttributes: true,
 				removeScriptTypeAttributes: true,
 		  }
@@ -365,4 +370,6 @@ const second = {
 }
 
 // @TODO: https://blog.box.com/blog/how-we-improved-webpack-build-performance-95/
+// requireSoSlow.write('require-trace.trace')
+// module.exports = isProd ? [smp.wrap(first), second] : first
 module.exports = isProd ? [first, second] : first
