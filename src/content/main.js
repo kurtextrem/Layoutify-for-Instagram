@@ -417,7 +417,7 @@
 
 		watchPosts: undefined, // []
 		watchStories: undefined, // []
-		notifyInBackground: OPTS_MODE.notify,
+		watchInBackground: OPTS_MODE.notify, // Check for updates when opening IG
 		// indicateFollowing: true
 	}
 

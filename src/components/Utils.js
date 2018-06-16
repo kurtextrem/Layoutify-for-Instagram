@@ -70,8 +70,8 @@ class Storage {
 
 	static check(data, resolve, reject) {
 		if (chrome.runtime.lastError) {
-			console.error(chrome.runtime.lastError)
-			return reject(chrome.runtime.lastError)
+			console.error(chrome.runtime.lastError.message)
+			return reject(chrome.runtime.lastError.message)
 		}
 
 		return resolve(data)
