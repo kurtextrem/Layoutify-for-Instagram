@@ -214,7 +214,7 @@ function checkForWatchedContent(users, type, watchData) {
 						watchData[user].post = id
 
 						options.type = 'image'
-						options.title = `${user} posted a new post`
+						options.title = `${user} posted a new Post`
 
 						Promise.all([getBlobUrl(json.graphql.user.profile_pic_url_hd), getBlobUrl(node.thumbnail_src)])
 							.then(values => {
@@ -232,11 +232,11 @@ function checkForWatchedContent(users, type, watchData) {
 				} else if (type === 1) {
 					const reel = get(['data', 'user', 'reel'], json),
 						id = reel.latest_reel_media
-					if (reel.seen === null && id !== null && id != userObj.story) {
+					if (id !== null && id != userObj.story) {
 						watchData[user].story = `${reel.latest_reel_media}`
 
 						options.type = 'basic'
-						options.title = `${user} posted a new story`
+						options.title = `${user} posted a new Story`
 
 						return getBlobUrl(reel.owner.profile_pic_url)
 							.then(url => {
