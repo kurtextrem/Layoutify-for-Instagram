@@ -392,7 +392,8 @@
 			$('#ige_style').remove()
 		},
 		notify(arg) {
-			if (arg) chrome.runtime.sendMessage(null, { action: 'watchNow' })
+			// if (arg) // @fixme: Only refresh when watchInBackground is false?
+			chrome.runtime.sendMessage(null, { action: 'watchNow' })
 		},
 	}
 
@@ -415,8 +416,8 @@
 		rowsFourBoxWidth: OPTS_MODE.boxWidth,
 		rowsTwoBoxWidth: OPTS_MODE.boxWidth,
 
-		watchPosts: undefined, // []
-		watchStories: undefined, // []
+		watchPosts: undefined,
+		watchStories: undefined,
 		watchInBackground: OPTS_MODE.notify, // Check for updates when opening IG
 		// indicateFollowing: true
 	}

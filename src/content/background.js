@@ -211,6 +211,7 @@ function checkForWatchedContent(users, type, watchData) {
 					const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
 						id = node !== null ? node.shortcode : null
 					if (id != userObj.post) {
+						console.log(user, 'new post')
 						watchData[user].post = id
 
 						options.type = 'image'
@@ -220,11 +221,11 @@ function checkForWatchedContent(users, type, watchData) {
 							.then(values => {
 								options.iconUrl = values[0]
 								options.imageUrl = values[1]
-								chrome.notifications.create(`post_${user}`, options, nId => {
+								return chrome.notifications.create(`post_${user}`, options, nId => {
 									if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
 									URL.revokeObjectURL(values[0])
 									URL.revokeObjectURL(values[1])
-									// @todo: Maybe clear?
+									// @todo: Maybe clear notification?
 								})
 							})
 							.catch(e => console.error(e) && e)
@@ -233,22 +234,23 @@ function checkForWatchedContent(users, type, watchData) {
 					const reel = get(['data', 'user', 'reel'], json),
 						id = reel.latest_reel_media
 					if (id !== null && id != userObj.story) {
+						console.log(user, 'new story')
 						watchData[user].story = `${reel.latest_reel_media}`
 
 						options.type = 'basic'
 						options.title = `${user} posted a new Story`
 
-						return getBlobUrl(reel.owner.profile_pic_url)
+						getBlobUrl(reel.owner.profile_pic_url)
 							.then(url => {
 								options.iconUrl = url
-								chrome.notifications.create(`story_${user}`, options, nId => {
+								return chrome.notifications.create(`story_${user}`, options, nId => {
 									if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
 									URL.revokeObjectURL(url)
-									// @todo: Maybe clear?
+									// @todo: Maybe clear notification?
 								})
 							})
 							.catch(e => console.error(e) && e)
-					}
+					} else console.log(user, 'no new story', reel)
 				}
 
 				if (i === len) chrome.storage.local.set({ watchData })
@@ -257,13 +259,15 @@ function checkForWatchedContent(users, type, watchData) {
 			.catch(e => console.error(e) && e)
 	}
 
+	let timeout = 0
 	for (let i = 0; i <= len; ++i) {
 		const user = users[i],
 			userObj = watchData[user]
 
+		timeout += getRandom(400, 800)
 		window.setTimeout(() => {
 			notify(user, userObj, i)
-		}, getRandom(400, 800))
+		}, timeout)
 		// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
 	}
 }
