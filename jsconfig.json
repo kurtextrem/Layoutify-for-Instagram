@@ -1,15 +1,15 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"jsx": "preserve",
+		"jsx": "react",
 		"experimentalDecorators": true,
 		"checkJs": true,
 		"forceConsistentCasingInFileNames": true,
 		"allowSyntheticDefaultImports": true,
-		"baseUrl": "./src",
+		"baseUrl": ".",
 		"paths": {
 			"**/*": ["**/*"]
 		}
 	},
-	"exclude": ["dist"]
+	"exclude": ["dist", "node_modules"]
 }
