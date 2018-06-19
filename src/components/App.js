@@ -6,6 +6,7 @@ import Saved from './Saved'
 import bind from 'autobind-decorator'
 import { Component, createElement } from 'nervjs'
 import { HashRouter, Route } from './HashRouter'
+// @todo: Lazy-load router and routes for faster TTI
 
 class App extends Component {
 	state = {

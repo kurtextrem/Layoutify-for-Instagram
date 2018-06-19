@@ -210,8 +210,8 @@ function checkForWatchedContent(users, type, watchData) {
 				if (type === 0) {
 					const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
 						id = node !== null ? node.shortcode : null
-					if (id != userObj.post) {
-						console.log(user, 'new post')
+					if (id !== null && id != userObj.post) {
+						console.log(user, 'new post', json.graphql.user)
 						watchData[user].post = id
 
 						options.type = 'image'
@@ -232,10 +232,10 @@ function checkForWatchedContent(users, type, watchData) {
 					}
 				} else if (type === 1) {
 					const reel = get(['data', 'user', 'reel'], json),
-						id = reel.latest_reel_media
+						id = reel !== null ? reel.latest_reel_media : null
 					if (id !== null && id != userObj.story) {
 						console.log(user, 'new story')
-						watchData[user].story = `${reel.latest_reel_media}`
+						watchData[user].story = `${id}`
 
 						options.type = 'basic'
 						options.title = `${user} posted a new Story`
