@@ -12,6 +12,8 @@
 
 - New Changelog page (can be accessed on the 3-dots page under "?")
 
+  - It will open automatically, whenever something bigger is changed (so not when there's only bug fixes)
+
 ### Changed
 
 - Updated German Translations

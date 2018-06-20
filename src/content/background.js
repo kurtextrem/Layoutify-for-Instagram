@@ -126,6 +126,20 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 	}
 })
 
+chrome.runtime.onInstalled.addListener(details => {
+	if (details.reason !== 'update') return
+
+	const currentVersion = chrome.runtime.getManifest().version,
+		splitNew = currentVersion.split('.'),
+		oldVersion = details.previousVersion,
+		splitOld = oldVersion.split('.')
+	if (splitNew[0] > splitOld[0] || splitNew[1] > splitOld[1])
+		// we only check major und minor, nothing else
+		chrome.tabs.create({
+			url: `${chrome.runtime.getURL('index.html')}#/changelog`,
+		})
+})
+
 chrome.alarms.onAlarm.addListener(() => {
 	getWatchlist()
 })
