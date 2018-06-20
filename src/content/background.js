@@ -185,6 +185,14 @@ function checkForWatchedContent(users, type, watchData) {
 		})
 	}
 
+	const notificationOptions = {
+		type: '',
+		title: '',
+		message: chrome.i18n.getMessage('watch_openProfile'),
+		iconUrl: '', // profile pic
+		imageUrl: '',
+	}
+
 	function notify(user, userObj, i) {
 		let url
 		if (type === 0) url = `https://www.instagram.com/${user}/?__a=1`
@@ -199,13 +207,7 @@ function checkForWatchedContent(users, type, watchData) {
 
 		fetchAux(url)
 			.then(json => {
-				const options = {
-					type: '',
-					title: '',
-					message: 'Click to open the profile.',
-					iconUrl: '', // profile pic
-					imageUrl: '',
-				}
+				const options = Object.assign({}, notificationOptions) // eslint-disable-line
 
 				if (type === 0) {
 					const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
@@ -215,7 +217,7 @@ function checkForWatchedContent(users, type, watchData) {
 						watchData[user].post = id
 
 						options.type = 'image'
-						options.title = `${user} posted a new Post`
+						options.title = chrome.i18n.getMessage('watch_newPost', user)
 
 						Promise.all([getBlobUrl(json.graphql.user.profile_pic_url_hd), getBlobUrl(node.thumbnail_src)])
 							.then(values => {
@@ -238,7 +240,7 @@ function checkForWatchedContent(users, type, watchData) {
 						watchData[user].story = `${id}`
 
 						options.type = 'basic'
-						options.title = `${user} posted a new Story`
+						options.title = chrome.i18n.getMessage('watch_newStory', user)
 
 						getBlobUrl(reel.owner.profile_pic_url)
 							.then(url => {

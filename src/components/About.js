@@ -69,13 +69,30 @@ export default class About extends Component {
 
 				<h3>Thanks to</h3>
 				<p>
-					Huuuuge thanks to <b><a href="https://github.com/KLVN" target="_blank" rel="noopener">Kelvin R.</a></b> for contributing the night theme.
+					Huuuuge thanks to{' '}
+					<b>
+						<a href="https://github.com/KLVN" target="_blank" rel="noopener">
+							Kelvin R.
+						</a>
+					</b>{' '}
+					for contributing the night theme.
 					<br />
-					Also huuuuge thanks to <b><a href="https://github.com/ihtiht" target="_blank" rel="noopener">Ibrahim Tenekeci</a></b> for the modern and nice new logo.
+					Also huuuuge thanks to{' '}
+					<b>
+						<a href="https://github.com/ihtiht" target="_blank" rel="noopener">
+							Ibrahim Tenekeci
+						</a>
+					</b>{' '}
+					for the modern and nice new logo.
 					<br />
-					And to all the bug reporters that have sent me mails. I always try my best to respond as
-					soon as possible.
+					And to all the bug reporters that have sent me mails. I always try my best to respond as soon as possible.
 				</p>
+
+				<h3>
+					<a href="#/changelog">
+						Changelog <i className="material-icons">description</i>
+					</a>
+				</h3>
 
 				<small>
 					<b>Legal</b>

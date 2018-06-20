@@ -8,43 +8,43 @@
 		"description": "Extension description."
 	},
 	"blockPosts": {
-		"message": "Hide Posts from",
+		"message": "Posts verstecken von",
 		"description": "Block Posts from Users setting."
 	},
 	"blockStories": {
-		"message": "Hide Stories from",
+		"message": "Storys verstecken von",
 		"description": "Block Stories from Users setting."
 	},
 	"night": {
-		"message": "Enable Night Theme",
+		"message": "Nacht Modus an?",
 		"description": "Night mode setting."
 	},
 	"nightModeStart": {
-		"message": "Night Mode Start Hour",
+		"message": "Nacht Modus Startstunde",
 		"description": ""
 	},
 	"nightModeStart_help": {
-		"message": "Set this and end to the same number to enable night mode permanently.",
+		"message": "Wenn du diese Einstellung und das Ende auf die gleiche zahlt stellst, ist der Nacht Modus dauerhaft an.",
 		"description": ""
 	},
 	"nightModeEnd": {
-		"message": "Night Mode End Hour",
+		"message": "Nacht Modus Endstunde",
 		"description": ""
 	},
 	"nightModeEnd_help": {
-		"message": "Set this and start to the same number to enable night mode permanently.",
+		"message": "Wenn du diese Einstellung und das Ende auf die gleiche zahlt stellst, ist der Nacht Modus dauerhaft an.",
 		"description": ""
 	},
 	"picturesOnly": {
-		"message": "Show pictures only",
+		"message": "Nur Bilder zeigen",
 		"description": "setting"
 	},
 	"hideStories": {
-		"message": "Hide all Stories",
+		"message": "Alle Storys verstecken",
 		"description": "setting"
 	},
 	"hideRecommended": {
-		"message": "Hide recommended friends",
+		"message": "Vorgeschlagene Nutzer verstecken",
 		"description": "setting"
 	},
 	"highlightOP": {
@@ -52,11 +52,11 @@
 		"description": "setting"
 	},
 	"only3Dot": {
-		"message": "Remove all style modifications",
+		"message": "Alle Style-Modifikationen entfernen",
 		"description": "setting"
 	},
 	"rows": {
-		"message": "Posts per row",
+		"message": "Posts pro Reihe",
 		"description": "setting"
 	},
 	"indicateFollowing": {
@@ -64,23 +64,71 @@
 		"description": "setting"
 	},
 	"noSpaceBetweenPosts": {
-		"message": "No Space between Posts",
+		"message": "Keine leerstellen zwischen Posts",
 		"description": "setting"
 	},
 	"rowsFourBoxWidth": {
-		"message": "4-Row Posts Width",
+		"message": "4-Posts Reihen Breite",
 		"description": "setting"
 	},
 	"rowsFourBoxWidth_help": {
-		"message": "Only applies when the 'Posts per row' option is set to 4.",
+		"message": "Tritt nur in Kraft, wenn 'Posts pro Reihe' auf 4 gesetzt ist.",
 		"description": "setting"
 	},
 	"rowsTwoBoxWidth": {
-		"message": "2-Row Posts Width",
+		"message": "2-Posts Reihen Breite",
 		"description": "setting"
 	},
 	"rowsTwoBoxWidth_help": {
-		"message": "Only applies when the 'Posts per row' option is set to 2.",
+		"message": "Tritt nur in Kraft, wenn 'Posts pro Reihe' auf 2 gesetzt ist.",
 		"description": "setting"
+	},
+	"watchPosts": {
+		"message": "Posts beobachten von",
+		"description": "setting"
+	},
+	"watchPosts_help": {
+		"message": "Bitte gehe sicher, dass der Name existiert (d.h. https://instagram.com/DerName funktioniert)",
+		"description": "setting"
+	},
+	"watchStories": {
+		"message": "Storys beobachten von",
+		"description": "setting"
+	},
+	"watchStories_help": {
+		"message": "Bitte gehe sicher, dass der Name existiert (d.h. https://instagram.com/DerName funktioniert)",
+		"description": "setting"
+	},
+	"watchInBackground": {
+		"message": "Benachrichtige im Hintergrund?",
+		"description": "setting"
+	},
+	"watchInBackground_help": {
+		"message": "Falls ausgeschaltet, erhälst du nur Benachrichtigungen, wenn du Instagram.com öffnest.",
+		"description": "setting"
+	},
+	"watch_openProfile": {
+		"message": "Click to open the profile.",
+		"description": "Text in Notification"
+	},
+	"watch_newPost": {
+		"message": "$user$ posted a new Post",
+		"description": "Text of the Notification, when the watched User posted a new post",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "JacobGross_"
+			}
+		}
+	},
+	"watch_newStory": {
+		"message": "$user$ posted a new Story",
+		"description": "Text of the Notification, when the watched User posted a new story",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "JacobGross_"
+			}
+		}
 	}
 }

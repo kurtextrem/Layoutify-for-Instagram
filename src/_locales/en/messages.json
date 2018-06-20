@@ -44,7 +44,7 @@
 		"description": "setting"
 	},
 	"hideRecommended": {
-		"message": "Hide recommended friends",
+		"message": "Hide recommended users",
 		"description": "setting"
 	},
 	"highlightOP": {
@@ -72,7 +72,7 @@
 		"description": "setting"
 	},
 	"rowsFourBoxWidth_help": {
-		"message": "Only applies when the row option is set to 4.",
+		"message": "Only applies when the 'Posts per row' option is set to 4.",
 		"description": "setting"
 	},
 	"rowsTwoBoxWidth": {
@@ -80,7 +80,55 @@
 		"description": "setting"
 	},
 	"rowsTwoBoxWidth_help": {
-		"message": "Only applies when the row option is set to 2.",
+		"message": "Only applies when the 'Posts per row' option is set to 2.",
 		"description": "setting"
+	},
+	"watchPosts": {
+		"message": "Watch Posts from",
+		"description": "setting"
+	},
+	"watchPosts_help": {
+		"message": "Make sure that the Username is correct (e.g. https://instagram.com/TheUsername works)",
+		"description": "setting"
+	},
+	"watchStories": {
+		"message": "Watch Stories from",
+		"description": "setting"
+	},
+	"watchStories_help": {
+		"message": "Make sure that the Username is correct (e.g. https://instagram.com/TheUsername works)",
+		"description": "setting"
+	},
+	"watchInBackground": {
+		"message": "Watch in Background?",
+		"description": "setting"
+	},
+	"watchInBackground_help": {
+		"message": "When turned off, you're only notified when you open Instagram.com.",
+		"description": "setting"
+	},
+	"watch_openProfile": {
+		"message": "Hier klicken um das Profil zu öffnen.",
+		"description": "Text in Notification"
+	},
+	"watch_newPost": {
+		"message": "$user$ hat etwas gepostet",
+		"description": "Text of the Notification, when the watched User posted a new post",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "JacobGross_"
+			}
+		}
+	},
+	"watch_newStory": {
+		"message": "$user$ hat eine neue Story gepostet",
+		"description": "Text of the Notification, when the watched User posted a new story",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "JacobGross_"
+			}
+		}
 	}
 }

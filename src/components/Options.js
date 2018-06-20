@@ -28,8 +28,8 @@ const OPTS = {
 	rowsTwoBoxWidth: 40,
 	blockStories: null, // []
 
-	//hideRecommended: false, // @TODO: Implement (easy)
-	//highlightOP: true, // @TODO: Implement (easy)
+	// hideRecommended: false, // @TODO: Implement (easy)
+	// highlightOP: true, // @TODO: Implement (easy)
 	// indicateFollowing: true // @TODO: Implement (fairly easy)
 	// blockUnseen: false, // @TODO: Block URL "https://www.instagram.com/stories/reel/seen", however the chance that they remove this ability is fairly high
 }
@@ -87,7 +87,7 @@ const OPTS_ADDITIONAL = {
 	 * }
 	 */
 	watchStories: {
-		help: false,
+		help: true,
 		async onChange(value) {
 			if (typeof value === 'string') {
 				const json = await XHR(`https://www.instagram.com/${value}/?__a=1`, {
@@ -101,18 +101,18 @@ const OPTS_ADDITIONAL = {
 				const user = data[value]
 				if (user === undefined)
 					data[value] = {
-						id: json.graphql.user.id,
+						id: json ? json.graphql.user.id : '',
 						post: '',
 						story: '',
 					}
-				else user.id = json.graphql.user.id
+				else user.id = json ? json.graphql.user.id : ''
 
 				Storage.set('watchData', data).catch(e => console.error(e) && e)
 			}
 		},
 	},
 	watchPosts: {
-		help: false,
+		help: true,
 		async onChange(value) {
 			if (typeof value === 'string') {
 				const data = await Storage.get('watchData', {})
