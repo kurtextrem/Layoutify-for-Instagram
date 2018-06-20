@@ -30,39 +30,42 @@ export class HashRouter extends Component {
 	@bind
 	getMatchedPage() {
 		const hash = window.location !== undefined ? window.location.hash : '#/'
-		const locArray = hash.split('/')
-		if (locArray.length !== 0 && locArray[0] === '#') locArray.shift()
 
-		let locations = this.locations.slice(0)
-		let scores = this.scores.slice(0)
-		let children = this.children.slice(0)
-		let params = this.params.slice(0)
+		const locArray = hash.split('/'),
+			locArrayLen = locArray.length
+		if (locArrayLen !== 0 && locArray[0] === '#') locArray.shift()
+
+		const locations = this.locations.slice(0)
+		const scores = this.scores.slice(0)
+		const children = this.children.slice(0)
+		const params = this.params.slice(0)
 
 		let i
 		for (i = 0; i < locations.length; ++i) {
-			if (locations[i].length !== locArray.length) {
-				locations = locations.slice(i, 1)
-				scores = scores.slice(i, 1)
-				children = children.slice(i, 1)
-				params = params.slice(i, 1)
+			if (locations[i].length !== locArrayLen) {
+				locations.splice(i, 1)
+				scores.splice(i, 1)
+				children.splice(i, 1)
+				params.splice(i, 1)
 				i--
 			}
 		}
 
 		const regexParam = /^{(.*)}$/
 		for (const l in locArray) {
-			for (var j = 0; j < locations.length; ++j) {
-				if (locArray[l] === locations[j][l]) {
-					scores[j] += 100
-				} else if (locations[j][l].match(regexParam, '$1') !== null) {
-					scores[j] += 1
-					params[j][locations[j][l].match(regexParam, '$1')[1]] = locArray[l]
+			for (i = 0; i < locations.length; ++i) {
+				const location = locations[i][l]
+				if (locArray[l] === location) {
+					scores[i] += 100
+				} else if (location.match(regexParam, '$1') !== null) {
+					scores[i] += 1
+					params[i][location.match(regexParam, '$1')[1]] = locArray[l]
 				} else {
-					locations.splice(j, 1)
-					scores.splice(j, 1)
-					children.splice(j, 1)
-					params.splice(j, 1)
-					j--
+					locations.splice(i, 1)
+					scores.splice(i, 1)
+					children.splice(i, 1)
+					params.splice(i, 1)
+					i--
 				}
 			}
 		}
