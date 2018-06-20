@@ -1,4 +1,5 @@
 import About from './About'
+import Changelog from './Changelog'
 import Liked from './Liked'
 import Nav from './Nav'
 import Options from './Options'
@@ -41,6 +42,9 @@ class App extends Component {
 						</Route>
 						<Route key="about" hash="#/about">
 							<About />
+						</Route>
+						<Route key="changelog" hash="#/changelog">
+							<Changelog />
 						</Route>
 					</HashRouter>
 				</main>

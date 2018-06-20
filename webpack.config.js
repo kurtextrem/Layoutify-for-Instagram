@@ -100,6 +100,7 @@ const plugins = [
 		{ from: 'img/*.png' },
 		{ from: 'content/*' },
 		{ from: '_locales/**' },
+		{ from: '../CHANGELOG.md' },
 	]),
 ]
 

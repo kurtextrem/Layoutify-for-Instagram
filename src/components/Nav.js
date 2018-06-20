@@ -15,7 +15,9 @@ export default class Nav extends Component {
 		return (
 			<Navbar color="faded" light toggleable className="mb-2 navbar-expand bg-light">
 				<Container>
-					<a href="/index.html"><img src="img/icon-128.png" alt="Improved for IG" decoding="async" id="logo" /></a>
+					<a href="/index.html">
+						<img src="img/icon-128.png" alt="Improved for IG" decoding="async" id="logo" />
+					</a>
 
 					<NavI navbar className="grow-1">
 						<NavItem>
@@ -32,11 +34,6 @@ export default class Nav extends Component {
 						<NavItem className="ml-auto">
 							<NavLink className={getActive(location, 'options')} href="#/options">
 								Options <i className="material-icons">build</i>
-							</NavLink>
-						</NavItem>
-						<NavItem className="d-none">
-							<NavLink className={getActive(location, 'changelog')} href="#/about">
-								Changelog <i className="material-icons">description</i>
 							</NavLink>
 						</NavItem>
 						<NavItem>
