@@ -11,7 +11,7 @@ export default class Changelog extends Component {
 				.fetch('CHANGELOG.md')
 				.then(e => e.text())
 				.then(text => {
-					this.setState((prevState, nextState) => ({ data: text }))
+					this.setState((prevState, props) => ({ data: text }))
 					return text
 				})
 				.catch(e => console.error(e) && e)

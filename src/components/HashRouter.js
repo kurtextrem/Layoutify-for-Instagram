@@ -14,14 +14,14 @@ export class HashRouter extends Component {
 	constructor(props) {
 		super(props)
 
+		this.childKey = null
+		this.currentParams = null
+
 		this.locations = []
 		this.scores = []
 		this.children = []
 		this.params = []
-		this.childKey = null
-		this.currentParams = null
-
-		this.calcChildren(this.props)
+		this.calcChildren(props)
 		this.state = {
 			render: this.getMatchedPage(),
 		}
@@ -33,10 +33,10 @@ export class HashRouter extends Component {
 		const locArray = hash.split('/')
 		if (locArray.length !== 0 && locArray[0] === '#') locArray.shift()
 
-		let locations = this.locations
-		let scores = this.scores
-		let children = this.children
-		let params = this.params
+		let locations = this.locations.slice(0)
+		let scores = this.scores.slice(0)
+		let children = this.children.slice(0)
+		let params = this.params.slice(0)
 
 		let i
 		for (i = 0; i < locations.length; ++i) {
@@ -86,10 +86,19 @@ export class HashRouter extends Component {
 	}
 
 	@bind
+	clearArrays() {
+		this.locations.length = 0
+		this.scores.length = 0
+		this.children.length = 0
+		this.params.length = 0
+	}
+
+	@bind
 	calcChildren(props) {
 		Children.forEach(props.children, child => {
 			const childArray = child.props.hash.split('/')
 			if (childArray.length !== 0) childArray.shift()
+
 			this.locations.push(childArray)
 			this.scores.push(0)
 			this.children.push(child)
@@ -103,9 +112,7 @@ export class HashRouter extends Component {
 		if (render === null) return
 
 		this.props.onLocationChanged(this.childKey, this.currentParams, () => {
-			this.setState(() => ({
-				render,
-			}))
+			this.setState((prevState, props) => ({ render }))
 		})
 	}
 
@@ -116,6 +123,7 @@ export class HashRouter extends Component {
 
 	// static getDerivedStateFromProps(nextProps, prevState)
 	componentWillReceiveProps(nextProps) {
+		this.clearArrays()
 		this.calcChildren(nextProps)
 	}
 

@@ -92,7 +92,7 @@ export default class ImgWorker extends Component {
 
 	@bind
 	onload() {
-		this.setState(() => ({ isLoading: false }))
+		this.setState((prevState, props) => ({ isLoading: false }))
 	}
 
 	@bind

@@ -16,7 +16,7 @@ class App extends Component {
 
 	@bind
 	handleLocationChanged(childKey, params, cb) {
-		this.setState(prevState => ({ location: childKey }))
+		this.setState((prevState, props) => ({ location: childKey }))
 		cb()
 	}
 
