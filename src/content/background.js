@@ -126,6 +126,7 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 	}
 })
 
+/** Open Changelog when updating to a new major/minor version. */
 chrome.runtime.onInstalled.addListener(details => {
 	if (details.reason !== 'update') return
 
@@ -249,7 +250,7 @@ function checkForWatchedContent(users, type, watchData) {
 				} else if (type === 1) {
 					const reel = get(['data', 'user', 'reel'], json),
 						id = reel !== null ? reel.latest_reel_media : null
-					if (id !== null && id != userObj.story) {
+					if (id !== null && reel.seen !== id && id != userObj.story) {
 						console.log(user, 'new story')
 						watchData[user].story = `${id}`
 
