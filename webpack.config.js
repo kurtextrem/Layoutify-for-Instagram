@@ -131,7 +131,7 @@ if (isProd) {
 		// new webpack.IgnorePlugin(/prop-types$/),
 		new MiniCssExtractPlugin('main.css'),
 		// new Critters(),
-		//new StyleExtHtmlWebpackPlugin() // @TODO: Broken @ webpack4
+		// new StyleExtHtmlWebpackPlugin() // @TODO: Broken @ webpack4
 		// new ShakePlugin(), // https://github.com/indutny/webpack-common-shake/issues/23  // @TODO: Broken @ webpack4
 		// strip out babel-helper invariant checks
 		/*new ReplacePlugin({
@@ -212,7 +212,7 @@ const first = {
 
 	context: path.join(__dirname, 'src'),
 
-	entry: './index.js',
+	entry: ['./index.js'],
 
 	output: {
 		path: path.join(__dirname, 'dist'),
@@ -234,10 +234,24 @@ const first = {
 							ecma: 8,
 							compress: {
 								pure_funcs: pureFuncs,
+								hoist_funs: true,
+								keep_infinity: true,
+
+								unsafe_arrows: true, // @fixme: Breaks report.html
+								unsafe_methods: true,
+								unsafe_Function: true,
+								unsafe_proto: true,
+
+								negate_iife: false,
+
+								inline: true,
 							},
 							output: {
 								comments: false,
+								semicolons: false, // size before gzip could be smaller; size after gzip insignificantly larger
+								wrap_iife: true,
 							},
+							toplevel: true,
 						},
 					}),
 				],
@@ -333,14 +347,7 @@ const first = {
 if (!isProd)
 	first.serve = {
 		publicPath: 'http://localhost:8080/',
-		/*contentBase: path.join(__dirname, 'dist/'),
-		disableHostCheck: true,
-		historyApiFallback: true,
-		overlay: {
-			warnings: true,
-			errors: true,
-		},
-		watchContentBase: false,*/
+		clipboard: false,
 		dev: {
 			headers: {
 				'Access-Control-Allow-Origin': '*',
@@ -348,6 +355,10 @@ if (!isProd)
 				'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
 			},
 		},
+		/*hot: {
+			autoConfigure: false, // @fixme: https://github.com/webpack/webpack/issues/6693
+			allEntries: true,
+		},*/
 	}
 
 const second = {
@@ -355,7 +366,7 @@ const second = {
 
 	target: 'node',
 
-	entry: './components/App',
+	entry: ['./components/App'],
 
 	recordsPath: path.resolve(__dirname, './records_html.json'),
 
