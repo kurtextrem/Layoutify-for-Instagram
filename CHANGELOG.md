@@ -6,17 +6,15 @@
 
 - Huge new feature: You can now add Users to your list of "Watched Posts" and/or "Watched Stories" (found on the options page on the 3-dots page)!
 
-  - How it works: You will get a notification, whenever the User posts something, and/or adds a new Story
+  - How it works: You will get a notification whenever the User posts something, and/or adds a new Story
 
   - You can decide whether to get notified in background, or only if you open Instagram.com (latter is default)
 
+  - The User(s) will have a badge on his profile, so you can recognize whom you are watching
+
 - New Changelog page (can be accessed on the 3-dots page under "?")
 
-  - It will open automatically, whenever something bigger is changed (so not when there's only bug fixes)
-
-### Changed
-
-- Updated German Translations
+  - It will open automatically, whenever something bigger has changed (so not when there's only bug fixes)
 
 ## [2.6.0] - 2018-06-14
 
