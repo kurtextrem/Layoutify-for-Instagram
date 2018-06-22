@@ -7,6 +7,9 @@
 		$ = e => document.querySelector(e),
 		WIDTH = window.innerWidth
 
+	/** Stores the current options */
+	let OPTIONS
+
 	function injectCSS(file) {
 		let style = document.createElement('link')
 		style.id = 'ige_style'
@@ -355,12 +358,30 @@
 		docEl.style.setProperty('--boxWidth', `${i}vw`)
 	}
 
+	function addWatched() {
+		const user = location.pathname.split('/')[1],
+			$node = $(`h1[title="${user}"]`).parentNode.parentNode
+
+		let text = '',
+			cls = false
+		if (OPTIONS.watchPosts.indexOf(user) !== -1) {
+			text += 'Posts '
+			cls = true
+		}
+		if (OPTIONS.watchStories.indexOf(user) !== -1) {
+			text += 'Stories '
+			cls = true
+		}
+
+		if (cls) {
+			$node.dataset.igeWatched = text
+			$node.classList.add('ige_watched')
+		}
+	}
+
 	/**
 	 * Options
 	 */
-
-	/** Stores the current options */
-	let OPTIONS
 
 	/** Options handlers */
 	const OPTS_MODE = {
@@ -461,6 +482,7 @@
 				window.requestAnimationFrame(() => {
 					addClass()
 					if (currentClass === 'home') fixVirtualList()
+					if (currentClass === 'profile') addWatched()
 					addExtendedButton()
 				})
 			})
