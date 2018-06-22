@@ -33,7 +33,7 @@ if (module.hot) {
 	new PerformanceObserver((list, observer) => {
 		for (const entry of list.getEntries()) {
 			// const time = Math.round(entry.startTime + entry.duration)
-			window.perf.log(entry)
+			window.perf.log(entry.name, entry.duration)
 		}
 	}).observe({ entryTypes: ['event', 'measure', 'mark'] })
 }

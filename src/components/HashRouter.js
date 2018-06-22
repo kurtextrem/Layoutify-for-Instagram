@@ -31,9 +31,12 @@ export class HashRouter extends Component {
 	getMatchedPage() {
 		const hash = window.location !== undefined ? window.location.hash : '#/'
 
-		const locArray = hash.split('/'),
-			locArrayLen = locArray.length
-		if (locArrayLen !== 0 && locArray[0] === '#') locArray.shift()
+		const locArray = hash.split('/')
+		let locArrayLen = locArray.length
+		if (locArrayLen !== 0 && locArray[0] === '#') {
+			locArray.shift()
+			--locArrayLen
+		}
 
 		const locations = this.locations.slice(0)
 		const scores = this.scores.slice(0)
@@ -43,6 +46,7 @@ export class HashRouter extends Component {
 		let i
 		for (i = 0; i < locations.length; ++i) {
 			if (locations[i].length !== locArrayLen) {
+				// Remove elements that don't fit our location
 				locations.splice(i, 1)
 				scores.splice(i, 1)
 				children.splice(i, 1)
@@ -61,6 +65,7 @@ export class HashRouter extends Component {
 					scores[i] += 1
 					params[i][location.match(regexParam, '$1')[1]] = locArray[l]
 				} else {
+					// Remove elements that don't fit our location
 					locations.splice(i, 1)
 					scores.splice(i, 1)
 					children.splice(i, 1)
