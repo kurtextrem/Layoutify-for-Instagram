@@ -22,5 +22,5 @@ New Extension Icon and Logo by [Ibrahim Tenekeci](https://github.com/ihtiht).
 
 Night Mode by [Kelvin R.](https://github.com/KLVN)
 
-[unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v2.7.0...HEAD
-[2.7.0]: https://github.com/olivierlacan/keep-a-changelog/compare/v2.6.0...v2.7.0
+[unreleased]: https://github.com/kurtextrem/Improved-for-Instagram/compare/v2.7.0...HEAD
+[2.7.0]: https://github.com/kurtextrem/Improved-for-Instagram/compare/v2.6.0...v2.7.0

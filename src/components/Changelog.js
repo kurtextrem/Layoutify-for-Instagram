@@ -1,4 +1,5 @@
 import { Component, createElement } from 'nervjs'
+import { logAndReturn } from './Utils'
 
 export default class Changelog extends Component {
 	state = {
@@ -14,7 +15,7 @@ export default class Changelog extends Component {
 					this.setState((prevState, props) => ({ data: text }))
 					return text
 				})
-				.catch(e => console.error(e) && e)
+				.catch(logAndReturn)
 	}
 
 	render() {

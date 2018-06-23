@@ -83,6 +83,11 @@ function checkStatus(response) {
 
 const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
 
+function logAndReturn(e) {
+	console.error(e)
+	return e
+}
+
 function fetchAux(url) {
 	return window
 		.fetch(url, {
@@ -94,7 +99,7 @@ function fetchAux(url) {
 		})
 		.then(checkStatus)
 		.then(e => e.json())
-		.catch(e => console.error(e) && e)
+		.catch(logAndReturn)
 }
 
 function getRandom(min, max) {
@@ -141,9 +146,7 @@ chrome.runtime.onInstalled.addListener(details => {
 		})
 })
 
-chrome.alarms.onAlarm.addListener(() => {
-	getWatchlist()
-})
+chrome.alarms.onAlarm.addListener(getWatchlist)
 
 chrome.notifications.onClicked.addListener(id => {
 	chrome.tabs.create({
@@ -158,14 +161,34 @@ chrome.notifications.onButtonClicked.addListener((id, buttonIndex) => {
 		})
 })
 
-function getWatchlist() {
+function getWatchlist(e) {
 	chrome.storage.local.get({ options: null, watchData: null }, data => {
+		// @todo: Switch watchData to sync
 		const options = data.options
 		if (chrome.runtime.lastError || options === null || data.watchData === null) return console.error(chrome.runtime.lastError.message)
 
 		if (options.watchPosts) checkForWatchedContent(options.watchPosts, 0, data.watchData)
 		if (options.watchStories !== null) checkForWatchedContent(options.watchStories, 1, data.watchData)
 	})
+}
+
+function getBlobUrl(url) {
+	return new Promise((resolve, reject) => {
+		window
+			.fetch(url)
+			.then(checkStatus)
+			.then(response => response.blob())
+			.then(blob => resolve(URL.createObjectURL(blob)))
+			.catch(e => console.error(e) && reject(e) && e)
+	})
+}
+
+const notificationOptions = {
+	type: '',
+	title: '',
+	message: chrome.i18n.getMessage('watch_openProfile'),
+	iconUrl: '', // profile pic
+	imageUrl: '',
 }
 
 const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
@@ -179,6 +202,75 @@ const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 	}
 //orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
 
+function notify(user, userObj, type, watchData, len, i) {
+	let url
+	if (type === 0) url = `https://www.instagram.com/${user}/?__a=1`
+	if (type === 1) {
+		const params = Object.assign({}, storiesParams) // eslint-disable-line
+		params.user_id = userObj.id
+		url = `https://www.instagram.com/graphql/query/?${new URLSearchParams({
+			query_hash: QUERY_HASH,
+			variables: JSON.stringify(params),
+		}).toString()}`
+	}
+
+	fetchAux(url)
+		.then(json => {
+			const options = Object.assign({}, notificationOptions) // eslint-disable-line
+
+			if (type === 0) {
+				const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
+					id = node !== null ? node.shortcode : null
+				if (id !== null && id != userObj.post) {
+					console.log(user, 'new post', json.graphql.user)
+					watchData[user].post = id
+
+					options.type = 'image'
+					options.title = chrome.i18n.getMessage('watch_newPost', user)
+
+					Promise.all([getBlobUrl(json.graphql.user.profile_pic_url_hd), getBlobUrl(node.thumbnail_src)])
+						.then(values => {
+							options.iconUrl = values[0]
+							options.imageUrl = values[1]
+							return chrome.notifications.create(`post_${user}`, options, nId => {
+								if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+								URL.revokeObjectURL(values[0])
+								URL.revokeObjectURL(values[1])
+								// @todo: Maybe clear notification?
+							})
+						})
+						.catch(logAndReturn)
+				}
+			} else if (type === 1) {
+				const reel = get(['data', 'user', 'reel'], json),
+					id = reel !== null ? reel.latest_reel_media : null
+				if (id !== null && reel.seen !== id) {
+					// && id != userObj.story
+					console.log(user, 'new story')
+					//watchData[user].story = `${id}`
+
+					options.type = 'basic'
+					options.title = chrome.i18n.getMessage('watch_newStory', user)
+
+					getBlobUrl(reel.owner.profile_pic_url)
+						.then(url => {
+							options.iconUrl = url
+							return chrome.notifications.create(`story_${user}`, options, nId => {
+								if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+								URL.revokeObjectURL(url)
+								// @todo: Maybe clear notification?
+							})
+						})
+						.catch(logAndReturn)
+				} else console.log(user, 'no new story', reel)
+			}
+
+			if (i === len) chrome.storage.local.set({ watchData })
+			return json
+		})
+		.catch(logAndReturn)
+}
+
 /**
  * Fetches and compares data with saved data.
  *
@@ -189,93 +281,6 @@ const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 function checkForWatchedContent(users, type, watchData) {
 	const len = users.length - 1
 
-	function getBlobUrl(url) {
-		return new Promise((resolve, reject) => {
-			window
-				.fetch(url)
-				.then(checkStatus)
-				.then(response => response.blob())
-				.then(blob => resolve(URL.createObjectURL(blob)))
-				.catch(e => console.error(e) && reject(e) && e)
-		})
-	}
-
-	const notificationOptions = {
-		type: '',
-		title: '',
-		message: chrome.i18n.getMessage('watch_openProfile'),
-		iconUrl: '', // profile pic
-		imageUrl: '',
-	}
-
-	function notify(user, userObj, i) {
-		let url
-		if (type === 0) url = `https://www.instagram.com/${user}/?__a=1`
-		if (type === 1) {
-			const params = Object.assign({}, storiesParams) // eslint-disable-line
-			params.user_id = userObj.id
-			url = `https://www.instagram.com/graphql/query/?${new URLSearchParams({
-				query_hash: QUERY_HASH,
-				variables: JSON.stringify(params),
-			}).toString()}`
-		}
-
-		fetchAux(url)
-			.then(json => {
-				const options = Object.assign({}, notificationOptions) // eslint-disable-line
-
-				if (type === 0) {
-					const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
-						id = node !== null ? node.shortcode : null
-					if (id !== null && id != userObj.post) {
-						console.log(user, 'new post', json.graphql.user)
-						watchData[user].post = id
-
-						options.type = 'image'
-						options.title = chrome.i18n.getMessage('watch_newPost', user)
-
-						Promise.all([getBlobUrl(json.graphql.user.profile_pic_url_hd), getBlobUrl(node.thumbnail_src)])
-							.then(values => {
-								options.iconUrl = values[0]
-								options.imageUrl = values[1]
-								return chrome.notifications.create(`post_${user}`, options, nId => {
-									if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
-									URL.revokeObjectURL(values[0])
-									URL.revokeObjectURL(values[1])
-									// @todo: Maybe clear notification?
-								})
-							})
-							.catch(e => console.error(e) && e)
-					}
-				} else if (type === 1) {
-					const reel = get(['data', 'user', 'reel'], json),
-						id = reel !== null ? reel.latest_reel_media : null
-					if (id !== null && reel.seen !== id && id != userObj.story) {
-						console.log(user, 'new story')
-						watchData[user].story = `${id}`
-
-						options.type = 'basic'
-						options.title = chrome.i18n.getMessage('watch_newStory', user)
-
-						getBlobUrl(reel.owner.profile_pic_url)
-							.then(url => {
-								options.iconUrl = url
-								return chrome.notifications.create(`story_${user}`, options, nId => {
-									if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
-									URL.revokeObjectURL(url)
-									// @todo: Maybe clear notification?
-								})
-							})
-							.catch(e => console.error(e) && e)
-					} else console.log(user, 'no new story', reel)
-				}
-
-				if (i === len) chrome.storage.local.set({ watchData })
-				return json
-			})
-			.catch(e => console.error(e) && e)
-	}
-
 	let timeout = 0
 	for (let i = 0; i <= len; ++i) {
 		const user = users[i],
@@ -283,7 +288,7 @@ function checkForWatchedContent(users, type, watchData) {
 
 		timeout += getRandom(400, 800)
 		window.setTimeout(() => {
-			notify(user, userObj, i)
+			notify(user, userObj, type, watchData, len, i)
 		}, timeout)
 		// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
 	}

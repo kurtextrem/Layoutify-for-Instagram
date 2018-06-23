@@ -1,7 +1,7 @@
 import bind from 'autobind-decorator'
 import { Button, Col, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap'
 import { Component, createElement } from 'nervjs'
-import { Storage, fetch as XHR, formToJSON, i18n } from './Utils'
+import { Storage, fetch as XHR, formToJSON, i18n, logAndReturn } from './Utils'
 
 const Options = (items = {}, render) => Object.keys(items).map(render)
 
@@ -107,7 +107,7 @@ const OPTS_ADDITIONAL = {
 					}
 				else user.id = json ? json.graphql.user.id : ''
 
-				Storage.set('watchData', data).catch(e => console.error(e) && e)
+				Storage.set('watchData', data).catch(logAndReturn)
 			}
 		},
 	},
@@ -123,7 +123,7 @@ const OPTS_ADDITIONAL = {
 						story: '',
 					}
 
-				Storage.set('watchData', data).catch(e => console.error(e) && e)
+				Storage.set('watchData', data).catch(logAndReturn)
 			}
 		},
 	},

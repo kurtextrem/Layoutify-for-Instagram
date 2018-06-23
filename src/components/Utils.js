@@ -153,3 +153,8 @@ const formReducer = (data, element) => {
 	return data
 }
 export const formToJSON = elements => [].reduce.call(elements, formReducer, {})
+
+export function logAndReturn(e) {
+	console.error(e)
+	return e
+}

@@ -1,9 +1,8 @@
-import Dots from './Dots'
 //import ImgWorker from './ImgWorker'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
-import { Button, CardBody, CardText } from 'reactstrap'
-import { Component, createElement } from 'nervjs'
+import { CardBody, CardText } from 'reactstrap'
+import { createElement } from 'nervjs'
 
 const dummyUser = {
 	username: '',
