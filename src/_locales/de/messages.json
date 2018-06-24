@@ -122,7 +122,7 @@
 		}
 	},
 	"watch_newStory": {
-		"message": "Sieh dir die Story von $user$ an",
+		"message": "Sieh dir $user$'s Story an",
 		"description": "Text of the Notification, when the watched User has an unseen Story",
 		"placeholders": {
 			"user": {

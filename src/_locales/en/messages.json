@@ -112,7 +112,7 @@
 		"description": "Text in Notification"
 	},
 	"watch_newPost": {
-		"message": "$user$ posted a new Post",
+		"message": "View the new post by $user$",
 		"description": "Text of the Notification, when the watched User posted a new post",
 		"placeholders": {
 			"user": {
@@ -122,7 +122,7 @@
 		}
 	},
 	"watch_newStory": {
-		"message": "View the unseen Story from $user$",
+		"message": "View $user$'s unseen story",
 		"description": "Text of the Notification, when the watched User has an unseen Story",
 		"placeholders": {
 			"user": {
