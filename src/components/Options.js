@@ -197,6 +197,7 @@ export default class Options extends Component {
 			select = input.previousSibling,
 			name = select.name,
 			opt = this.state.options[name]
+		input.value = ''
 		if (!value || (opt !== null && opt.indexOf(value) !== -1)) return
 
 		const additional = OPTS_ADDITIONAL[name]
@@ -207,6 +208,8 @@ export default class Options extends Component {
 
 	@bind
 	remove(e) {
+		e.preventDefault()
+
 		const target = e.target,
 			type = target.type
 		let value = target.value
