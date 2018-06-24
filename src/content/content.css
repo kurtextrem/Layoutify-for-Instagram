@@ -609,15 +609,15 @@ footer > div > nav {
 =============================================*/
 
 /*----------  Picture Only Mode  ----------*/
-#react-root.ige_picturesOnly:not(.profile):not(.explore) article > header {
+.ige_picturesOnly:not(.profile):not(.explore) article > header {
 	height: 40px !important;
 }
 
-#react-root.ige_picturesOnly:not(.profile):not(.explore) article > header > div:last-child > div:last-child {
+.ige_picturesOnly:not(.profile):not(.explore) article > header > div:last-child > div:last-child {
 	display: flex;
 }
 
-.ige_picturesOnly header + div + div > div:first-of-type:not(:only-child) {
+.ige_picturesOnly:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
 	height: 0;
 }
 

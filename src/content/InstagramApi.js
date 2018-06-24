@@ -140,10 +140,8 @@ const UID = getCookies(['ds_user_id']).ds_user_id,
 
 /**
  * 0 -> posts + set next max id -> max id -> posts + set next max id -> repeat from 1.
- *
- * @class Instagram
  */
-class Instagram {
+class InstagramAPI {
 	constructor(endpoint) {
 		this.endpoint = endpoint // e.g. liked
 		this.action = endpoint.slice(0, -1) // e.g. like
@@ -271,5 +269,3 @@ class Instagram {
 		})
 	}
 }
-
-window.getInstagram = Instagram

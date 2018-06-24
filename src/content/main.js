@@ -146,10 +146,9 @@ function addClass() {
 }
 
 const Instagram = {
-	liked: new window.getInstagram('liked'),
-	saved: new window.getInstagram('saved'),
+	liked: new InstagramAPI('liked'),
+	saved: new InstagramAPI('saved'),
 }
-console.log((window.Instagram = Instagram)) // for debugging
 
 function addExtendedButton() {
 	if ($('.extended--btn') !== null) return

@@ -14,6 +14,7 @@ if (module.hot) {
 
 	registerObserver()
 	//whyDidYouUpdate(Nerv)
+	// @todo: Add preact-perf-profiler
 
 	module.hot.accept('./components/App', () =>
 		requestAnimationFrame(() => {
