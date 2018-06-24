@@ -345,7 +345,7 @@ const first = {
 }
 
 if (!isProd)
-	first.serve = {
+	module.exports.serve = {
 		publicPath: 'http://localhost:8080/',
 		clipboard: false,
 		dev: {
@@ -355,10 +355,10 @@ if (!isProd)
 				'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
 			},
 		},
-		/*hot: {
-			autoConfigure: false, // @fixme: https://github.com/webpack/webpack/issues/6693
+		hot: {
+			// autoConfigure: false, // @fixme: https://github.com/webpack/webpack/issues/6693
 			allEntries: true,
-		},*/
+		},
 	}
 
 const second = {
