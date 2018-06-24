@@ -35,7 +35,7 @@ if (module.hot) {
 			// const time = Math.round(entry.startTime + entry.duration)
 			window.perf.log(entry.name, entry.duration)
 		}
-	}).observe({ entryTypes: ['event', 'measure', 'mark', 'navigation', 'paint', 'longtask'] }) // resource
+	}).observe({ entryTypes: ['event', 'measure', 'mark', 'navigation', 'longtask'] }) // resource, paint,
 }
 
 const init = (fn, app, container) => fn(createElement(app), container)

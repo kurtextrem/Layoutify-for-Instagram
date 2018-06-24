@@ -355,7 +355,7 @@ function setBoxWidth(i) {
 
 function addWatched() {
 	const user = location.pathname.split('/')[1],
-		$node = $(`h1[title="${user}"]`).parentNode.parentNode
+		$node = $(`h1[title="${user}"]`).parentElement.parentElement
 
 	let text = '',
 		cls = false

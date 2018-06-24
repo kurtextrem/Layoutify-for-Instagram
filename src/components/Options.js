@@ -1,13 +1,18 @@
 import bind from 'autobind-decorator'
 import { Button, Col, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap'
 import { Component, createElement } from 'nervjs'
-import { Storage, fetch as XHR, formToJSON, i18n, logAndReturn } from './Utils'
+import { Storage, fetch as XHR, i18n, logAndReturn } from './Utils'
 
 const AllOptions = (items = {}, render) => Object.keys(items).map(render)
 
 /**
  * Options object.
  * If you add something here, you need to add it to src/content/main.js as well
+ *
+ * Supports:
+ * - boolean toggle
+ * - array
+ * - number
  */
 const OPTS = {
 	// blockPosts: null, // [] // @TODO: This probably breaks the VL
@@ -159,45 +164,65 @@ export default class Options extends Component {
 		return (this.ref = ref)
 	}
 
-	save(e) {
-		const target = e.currentTarget !== undefined ? e.currentTarget : e
-		console.log(formToJSON(target.elements))
-		Storage.set('options', formToJSON(target.elements)).catch(logAndReturn)
+	/**
+	 *
+	 * @param {String} key options key
+	 * @param {*} value
+	 * @param {Bool} remove If array, remove `key`?
+	 */
+	@bind
+	save(key, value, remove) {
+		this.setState((prevState, props) => {
+			const options = prevState.options,
+				option = options[key]
+
+			if (Array.isArray(option)) {
+				if (remove) option.splice(option.indexOf(value), 1)
+				else option.push(value)
+			} else options[key] = value
+
+			Storage.set('options', options).catch(logAndReturn)
+			return { options }
+		})
 	}
 
 	@bind
 	add(e) {
 		if (e.keyCode !== undefined && e.keyCode !== 13) return
 
-		let input
-
-		input = e.currentTarget
+		let input = e.currentTarget
 		if (input.tagName !== 'INPUT') input = e.currentTarget.previousSibling
 
-		const value = input.value.trim()
-		if (!value) return
+		const value = input.value.trim(),
+			select = input.previousSibling,
+			name = select.name,
+			opt = this.state.options[name]
+		if (!value || (opt !== null && opt.indexOf(value) !== -1)) return
 
-		const select = input.previousSibling,
-			opt = document.createElement('option')
-		opt.value = value
-		opt.textContent = value
-		opt.title = 'Right click to remove'
-		opt.addEventListener('dblclick', this.remove)
-		opt.addEventListener('contextmenu', this.remove)
+		const additional = OPTS_ADDITIONAL[name]
+		if (additional !== undefined && additional.onChange !== undefined) additional.onChange(value)
 
-		select.appendChild(opt)
-		input.value = ''
-
-		const additional = OPTS_ADDITIONAL[select.name]
-		if (additional !== undefined) additional.onChange !== undefined && additional.onChange(value)
-		this.save(this.ref.children[0])
+		this.save(name, value, false)
 	}
 
 	@bind
 	remove(e) {
-		e.preventDefault()
-		e.currentTarget.remove()
-		this.save(this.ref.children[0])
+		const target = e.target,
+			type = target.type
+		let value = target.value
+
+		if (type === 'checkbox') value = target.checked
+		else if (type === 'number') value = +value
+		this.save(target.parentElement.name, value, true)
+	}
+
+	@bind
+	async onChange(e) {
+		const target = e.target,
+			value = target.type === 'checkbox' ? target.checked : target.value
+		this.save(target.name, value, false)
+
+		return e
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -227,7 +252,7 @@ export default class Options extends Component {
 
 	@bind
 	renderBasedOnType(id, value, additional) {
-		const onChange = additional !== undefined ? additional.onChange : undefined
+		const onChange = additional !== undefined ? e => this.onChange(e).then(additional.onChange) : this.onChange
 		if (typeof value === 'boolean')
 			return <Input type="checkbox" name={id} id={id} checked={value ? true : undefined} onChange={onChange} />
 		if (Array.isArray(value) || value === null)
@@ -269,7 +294,7 @@ export default class Options extends Component {
 		const { options } = this.state
 		return (
 			<Container ref={this.setRef}>
-				<Form onChange={this.save}>{AllOptions(options, this.renderOptions)}</Form>
+				<Form>{AllOptions(options, this.renderOptions)}</Form>
 			</Container>
 		)
 	}
