@@ -10,7 +10,7 @@ import './components/main.css'
 if (module.hot) {
 	import('nerv-devtools')
 	const { registerObserver } = require('react-perf-devtool')
-	const { whyDidYouUpdate } = require('why-did-you-update')
+	//const { whyDidYouUpdate } = require('why-did-you-update')
 
 	registerObserver()
 	//whyDidYouUpdate(Nerv)
@@ -35,7 +35,7 @@ if (module.hot) {
 			// const time = Math.round(entry.startTime + entry.duration)
 			window.perf.log(entry.name, entry.duration)
 		}
-	}).observe({ entryTypes: ['event', 'measure', 'mark'] })
+	}).observe({ entryTypes: ['event', 'measure', 'mark', 'navigation', 'paint', 'longtask'] }) // resource
 }
 
 const init = (fn, app, container) => fn(createElement(app), container)
