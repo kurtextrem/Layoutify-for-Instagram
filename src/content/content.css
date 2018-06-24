@@ -586,6 +586,7 @@ footer > div > nav {
 	content: '';
 }
 
+.ige_watch::before,
 .ige_watched::before {
 	position: absolute;
 	transform: translateY(-15px);
@@ -601,6 +602,15 @@ footer > div > nav {
 	color: #fff;
 	background-color: #6c757d;
 
+	content: 'Watch';
+}
+
+.ige_watch::before {
+	background-color: #007bff;
+	cursor: pointer;
+}
+
+.ige_watched::before {
 	content: 'Watching ' attr(data-ige-watched);
 }
 

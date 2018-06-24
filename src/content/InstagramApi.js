@@ -64,22 +64,18 @@ function parseJSON(response) {
 }
 
 class Storage {
-	//instance = undefined // @TODO: Only latest Chrome supports this
-
-	static getInstance(storage) {
-		if (this.instance === undefined) this.instance = new Storage(storage)
-		return this.instance
-	}
-
 	constructor(storage) {
-		if (Storage.instance !== undefined) return Storage.instance
+		this.STORAGE = storage
 
-		Storage.STORAGE = storage
+		this.promise = this.promise.bind(this)
+		this.set = this.set.bind(this)
+		this.get = this.get.bind(this)
+		this.remove = this.remove.bind(this)
 	}
 
 	promise(cb) {
 		return new Promise((resolve, reject) => {
-			if (chrome.storage[Storage.STORAGE] === undefined) return reject(new Error('Chrome storage not available'))
+			if (chrome.storage[this.STORAGE] === undefined) return reject(new Error('Chrome storage not available'))
 
 			try {
 				return cb(resolve, reject)
@@ -91,18 +87,18 @@ class Storage {
 
 	set(key, value) {
 		return this.promise((resolve, reject) =>
-			chrome.storage[Storage.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
+			chrome.storage[this.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
 		)
 	}
 
 	get(key, defaultValue) {
 		return this.promise((resolve, reject) =>
-			chrome.storage[Storage.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
+			chrome.storage[this.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
 		)
 	}
 
 	remove(key) {
-		return this.promise((resolve, reject) => chrome.storage[Storage.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
 	}
 
 	static check(data, resolve, reject) {
@@ -116,6 +112,7 @@ class Storage {
 }
 
 window.IG_Storage = new Storage('local')
+// window.IG_Storage_Sync = new Storage('sync')
 
 function getCookies(wanted) {
 	const cookies = document.cookie.split('; '),
