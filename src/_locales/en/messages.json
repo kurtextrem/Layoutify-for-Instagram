@@ -108,11 +108,11 @@
 		"description": "setting"
 	},
 	"watch_openProfile": {
-		"message": "Hier klicken um das Profil zu öffnen.",
+		"message": "Click to open the profile.",
 		"description": "Text in Notification"
 	},
 	"watch_newPost": {
-		"message": "$user$ hat etwas gepostet",
+		"message": "$user$ posted a new Post",
 		"description": "Text of the Notification, when the watched User posted a new post",
 		"placeholders": {
 			"user": {
@@ -122,8 +122,8 @@
 		}
 	},
 	"watch_newStory": {
-		"message": "$user$ hat eine neue Story gepostet",
-		"description": "Text of the Notification, when the watched User posted a new story",
+		"message": "View the unseen Story from $user$",
+		"description": "Text of the Notification, when the watched User has an unseen Story",
 		"placeholders": {
 			"user": {
 				"content": "$1",
