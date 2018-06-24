@@ -1,6 +1,6 @@
 import bind from 'autobind-decorator'
 import { Component, createElement } from 'nervjs'
-import { getWorkerBlob, shallowDiffers } from './Utils'
+import { getWorkerBlob, logAndReturn, shallowDiffers } from './Utils'
 
 /** Have we initiated the worker pool already? */
 let workerPoolCreated = false,
@@ -21,7 +21,7 @@ function createWorkerPool() {
 
 			return blob
 		})
-		.catch(console.error)
+		.catch(logAndReturn)
 }
 
 /** Returns the next available worker. */

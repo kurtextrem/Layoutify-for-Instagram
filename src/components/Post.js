@@ -4,7 +4,7 @@ import bind from 'autobind-decorator'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import { Button, CardBody, CardText } from 'reactstrap'
-import { Chrome, getWorkerBlob, updateCDN } from './Utils'
+import { Chrome, getWorkerBlob, logAndReturn, updateCDN } from './Utils'
 import { Component, createElement } from 'nervjs'
 
 let observer
@@ -29,7 +29,7 @@ function init() {
 	if (window.Worker !== undefined) {
 		getWorkerBlob()
 			.then(blob => (worker = new window.Worker(blob)))
-			.catch(console.error)
+			.catch(logAndReturn)
 	}
 }
 

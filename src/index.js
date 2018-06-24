@@ -1,7 +1,7 @@
 import App from './components/App'
 //import Nerv, { createElement, hydrate, render } from 'nervjs'
 import { createElement, hydrate, render } from 'nervjs'
-import { documentReady } from './components/Utils'
+import { documentReady, logAndReturn } from './components/Utils'
 /* eslint-disable */
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './components/main.css'
@@ -43,4 +43,4 @@ const ready = () => init(hydrate, App, document.body.children[2])
 
 documentReady()
 	.then(ready)
-	.catch(console.error)
+	.catch(logAndReturn)

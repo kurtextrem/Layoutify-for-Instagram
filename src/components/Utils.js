@@ -1,3 +1,8 @@
+export function logAndReturn(e) {
+	console.error(e)
+	return e
+}
+
 export class XHR {
 	static checkStatus(response) {
 		if (response.ok) return response
@@ -17,7 +22,7 @@ export class XHR {
 			.fetch(url, options)
 			.then(XHR.checkStatus)
 			.then(XHR.parseJSON)
-			.catch(console.error)
+			.catch(logAndReturn)
 	}
 }
 
@@ -25,19 +30,8 @@ export const fetch = XHR.fetch
 
 // @TODO: https://github.com/domenic/async-local-storage/blob/master/README.md
 class Storage {
-	static instance = undefined
-
-	static STORAGE = 'local'
-
-	static getInstance(storage) {
-		if (this.instance === undefined) this.instance = new Storage(storage)
-		return this.instance
-	}
-
 	constructor(storage) {
-		if (Storage.instance !== undefined) return Storage.instance
-
-		Storage.STORAGE = storage
+		this.STORAGE = storage
 	}
 
 	promise(cb) {
@@ -78,7 +72,8 @@ class Storage {
 	}
 }
 const storage = new Storage('local')
-export { storage as Storage }
+const syncStorage = new Storage('sync')
+export { storage as Storage, syncStorage as SyncStorage }
 
 export class Chrome {
 	static send(action, additional = {}) {
@@ -153,8 +148,3 @@ const formReducer = (data, element) => {
 	return data
 }
 export const formToJSON = elements => [].reduce.call(elements, formReducer, {})
-
-export function logAndReturn(e) {
-	console.error(e)
-	return e
-}

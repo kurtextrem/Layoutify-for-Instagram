@@ -108,7 +108,7 @@
 		"description": "setting"
 	},
 	"watch_openProfile": {
-		"message": "Hier klicken um das Profil zu öffnen.",
+		"message": "Klicken um das Profil zu öffnen.",
 		"description": "Text in Notification"
 	},
 	"watch_newPost": {

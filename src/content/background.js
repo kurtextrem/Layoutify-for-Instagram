@@ -40,7 +40,7 @@ let sessionid = ''
 function getSessionId() {
 	getCookie('sessionid')
 		.then(value => (sessionid = value))
-		.catch(console.error)
+		.catch(logAndReturn)
 }
 
 getSessionId()

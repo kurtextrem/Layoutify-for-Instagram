@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, FormGroup, FormText, Input, Label } from 
 import { Component, createElement } from 'nervjs'
 import { Storage, fetch as XHR, formToJSON, i18n, logAndReturn } from './Utils'
 
-const Options = (items = {}, render) => Object.keys(items).map(render)
+const AllOptions = (items = {}, render) => Object.keys(items).map(render)
 
 /**
  * Options object.
@@ -136,7 +136,7 @@ const OPTS_ADDITIONAL = {
 	},
 }
 
-export default class About extends Component {
+export default class Options extends Component {
 	constructor(props) {
 		super(props)
 
@@ -145,7 +145,7 @@ export default class About extends Component {
 				this.setState((prevState, props) => ({ options: data }))
 				return data
 			})
-			.catch(console.error)
+			.catch(logAndReturn)
 
 		this.ref = null
 	}
@@ -162,7 +162,7 @@ export default class About extends Component {
 	save(e) {
 		const target = e.currentTarget !== undefined ? e.currentTarget : e
 		console.log(formToJSON(target.elements))
-		Storage.set('options', formToJSON(target.elements)).catch(console.error)
+		Storage.set('options', formToJSON(target.elements)).catch(logAndReturn)
 	}
 
 	@bind
@@ -204,7 +204,7 @@ export default class About extends Component {
 		return nextState !== this.state
 	}
 
-	renderLabel(id) {
+	static renderLabel(id) {
 		return (
 			<Label for={id} sm={3}>
 				{i18n(id)}
@@ -212,14 +212,14 @@ export default class About extends Component {
 		)
 	}
 
-	renderHelp(id) {
+	static renderHelp(id) {
 		return <FormText color="muted">{i18n(`${id}_help`)}</FormText>
 	}
 
 	@bind
 	renderOption(key) {
 		return (
-			<option key={key} value={key} onDoubleClick={this.remove} onContextMenu={this.remove}>
+			<option key={key} value={key} onDoubleClick={this.remove} onContextMenu={this.remove} title="Right click to remove">
 				{key}
 			</option>
 		)
@@ -256,10 +256,10 @@ export default class About extends Component {
 
 		return (
 			<FormGroup key={id} row>
-				{this.renderLabel(id)}
+				{Options.renderLabel(id)}
 				<Col sm={9}>
 					{this.renderBasedOnType(id, this.state.options[id], additional)}
-					{additional !== undefined && additional.help && this.renderHelp(id)}
+					{additional !== undefined && additional.help && Options.renderHelp(id)}
 				</Col>
 			</FormGroup>
 		)
@@ -269,7 +269,7 @@ export default class About extends Component {
 		const { options } = this.state
 		return (
 			<Container ref={this.setRef}>
-				<Form onChange={this.save}>{Options(options, this.renderOptions)}</Form>
+				<Form onChange={this.save}>{AllOptions(options, this.renderOptions)}</Form>
 			</Container>
 		)
 	}

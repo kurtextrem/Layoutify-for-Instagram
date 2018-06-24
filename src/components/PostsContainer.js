@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import Sentinel from './Sentinel'
 import bind from 'autobind-decorator'
 import { CardDeck } from 'reactstrap'
-import { Chrome, Storage } from './Utils'
+import { Chrome, Storage, logAndReturn } from './Utils'
 import { Component, createElement } from 'nervjs'
 
 const Posts = (items = {}, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
@@ -67,9 +67,9 @@ export default class PostsContainer extends Component {
 
 	@bind
 	populateData() {
-		return Storage.get(this.props.id, [])
+		return Storage.get(this.props.id, null)
 			.then(this.handleData)
-			.catch(console.error)
+			.catch(logAndReturn)
 	}
 
 	@bind
