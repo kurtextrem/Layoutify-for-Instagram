@@ -202,6 +202,55 @@ const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 	}
 //orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
 
+function handlePost(json, user, userObj, watchData, options) {
+	const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
+		id = node !== null ? node.shortcode : null
+	if (id !== null && id != userObj.post) {
+		console.log(user, 'new post', json.graphql.user)
+		watchData[user].post = id
+
+		options.type = 'image'
+		options.title = chrome.i18n.getMessage('watch_newPost', user)
+
+		Promise.all([getBlobUrl(json.graphql.user.profile_pic_url_hd), getBlobUrl(node.thumbnail_src)])
+			.then(values => {
+				options.iconUrl = values[0]
+				options.imageUrl = values[1]
+				return chrome.notifications.create(`post_${user}`, options, nId => {
+					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+					URL.revokeObjectURL(values[0])
+					URL.revokeObjectURL(values[1])
+					// @todo: Maybe clear notification?
+				})
+			})
+			.catch(logAndReturn)
+	}
+}
+
+function handleStory(json, user, userObj, watchData, options) {
+	const reel = get(['data', 'user', 'reel'], json),
+		id = reel !== null ? reel.latest_reel_media : null
+	if (id !== null && reel.seen !== id) {
+		// && id != userObj.story
+		console.log(user, 'new story')
+		//watchData[user].story = `${id}`
+
+		options.type = 'basic'
+		options.title = chrome.i18n.getMessage('watch_newStory', user)
+
+		getBlobUrl(reel.owner.profile_pic_url)
+			.then(url => {
+				options.iconUrl = url
+				return chrome.notifications.create(`story_${user}`, options, nId => {
+					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+					URL.revokeObjectURL(url)
+					// @todo: Maybe clear notification?
+				})
+			})
+			.catch(logAndReturn)
+	} else console.log(user, 'no new story', reel)
+}
+
 function notify(user, userObj, type, watchData, len, i) {
 	let url
 	if (type === 0) url = `https://www.instagram.com/${user}/?__a=1`
@@ -219,50 +268,9 @@ function notify(user, userObj, type, watchData, len, i) {
 			const options = Object.assign({}, notificationOptions) // eslint-disable-line
 
 			if (type === 0) {
-				const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
-					id = node !== null ? node.shortcode : null
-				if (id !== null && id != userObj.post) {
-					console.log(user, 'new post', json.graphql.user)
-					watchData[user].post = id
-
-					options.type = 'image'
-					options.title = chrome.i18n.getMessage('watch_newPost', user)
-
-					Promise.all([getBlobUrl(json.graphql.user.profile_pic_url_hd), getBlobUrl(node.thumbnail_src)])
-						.then(values => {
-							options.iconUrl = values[0]
-							options.imageUrl = values[1]
-							return chrome.notifications.create(`post_${user}`, options, nId => {
-								if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
-								URL.revokeObjectURL(values[0])
-								URL.revokeObjectURL(values[1])
-								// @todo: Maybe clear notification?
-							})
-						})
-						.catch(logAndReturn)
-				}
+				handlePost(json, user, userObj, watchData, options)
 			} else if (type === 1) {
-				const reel = get(['data', 'user', 'reel'], json),
-					id = reel !== null ? reel.latest_reel_media : null
-				if (id !== null && reel.seen !== id) {
-					// && id != userObj.story
-					console.log(user, 'new story')
-					//watchData[user].story = `${id}`
-
-					options.type = 'basic'
-					options.title = chrome.i18n.getMessage('watch_newStory', user)
-
-					getBlobUrl(reel.owner.profile_pic_url)
-						.then(url => {
-							options.iconUrl = url
-							return chrome.notifications.create(`story_${user}`, options, nId => {
-								if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
-								URL.revokeObjectURL(url)
-								// @todo: Maybe clear notification?
-							})
-						})
-						.catch(logAndReturn)
-				} else console.log(user, 'no new story', reel)
+				handleStory(json, user, userObj, watchData, options)
 			}
 
 			if (i === len) chrome.storage.local.set({ watchData })
