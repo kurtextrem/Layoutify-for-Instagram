@@ -356,20 +356,23 @@ function toggleWatchlist(user) {
 	if (OPTIONS.watchPosts === null) OPTIONS.watchPosts = [user]
 	else {
 		const i = OPTIONS.watchPosts.indexOf(user)
-		i !== -1 ? OPTIONS.watchPosts.push(user) : OPTIONS.watchPosts.splice(i, 1)
+		i === -1 ? OPTIONS.watchPosts.push(user) : OPTIONS.watchPosts.splice(i, 1)
 	}
 	if (OPTIONS.watchStories === null) OPTIONS.watchStories = [user]
 	else {
 		const i = OPTIONS.watchStories.indexOf(user)
-		i !== -1 ? OPTIONS.watchStories.push(user) : OPTIONS.watchStories.splice(i, 1)
+		i === -1 ? OPTIONS.watchStories.push(user) : OPTIONS.watchStories.splice(i, 1)
 	}
 
 	window.IG_Storage.set('options', OPTIONS).catch(window.logAndReturn)
 }
 
 function addWatched() {
-	const user = location.pathname.split('/')[1],
-		$node = $(`h1[title="${user}"]`).parentElement.parentElement
+	const user = location.pathname.split('/')[1]
+
+	let $node = $(`h1[title="${user}"]`)
+	if ($node === null) return
+	$node = $node.parentElement.parentElement
 
 	let text = '',
 		cls = false
@@ -436,9 +439,10 @@ const OPTS_MODE = {
 		$('#ige_style').remove()
 	},
 	notify(arg) {
-		const now = Date.now()
-		if (now - window.localStorage.ige_lastFetch > 60000) {
-			window.localStorage.ige_lastFetch = now
+		const now = Date.now(),
+			last = window.sessionStorage.ige_lastFetch !== undefined ? +window.sessionStorage.ige_lastFetch : 0
+		if (now - last > 60000) {
+			window.sessionStorage.ige_lastFetch = now
 			chrome.runtime.sendMessage(null, { action: 'watchNow' })
 		}
 	},
