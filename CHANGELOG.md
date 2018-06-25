@@ -6,7 +6,7 @@
 
 - Maybe: Merge watched posts and watched stories to one setting
 
-## [2.7.2] - 2018-06-24
+## [2.7.3] - 2018-06-24
 
 ### Added
 
