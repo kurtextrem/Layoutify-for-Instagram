@@ -592,7 +592,7 @@ footer > div > nav {
 	transform: translateY(-15px);
 	display: inline-block;
 	padding: 0.25em 0.4em;
-	font-size: 75%;
+	font-size: 12px;
 	font-weight: 700;
 	line-height: 1;
 	text-align: center;
@@ -601,13 +601,12 @@ footer > div > nav {
 	border-radius: 0.25rem;
 	color: #fff;
 	background-color: #6c757d;
-
 	content: 'Watch';
+	cursor: pointer;
 }
 
 .ige_watch::before {
 	background-color: #007bff;
-	cursor: pointer;
 }
 
 .ige_watched::before {

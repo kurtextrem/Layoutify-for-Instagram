@@ -352,14 +352,17 @@ function setBoxWidth(i) {
 	docEl.style.setProperty('--boxWidth', `${i}vw`)
 }
 
-function addToWatchList(user, e) {
-	const target = e.target
-	target.classList.add('ige_watched')
-
-	if (OPTIONS.watchPosts !== null) OPTIONS.watchPosts.push(user)
-	else OPTIONS.watchPosts = [user]
-	if (OPTIONS.watchStories !== null) OPTIONS.watchStories.push(user)
-	else OPTIONS.watchStories = [user]
+function toggleWatchlist(user) {
+	if (OPTIONS.watchPosts === null) OPTIONS.watchPosts = [user]
+	else {
+		const i = OPTIONS.watchPosts.indexOf(user)
+		i !== -1 ? OPTIONS.watchPosts.push(user) : OPTIONS.watchPosts.splice(i, 1)
+	}
+	if (OPTIONS.watchStories === null) OPTIONS.watchStories = [user]
+	else {
+		const i = OPTIONS.watchStories.indexOf(user)
+		i !== -1 ? OPTIONS.watchStories.push(user) : OPTIONS.watchStories.splice(i, 1)
+	}
 
 	window.IG_Storage.set('options', OPTIONS).catch(window.logAndReturn)
 }
@@ -382,10 +385,21 @@ function addWatched() {
 	if (cls) {
 		$node.dataset.igeWatched = text
 		$node.classList.add('ige_watched')
-	} else {
-		$node.classList.add('ige_watch')
-		$node.addEventListener('click', addToWatchList.bind(undefined, user), { once: true })
-	}
+	} else $node.classList.add('ige_watch')
+	$node.addEventListener(
+		'click',
+		e => {
+			const target = e.target
+			if (target.nodeName !== 'SECTION') return
+
+			const list = target.classList
+			list.toggle('ige_watch')
+			list.toggle('ige_watched')
+
+			toggleWatchlist(user)
+		},
+		false
+	)
 }
 
 /**

@@ -10,7 +10,7 @@
 
 ### Added
 
-- On profiles, you can now click the button 'Watch' to add a user to your watch list.
+- On profiles, you can now click the button 'Watch' to add/remove a user to/from your watch list.
 
 ### Changed
 
