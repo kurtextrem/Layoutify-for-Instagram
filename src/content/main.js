@@ -422,8 +422,11 @@ const OPTS_MODE = {
 		$('#ige_style').remove()
 	},
 	notify(arg) {
-		// if (arg) // @fixme: Only refresh when watchInBackground is false?
-		chrome.runtime.sendMessage(null, { action: 'watchNow' })
+		const now = Date.now()
+		if (now - window.localStorage.ige_lastFetch > 60000) {
+			window.localStorage.ige_lastFetch = now
+			chrome.runtime.sendMessage(null, { action: 'watchNow' })
+		}
 	},
 }
 
