@@ -86,7 +86,9 @@ export class Chrome {
 			index = search.indexOf('tabid')
 		if (index !== -1) {
 			console.log('sending req', action, additional)
-			chrome.tabs.sendMessage(+search[index + 1], { action, ...additional }, null, function() {})
+			chrome.tabs.sendMessage(+search[index + 1], { action, ...additional }, null, function() {
+				if (chrome.runtime.lastError) return console.error(chrome.runtime.lastError.message)
+			})
 			return true
 		}
 		return false
