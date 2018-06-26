@@ -73,15 +73,15 @@ export default class PostsContainer extends Component {
 	}
 
 	@bind
-	handleScroll() {
-		Chrome.send('load', { which: this.props.id })
-	}
-
-	@bind
 	handleData(data) {
 		++this.initial
 		if (data !== null) this.setState((prevState, props) => ({ items: data.items, nextMaxId: data.nextMaxId, timeout: 400 }))
 		return data
+	}
+
+	@bind
+	handleScroll() {
+		Chrome.send('load', { which: this.props.id })
 	}
 
 	addStorageListener() {
