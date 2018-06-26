@@ -30,7 +30,7 @@ function fetchAux(url, options) {
 	const opts = fetchOptions
 	opts.referrerPolicy = 'no-referrer' // we only want that when requesting the private API
 	opts.headers = headers
-	if (options !== undefined) Object.assign({}, fetchOptions, options) // eslint-disable-line
+	if (options !== undefined) Object.assign(opts, options) // eslint-disable-line
 
 	return window
 		.fetch(url, opts)
@@ -238,20 +238,6 @@ class InstagramAPI {
 		return this.items
 	}
 
-	remove(id) {
-		const cookies = getCookies(['csrftoken']),
-			headers = new Headers({
-				'x-csrftoken': cookies.csrftoken,
-				'x-instagram-ajax': '1',
-				'x-requested-with': 'XMLHttpRequest',
-			})
-
-		return fetchAux(`${WEB_API}${this.action}s/${id}/un${this.action}/`, {
-			method: 'POST',
-			headers,
-		})
-	}
-
 	add(id) {
 		const cookies = getCookies(['csrftoken']),
 			headers = new Headers({
@@ -260,7 +246,27 @@ class InstagramAPI {
 				'x-requested-with': 'XMLHttpRequest',
 			})
 
-		return fetchAux(`${WEB_API}${this.action}s/${id}/${this.action}/`, {
+		let node = this.action
+		if (node === 'like') node += 's'
+
+		return fetchAux(`${WEB_API}${node}/${id}/${this.action}/`, {
+			method: 'POST',
+			headers,
+		})
+	}
+
+	remove(id) {
+		const cookies = getCookies(['csrftoken']),
+			headers = new Headers({
+				'x-csrftoken': cookies.csrftoken,
+				'x-instagram-ajax': '1',
+				'x-requested-with': 'XMLHttpRequest',
+			})
+
+		let node = this.action
+		if (node === 'like') node += 's'
+
+		return fetchAux(`${WEB_API}${node}/${id}/un${this.action}/`, {
 			method: 'POST',
 			headers,
 		})

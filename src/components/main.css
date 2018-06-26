@@ -96,10 +96,6 @@ nav,
 	font-size: 1.4em;
 }
 
-.saved {
-	display: none;
-}
-
 .post--carousel {
 	position: relative;
 }
@@ -192,17 +188,9 @@ img::before {
 	opacity: 1;
 }
 
-/** Loading animation */
-@keyframes ball-pulse-sync {
-	33% {
-		transform: translateY(10px);
-	}
-	66% {
-		transform: translateY(-10px);
-	}
-	100% {
-		transform: translateY(0);
-	}
+.fadeOut {
+	animation: fadeOut 5s !important;
+	animation-play-state: paused;
 }
 
 .ball-pulse-sync > div:nth-child(1) {
@@ -228,12 +216,34 @@ img::before {
 	margin-top: 10px;
 }
 
+/** Loading animation */
+@keyframes ball-pulse-sync {
+	33% {
+		transform: translateY(10px);
+	}
+	66% {
+		transform: translateY(-10px);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
 @keyframes fadeIn {
 	0% {
 		opacity: 0;
 	}
 	100% {
 		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
 	}
 }
 
