@@ -2,15 +2,21 @@
 
 ## Soon
 
-- Options will be synced across all Chrome installations
-
 - Maybe: Merge watched posts and watched stories to one setting
+
+## [2.7.6] - 2018-06-28
+
+### Added
+
+- Options will be synced across all Chrome installations.
+
+- Saved items can now be removed from the 3-dots page.
 
 ## [2.7.5] - 2018-06-26
 
 ### Bug Fixes
 
-- No recent items were added to the 3-dots menu.
+- No recent items were added to the 3-dots page.
 
 ## [2.7.3] - 2018-06-24
 
