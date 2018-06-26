@@ -80,7 +80,7 @@ export default class PostsContainer extends Component {
 	@bind
 	handleData(data) {
 		++this.initial
-		this.setState((prevState, props) => ({ items: data.items, nextMaxId: data.nextMaxId, timeout: 400 }))
+		if (data !== null) this.setState((prevState, props) => ({ items: data.items, nextMaxId: data.nextMaxId, timeout: 400 }))
 		return data
 	}
 

@@ -26,7 +26,7 @@ const headers = new Headers({
 	Connection: 'keep-alive',
 })
 
-function fetch(url, options) {
+function fetchAux(url, options) {
 	const opts = fetchOptions
 	opts.referrerPolicy = 'no-referrer' // we only want that when requesting the private API
 	opts.headers = headers
@@ -172,7 +172,7 @@ class InstagramAPI {
 	fetch() {
 		if (this.nextMaxId === '') return Promise.resolve(this.items) // nothing more to fetch
 
-		return fetch(`${API}feed/${this.endpoint}/?${this.nextMaxId ? `max_id=${this.nextMaxId}&` : ''}`) // maxId means "show everything before X"
+		return fetchAux(`${API}feed/${this.endpoint}/?${this.nextMaxId ? `max_id=${this.nextMaxId}&` : ''}`) // maxId means "show everything before X"
 			.then(this.storeNext)
 			.then(this.normalize)
 			.then(this.storeData)
@@ -246,7 +246,7 @@ class InstagramAPI {
 				'x-requested-with': 'XMLHttpRequest',
 			})
 
-		return fetch(`${WEB_API}${this.action}s/${id}/un${this.action}/`, {
+		return fetchAux(`${WEB_API}${this.action}s/${id}/un${this.action}/`, {
 			method: 'POST',
 			headers,
 		})
@@ -260,7 +260,7 @@ class InstagramAPI {
 				'x-requested-with': 'XMLHttpRequest',
 			})
 
-		return fetch(`${WEB_API}${this.action}s/${id}/${this.action}/`, {
+		return fetchAux(`${WEB_API}${this.action}s/${id}/${this.action}/`, {
 			method: 'POST',
 			headers,
 		})
