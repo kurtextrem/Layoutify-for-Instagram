@@ -1,7 +1,7 @@
 import bind from 'autobind-decorator'
 import { Button, Col, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap'
 import { Component, createElement } from 'nervjs'
-import { Storage, fetch as XHR, i18n, logAndReturn } from './Utils'
+import { Storage, StorageSync, fetch as XHR, i18n, logAndReturn } from './Utils'
 
 const AllOptions = (items = {}, render) => Object.keys(items).map(render)
 
@@ -145,7 +145,7 @@ export default class Options extends Component {
 	constructor(props) {
 		super(props)
 
-		Storage.get('options', OPTS)
+		StorageSync.get('options', OPTS)
 			.then(data => {
 				this.setState((prevState, props) => ({ options: data }))
 				return data
@@ -181,7 +181,7 @@ export default class Options extends Component {
 				else option.push(value)
 			} else options[key] = value
 
-			Storage.set('options', options).catch(logAndReturn)
+			StorageSync.set('options', options).catch(logAndReturn)
 			return { options }
 		})
 	}

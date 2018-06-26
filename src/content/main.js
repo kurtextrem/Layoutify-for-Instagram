@@ -474,7 +474,7 @@ const OPTS = {
 }
 
 function loadOptions() {
-	window.IG_Storage.get('options', null)
+	window.IG_Storage_Sync.get('options', null)
 		.then(function cb(options) {
 			if (options === null) return options
 			OPTIONS = options

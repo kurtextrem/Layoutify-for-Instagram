@@ -77,8 +77,8 @@ class Storage {
 	}
 }
 const storage = new Storage('local')
-const syncStorage = new Storage('sync')
-export { storage as Storage, syncStorage as SyncStorage }
+const storageSync = new Storage('sync')
+export { storage as Storage, storageSync as StorageSync }
 
 export class Chrome {
 	static send(action, additional = {}) {

@@ -112,7 +112,7 @@ class Storage {
 }
 
 window.IG_Storage = new Storage('local')
-// window.IG_Storage_Sync = new Storage('sync')
+window.IG_Storage_Sync = new Storage('sync')
 
 function getCookies(wanted) {
 	const cookies = document.cookie.split('; '),

@@ -135,6 +135,14 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 chrome.runtime.onInstalled.addListener(details => {
 	if (details.reason !== 'update') return
 
+	// @TODO: Migration code. Remove for v3.0
+	chrome.storage.local.get({ options: null }, data => {
+		if (data.options === null) return
+
+		chrome.storage.sync.set({ options: data.options })
+		chrome.storage.local.remove('options')
+	})
+
 	const currentVersion = chrome.runtime.getManifest().version,
 		splitNew = currentVersion.split('.'),
 		oldVersion = details.previousVersion,
