@@ -364,7 +364,7 @@ function toggleWatchlist(user) {
 		i === -1 ? OPTIONS.watchStories.push(user) : OPTIONS.watchStories.splice(i, 1)
 	}
 
-	window.IG_Storage.set('options', OPTIONS).catch(window.logAndReturn)
+	window.IG_Storage_Sync.set('options', OPTIONS).catch(window.logAndReturn)
 }
 
 function addWatched() {

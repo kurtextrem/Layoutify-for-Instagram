@@ -102,7 +102,7 @@ const OPTS_ADDITIONAL = {
 					credentials: 'include',
 					mode: 'cors',
 				})
-				const data = await Storage.get('watchData', {})
+				const data = await StorageSync.get('watchData', {})
 				const user = data[value]
 				if (user === undefined)
 					data[value] = {
@@ -112,7 +112,7 @@ const OPTS_ADDITIONAL = {
 					}
 				else user.id = json ? json.graphql.user.id : ''
 
-				Storage.set('watchData', data).catch(logAndReturn)
+				StorageSync.set('watchData', data).catch(logAndReturn)
 			}
 		},
 	},
@@ -120,7 +120,7 @@ const OPTS_ADDITIONAL = {
 		help: true,
 		async onChange(value) {
 			if (typeof value === 'string') {
-				const data = await Storage.get('watchData', {})
+				const data = await StorageSync.get('watchData', {})
 				if (data[value] === undefined)
 					data[value] = {
 						id: '',
@@ -128,7 +128,7 @@ const OPTS_ADDITIONAL = {
 						story: '',
 					}
 
-				Storage.set('watchData', data).catch(logAndReturn)
+				StorageSync.set('watchData', data).catch(logAndReturn)
 			}
 		},
 	},

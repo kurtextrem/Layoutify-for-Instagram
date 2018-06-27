@@ -170,10 +170,11 @@ chrome.notifications.onButtonClicked.addListener((id, buttonIndex) => {
 })
 
 function getWatchlist(e) {
-	chrome.storage.local.get({ options: null, watchData: null }, data => {
+	chrome.storage.sync.get({ options: null, watchData: null }, data => {
 		// @todo: Switch watchData to sync
 		const options = data.options
-		if (chrome.runtime.lastError || options === null || data.watchData === null) return console.error(chrome.runtime.lastError.message)
+		if (chrome.runtime.lastError) return console.error(chrome.runtime.lastError.message)
+		if (options === null || data.watchData === null) return console.error('Empty options/watchData', options, data.watchData)
 
 		if (options.watchPosts) checkForWatchedContent(options.watchPosts, 0, data.watchData)
 		if (options.watchStories !== null) checkForWatchedContent(options.watchStories, 1, data.watchData)
@@ -281,7 +282,7 @@ function notify(user, userObj, type, watchData, len, i) {
 				handleStory(json, user, userObj, watchData, options)
 			}
 
-			if (i === len) chrome.storage.local.set({ watchData })
+			if (i === len) chrome.storage.sync.set({ watchData })
 			return json
 		})
 		.catch(logAndReturn)
