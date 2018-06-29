@@ -142,6 +142,12 @@ chrome.runtime.onInstalled.addListener(details => {
 		chrome.storage.sync.set({ options: data.options })
 		chrome.storage.local.remove('options')
 	})
+	chrome.storage.local.get({ watchData: null }, data => {
+		if (data.watchData === null) return
+
+		chrome.storage.sync.set({ watchData: data.watchData })
+		chrome.storage.local.remove('watchData')
+	})
 
 	const currentVersion = chrome.runtime.getManifest().version,
 		splitNew = currentVersion.split('.'),
@@ -171,13 +177,12 @@ chrome.notifications.onButtonClicked.addListener((id, buttonIndex) => {
 
 function getWatchlist(e) {
 	chrome.storage.sync.get({ options: null, watchData: null }, data => {
-		// @todo: Switch watchData to sync
 		const options = data.options
 		if (chrome.runtime.lastError) return console.error(chrome.runtime.lastError.message)
 		if (options === null || data.watchData === null) return console.error('Empty options/watchData', options, data.watchData)
 
 		if (options.watchPosts) checkForWatchedContent(options.watchPosts, 0, data.watchData)
-		if (options.watchStories !== null) checkForWatchedContent(options.watchStories, 1, data.watchData)
+		if (options.watchStories) checkForWatchedContent(options.watchStories, 1, data.watchData)
 	})
 }
 
