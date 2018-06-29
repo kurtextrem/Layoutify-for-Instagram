@@ -54,7 +54,7 @@ const html = {
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	cache: true,
-	inject: 'head',
+	inject: isProd ? false : 'head',
 	minify: isProd
 		? {
 				removeComments: false,
@@ -342,23 +342,22 @@ const first = {
 					reasons: true,
 			  }
 			: {}, // can't be 'none' as per parallel-webpack
+
+	serve: undefined,
 }
 
 if (!isProd)
-	module.exports.serve = {
+	first.serve = {
 		publicPath: 'http://localhost:8080/',
 		clipboard: false,
-		dev: {
+		devMiddleware: {
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
 				'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
 			},
 		},
-		hot: {
-			// autoConfigure: false, // @fixme: https://github.com/webpack/webpack/issues/6693
-			allEntries: true,
-		},
+		hotClient: { allEntries: true },
 	}
 
 const second = {
