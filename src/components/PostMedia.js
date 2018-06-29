@@ -28,7 +28,6 @@ export default class PostMedia extends Component {
 	constructor(props) {
 		super(props)
 
-		this.carouselLen = props.isCarousel ? props.data.carousel_media.length : 0
 		this.ref = null
 
 		if (!initiated) init()
@@ -53,8 +52,8 @@ export default class PostMedia extends Component {
 			if (e.currentTarget.classList.contains('arrow--left')) --newIndex
 			else ++newIndex
 
-			if (newIndex < 0) newIndex = this.carouselLen - 1
-			else if (newIndex >= this.carouselLen) newIndex = 0
+			if (newIndex < 0) newIndex = props.carouselLen - 1
+			else if (newIndex >= props.carouselLen) newIndex = 0
 
 			return { carouselIndex: newIndex }
 		})
@@ -75,7 +74,7 @@ export default class PostMedia extends Component {
 	}
 
 	render() {
-		const { isCarousel, initial, data } = this.props
+		const { isCarousel, carouselLen, initial, data } = this.props
 		const { carouselIndex } = this.state
 		const media = isCarousel ? data.carousel_media[carouselIndex] : data
 
@@ -118,21 +117,21 @@ export default class PostMedia extends Component {
 		}
 
 		return (
-			<div>
-				<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener" className={isCarousel ? 'post--carousel' : ''}>
-					{isCarousel ? (
-						<Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}>
-							<i className="material-icons">keyboard_arrow_left</i>
-						</Button>
-					) : null}
-					{mediaElement}
-					{isCarousel ? (
-						<Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}>
-							<i className="material-icons">keyboard_arrow_right</i>
-						</Button>
-					) : null}
+			<div className={`position-relative${isCarousel ? ' post--carousel' : ''}`}>
+				{isCarousel ? (
+					<Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}>
+						<i className="material-icons">keyboard_arrow_left</i>
+					</Button>
+				) : null}
+				<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener">
+					{mediaElement}a
 				</a>
-				{isCarousel ? <Dots index={carouselIndex} len={this.carouselLen} /> : null}
+				{isCarousel ? (
+					<Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}>
+						<i className="material-icons">keyboard_arrow_right</i>
+					</Button>
+				) : null}
+				{isCarousel ? <Dots index={carouselIndex} len={carouselLen} /> : null}
 			</div>
 		)
 	}

@@ -36,6 +36,7 @@ export default class Post extends Component {
 
 		this.id = props.data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
 		this.isCarousel = props.data.media_type === 8
+		this.carouselLen = this.isCarousel ? props.data.carousel_media.length : 0
 		this.preloaded = false
 		this.timeout = 0
 
@@ -95,12 +96,13 @@ export default class Post extends Component {
 		} = this.props
 		const { active } = this.state
 		const isCarousel = this.isCarousel
+		const carouselLen = this.carouselLen
 		const text = (caption && caption.text) || ''
 
 		return (
 			<article className={`card${active ? '' : ' fadeOut'}`} id={`post_${this.id}`} onMouseEnter={isCarousel ? this.preloadAll : undefined}>
 				<PostHeader user={user} code={data.code} taken_at={data.taken_at} />
-				<PostMedia isCarousel={isCarousel} initial={initial} data={data} />
+				<PostMedia isCarousel={isCarousel} carouselLen={carouselLen} initial={initial} data={data} />
 				<CardBody className="overflow-auto p-3 card-body">
 					<CardText>{text}</CardText>
 				</CardBody>

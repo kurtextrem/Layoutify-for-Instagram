@@ -132,6 +132,11 @@ nav,
 	right: 0;
 }
 
+.dots {
+	margin-bottom: -1rem;
+	contain: content;
+}
+
 .dots--dot {
 	width: 10px;
 	height: 10px;
