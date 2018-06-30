@@ -1,6 +1,6 @@
 import App from './components/App'
 //import Nerv, { createElement, hydrate, render } from 'nervjs'
-import { createElement, render } from 'nervjs'
+import { createElement, hydrate, render } from 'nervjs'
 import { documentReady, logAndReturn } from './components/Utils'
 /* eslint-disable */
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -40,7 +40,7 @@ if (module.hot) {
 }
 
 const init = (fn, app, container) => fn(createElement(app), container)
-const ready = () => init(render, App, document.body.children[2]) // in theory, hydrate should be faster, but Nerve is removing all nodes and re-mounting afterwards anyway.
+const ready = () => init(hydrate, App, document.body.children[2])
 
 documentReady()
 	.then(ready)
