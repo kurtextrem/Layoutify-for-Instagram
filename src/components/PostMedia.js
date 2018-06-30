@@ -124,7 +124,7 @@ export default class PostMedia extends Component {
 					</Button>
 				) : null}
 				<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener">
-					{mediaElement}a
+					{mediaElement}
 				</a>
 				{isCarousel ? (
 					<Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}>

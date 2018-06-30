@@ -6,8 +6,8 @@ let tabId
 /**
  * Creates a new tab.
  *
- * @param {Number} id Tab ID
- * @param {Boolean} force Whether to force a tab creation
+ * @param {number} id Tab ID
+ * @param {boolean} force Whether to force a tab creation
  */
 function createTab(id, force) {
 	if (tabId !== undefined && !force) {
@@ -293,6 +293,20 @@ function notify(user, userObj, type, watchData, len, i) {
 		.catch(logAndReturn)
 }
 
+function createUserObj(user, watchData) {
+	fetchAux(`https://www.instagram.com/${user}/?__a=1`)
+		.then(json => {
+			if (watchData[user] === undefined)
+				return (watchData[user] = {
+					id: json ? json.graphql.user.id : '',
+					post: '',
+					story: '',
+				})
+			return (watchData[user].id = json ? json.graphql.user.id : '')
+		})
+		.catch(window.logAndReturn)
+}
+
 /**
  * Fetches and compares data with saved data.
  *
@@ -308,9 +322,11 @@ function checkForWatchedContent(users, type, watchData) {
 		const user = users[i],
 			userObj = watchData[user]
 
+		if (userObj === undefined || userObj.id === '') createUserObj(user, watchData)
+
 		timeout += getRandom(400, 800)
 		window.setTimeout(() => {
-			notify(user, userObj, type, watchData, len, i)
+			notify(user, watchData[user], type, watchData, len, i)
 		}, timeout)
 		// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
 	}

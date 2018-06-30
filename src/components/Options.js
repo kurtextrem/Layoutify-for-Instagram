@@ -93,44 +93,11 @@ const OPTS_ADDITIONAL = {
 	 */
 	watchStories: {
 		help: true,
-		async onChange(value) {
-			if (typeof value === 'string') {
-				const json = await XHR(`https://www.instagram.com/${value}/?__a=1`, {
-					headers: new Headers({
-						'x-requested-with': 'XMLHttpRequest',
-					}),
-					credentials: 'include',
-					mode: 'cors',
-				})
-				const data = await StorageSync.get('watchData', {})
-				const user = data[value]
-				if (user === undefined)
-					data[value] = {
-						id: json ? json.graphql.user.id : '',
-						post: '',
-						story: '',
-					}
-				else user.id = json ? json.graphql.user.id : ''
-
-				StorageSync.set('watchData', data).catch(logAndReturn)
-			}
-		},
+		onChange: undefined,
 	},
 	watchPosts: {
 		help: true,
-		async onChange(value) {
-			if (typeof value === 'string') {
-				const data = await StorageSync.get('watchData', {})
-				if (data[value] === undefined)
-					data[value] = {
-						id: '',
-						post: '',
-						story: '',
-					}
-
-				StorageSync.set('watchData', data).catch(logAndReturn)
-			}
-		},
+		onChange: undefined,
 	},
 	watchInBackground: {
 		help: true,
@@ -166,7 +133,7 @@ export default class Options extends Component {
 
 	/**
 	 *
-	 * @param {String} key options key
+	 * @param {string} key options key
 	 * @param {*} value
 	 * @param {Bool} remove If array, remove `key`?
 	 */

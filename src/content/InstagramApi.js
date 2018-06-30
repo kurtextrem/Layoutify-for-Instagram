@@ -91,6 +91,10 @@ class Storage {
 		)
 	}
 
+	setObj(obj) {
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].set(obj, data => Storage.check(data, resolve, reject)))
+	}
+
 	get(key, defaultValue) {
 		return this.promise((resolve, reject) =>
 			chrome.storage[this.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))

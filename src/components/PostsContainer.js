@@ -58,10 +58,11 @@ export default class PostsContainer extends Component {
 
 	@bind
 	storageListener(changes, area) {
-		const id = this.props.id
-		if (changes[id] !== undefined && changes[id].newValue !== undefined) {
+		const id = this.props.id,
+			change = changes[id]
+		if (change !== undefined && change.newValue !== undefined) {
 			console.log('new data', changes)
-			this.populateData()
+			this.handleData(change.newValue)
 		}
 	}
 
