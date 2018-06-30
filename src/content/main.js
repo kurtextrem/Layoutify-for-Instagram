@@ -339,6 +339,7 @@ function fullPhoto(el) {
 
 /**
  * Adds controls to videos and preloads if needed.
+ *
  * @param {HTMLVideoElement} el Video
  */
 function addControls(el) {
@@ -428,7 +429,7 @@ const OPTS_MODE = {
 
 	// boolean toggles
 	klass(cls) {
-		root.classList.add(cls)
+		if (!root.classList.contains(cls)) root.classList.add(cls)
 	},
 	night(arg) {
 		const hour = new Date().getHours()
@@ -473,23 +474,34 @@ const OPTS = {
 	// indicateFollowing: true
 }
 
+function handleOptions(options) {
+	if (options === null) return options
+	OPTIONS = options
+
+	for (const optName in options) {
+		const oFn = OPTS[optName]
+		if (oFn === undefined) continue
+
+		const optValue = options[optName]
+		if (typeof optValue === 'boolean') optValue && oFn(`ige_${optName}`)
+		else oFn(optValue)
+	}
+	return options
+}
+
+function updateStorage(changes, area) {
+	if (changes.options !== undefined) {
+		console.log('new options', changes)
+		handleOptions(changes.options)
+	}
+}
+
 function loadOptions() {
 	window.IG_Storage_Sync.get('options', null)
-		.then(function cb(options) {
-			if (options === null) return options
-			OPTIONS = options
-
-			for (const optName in options) {
-				const oFn = OPTS[optName]
-				if (oFn === undefined) continue
-
-				const optValue = options[optName]
-				if (typeof optValue === 'boolean') optValue && oFn(`ige_${optName}`)
-				else oFn(optValue)
-			}
-			return options
-		})
+		.then(handleOptions)
 		.catch(window.logAndReturn)
+
+	chrome.storage.onChanged.addListener(updateStorage)
 }
 
 OPTS_MODE.rows(WIDTH < 1367 ? 2 : 4)
