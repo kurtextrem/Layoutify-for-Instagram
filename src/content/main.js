@@ -354,12 +354,12 @@ function setBoxWidth(i) {
 }
 
 function toggleWatchlist(user) {
-	if (OPTIONS.watchPosts === null) OPTIONS.watchPosts = [user]
+	if (!OPTIONS.watchPosts) OPTIONS.watchPosts = [user]
 	else {
 		const i = OPTIONS.watchPosts.indexOf(user)
 		i === -1 ? OPTIONS.watchPosts.push(user) : OPTIONS.watchPosts.splice(i, 1)
 	}
-	if (OPTIONS.watchStories === null) OPTIONS.watchStories = [user]
+	if (!OPTIONS.watchStories) OPTIONS.watchStories = [user]
 	else {
 		const i = OPTIONS.watchStories.indexOf(user)
 		i === -1 ? OPTIONS.watchStories.push(user) : OPTIONS.watchStories.splice(i, 1)
@@ -377,11 +377,11 @@ function addWatched() {
 
 	let text = '',
 		cls = false
-	if (OPTIONS.watchPosts.indexOf(user) !== -1) {
+	if (OPTIONS.watchPosts && OPTIONS.watchPosts.indexOf(user) !== -1) {
 		text += 'Posts '
 		cls = true
 	}
-	if (OPTIONS.watchStories.indexOf(user) !== -1) {
+	if (OPTIONS.watchStories && OPTIONS.watchStories.indexOf(user) !== -1) {
 		text += 'Stories '
 		cls = true
 	}
