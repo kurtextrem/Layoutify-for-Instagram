@@ -6,7 +6,7 @@ module.exports = (isProd, options = {}) => ({
 	babelrc: false,
 	comments: !isProd,
 	presets: [
-		[resolve('@babel/preset-stage-0'), { decoratorsLegacy: true }],
+		[resolve('@babel/preset-stage-0'), { loose: true, useBuiltIns: true, decoratorsLegacy: true, pipelineProposal: 'minimal' }],
 		[
 			resolve('@babel/preset-env'),
 			{
@@ -55,6 +55,7 @@ module.exports = (isProd, options = {}) => ({
 				// 'module:fast-async', - enabled from Chrome 55
 				resolve('babel-plugin-annotate-pure-calls'),
 				resolve('./pure-plugin.js'),
+				[resolve('@babel/plugin-transform-strict-mode'), { strict: true }],
 				// 'emotion/babel'
 		  ]
 		: [
@@ -62,6 +63,7 @@ module.exports = (isProd, options = {}) => ({
 				resolve('@babel/plugin-transform-react-jsx-source'),
 				resolve('babel-plugin-transform-console-log-variable-names'),
 				resolve('babel-plugin-console-groupify'),
+				[resolve('@babel/plugin-transform-strict-mode'), { strict: true }],
 				// 'emotion/babel'
 				// 'runtyper'
 		  ],

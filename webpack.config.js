@@ -12,7 +12,7 @@ const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
@@ -140,10 +140,15 @@ if (isProd) {
 					regex: /throw\s+(new\s+)?(Type|Reference)?Er{2}or\s*\(/g,
 					value: 'return;(',
 				},
+				{
+					regex: /"use strict"/g,
+					value: '',
+				},
+				{
+					regex: /(e=>/,
+					value: '("use strict";e=>',
+				},
 			],
-			values: {
-				'process.env.NODE_ENV': JSON.stringify(ENV),
-			},
 		}),*/
 		/*new PrepackWebpackPlugin({
 			prepack: { delayUnsupportedRequires: true, abstractEffectsInAdditionalFunctions: true, reactEnabled: true },
@@ -227,10 +232,10 @@ const first = {
 	optimization: isProd
 		? {
 				minimizer: [
-					new UglifyJSPlugin({
+					new TerserPlugin({
 						cache: true,
 						parallel: true,
-						uglifyOptions: {
+						terserOptions: {
 							ecma: 8,
 							compress: {
 								pure_funcs: pureFuncs,
