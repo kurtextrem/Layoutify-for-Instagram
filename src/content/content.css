@@ -192,22 +192,25 @@ header + div + div > section:first-child {
 	width: auto;
 	min-height: 56px;
 	margin-top: 0 !important;
+	margin-right: 8px !important;
 	border-top: 1px solid #efefef;
 }
 
-/** Center heart */
-main > section header + div + div > section:first-child > a {
-	margin: auto;
-}
-
 /** Hide useless comment icon */
-section > a[role='button']:first-child + a[role='button']:not([aria-disabled]) {
+section > a[role='button']:first-child + a[role='button']:not([aria-disabled]),
+article > div > section > span:first-child + span {
 	display: none;
 }
 
 /** Save button */
-section > a[role='button']:not(:first-child) + a[role='button']:last-child {
-	margin-left: none;
+article > div > section > span + span + span:last-child {
+	margin-left: -8px;
+	display: flex;
+}
+
+/** Heart */
+header + div + div > section:first-child > span:first-child {
+	display: flex;
 }
 
 /** "Add comment" */
