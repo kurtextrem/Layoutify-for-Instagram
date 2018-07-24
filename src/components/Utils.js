@@ -113,12 +113,12 @@ export function shallowDiffers(a, b) {
 	return false
 }
 
-export const webWorkerScript = `const postMsg = (url, blob) => self.postMessage(url)
+export const webWorkerScript = `const postMsg = (url, response) => self.postMessage(url)
 function checkStatus(response) {
 	if (response.ok) return response
 	throw response
 }
-const opts = {headers: {accept: 'image/webp,image/apng,image/*,*/*;q=0.8'}, redirect: 'follow', referrerPolicy: 'no-referrer'}
+const opts = {headers: {accept: 'image/webp,image/apng,image/*,*/*;q=0.8'}, redirect: 'follow', referrerPolicy: 'no-referrer', mode: 'cors'}
 self.addEventListener('message', event => {
 	const url = event.data,
 		bound = postMsg.bind(undefined, url)
