@@ -23,10 +23,10 @@ header > a {
 
 /** Improve picture quality */
 div > img {
-	contain: strict;
 
 	/** Moves the img over the "prevent right click copy"-element */
 	z-index: 1;
+	contain: strict;
 	/* autoprefixer: off */
 	image-rendering: -webkit-optimize-contrast;
 }
@@ -42,20 +42,20 @@ img + video {
 
 /** Remove width limit */
 main > section {
-	flex-direction: column !important;
-	max-width: none !important;
-	margin: 0 !important;
-	padding: 0 !important;
 	z-index: 1;
+	max-width: none !important;
+	flex-direction: column !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 /** Make the flex box layout row instead of column */
 main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+	width: 100%;
+	max-width: 100%;
 	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
-	width: 100%;
-	max-width: 100%;
 	margin-top: 10px !important;
 	contain: layout style;
 }
@@ -65,17 +65,18 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div {
  * @deprecated @TODO
  */
 main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
+	width: 100%;
+	max-width: 100%;
 	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
-	width: 100%;
-	max-width: 100%;
 	margin-top: 10px !important;
 	contain: layout style;
 }
 
 /** Make boxes equal in height and width */
 main > section div > article {
+	z-index: 1;
 	width: var(--boxWidth) !important;
 	min-width: var(--boxWidth) !important;
 	max-width: var(--boxWidth) !important;
@@ -84,7 +85,6 @@ main > section div > article {
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
 	contain: layout style;
-	z-index: 1;
 }
 
 /*=============================================
@@ -122,15 +122,15 @@ main > section header + div + div {
 /** Row layout */
 body > div > div[role='dialog'] header + div + div,
 #react-root:not(.profile) header + div + div {
-	flex: auto;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-content: normal;
 	/* @TODO: Min Chrome v60 */
 	/*display: grid;
 	grid-template-rows: 5% auto 10%; ??
 	grid-gap: 5px;*/
 	height: max-content;
+	flex: auto;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: normal;
 	contain: layout style;
 }
 
@@ -142,13 +142,13 @@ body > div > div[role='dialog'] header + div + div,
 
 /** Views / likes */
 div > section + section {
+	max-width: 100%;
 	flex: 999 1 50%;
 	align-self: flex-start;
 	order: 1 !important;
-	max-width: 100%;
-	text-align: right;
 
 	grid-column: 2 / span 3;
+	text-align: right;
 }
 
 /** Posted date */
@@ -168,16 +168,16 @@ div > a > time {
 /** Grow comments */
 body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child),
 #react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
-	flex-grow: 1;
-	order: 2 !important;
 	width: 100%;
 	height: 100%;
 	max-height: calc(100% - 115px);
-	margin-right: 0 !important;
-	margin-bottom: 0 !important;
+	flex-grow: 1;
+	order: 2 !important;
 	padding-top: 0 !important;
 	padding-right: 0 !important;
 	padding-bottom: 0 !important;
+	margin-right: 0 !important;
+	margin-bottom: 0 !important;
 	/* max-height & height unset */
 
 	contain: content;
@@ -187,13 +187,13 @@ body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only
 
 /** Heart / Comment / Save */
 header + div + div > section:first-child {
-	align-self: flex-end;
-	order: 4 !important;
 	width: auto;
 	min-height: 56px;
+	align-self: flex-end;
+	order: 4 !important;
+	border-top: 1px solid #efefef;
 	margin-top: 0 !important;
 	margin-right: 8px !important;
-	border-top: 1px solid #efefef;
 }
 
 /** Hide useless comment icon */
@@ -204,8 +204,8 @@ article > div > section > span:first-child + span {
 
 /** Save button */
 article > div > section > span + span + span:last-child {
-	margin-left: -8px;
 	display: flex;
+	margin-left: -8px;
 }
 
 /** Heart */
@@ -215,14 +215,14 @@ header + div + div > section:first-child > span:first-child {
 
 /** "Add comment" */
 header + div + div > section:last-child {
+	width: auto;
 	flex: 1;
 	align-self: flex-end;
 	order: 5;
-	width: auto;
 	margin-top: 0;
+	grid-column-end: 5;
 
 	grid-column-start: 2;
-	grid-column-end: 5;
 }
 
 /*=============================================
@@ -241,9 +241,9 @@ video[loop] {
 }
 
 video::-webkit-media-controls {
+	z-index: 1;
 	display: flex !important;
 	contain: strict;
-	z-index: 1;
 }
 
 /** @TODO: Replace IG's play button with the native one once its been rolled out */
@@ -293,8 +293,8 @@ div > div + .coreSpriteLeftChevron + div {
 =============================================*/
 /** Outer div */
 .home article > div > div > div > div > div + div:not(:last-child) {
-	contain: content;
 	z-index: 3;
+	contain: content;
 }
 
 /** Small play button */
@@ -322,8 +322,8 @@ section > nav > div:first-child {
 }
 
 nav > div + div > div {
-	contain: layout style; /** See issues#16 */
 	z-index: 9 !important;
+	contain: layout style; /** See issues#16 */
 	/*will-change: transform; composited already anyway */
 }
 
@@ -349,12 +349,12 @@ main > section > div:first-child:not(#rcr-anchor) {
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	position: static;
-	flex-direction: row;
-	flex-wrap: wrap;
-	order: -1;
 	width: 100%;
 	max-width: 100%;
 	height: auto;
+	flex-direction: row;
+	flex-wrap: wrap;
+	order: -1;
 	/*max-height: 150px;*/
 	margin-bottom: 0;
 	contain: layout style;
@@ -373,18 +373,18 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr {
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child {
 	/**! @TODO: Temporary */
 	display: none;
+	width: auto;
 
 	flex: 1 auto;
 	order: 1;
-	width: auto;
 	margin-right: 5px;
 }
 
 /* Stories / watch all */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div {
+	width: 100%;
 	justify-content: start;
 	order: -1;
-	width: 100%;
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div > :last-child {
@@ -396,16 +396,16 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 	width: 100%;
 	height: 80px !important; /** @TODO: Enlargen story items */
 	margin-bottom: -5px;
-	overflow-y: hidden !important;
 	overflow-x: scroll !important;
+	overflow-y: hidden !important;
 }
 
 /** Stories virtual list */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div {
 	height: 68px !important;
 	contain: strict;
-	overflow-y: hidden !important;
 	overflow-x: scroll !important;
+	overflow-y: hidden !important;
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div {
@@ -454,9 +454,9 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 
 /** Nav */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:last-child {
-	display: block;
 	position: absolute;
 	bottom: 0;
+	display: block;
 	width: 100%;
 	padding-bottom: 0;
 	text-align: center;
@@ -472,11 +472,11 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:la
 =============================================*/
 /** Profile spinner */
 .home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) {
-	order: 3;
+	z-index: 2;
 	height: 60px;
+	order: 3;
 	margin: 10px 0;
 	contain: strict;
-	z-index: 2;
 }
 
 .home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) > div {
@@ -529,8 +529,8 @@ body > div > div[role='dialog'] article,
 
 /** Sometimes IG sets a max-width on elements */
 .post > section > main > div {
-	flex-grow: 0;
 	max-width: 51vw !important;
+	flex-grow: 0;
 	padding-top: 10px;
 	padding-right: 0;
 	padding-bottom: 10px;
@@ -571,8 +571,8 @@ footer > div > nav {
 									Extended
 =============================================*/
 .extended--btn {
+	text-shadow: 0 0 2px #2196f3;
 	transform: translateY(1px) scale(2);
-	text-shadow: 0px 0px 2px #2196f3;
 }
 
 /** Extended Marker */
@@ -584,28 +584,28 @@ footer > div > nav {
 	width: 4px;
 	height: 4px;
 	margin: 0 auto;
-	border-radius: 2px;
 	background: #03a9f4;
+	border-radius: 2px;
 	content: '';
 }
 
 .ige_watch::before,
 .ige_watched::before {
 	position: absolute;
-	transform: translateY(-15px);
 	display: inline-block;
 	padding: 0.25em 0.4em;
+	background-color: #6c757d;
+	border-radius: 0.25rem;
+	color: #fff;
+	content: 'Watch';
+	cursor: pointer;
 	font-size: 12px;
 	font-weight: 700;
 	line-height: 1;
 	text-align: center;
-	white-space: nowrap;
+	transform: translateY(-15px);
 	vertical-align: baseline;
-	border-radius: 0.25rem;
-	color: #fff;
-	background-color: #6c757d;
-	content: 'Watch';
-	cursor: pointer;
+	white-space: nowrap;
 }
 
 .ige_watch::before {
@@ -645,8 +645,8 @@ footer > div > nav {
 
 /*----------  NoSpaceBetweenPosts  ----------*/
 .ige_noSpaceBetweenPosts main > section div > article {
-	margin: 0 !important;
 	border-bottom: 0 !important;
+	margin: 0 !important;
 	border-radius: 0 !important;
 }
 
@@ -667,9 +667,9 @@ footer > div > nav {
 						"Chrome IG Story" fixes
 =============================================*/
 #rcr-anchor {
+	overflow: auto;
 	justify-content: flex-start;
 	margin-bottom: -20px;
-	overflow: auto;
 	contain: content;
 }
 
@@ -683,9 +683,11 @@ footer > div > nav {
 @media (max-width: 1366px) {
 	:root {
 	}
+
 	main > section > div:not(#rcr-anchor) > div:not([class]) > div {
 		justify-content: space-evenly;
 	}
+
 	.post > section > main > div {
 		max-width: 75vw !important;
 	}
@@ -696,8 +698,8 @@ footer > div > nav {
 =============================================*/
 ::-webkit-scrollbar {
 	width: 9px;
-	border-radius: 100px;
 	background-color: rgba(0, 0, 0, 0);
+	border-radius: 100px;
 	contain: strict;
 	/*transition: background-color 1s linear;*/
 }
@@ -720,13 +722,13 @@ footer > div > nav {
 ::-webkit-scrollbar-thumb:horizontal {
 	min-height: 30px;
 	border: 2px solid rgba(0, 0, 0, 0);
-	border-radius: 100px;
-	background-color: #afafaf;
 	background-clip: padding-box;
+	background-color: #afafaf;
+	border-radius: 100px;
 }
 
 ::-webkit-scrollbar-thumb:vertical:active,
 ::-webkit-scrollbar-thumb:horizontal:active {
-	border-radius: 100px;
 	background-color: #727272; /* Some darker color when you click it */
+	border-radius: 100px;
 }
