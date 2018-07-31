@@ -41,7 +41,6 @@ nav,
 }
 
 .card {
-	z-index: 1;
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
 	max-height: var(--maxBoxHeight);
@@ -49,10 +48,11 @@ nav,
 	margin-bottom: 10px !important;
 	margin-left: var(--boxMarginRight) !important;
 
+	contain: layout style;
+	z-index: 1;
+
 	animation: fadeIn 200ms;
 	animation-iteration-count: 1;
-
-	contain: layout style;
 }
 
 .card-footer {
@@ -74,13 +74,13 @@ nav,
 
 .sentinel {
 	position: absolute;
-	z-index: 2;
 	bottom: var(--boxHeight);
 	width: 1px;
 	height: 1px;
+	transform: translateY(calc(var(--boxHeight) * -2));
 
 	contain: strict;
-	transform: translateY(calc(var(--boxHeight) * -2));
+	z-index: 2;
 }
 
 .liked {
@@ -106,16 +106,16 @@ nav,
 
 .post--carousel > .arrow {
 	position: absolute;
-	z-index: 2;
 	top: 0;
 	top: 45%;
 	padding: 8px;
-	background-color: rgba(0, 0, 0, 0.3);
-	border-radius: 50px;
-	color: white;
-	contain: content;
-	opacity: 0;
 	transition: opacity ease-in-out 200ms;
+	border-radius: 50px;
+	background-color: rgba(0, 0, 0, 0.3);
+	color: white;
+	opacity: 0;
+	contain: content;
+	z-index: 2;
 }
 
 .post--carousel:hover > .arrow {
@@ -140,10 +140,10 @@ nav,
 .dots--dot {
 	width: 10px;
 	height: 10px;
-	border: 1px solid #9e9e9e;
-	background-color: white;
-	border-radius: 50px;
 	transition: background-color cubic-bezier(0.22, 0.61, 0.36, 1) 400ms;
+	border: 1px solid #9e9e9e;
+	border-radius: 50px;
+	background-color: white;
 }
 
 .dots--dot.active {
@@ -152,16 +152,16 @@ nav,
 
 img {
 	display: block;
+	text-align: center;
 	/* autoprefixer: off */
 	image-rendering: -webkit-optimize-contrast;
-	text-align: center;
 }
 
 img::before {
 	color: rgb(100, 100, 100);
-	content: 'image';
 	font-family: 'Material Icons';
 	font-size: 17px;
+	content: 'image';
 	vertical-align: top;
 }
 
@@ -170,19 +170,19 @@ img::before {
 }
 
 #backToTop {
+	display: flex;
 	position: fixed;
-	z-index: 3;
 	right: 20px;
 	bottom: 20px;
-	display: flex;
-	width: 50px;
-	height: 50px;
 	align-items: center;
 	justify-content: center;
-	background: black;
+	width: 50px;
+	height: 50px;
 	border-radius: 35px;
-	opacity: 0.5;
+	background: black;
 	text-decoration: none;
+	opacity: 0.5;
+	z-index: 3;
 	will-change: opacity;
 }
 
@@ -217,9 +217,9 @@ img::before {
 	width: 15px;
 	height: 15px;
 	margin: 2px;
-	animation-fill-mode: both;
-	background-color: #bdbdbd;
 	border-radius: 100%;
+	background-color: #bdbdbd;
+	animation-fill-mode: both;
 }
 
 .ball-pulse-sync {
@@ -271,19 +271,19 @@ input[type='checkbox'] {
 input[type='checkbox'],
 input[type='radio'] {
 	margin: 0 1px 0 0;
-	/* autoprefixer: off */
-	-webkit-appearance: none;
-	background-image: linear-gradient(rgb(237, 237, 237) 38%, rgb(222, 222, 222));
-	border-color: rgba(0, 0, 0, 0.25);
-	border-image: initial;
-	border-radius: 2px;
-	border-style: solid;
 	border-width: 1px;
-	box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
+	border-style: solid;
+	border-radius: 2px;
+	border-color: rgba(0, 0, 0, 0.25);
+	outline: none;
+	background-image: linear-gradient(rgb(237, 237, 237) 38%, rgb(222, 222, 222));
 	color: rgb(68, 68, 68);
 	font: inherit;
-	outline: none;
 	text-shadow: rgb(240, 240, 240) 0 1px 0;
+	box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
+	/* autoprefixer: off */
+	-webkit-appearance: none;
+	border-image: initial;
 }
 
 input[type='checkbox']:checked::before {
@@ -316,8 +316,8 @@ input[type='number'] {
 /** Mac OS Scrollbar */
 ::-webkit-scrollbar {
 	width: 9px;
-	background-color: rgba(0, 0, 0, 0);
 	border-radius: 100px;
+	background-color: rgba(0, 0, 0, 0);
 	/*transition: background-color 1s linear;*/
 }
 
@@ -338,13 +338,13 @@ input[type='number'] {
 ::-webkit-scrollbar-thumb:horizontal {
 	min-height: 30px;
 	border: 2px solid rgba(0, 0, 0, 0);
-	background-clip: padding-box;
-	background-color: #afafaf;
 	border-radius: 100px;
+	background-color: #afafaf;
+	background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:vertical:active,
 ::-webkit-scrollbar-thumb:horizontal:active {
-	background-color: #727272; /* Some darker color when you click it */
 	border-radius: 100px;
+	background-color: #727272; /* Some darker color when you click it */
 }
