@@ -6,7 +6,29 @@ module.exports = (isProd, options = {}) => ({
 	babelrc: false,
 	comments: !isProd,
 	presets: [
-		[resolve('@babel/preset-stage-0'), { loose: true, useBuiltIns: true, decoratorsLegacy: true, pipelineProposal: 'minimal' }],
+		// Stage 0
+		resolve('@babel/plugin-proposal-function-bind'),
+
+		// Stage 1
+		resolve('@babel/plugin-proposal-export-default-from'),
+		resolve('@babel/plugin-proposal-logical-assignment-operators'),
+		[resolve('@babel/plugin-proposal-optional-chaining'), { loose: true }],
+		[resolve('@babel/plugin-proposal-pipeline-operator'), { proposal: 'minimal' }],
+		[resolve('@babel/plugin-proposal-nullish-coalescing-operator'), { loose: true }],
+		resolve('@babel/plugin-proposal-do-expressions'),
+
+		// Stage 2
+		[resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
+		resolve('@babel/plugin-proposal-function-sent'),
+		resolve('@babel/plugin-proposal-export-namespace-from'),
+		resolve('@babel/plugin-proposal-numeric-separator'),
+		resolve('@babel/plugin-proposal-throw-expressions'),
+
+		// Stage 3
+		resolve('@babel/plugin-syntax-dynamic-import'),
+		resolve('@babel/plugin-syntax-import-meta'),
+		[resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
+		resolve('@babel/plugin-proposal-json-strings'),
 		[
 			resolve('@babel/preset-env'),
 			{
