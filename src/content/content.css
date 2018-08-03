@@ -114,23 +114,23 @@ body > div > div[role='dialog'] header + div + div,
 }
 
 /*----------  Improve new post layout  ----------*/
-main > section header + div + div {
-	margin-top: 8px;
-}
-
 /** Row layout */
 body > div > div[role='dialog'] header + div + div,
 #react-root:not(.profile) header + div + div {
+	/* @TODO: Min Chrome v60 */
+	display: grid;
 	flex: auto;
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: normal;
-	/* @TODO: Min Chrome v60 */
-	/*display: grid;
-	grid-template-rows: 5% auto 10%; ??
-	grid-gap: 5px;*/
 	height: max-content;
+	padding: 8px !important;
 	contain: layout style;
+	grid-template:
+		'🐒 😁' min-content
+		'📝 📝' auto
+		'👠 👠' min-content
+		/ auto 3fr;
 }
 
 body > div > div[role='dialog'] header + div + div,
@@ -146,8 +146,7 @@ div > section + section {
 	order: 1 !important;
 	max-width: 100%;
 	text-align: right;
-
-	grid-column: 2 / span 3;
+	grid-area: 😁;
 }
 
 /** Posted date */
@@ -156,6 +155,7 @@ div > section + div + div {
 	/* higher than views / likes to push it to the right */
 	order: 0 !important;
 	margin-bottom: 4px !important;
+	grid-area: 🐒;
 }
 
 /** Larger timestamp */
@@ -177,11 +177,11 @@ body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only
 	padding-top: 0 !important;
 	padding-right: 0 !important;
 	padding-bottom: 0 !important;
+	overflow: hidden;
 	/* max-height & height unset */
 
 	contain: content;
-	overflow: hidden;
-	grid-column-end: span 4;
+	grid-area: 📝;
 }
 
 body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul,
@@ -225,9 +225,6 @@ header + div + div > section:last-child {
 	order: 5;
 	width: auto;
 	margin-top: 0;
-	grid-column-end: 5;
-
-	grid-column-start: 2;
 }
 
 /*=============================================
