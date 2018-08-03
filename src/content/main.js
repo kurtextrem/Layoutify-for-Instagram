@@ -332,6 +332,7 @@ function fullPhoto(el) {
 
 	el.decoding = 'async'
 	if (connection === 'wifi' && speed > 3.0) {
+		// @todo: Make sure this also happens on first time load on a profile
 		el.sizes = '1080px'
 		fullsizeObserver.observe(el)
 	}

@@ -96,6 +96,12 @@ body > div > div[role='dialog'] article > header,
 	contain: strict;
 }
 
+body > div > div[role='dialog'] article > header,
+#react-root.post article > header {
+	right: 8px;
+	width: 305px;
+}
+
 body > div > div[role='dialog'] article > header {
 	padding: 16px 4px !important;
 }
@@ -134,9 +140,15 @@ body > div > div[role='dialog'] header + div + div,
 }
 
 body > div > div[role='dialog'] header + div + div,
-.post header + div + div {
+#react-root.post header + div + div {
 	height: auto !important;
-	padding-right: 8px !important;
+	padding: 0 8px 0 24px !important;
+
+	grid-template:
+		'date likes' min-content
+		'c c' 80%
+		'buttons comment' min-content
+		/ auto 2fr;
 }
 
 /** Views / likes */
