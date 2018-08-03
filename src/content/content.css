@@ -124,13 +124,13 @@ body > div > div[role='dialog'] header + div + div,
 	flex-wrap: wrap;
 	align-content: normal;
 	height: max-content;
-	padding: 8px !important;
+	padding: 8px 12px 0 !important;
 	contain: layout style;
 	grid-template:
-		'🐒 😁' min-content
-		'📝 📝' auto
-		'👠 👠' min-content
-		/ auto 3fr;
+		'date likes' min-content
+		'c c' auto
+		'buttons comment' min-content
+		/ auto 2fr;
 }
 
 body > div > div[role='dialog'] header + div + div,
@@ -146,7 +146,7 @@ div > section + section {
 	order: 1 !important;
 	max-width: 100%;
 	text-align: right;
-	grid-area: 😁;
+	grid-area: likes;
 }
 
 /** Posted date */
@@ -155,7 +155,7 @@ div > section + div + div {
 	/* higher than views / likes to push it to the right */
 	order: 0 !important;
 	margin-bottom: 4px !important;
-	grid-area: 🐒;
+	grid-area: date;
 }
 
 /** Larger timestamp */
@@ -171,17 +171,13 @@ body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only
 	order: 2 !important;
 	width: 100%;
 	height: 100%;
-	max-height: calc(100% - 115px);
-	margin-right: 0 !important;
-	margin-bottom: 0 !important;
-	padding-top: 0 !important;
-	padding-right: 0 !important;
-	padding-bottom: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
 	overflow: hidden;
 	/* max-height & height unset */
 
 	contain: content;
-	grid-area: 📝;
+	grid-area: c;
 }
 
 body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul,
@@ -199,6 +195,7 @@ header + div + div > section:first-child {
 	margin-top: 0 !important;
 	margin-right: 8px !important;
 	border-top: 1px solid #efefef;
+	grid-area: buttons;
 }
 
 /** Hide useless comment icon */
@@ -225,6 +222,8 @@ header + div + div > section:last-child {
 	order: 5;
 	width: auto;
 	margin-top: 0;
+	padding-right: 0 !important;
+	grid-area: comment;
 }
 
 /*=============================================
