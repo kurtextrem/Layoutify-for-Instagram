@@ -167,7 +167,7 @@ if (isProd) {
 		new PurgecssPlugin({
 			paths: glob.sync([`${path.join(__dirname, 'src')}/**/*`, `${path.join(__dirname, 'dist')}/**/*`], {
 				onlyFiles: true,
-				ignore: 'content/*',
+				ignore: ['content/*'],
 			}),
 			whitelistPatterns: [/col-/],
 		}),

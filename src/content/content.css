@@ -370,7 +370,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	height: auto;
 	/*max-height: 150px;*/
 	margin-bottom: 0;
-	contain: layout style;
+	contain: style;
 }
 
 /** All children
