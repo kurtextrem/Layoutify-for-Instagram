@@ -1,3 +1,4 @@
+/* purgecss start ignore */
 :root {
 	--boxHeight: 1045px;
 	--maxBoxHeight: 115vh;
@@ -348,3 +349,5 @@ input[type='number'] {
 	border-radius: 100px;
 	background-color: #727272; /* Some darker color when you click it */
 }
+
+/* purgecss end ignore */

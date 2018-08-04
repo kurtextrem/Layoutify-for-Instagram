@@ -25,8 +25,8 @@ const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack
 const replaceBuffer = require('replace-buffer')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 // const Critters = require('critters-webpack-plugin')
-// const glob = require('glob') // @TODO: tiny-glob
-// const PurifyCSSPlugin = require('purifycss-webpack')
+const glob = require('fast-glob')
+const PurgecssPlugin = require('purgecss-webpack-plugin')
 
 // const ShakePlugin = require('webpack-common-shake').Plugin
 // const WebpackMonitor = require('webpack-monitor')
@@ -164,6 +164,13 @@ if (isProd) {
 				whitelist: ['*card*', '*dots*'],
 			},
 		}),*/
+		new PurgecssPlugin({
+			paths: glob.sync([`${path.join(__dirname, 'src')}/**/*`, `${path.join(__dirname, 'dist')}/**/*`], {
+				onlyFiles: true,
+				ignore: 'content/*',
+			}),
+			whitelistPatterns: [/col-/],
+		}),
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
