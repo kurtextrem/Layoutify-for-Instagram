@@ -571,6 +571,10 @@ body > div > div[role='dialog'] article,
 	z-index: 3;
 }
 
+.profile section > main > div > * {
+	margin-bottom: 0;
+}
+
 /*=============================================
 									Footer
 =============================================*/
