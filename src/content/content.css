@@ -139,8 +139,8 @@ body > div > div[role='dialog'] header + div + div,
 	contain: layout style;
 	grid-template:
 		'date likes' min-content
-		'c c' auto
-		'buttons comment' min-content
+		'c c' 1fr
+		'buttons comment' auto
 		/ auto 2fr;
 }
 
@@ -151,8 +151,8 @@ body > div > div[role='dialog'] header + div + div,
 
 	grid-template:
 		'date likes' min-content
-		'c c' 80%
-		'buttons comment' min-content
+		'c c' 1fr
+		'buttons comment' auto
 		/ auto 2fr;
 }
 
@@ -186,8 +186,6 @@ body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only
 #react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	order: 2 !important;
-	width: 100%;
-	height: 100%;
 	margin: 0 !important;
 	padding: 0 !important;
 	overflow: hidden;
