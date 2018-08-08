@@ -86,6 +86,11 @@ main > section div > article {
 	z-index: 1;
 }
 
+/** Remove stories thumb focus outline */
+canvas + span:focus {
+	outline: none;
+}
+
 /*=============================================
 						Slimmer Post Header
 =============================================*/
