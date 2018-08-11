@@ -135,12 +135,13 @@ body > div > div[role='dialog'] header + div + div,
 	flex-wrap: wrap;
 	align-content: normal;
 	height: max-content;
+	max-height: 100%;
 	padding: 8px 12px 0 !important;
 	contain: layout style;
 	grid-template:
 		'date likes' min-content
 		'c c' 1fr
-		'buttons comment' auto
+		'buttons comment' 56px
 		/ auto 2fr;
 }
 
@@ -152,7 +153,7 @@ body > div > div[role='dialog'] header + div + div,
 	grid-template:
 		'date likes' min-content
 		'c c' 1fr
-		'buttons comment' auto
+		'buttons comment' 56px
 		/ auto 2fr;
 }
 
@@ -187,18 +188,12 @@ body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only
 	flex-grow: 1;
 	order: 2 !important;
 	margin: 0 !important;
-	padding: 0 !important;
-	overflow: hidden;
-	/* max-height & height unset */
+	padding: 0 0 5px !important;
 
 	contain: content;
-	grid-area: c;
-}
-
-body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul,
-#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) > ul {
-	overflow-x: hidden;
 	overflow-y: auto;
+	overflow-x: hidden;
+	grid-area: c;
 }
 
 /** Heart / Comment / Save */
@@ -206,10 +201,11 @@ header + div + div > section:first-child {
 	align-self: flex-end;
 	order: 4 !important;
 	width: auto;
-	min-height: 56px;
+	height: 56px;
 	margin-top: 0 !important;
-	margin-right: 8px !important;
+	margin-right: 0 !important;
 	border-top: 1px solid #efefef;
+	contain: strict;
 	grid-area: buttons;
 }
 
@@ -236,8 +232,9 @@ header + div + div > section:last-child {
 	align-self: flex-end;
 	order: 5;
 	width: auto;
+	height: 56px;
 	margin-top: 0;
-	padding-right: 0 !important;
+	contain: strict;
 	grid-area: comment;
 }
 
