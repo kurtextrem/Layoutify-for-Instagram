@@ -572,7 +572,7 @@ body > div > div[role='dialog'] article,
 }
 
 .profile section > main > div > * {
-	margin-bottom: 0;
+	margin-bottom: 20px;
 }
 
 /*=============================================
