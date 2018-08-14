@@ -27,6 +27,7 @@ const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 // const Critters = require('critters-webpack-plugin')
 const glob = require('fast-glob')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
+const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
 
 // const ShakePlugin = require('webpack-common-shake').Plugin
 // const WebpackMonitor = require('webpack-monitor')
@@ -171,6 +172,7 @@ if (isProd) {
 			}),
 			whitelistPatterns: [/col-/],
 		}),
+		new WebpackDeepScopeAnalysisPlugin(),
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,

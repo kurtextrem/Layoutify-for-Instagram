@@ -73,9 +73,10 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 )
 
 function checkStatus(response) {
-	if (response.ok) return response
+	const content = response.headers().get('content-type')
+	if (response.ok && content === 'application/json') return response
 
-	const error = new Error(`HTTP Error ${response.statusText}`)
+	const error = new Error(`${response.statusText} | ${content}`)
 	error.status = response.statusText
 	error.response = response
 	throw error
