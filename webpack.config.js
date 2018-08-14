@@ -12,7 +12,7 @@ const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
+const TerserPlugin = require('uglifyjs-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
@@ -27,9 +27,9 @@ const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 // const Critters = require('critters-webpack-plugin')
 const glob = require('fast-glob')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
-const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
+//const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
 
-// const ShakePlugin = require('webpack-common-shake').Plugin
+const ShakePlugin = require('webpack-common-shake').Plugin
 // const WebpackMonitor = require('webpack-monitor')
 // const AutoDllPlugin = require('autodll-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
@@ -133,7 +133,7 @@ if (isProd) {
 		new MiniCssExtractPlugin('main.css'),
 		// new Critters(),
 		// new StyleExtHtmlWebpackPlugin() // @TODO: Broken @ webpack4
-		// new ShakePlugin(), // https://github.com/indutny/webpack-common-shake/issues/23  // @TODO: Broken @ webpack4
+		// new ShakePlugin(), // @todo: Broken 3dot page 08/14/2018
 		// strip out babel-helper invariant checks
 		/*new ReplacePlugin({
 			patterns: [
@@ -172,7 +172,7 @@ if (isProd) {
 			}),
 			whitelistPatterns: [/col-/],
 		}),
-		new WebpackDeepScopeAnalysisPlugin(),
+		// new WebpackDeepScopeAnalysisPlugin(), // @todo: 08/14/2018 - breaks the 3dots page
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
@@ -243,30 +243,43 @@ const first = {
 				minimizer: [
 					new TerserPlugin({
 						cache: true,
-						parallel: true,
-						terserOptions: {
-							ecma: 8,
-							compress: {
-								pure_funcs: pureFuncs,
-								hoist_funs: true,
-								keep_infinity: true,
-
-								unsafe_arrows: true, // @fixme: Breaks report.html
-								unsafe_methods: true,
-								unsafe_Function: true,
-								unsafe_proto: true,
-
-								negate_iife: false,
-
-								inline: true,
-							},
-							output: {
-								comments: false,
-								semicolons: false, // size before gzip could be smaller; size after gzip insignificantly larger
-								wrap_iife: true,
-							},
-							toplevel: true,
+						cacheKeys(defaultCacheKeys) {
+							return { ...defaultCacheKeys, ...{ terser: require('terser/package.json').version } }
 						},
+						minify(file, sourceMap) {
+							const terserOptions = {
+								ecma: 8,
+								compress: {
+									pure_funcs: pureFuncs,
+									hoist_funs: true,
+									keep_infinity: true,
+
+									unsafe_arrows: true, // @fixme: Breaks report.html
+									unsafe_methods: true,
+									unsafe_Function: true,
+									unsafe_proto: true,
+
+									negate_iife: false,
+
+									inline: true,
+								},
+								output: {
+									comments: false,
+									semicolons: false, // size before gzip could be smaller; size after gzip insignificantly larger
+									wrap_iife: true,
+								},
+								toplevel: true,
+							}
+
+							if (sourceMap) {
+								terserOptions.sourceMap = {
+									content: sourceMap,
+								}
+							}
+
+							return require('terser').minify(file, terserOptions)
+						},
+						parallel: false, // @todo: Broken 08/14/2018
 					}),
 				],
 				splitChunks: {
