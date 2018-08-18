@@ -304,32 +304,37 @@ div[role='button'] > div {
 }
 
 /** Multiple dots */
-div > div + .coreSpriteRightChevron + div,
-div > div + .coreSpriteLeftChevron + div {
+.home article > div > div[role='button'] > div > div > div + div + div:not(:last-child) {
+	margin-top: 0;
 	margin-bottom: 0;
+}
+
+.home article > div > div[role='button'] > div:not([role='dialog']) > div > div + div + div:not(:last-child) > div {
+	margin-top: 7px;
+	margin-bottom: -5px;
 }
 
 /*=============================================
 						Mark Videos in the Feed
 =============================================*/
 /** Outer div */
-.home article > div > div > div > div > div + div:not(:last-child) {
+.home div[role='button'] > div[role='dialog'] > div > div:first-child + div:nth-child(2) {
 	contain: content;
 	z-index: 3;
 }
 
 /** Small play button */
-.home article > div > div > div > div > div + div:not(:last-child) > div + div {
+.home div[role='button'] > div[role='dialog'] > div > div:first-child + div:nth-child(2) > div + div {
 	opacity: 1 !important;
 }
 
-.home article > div > div > div > div > div + div:not(:last-child) > div + div > span {
+.home div[role='button'] > div[role='dialog'] > div > div:first-child + div:nth-child(2) > div + div > span {
 	right: initial;
 	left: 0;
 }
 
 /** Hide "Click video for audio" */
-.home article > div > div > div > div > div + div:not(:last-child) > div:first-child {
+.home div[role='button'] > div[role='dialog'] > div > div:first-child + div:nth-child(2) > div:first-child {
 	display: none;
 }
 
