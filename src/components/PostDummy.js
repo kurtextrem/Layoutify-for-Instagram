@@ -9,12 +9,15 @@ const dummyUser = {
 	profile_pic_url: '',
 	full_name: '',
 }
+const style = { visibility: 'hidden' }
 const PostDummy = () => (
 	<article className="card">
 		<PostHeader user={dummyUser} code={0} taken_at={0} />
-		<a className="post--carousel">
-			<img />
-		</a>
+		<div className="position-relative post--carousel">
+			<a href="#" target="_blank" rel="noopener" className="img--wrapper img--placeholder">
+				<img src="" width="400" height="400" alt="" decoding="async" data-src="" style={style} />
+			</a>
+		</div>
 		<CardBody className="overflow-auto p-3 card-body">
 			<CardText />
 		</CardBody>

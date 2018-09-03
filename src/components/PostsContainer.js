@@ -18,7 +18,8 @@ export default class PostsContainer extends Component {
 			No data available (have you tried clicking the three dots on top of{' '}
 			<a href="https://www.instagram.com" _target="blank" rel="noopener">
 				Instagram.com
-			</a>?)
+			</a>
+			?)
 		</div>
 	)
 
@@ -38,6 +39,7 @@ export default class PostsContainer extends Component {
 		super(props)
 
 		this.initial = 0
+		this.postCount = 0
 
 		this.populateData()
 		window.setTimeout(() => this.setTimeout(200), 200)
@@ -121,8 +123,18 @@ export default class PostsContainer extends Component {
 
 	@bind
 	renderPost(post) {
+		++this.postCount
 		const { id, defaultClass, toggleClass } = this.props
-		return <Post key={post.id} data={post} parent={id} defaultClass={defaultClass} toggleClass={toggleClass} initial={this.initial < 2} />
+		return (
+			<Post
+				key={post.id}
+				data={post}
+				parent={id}
+				defaultClass={defaultClass}
+				toggleClass={toggleClass}
+				initial={this.initial === 1 && this.postCount < 12}
+			/>
+		)
 	}
 
 	// @TODO: Implement https://github.com/valdrinkoshi/virtual-list

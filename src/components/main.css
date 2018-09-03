@@ -166,6 +166,27 @@ img::before {
 	vertical-align: top;
 }
 
+img[src=''] {
+	visibility: hidden;
+}
+
+.img--wrapper {
+	display: block;
+	position: relative;
+	width: 100%;
+	contain: layout style;
+}
+
+.img--placeholder {
+	height: 0;
+	padding-bottom: 66.67%;
+}
+
+.img--placeholder > img {
+	position: absolute;
+	width: 100%;
+}
+
 #logo {
 	height: 46px;
 }

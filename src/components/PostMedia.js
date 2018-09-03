@@ -10,6 +10,7 @@ function onChange(changes) {
 		const change = changes[i]
 		if (change.isIntersecting) {
 			change.target.src = change.target.dataset.src // not in a rIC because of https://github.com/necolas/react-native-web/issues/759
+			change.target.parentElement.classList.remove('img--placeholder')
 			observer.unobserve(change.target)
 		}
 	}
@@ -60,7 +61,7 @@ export default class PostMedia extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.initial) observer.observe(this.ref)
+		if (!this.props.initial) observer.observe(this.ref)
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -69,7 +70,7 @@ export default class PostMedia extends Component {
 	}
 
 	componentWillUnmount() {
-		if (this.props.initial && this.ref) observer.unobserve(this.ref)
+		if (!this.props.initial && this.ref) observer.unobserve(this.ref)
 		this.ref = null
 	}
 
@@ -87,7 +88,7 @@ export default class PostMedia extends Component {
 			mediaElement = (
 				<video
 					ref={this.setRef}
-					src={isCarousel || !initial ? url : ''}
+					src={isCarousel || initial ? url : ''}
 					data-src={url}
 					poster={media.image_versions2.candidates[0].url}
 					type="video/mp4"
@@ -107,7 +108,7 @@ export default class PostMedia extends Component {
 					ref={this.setRef}
 					width={candidate.width}
 					height={candidate.height}
-					src={isCarousel || !initial ? url : ''}
+					src={isCarousel || initial ? url : ''}
 					data-src={url}
 					alt="If you see this, the post has probably been deleted"
 					className="img-fluid"
@@ -123,7 +124,11 @@ export default class PostMedia extends Component {
 						<i className="material-icons">keyboard_arrow_left</i>
 					</Button>
 				) : null}
-				<a href={`https://www.instagram.com/p/${data.code}`} target="_blank" rel="noopener">
+				<a
+					href={`https://www.instagram.com/p/${data.code}`}
+					target="_blank"
+					rel="noopener"
+					className={`img--wrapper${initial ? '' : ' img--placeholder'}`}>
 					{mediaElement}
 				</a>
 				{isCarousel ? (

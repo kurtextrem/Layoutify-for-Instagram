@@ -310,8 +310,8 @@ div[role='button'] > div {
 }
 
 .home article > div > div[role='button'] > div:not([role='dialog']) > div > div + div + div:not(:last-child) > div {
-	margin-top: 7px;
-	margin-bottom: -5px;
+	margin-top: 10px;
+	margin-bottom: -6px;
 }
 
 /*=============================================

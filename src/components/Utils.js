@@ -1,5 +1,5 @@
 export function logAndReturn(e) {
-	console.error(e)
+	console.warn(e)
 	return e
 }
 
@@ -7,7 +7,7 @@ export class XHR {
 	static checkStatus(response) {
 		if (response.ok) return response
 
-		const error = new Error(`HTTP Error ${response.statusText}`)
+		const error = new Error(response.statusText)
 		error.status = response.statusText
 		error.response = response
 		throw error

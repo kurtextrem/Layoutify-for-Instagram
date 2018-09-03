@@ -26,6 +26,7 @@ if (module.hot) {
 	window.perf = new Perfume({
 		firstPaint: true,
 		firstContentfulPaint: true,
+		firstInputDelay: true,
 		logging: true,
 		logPrefix: '⚡️',
 		timeToInteractive: true,

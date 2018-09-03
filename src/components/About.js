@@ -23,7 +23,8 @@ export default class About extends Component {
 					Improved Layout for Instagram does not store any data of your Instagram account apart from on your PC. The Code is Open Source on{' '}
 					<a href="https://github.com/kurtextrem/Improved-for-Instagram" target="_blank" rel="noopener">
 						GitHub
-					</a>.
+					</a>
+					.
 				</p>
 				<p>
 					If you find any issues, please report any bugs on{' '}
@@ -43,7 +44,8 @@ export default class About extends Component {
 						target="_blank"
 						rel="noopener">
 						Chrome Webstore
-					</a>.
+					</a>
+					.
 				</p>
 				<p>
 					Follow me on <a href="https://instagram.com/jacobgross_">Instagram</a> or <a href="https://twitter.com/kurtextrem">Twitter</a> for
@@ -52,7 +54,7 @@ export default class About extends Component {
 
 				<h3>Clear Outdated Data</h3>
 				<p>
-					Sometimes old posts are displayed, which aren't saved or liked anymore. Use this button to clear old data:{' '}
+					Sometimes old posts are displayed, which aren't saved or liked anymore. Use this button to clear old data (not options):{' '}
 					<Button color="warning" onClick={this.onBtnClick}>
 						Clear
 					</Button>
