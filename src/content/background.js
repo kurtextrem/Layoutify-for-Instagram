@@ -73,10 +73,9 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 )
 
 function checkStatus(response) {
-	const content = response.headers().get('content-type')
-	if (response.ok && content === 'application/json') return response
+	if (response.ok) return response
 
-	const error = new Error(`${response.statusText} | ${content}`)
+	const error = new Error(response.statusText)
 	error.status = response.statusText
 	error.response = response
 	throw error
@@ -85,8 +84,12 @@ function checkStatus(response) {
 const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
 
 function logAndReturn(e) {
-	console.error(e)
+	console.warn(e)
 	return e
+}
+
+function toJSON(e) {
+	return e.json()
 }
 
 function fetchAux(url) {
@@ -99,8 +102,7 @@ function fetchAux(url) {
 			mode: 'cors',
 		})
 		.then(checkStatus)
-		.then(e => e.json())
-		.catch(logAndReturn)
+		.then(toJSON)
 }
 
 function getRandom(min, max) {
@@ -194,7 +196,11 @@ function getBlobUrl(url) {
 			.then(checkStatus)
 			.then(response => response.blob())
 			.then(blob => resolve(URL.createObjectURL(blob)))
-			.catch(e => console.error(e) && reject(e) && e)
+			.catch(e => {
+				console.error(e)
+				reject(e)
+				return e
+			})
 	})
 }
 
@@ -243,7 +249,10 @@ function handlePost(json, user, userObj, watchData, options) {
 }
 
 function handleStory(json, user, userObj, watchData, options) {
-	const reel = get(['data', 'user', 'reel'], json),
+	const userJson = get(['data', 'user'], json)
+	if (userJson === null) return notifyError(user, options)
+
+	const reel = userJson.reel,
 		id = reel !== null ? reel.latest_reel_media : null
 	if (id !== null && reel.seen !== id) {
 		// && id != userObj.story
@@ -266,6 +275,14 @@ function handleStory(json, user, userObj, watchData, options) {
 	} else console.log(user, 'no new story', reel)
 }
 
+function notifyError(user, options) {
+	options.type = 'basic'
+	options.title = `${user} could not be found`
+	options.message = 'He/She might have changed the Instagram nickname.'
+	options.iconUrl = 'img/icon-128.png'
+	chrome.notifications.create(`error_${user}`, options, undefined) // @TODO: Add 'click to remove'
+}
+
 function notify(user, userObj, type, watchData, len, i) {
 	let url
 	if (type === 0) url = `https://www.instagram.com/${user}/?__a=1`
@@ -278,10 +295,9 @@ function notify(user, userObj, type, watchData, len, i) {
 		}).toString()}`
 	}
 
+	const options = Object.assign({}, notificationOptions) // eslint-disable-line
 	fetchAux(url)
 		.then(json => {
-			const options = Object.assign({}, notificationOptions) // eslint-disable-line
-
 			if (type === 0) {
 				handlePost(json, user, userObj, watchData, options)
 			} else if (type === 1) {
@@ -291,7 +307,12 @@ function notify(user, userObj, type, watchData, len, i) {
 			if (i === len) chrome.storage.sync.set({ watchData })
 			return json
 		})
-		.catch(logAndReturn)
+		.catch(e => {
+			console.warn(e)
+			notifyError(user, options)
+			if (i === len) chrome.storage.sync.set({ watchData })
+			return e
+		})
 }
 
 function createUserObj(user, watchData) {
@@ -305,7 +326,7 @@ function createUserObj(user, watchData) {
 				})
 			return (watchData[user].id = json ? json.graphql.user.id : '')
 		})
-		.catch(window.logAndReturn)
+		.catch(logAndReturn)
 }
 
 /**
