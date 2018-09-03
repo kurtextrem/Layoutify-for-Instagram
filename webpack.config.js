@@ -10,16 +10,13 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const TerserPlugin = require('uglifyjs-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
-const pureFuncs = require('side-effects-safe').pureFuncsWithTypicalException // pureFuncsWithUnusualException
 // const ReplacePlugin = require('webpack-plugin-replace')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-// const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const replaceBuffer = require('replace-buffer')
@@ -27,9 +24,11 @@ const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 // const Critters = require('critters-webpack-plugin')
 const glob = require('fast-glob')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
-//const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
 
-const ShakePlugin = require('webpack-common-shake').Plugin
+//const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
+//const ShakePlugin = require('webpack-common-shake').Plugin
+const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // pureFuncsWithUsualException
+
 // const WebpackMonitor = require('webpack-monitor')
 // const AutoDllPlugin = require('autodll-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
@@ -81,10 +80,6 @@ const plugins = [
 		},
 	}),
 	new HtmlWebpackPlugin(html),
-	new ScriptExtHtmlWebpackPlugin({
-		preload: ['.css'],
-		defaultAttribute: 'async',
-	}),
 	new CopyWebpackPlugin([
 		{ from: '*.html' },
 		{
@@ -132,8 +127,6 @@ if (isProd) {
 		// new webpack.IgnorePlugin(/prop-types$/),
 		new MiniCssExtractPlugin('main.css'),
 		// new Critters(),
-		// new StyleExtHtmlWebpackPlugin() // @TODO: Broken @ webpack4
-		// new ShakePlugin(), // @todo: Broken 3dot page 08/14/2018
 		// strip out babel-helper invariant checks
 		/*new ReplacePlugin({
 			patterns: [
@@ -172,7 +165,8 @@ if (isProd) {
 			}),
 			whitelistPatterns: [/col-/],
 		}),
-		// new WebpackDeepScopeAnalysisPlugin(), // @todo: 08/14/2018 - breaks the 3dots page
+		//new ShakePlugin(), // @todo: Broken 3dot page 08/14/2018
+		//new WebpackDeepScopeAnalysisPlugin(), // @todo: 09/02/2018 - doesn't reduce bundle size
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
@@ -370,21 +364,25 @@ const first = {
 			  }
 			: {}, // can't be 'none' as per parallel-webpack
 
-	serve: undefined,
+	devServer: undefined,
 }
 
 if (!isProd)
-	first.serve = {
+	first.devServer = {
+		contentBase: path.join(__dirname, 'dist/'),
 		publicPath: 'http://localhost:8080/',
-		clipboard: false,
-		devMiddleware: {
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-				'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
-			},
+		compress: false,
+		overlay: {
+			warnings: true,
+			errors: true,
 		},
-		hotClient: { allEntries: true },
+		watchContentBase: false,
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+		},
+		hot: true,
 	}
 
 const second = {
