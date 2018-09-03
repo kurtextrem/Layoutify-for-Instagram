@@ -88,6 +88,15 @@ nav,
 	color: #d9534f;
 }
 
+.saved--headings {
+	flex: 1 100%;
+	text-align: center;
+}
+
+.saved--heading {
+	flex: 1 100%;
+}
+
 .action--btn,
 .action--btn:hover,
 .action--btn:active,

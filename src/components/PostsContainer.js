@@ -1,14 +1,13 @@
 import Loading from './Loading'
 import Post from './Post'
 import PostDummy from './PostDummy'
+import Posts from './Posts'
 import PropTypes from 'prop-types'
 import Sentinel from './Sentinel'
 import bind from 'autobind-decorator'
 import { CardDeck } from 'reactstrap'
 import { Chrome, Storage, logAndReturn } from './Utils'
 import { Component, createElement } from 'nervjs'
-
-const Posts = (items = {}, renderPost) => items.map(renderPost) // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
 
 export default class PostsContainer extends Component {
 	static loading = <Loading />
@@ -139,12 +138,15 @@ export default class PostsContainer extends Component {
 
 	// @TODO: Implement https://github.com/valdrinkoshi/virtual-list
 	render() {
+		const { categorys } = this.props
 		const { items, timeout } = this.state
 
 		if (items)
 			return (
 				<div className="position-relative">
-					<CardDeck className="justify-content-center">{Posts(items, this.renderPost)}</CardDeck>
+					<CardDeck className="justify-content-center">
+						<Posts items={items} renderPost={this.renderPost} categorys={categorys} />
+					</CardDeck>
 					<Sentinel onVisible={this.handleScroll} />
 				</div>
 			)

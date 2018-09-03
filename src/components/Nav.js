@@ -16,7 +16,13 @@ export default class Nav extends Component {
 			<Navbar color="faded" light toggleable className="mb-2 navbar-expand bg-light">
 				<Container>
 					<a href="/index.html">
-						<img src="img/icon-128.png" alt="Improved for IG" decoding="async" id="logo" onLoad={module.hot ? performance.mark('logo') : undefined} />
+						<img
+							src="img/icon-128.png"
+							alt="Improved for IG"
+							decoding="async"
+							id="logo"
+							onLoad={module.hot ? performance.mark('logo') : undefined}
+						/>
 					</a>
 
 					<NavI navbar className="grow-1">
@@ -27,7 +33,7 @@ export default class Nav extends Component {
 						</NavItem>
 						<NavItem>
 							<NavLink className={getActive(location, 'saved')} href="#/saved">
-								Saved <i className="material-icons">turned_in</i>
+								Collections <i className="material-icons">turned_in</i>
 							</NavLink>
 						</NavItem>
 
