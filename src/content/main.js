@@ -493,7 +493,7 @@ function handleOptions(options) {
 function updateStorage(changes, area) {
 	if (changes.options !== undefined) {
 		console.log('new options', changes)
-		handleOptions(changes.options)
+		handleOptions(changes.options.newValue)
 	}
 }
 
