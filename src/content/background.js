@@ -14,7 +14,7 @@ function createTab(id, force) {
 		chrome.tabs.update(
 			tabId,
 			{ active: true, url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` },
-			() => chrome.runtime.lastError && createTab(this, true) // only create new tab when there was an error
+			() => chrome.runtime.lastError && createTab(id, true) // only create new tab when there was an error
 		)
 	} else {
 		chrome.tabs.create({ url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` }, newTab => (tabId = newTab.id))
@@ -278,7 +278,7 @@ function handleStory(json, user, userObj, watchData, options) {
 function notifyError(user, options) {
 	options.type = 'basic'
 	options.title = `${user} could not be found`
-	options.message = 'He/She might have changed the Instagram nickname.'
+	options.message = `${user} might have changed the Instagram nickname. Please go to the options and remove the name.`
 	options.iconUrl = 'img/icon-128.png'
 	chrome.notifications.create(`error_${user}`, options, undefined) // @TODO: Add 'click to remove'
 }

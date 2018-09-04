@@ -93,6 +93,10 @@ nav,
 	text-align: center;
 }
 
+.saved--headings > a:not(:last-child) {
+	padding-right: 10px;
+}
+
 .saved--heading {
 	flex: 1 100%;
 }
@@ -227,8 +231,7 @@ img[src=''] {
 }
 
 .fadeOut {
-	animation: fadeOut 5s !important;
-	animation-play-state: paused;
+	animation: fadeOut 5s ease-out 0s 1 paused forwards !important;
 }
 
 .ball-pulse-sync > div:nth-child(1) {

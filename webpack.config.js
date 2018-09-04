@@ -194,6 +194,7 @@ if (isProd) {
 		new FriendlyErrorsPlugin(),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
+		new webpack.HotModuleReplacementPlugin(),
 		new ErrorOverlayPlugin(),
 		/*new AutoDllPlugin({ // disabled as per https://github.com/mzgoddard/hard-source-webpack-plugin/issues/251
 			inject: true, // will inject the DLL bundles to index.html
@@ -382,7 +383,7 @@ if (!isProd)
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
 			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
 		},
-		hot: true,
+		hotOnly: true,
 	}
 
 const second = {

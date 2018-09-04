@@ -41,7 +41,7 @@ if (module.hot) {
 }
 
 const init = (fn, app, container) => fn(createElement(app), container)
-const ready = () => init(hydrate, App, document.body.children[2])
+const ready = () => init(module.hot ? render : hydrate, App, document.body.children[2])
 
 documentReady()
 	.then(ready)
