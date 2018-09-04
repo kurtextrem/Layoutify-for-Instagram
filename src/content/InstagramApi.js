@@ -198,29 +198,37 @@ class InstagramAPI {
 	}
 
 	/**
-	 * Compare the first `len` elements of the old item data set with the new data set
-	 * To do this, we compare the last elem's id of the new data set with `len` elems of the old.
+	 * Compares an old dataset with a new dataset.
+	 * n := old dataset length
+	 * m := new datset length
+	 *
+	 * Runs from min(n, m) until 0 and compares all items from the new dataset with the current item `i` from the new.
+	 * Then replaces all items from the old dataset, that are lower than the found `match` number.
+	 *
+	 * This has one caveat: We can't replace older items and thus there might be deleted items still left. We can not delete them.
 	 *
 	 * @param 	{Object} 	data
 	 * @return 	{Boolean} Whether the function found a matching item or not
 	 */
 	compareData(data) {
-		if (data.items === undefined || !data.items.length) return true // prevent adding undefined or similar
-
 		const items = data.items,
-			len = items.length,
-			lastId = items[len - 1].id,
-			maxLen = Math.min(len, this.items.length) // don't exceed either array len
-		let match = false
-		for (let i = 0; i < maxLen; ++i) {
-			if (lastId === this.items[i].id) {
-				// next elements are older
-				match = true
-				items.push(...this.items.slice(i + 1))
-				this.items = items
-				break
+			len = items.length
+		if (!items || !items.length) return true // prevent adding undefined or similar
+
+		const oldItems = this.items,
+			safeMin = Math.min(len, oldItems.length)
+
+		let match = 0
+		outer: for (let i = safeMin; i >= 0; --i) {
+			for (let x = len; x >= 0; --x) {
+				if (items[x].id === oldItems[i].id) {
+					match = i
+					break outer
+				}
 			}
 		}
+
+		this.items = items.concat(oldItems.splice(match))
 
 		return match
 	}
