@@ -4,6 +4,16 @@
 
 - Maybe: Merge watched posts and watched stories to one setting
 
+## [2.8.0] - 2018-09-04
+
+- Great feature: You can now view your different collections!
+
+- "Saved" is now "Collections"
+
+- **IMPORTANT**: I know, it doesn't look pretty and the names is the ID Instagram uses. However, my time is limited currently (exams) and thus I found it more important to release the feature instead of waiting until I decided on a good design.
+
+- Please note: You need to scroll to the bottom of the page, to view more posts. They will be added to the correct collection.
+
 ## [2.7.6] - 2018-06-28
 
 ### Added
