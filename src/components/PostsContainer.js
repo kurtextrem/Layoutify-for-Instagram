@@ -144,9 +144,7 @@ export default class PostsContainer extends Component {
 		if (items)
 			return (
 				<div className="position-relative">
-					<CardDeck className="justify-content-center">
-						<Posts items={items} renderPost={this.renderPost} categorys={categorys} />
-					</CardDeck>
+					<CardDeck className="justify-content-center">{Posts(items, this.renderPost, categorys)}</CardDeck>
 					<Sentinel onVisible={this.handleScroll} />
 				</div>
 			)
