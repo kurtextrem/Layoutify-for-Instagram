@@ -211,16 +211,16 @@ class InstagramAPI {
 	 * @return 	{Boolean} Whether the function found a matching item or not
 	 */
 	compareData(data) {
+		if (!data.items || !data.items.length) return false // prevent adding undefined or similar
+
 		const items = data.items,
 			len = items.length
-		if (!items || !items.length) return true // prevent adding undefined or similar
-
 		const oldItems = this.items,
-			safeMin = Math.min(len, oldItems.length)
+			safeMin = Math.min(len - 1, oldItems.length - 1)
 
-		let match = 0
+		let match = -1
 		outer: for (let i = safeMin; i >= 0; --i) {
-			for (let x = len; x >= 0; --x) {
+			for (let x = safeMin; x >= 0; --x) {
 				if (items[x].id === oldItems[i].id) {
 					match = i
 					break outer
@@ -228,9 +228,10 @@ class InstagramAPI {
 			}
 		}
 
-		this.items = items.concat(oldItems.splice(match))
+		if (match === -1) this.items = oldItems.concat(items)
+		else this.items = items.concat(oldItems.splice(match))
 
-		return match
+		return true
 	}
 
 	storeData(data) {
