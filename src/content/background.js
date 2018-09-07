@@ -76,7 +76,7 @@ function checkStatus(response) {
 	if (response.ok) return response
 
 	const error = new Error(response.statusText)
-	error.status = response.statusText
+	error.status = response.status
 	error.response = response
 	throw error
 }
@@ -309,7 +309,8 @@ function notify(user, userObj, type, watchData, len, i) {
 		})
 		.catch(e => {
 			console.warn(e)
-			notifyError(user, options)
+			if (e.status === 404)
+				notifyError(user, options)
 			if (i === len) chrome.storage.sync.set({ watchData })
 			return e
 		})
@@ -326,7 +327,12 @@ function createUserObj(user, watchData) {
 				})
 			return (watchData[user].id = json ? json.graphql.user.id : '')
 		})
-		.catch(logAndReturn)
+		.catch(e => {
+			console.warn(e)
+			if (e.status === 404)
+				notifyError(user, options)
+			return e
+		})
 }
 
 /**

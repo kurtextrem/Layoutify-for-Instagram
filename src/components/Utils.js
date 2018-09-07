@@ -8,7 +8,7 @@ export class XHR {
 		if (response.ok) return response
 
 		const error = new Error(response.statusText)
-		error.status = response.statusText
+		error.status = response.status
 		error.response = response
 		throw error
 	}
