@@ -55,7 +55,7 @@ observe(
 			const mutation = mutations[i],
 				added = mutation.addedNodes
 
-			for (var x in added) {
+			for (const x in added) {
 				const el = added[x]
 				Promise.resolve()
 					.then(handleNode.bind(undefined, el, mutation))
@@ -154,7 +154,7 @@ function addExtendedButton() {
 	if ($('.extended--btn') !== null) return
 
 	let $anchor = document.querySelectorAll('nav div > a:only-child')
-	if (!$anchor.length) return
+	if ($anchor.length === 0) return
 
 	$anchor = $anchor[$anchor.length - 1].parentNode
 	const el = $anchor.cloneNode(true),
@@ -243,6 +243,14 @@ function switchPadding(target) {
 	const bottom = +target.style.paddingBottom.replace('px', '')
 	const top = +target.style.paddingTop.replace('px', '')
 
+	if (paddingRight === 0 || paddingLeft === 0) {
+		// initial value
+		paddingRight = +target.style.paddingBottom.replace('px', '')
+		paddingLeft = +target.style.paddingTop.replace('px', '')
+		paddingBottom = paddingRight
+		paddingTop = paddingLeft
+	}
+
 	if (bottom > paddingBottom) paddingRight -= paddingRight - bottom
 	else paddingRight += bottom - paddingRight
 	if (top > paddingTop) paddingLeft -= paddingLeft - top
@@ -274,20 +282,16 @@ const vlObserver = observe(
 		const target = mutations[0].target
 		console.log(target.style.paddingTop, target.style.paddingBottom)
 
-		if (paddingRight === 0 || paddingLeft === 0) {
-			// initial value
-			paddingRight = +target.style.paddingBottom.replace('px', '')
-			paddingLeft = +target.style.paddingTop.replace('px', '')
-			paddingBottom = paddingRight
-			paddingTop = paddingLeft
-		}
 		switchPaddingThrottled(target)
 	},
 	{ attributes: true, attributeFilter: ['style'] }
 )
 function fixVirtualList() {
-	const $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div')
-	if ($el !== null) vlObserver.observe($el) // virtual stories list
+	const $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div') // virtual stories list
+	if ($el !== null) {
+		switchPadding($el)
+		vlObserver.observe($el)
+	}
 }
 
 function throttle(callback, wait) {
@@ -369,6 +373,9 @@ function toggleWatchlist(user) {
 	window.IG_Storage_Sync.set('options', OPTIONS).catch(window.logAndReturn)
 }
 
+/**
+ * Add a 'watched' label and whether if posts or stories are watched
+ */
 function addWatched() {
 	const user = location.pathname.split('/')[1]
 
@@ -391,6 +398,7 @@ function addWatched() {
 		$node.dataset.igeWatched = text
 		$node.classList.add('ige_watched')
 	} else $node.classList.add('ige_watch')
+
 	$node.addEventListener(
 		'click',
 		e => {
