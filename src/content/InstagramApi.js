@@ -190,7 +190,7 @@ class InstagramAPI {
 	}
 
 	normalize(data) {
-		if (data.items !== undefined && data.items.length && data.items[0].media !== undefined) {
+		if (Array.isArray(data.items) && data.items[0].media !== undefined) {
 			// we need to normalize "saved"
 			data.items = data.items.map(item => item.media)
 		}
@@ -211,7 +211,7 @@ class InstagramAPI {
 	 * @return 	{Boolean} Whether the function found a matching item or not
 	 */
 	compareData(data) {
-		if (!data.items || !data.items.length) return false // prevent adding undefined or similar
+		if (!Array.isArray(data.items)) return false // prevent adding undefined or similar
 
 		const items = data.items,
 			len = items.length

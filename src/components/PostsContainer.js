@@ -150,7 +150,7 @@ export default class PostsContainer extends Component {
 			)
 
 		if (timeout === 200) return PostsContainer.loading
-		if (timeout === 1000 && (!items || items.length === 0)) return PostsContainer.error
+		if (timeout === 1000 && (!Array.isArray(items) || items.length === 0)) return PostsContainer.error
 		return PostsContainer.dummy // first paint & items === null
 	}
 }
