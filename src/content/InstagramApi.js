@@ -198,7 +198,7 @@ class InstagramAPI {
 	}
 
 	/**
-	 * Compares an old dataset with a new dataset.
+	 * Compares an old dataset with a new dataset and merges accordingly.
 	 * n := old dataset length
 	 * m := new datset length
 	 *
@@ -207,16 +207,17 @@ class InstagramAPI {
 	 *
 	 * This has one caveat: We can't replace older items and thus there might be deleted items still left. We can not delete them.
 	 *
-	 * @param 	{Object} 	data
-	 * @return 	{Boolean} Whether the function found a matching item or not
+	 * @param {Object} items
+	 * @return {Bool} True if items have been merged
 	 */
-	compareData(data) {
-		if (!Array.isArray(data.items)) return false // prevent adding undefined or similar
+	mergeItems(items) {
+		if (!Array.isArray(items)) return false // prevent adding undefined
 
-		const items = data.items,
-			len = items.length
+		const len = items.length
 		const oldItems = this.items,
 			safeMin = Math.min(len - 1, oldItems.length - 1)
+
+		if (safeMin === -1) return false
 
 		let match = -1
 		outer: for (let i = safeMin; i >= 0; --i) {
@@ -228,23 +229,24 @@ class InstagramAPI {
 			}
 		}
 
-		if (match === -1) this.items = oldItems.concat(items)
-		else this.items = items.concat(oldItems.splice(match))
+		// no match, no merge
+		if (match === -1) return false
 
+		this.items = items.concat(oldItems.splice(match))
 		return true
 	}
 
 	storeData(data) {
-		const match = this.compareData(data)
+		const merged = this.mergeItems(data.items) // modifies this.items inline
 
 		// If this was first run and we found no matches that means our data is too old (e.g. items got removed by user, or a lot added)
-		if (this.firstRun && !match && this.firstNextMaxId !== this.nextMaxId) {
+		if (this.firstRun && !merged && this.firstNextMaxId !== this.nextMaxId) {
 			this.items = []
 		}
 		this.firstRun = false
 
-		// Add (older) items
-		if (!match) this.items.push(...data.items)
+		// Add (older) items to the back
+		if (!merged) this.items = this.items.concat(data.items)
 
 		window.IG_Storage.set(this.endpoint, { items: this.items, nextMaxId: this.nextMaxId })
 
