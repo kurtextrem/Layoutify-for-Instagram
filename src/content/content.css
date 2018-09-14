@@ -241,7 +241,7 @@ article > div > section:last-child {
 	order: 5;
 	width: auto;
 	height: 56px;
-	margin-top: 0;
+	margin: 0;
 	contain: strict;
 	grid-area: comment;
 }
