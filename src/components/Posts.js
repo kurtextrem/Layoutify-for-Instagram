@@ -1,19 +1,17 @@
-import { Component, createElement } from 'nervjs'
+import { createElement } from 'nervjs'
 
 // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
+// https://alligator.io/react/react-infinite-scroll/
 export default function Posts(items, renderPost, categorys) {
 	if (!items) return null
 	if (!categorys) return items.map(renderPost)
 
 	const collections = { '0': [] }
 
-	const headings = []
-	const posts = []
-
 	let x = 0
 	for (let i = 0; i < items.length; ++i) {
 		const colIds = items[i].saved_collection_ids
-		if (Array.isArray(colIds) && colIds.length) {
+		if (Array.isArray(colIds) && colIds.length !== 0) {
 			for (x = 0; x < colIds.length; ++x) {
 				const colId = colIds[x]
 				if (collections[colId] === undefined) collections[colId] = []
@@ -24,6 +22,8 @@ export default function Posts(items, renderPost, categorys) {
 		}
 	}
 
+	const posts = [,] // we save one array allocation by reservating the first entry for the headingsContainer
+	const headings = []
 	for (const c in collections) {
 		if (c !== '0') {
 			const id = `col_${c}`
@@ -48,5 +48,6 @@ export default function Posts(items, renderPost, categorys) {
 	}
 
 	const headingsContainer = <div className="saved--headings">{headings}</div>
-	return [headingsContainer, posts]
+	posts[0] = headingsContainer
+	return posts
 }
