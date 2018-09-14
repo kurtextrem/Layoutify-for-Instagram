@@ -9,9 +9,12 @@ function onChange(changes) {
 	for (const i in changes) {
 		const change = changes[i]
 		if (change.isIntersecting) {
-			change.target.src = change.target.dataset.src // not in a rIC because of https://github.com/necolas/react-native-web/issues/759
-			change.target.parentElement.classList.remove('img--placeholder')
-			observer.unobserve(change.target)
+			const target = change.target
+			target.src = target.dataset.src // not in a rIC because of https://github.com/necolas/react-native-web/issues/759
+			target.addEventListener('load', function(e) {
+				e.target.parentElement.classList.remove('img--placeholder')
+			})
+			observer.unobserve(target)
 		}
 	}
 }

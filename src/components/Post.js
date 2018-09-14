@@ -48,7 +48,7 @@ export default class Post extends Component {
 	}
 
 	@bind
-	async preloadAll() {
+	preloadAll() {
 		if (this.preloaded) return
 
 		this.preloaded = true
@@ -57,7 +57,7 @@ export default class Post extends Component {
 		}
 	}
 
-	async preload(index) {
+	preload(index) {
 		if (worker !== undefined) {
 			console.log('preloading', this.props.data.carousel_media[index].image_versions2.candidates[0].url)
 			worker.postMessage(updateCDN(this.props.data.carousel_media[index].image_versions2.candidates[0].url))
