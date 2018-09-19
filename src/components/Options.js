@@ -1,7 +1,7 @@
 import bind from 'autobind-decorator'
 import { Button, Col, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap'
 import { Component, createElement } from 'nervjs'
-import { Storage, StorageSync, fetch as XHR, i18n, logAndReturn } from './Utils'
+import { StorageSync, i18n, logAndReturn, throttle } from './Utils'
 
 const AllOptions = (items = {}, render) => Object.keys(items).map(render)
 
@@ -120,6 +120,7 @@ export default class Options extends Component {
 			.catch(logAndReturn)
 
 		this.ref = null
+		this.save = throttle(this.save.bind(this), 250)
 	}
 
 	state = {
@@ -135,9 +136,8 @@ export default class Options extends Component {
 	 *
 	 * @param {string} key options key
 	 * @param {*} value
-	 * @param {Bool} remove If array, remove `key`?
+	 * @param {boolean} remove If array, remove `key`?
 	 */
-	@bind
 	save(key, value, remove) {
 		this.setState((prevState, props) => {
 			const options = prevState.options,
@@ -188,9 +188,23 @@ export default class Options extends Component {
 
 	@bind
 	async onChange(e) {
-		const target = e.target,
-			value = target.type === 'checkbox' ? target.checked : target.value
-		this.save(target.name, value, false)
+		const target = e.target
+		if (!target.reportValidity()) return Promise.reject(new Error('Invalid Entry'))
+
+		switch (target.type) {
+			case 'checkbox':
+				this.save(target.name, target.checked, false)
+				break
+
+			case 'number':
+				this.save(target.name, +target.value, false)
+
+			case 'radio':
+				if (!target.checked) return // fallthrough
+			default:
+				this.save(target.name, target.value, false)
+				break
+		}
 
 		return e
 	}
@@ -200,6 +214,8 @@ export default class Options extends Component {
 	}
 
 	static renderLabel(id) {
+		if (OPTS[id] === undefined) return console.warn('outdated option', id) // @todo: Remove from dataset
+
 		return (
 			<Label for={id} sm={3}>
 				{i18n(id)}
@@ -214,7 +230,7 @@ export default class Options extends Component {
 	@bind
 	renderOption(key) {
 		return (
-			<option key={key} value={key} onDoubleClick={this.remove} onContextMenu={this.remove} title="Right click to remove">
+			<option key={key} value={key} title="Right click to remove" onDoubleClick={this.remove} onContextMenu={this.remove}>
 				{key}
 			</option>
 		)
@@ -222,14 +238,23 @@ export default class Options extends Component {
 
 	@bind
 	renderBasedOnType(id, value, additional) {
-		const onChange = additional !== undefined ? e => this.onChange(e).then(additional.onChange) : this.onChange
-		if (typeof value === 'boolean')
-			return <Input type="checkbox" name={id} id={id} checked={value ? true : undefined} onChange={onChange} />
-		if (Array.isArray(value) || value === null)
+		const onChange =
+			additional !== undefined
+				? e =>
+						this.onChange(e)
+							.then(additional.onChange)
+							.catch(logAndReturn)
+				: this.onChange
+
+		const type = OPTS[id]
+		if (type === undefined) return console.warn('outdated option', id, value)
+
+		if (typeof type === 'boolean') return <Input type="checkbox" name={id} id={id} checked={value ? true : undefined} onChange={onChange} />
+		if (Array.isArray(type) || type === null)
 			// @TODO: Fragments
 			return (
 				<div>
-					<Input type="select" name={id} multiple>
+					<Input name={id} type="select" multiple>
 						{value && value.map(this.renderOption)}
 					</Input>
 					<Input type="text" name={`${id}_add`} placeholder="Instagram Username" onKeyUp={this.add} />
@@ -238,10 +263,32 @@ export default class Options extends Component {
 					</Button>
 				</div>
 			)
-		if (Number.isInteger(value))
-			return (
-				<Input type="number" name={id} min={additional.min} max={additional.max} step={additional.step} value={value} onChange={onChange} />
-			)
+		if (Number.isInteger(type)) {
+			const { min = -1, max = -1, step = -1 } = additional
+			if (step === 1)
+				return (
+					<Input
+						type="number"
+						name={id}
+						step={step !== -1 ? step : undefined}
+						min={min !== -1 ? min : undefined}
+						max={max !== -1 ? max : undefined}
+						value={value}
+						onChange={onChange}
+					/>
+				)
+
+			const radio = []
+			for (let i = min; i <= max; i += step) {
+				radio.push(
+					<Label>
+						<Input type="radio" name={id} value={i} onChange={onChange} checked={i === value ? true : undefined} /> {i}
+					</Label>
+				)
+			}
+			return radio
+		}
+
 		return null
 	}
 

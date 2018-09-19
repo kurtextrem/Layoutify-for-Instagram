@@ -122,8 +122,11 @@ export default class PostsContainer extends Component {
 
 	@bind
 	renderPost(post) {
+		if (!post.id) return console.warn('faulty post', post)
+
 		++this.postCount
 		const { id, defaultClass, toggleClass } = this.props
+
 		return (
 			<Post
 				key={post.id}

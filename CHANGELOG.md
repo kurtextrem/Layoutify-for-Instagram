@@ -4,6 +4,12 @@
 
 - Maybe: Merge watched posts and watched stories to one setting
 
+## [2.8.2] - 2018-09-19
+
+### Bug Fixes
+
+- Fixed disappearing options. That bug was really weird.
+
 ## [2.8.0] - 2018-09-04
 
 - Great feature: You can now view your different collections!

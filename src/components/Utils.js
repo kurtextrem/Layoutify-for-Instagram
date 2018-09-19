@@ -155,3 +155,14 @@ const formReducer = (data, element) => {
 	return data
 }
 export const formToJSON = elements => [].reduce.call(elements, formReducer, {})
+
+export function throttle(callback, wait = 250) {
+	let time = Date.now()
+
+	return function throttle(arg) {
+		if (time + wait - Date.now() < 0) {
+			callback(arg)
+			time = Date.now()
+		}
+	}
+}
