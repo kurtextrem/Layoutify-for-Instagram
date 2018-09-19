@@ -33,6 +33,7 @@ export default class PostMedia extends Component {
 		super(props)
 
 		this.ref = null
+		this.style = { 'padding-bottom': '' }
 
 		if (!initiated) init()
 	}
@@ -64,7 +65,7 @@ export default class PostMedia extends Component {
 	}
 
 	componentDidMount() {
-		if (!this.props.initial) observer.observe(this.ref)
+		observer.observe(this.ref)
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -73,7 +74,7 @@ export default class PostMedia extends Component {
 	}
 
 	componentWillUnmount() {
-		if (!this.props.initial && this.ref) observer.unobserve(this.ref)
+		if (this.ref) observer.unobserve(this.ref)
 		this.ref = null
 	}
 
@@ -95,8 +96,6 @@ export default class PostMedia extends Component {
 					data-src={url}
 					poster={media.image_versions2.candidates[0].url}
 					type="video/mp4"
-					width={candidate.width}
-					height={candidate.height}
 					preload="metadata"
 					className="img-fluid"
 					controls
@@ -109,8 +108,6 @@ export default class PostMedia extends Component {
 			mediaElement = (
 				<img
 					ref={this.setRef}
-					width={candidate.width}
-					height={candidate.height}
 					src={isCarousel || initial ? url : ''}
 					data-src={url}
 					alt="If you see this, the post has probably been deleted"
@@ -119,6 +116,8 @@ export default class PostMedia extends Component {
 				/>
 			)
 		}
+
+		this.style['padding-bottom'] = `${(candidate.height / candidate.width) * 100}%`
 
 		return (
 			<div className={`position-relative${isCarousel ? ' post--carousel' : ''}`}>
@@ -131,7 +130,8 @@ export default class PostMedia extends Component {
 					href={`https://www.instagram.com/p/${data.code}`}
 					target="_blank"
 					rel="noopener"
-					className={`img--wrapper${initial ? '' : ' img--placeholder'}`}>
+					className="img--wrapper img--placeholder"
+					style={this.style}>
 					{mediaElement}
 				</a>
 				{isCarousel ? (

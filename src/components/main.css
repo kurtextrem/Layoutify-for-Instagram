@@ -183,21 +183,22 @@ img[src=''] {
 	visibility: hidden;
 }
 
-.img--wrapper {
-	display: block;
-	position: relative;
-	width: 100%;
-	contain: layout style;
-}
-
 .img--placeholder {
 	height: 0;
-	padding-bottom: 66.67%;
+	/* padding-bottom inline */
 }
 
 .img--placeholder > img {
 	position: absolute;
 	width: 100%;
+}
+
+.img--wrapper {
+	display: block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 0 !important;
+	contain: layout style;
 }
 
 #logo {
@@ -301,20 +302,20 @@ label + label {
 
 input[type='radio'],
 input[type='checkbox'] {
-	background-color: initial;
-	cursor: default;
-	padding: initial;
 	margin: 0 1px 0 0;
+	padding: initial;
 	border-width: 1px;
 	border-style: solid;
 	border-radius: 2px;
 	border-color: rgba(0, 0, 0, 0.25);
 	outline: none;
+	background-color: initial;
 	background-image: linear-gradient(rgb(237, 237, 237) 38%, rgb(222, 222, 222));
 	color: rgb(68, 68, 68);
 	font: inherit;
 	text-shadow: rgb(240, 240, 240) 0 1px 0;
 	box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
+	cursor: default;
 	/* autoprefixer: off */
 	-webkit-appearance: none;
 	border-image: initial;
@@ -338,23 +339,23 @@ input[type='checkbox']:checked::before {
 }
 
 input[type='radio'] {
-	height: 15px;
 	position: relative;
-	vertical-align: middle;
 	width: 15px;
+	height: 15px;
 	border-radius: 100%;
+	vertical-align: middle;
 }
 
 input[type='radio']:checked::before {
-	background-color: rgb(102, 102, 102);
-	bottom: 3px;
-	content: '';
 	display: block;
-	left: 3px;
 	position: absolute;
-	right: 3px;
 	top: 3px;
+	right: 3px;
+	bottom: 3px;
+	left: 3px;
 	border-radius: 100%;
+	background-color: rgb(102, 102, 102);
+	content: '';
 }
 
 input[type='text'],
