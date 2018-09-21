@@ -197,8 +197,11 @@ img[src=''] {
 	display: block;
 	position: relative;
 	width: 100%;
-	padding-bottom: 0 !important;
 	contain: layout style;
+}
+
+.img--loaded {
+	padding-bottom: 0 !important;
 }
 
 #logo {

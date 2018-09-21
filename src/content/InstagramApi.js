@@ -211,18 +211,19 @@ class InstagramAPI {
 	 * @return {Bool} True if items have been merged
 	 */
 	mergeItems(items) {
-		if (!Array.isArray(items)) return false // prevent adding undefined
+		if (!Array.isArray(items)) return false // don't add
 
-		const len = items.length
+		const len = items.length - 1
 		const oldItems = this.items,
-			safeMin = Math.min(len - 1, oldItems.length - 1)
+			safeLen = Math.min(len, oldItems.length - 1)
 
-		if (safeMin === -1) return false
+		if (safeLen === -1 || len === -1) return false
 
 		let match = -1
-		outer: for (let i = safeMin; i >= 0; --i) {
-			for (let x = safeMin; x >= 0; --x) {
-				if (items[x].id === oldItems[i].id) {
+		outer: for (let i = safeLen; i >= 0; --i) {
+			for (let x = len; x >= 0; --x) {
+				// compare every X to i
+				if (oldItems[i].id === items[x].id) {
 					match = i
 					break outer
 				}
@@ -232,7 +233,7 @@ class InstagramAPI {
 		// no match, no merge
 		if (match === -1) return false
 
-		this.items = items.concat(oldItems.splice(match))
+		this.items = items.concat(oldItems.splice(match)) // add stored items to back
 		return true
 	}
 
@@ -245,7 +246,7 @@ class InstagramAPI {
 		}
 		this.firstRun = false
 
-		// Add (older) items to the back
+		// Add new (older) items to the back
 		if (!merged) this.items = this.items.concat(data.items)
 
 		window.IG_Storage.set(this.endpoint, { items: this.items, nextMaxId: this.nextMaxId })

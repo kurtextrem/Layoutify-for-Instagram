@@ -12,7 +12,10 @@ function onChange(changes) {
 			const target = change.target
 			target.src = target.dataset.src // not in a rIC because of https://github.com/necolas/react-native-web/issues/759
 			target.addEventListener('load', function(e) {
-				e.target.parentElement.classList.remove('img--placeholder')
+				window.requestAnimationFrame(() => {
+					e.target.parentElement.classList.remove('img--placeholder')
+					e.target.parentElement.classList.add('img--loaded')
+				})
 			})
 			observer.unobserve(target)
 		}
