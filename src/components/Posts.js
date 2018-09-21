@@ -28,7 +28,7 @@ export default function Posts(items, renderPost, categorys) {
 		if (c !== '0') {
 			const id = `col_${c}`
 			headings.push(
-				<a href={`#${id}`}>
+				<a key={id} href={`#${id}`}>
 					<span className="badge badge-secondary">{c}</span>
 				</a>
 			)
@@ -47,7 +47,11 @@ export default function Posts(items, renderPost, categorys) {
 		}
 	}
 
-	const headingsContainer = <div className="saved--headings">{headings}</div>
+	const headingsContainer = (
+		<div key="headings" className="saved--headings">
+			{headings}
+		</div>
+	)
 	posts[0] = headingsContainer
 	return posts
 }

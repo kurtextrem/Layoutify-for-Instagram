@@ -69,6 +69,7 @@ export default class PostsContainer extends Component {
 
 	@bind
 	populateData() {
+		console.log('populating data')
 		return Storage.get(this.props.id, null)
 			.then(this.handleData)
 			.catch(logAndReturn)

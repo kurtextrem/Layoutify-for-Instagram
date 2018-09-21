@@ -198,9 +198,13 @@ export default class Options extends Component {
 
 			case 'number':
 				this.save(target.name, +target.value, false)
+				break
 
 			case 'radio':
-				if (!target.checked) return // fallthrough
+				if (!target.checked) break
+				this.save(target.name, +target.value, false)
+				break
+
 			default:
 				this.save(target.name, target.value, false)
 				break
@@ -239,12 +243,12 @@ export default class Options extends Component {
 	@bind
 	renderBasedOnType(id, value, additional) {
 		const onChange =
-			additional !== undefined
-				? e =>
+			additional === undefined || additional.onChange === undefined
+				? e => this.onChange(e).catch(logAndReturn)
+				: e =>
 						this.onChange(e)
 							.then(additional.onChange)
 							.catch(logAndReturn)
-				: this.onChange
 
 		const type = OPTS[id]
 		if (type === undefined) return console.warn('outdated option', id, value)
@@ -281,7 +285,7 @@ export default class Options extends Component {
 			const radio = []
 			for (let i = min; i <= max; i += step) {
 				radio.push(
-					<Label>
+					<Label key={i}>
 						<Input type="radio" name={id} value={i} onChange={onChange} checked={i === value ? true : undefined} /> {i}
 					</Label>
 				)
