@@ -163,7 +163,7 @@ if (isProd) {
 				onlyFiles: true,
 				ignore: ['content/*'],
 			}),
-			whitelistPatterns: [/col-/, /btn-warning/],
+			whitelistPatterns: [/col-/, /btn-warning/, /btn-secondary/],
 		}),
 		//new ShakePlugin(), // @todo: Broken 3dot page 08/14/2018
 		//new WebpackDeepScopeAnalysisPlugin(), // @todo: 09/02/2018 - doesn't reduce bundle size
