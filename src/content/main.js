@@ -307,6 +307,7 @@ function throttle(callback, wait) {
 
 const connection = navigator.connection.type,
 	speed = navigator.connection.downlink,
+	fullSizeCondition = connection === 'wifi' && speed > 1.54,
 	fullsizeObserver = observe(
 		undefined,
 		mutations => {
@@ -335,7 +336,7 @@ function fullPhoto(el) {
 	if (!el) return
 
 	el.decoding = 'async'
-	if (connection === 'wifi' && speed > 3.0) {
+	if (fullSizeCondition) {
 		// @todo: Make sure this also happens on first time load on a profile
 		el.sizes = '1080px'
 		fullsizeObserver.observe(el)
@@ -351,7 +352,7 @@ function addControls(el) {
 	if (!el) return
 
 	el.controls = 'true'
-	if (connection === 'wifi' && speed > 3.0) el.preload = 'auto'
+	if (fullSizeCondition) el.preload = 'auto'
 }
 
 function setBoxWidth(i) {
