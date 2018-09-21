@@ -49,7 +49,7 @@ const OPTS = {
 const OPTS_ADDITIONAL = {
 	rows: {
 		min: 2,
-		step: 2,
+		step: 1,
 		max: 4,
 		help: false,
 		onChange: undefined,
