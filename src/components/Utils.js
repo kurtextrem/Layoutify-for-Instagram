@@ -156,13 +156,46 @@ const formReducer = (data, element) => {
 }
 export const formToJSON = elements => [].reduce.call(elements, formReducer, {})
 
-export function throttle(callback, wait = 250) {
-	let time = Date.now()
+/**
+ * Leading call, trailing call for each period.
+ *
+ * @param   {[type]}  callback  [callback description]
+ * @param   {[type]}  wait      [wait description]
+ *
+ * @return  {[type]}
+ */
+export function throttle(fn, wait = 100) {
+	let time
+	let lastFunc
 
 	return function throttle(...args) {
-		if (time + wait - Date.now() < 0) {
-			callback(...args)
+		if (time === undefined) {
+			fn.apply(this, args)
 			time = Date.now()
+		} else {
+			clearTimeout(lastFunc)
+			lastFunc = setTimeout(() => {
+				if (Date.now() - time >= wait) {
+					fn.apply(this, args)
+					time = Date.now()
+				}
+			}, wait - (Date.now() - time))
 		}
+	}
+}
+
+/**
+ * Delayed trailing call for each period.
+ *
+ * @param   {[type]}  fn     [fn description]
+ * @param   {[type]}  delay  [delay description]
+ *
+ * @return  {[type]}
+ */
+export function debounce(fn, delay) {
+	let inDebounce
+	return function debounce(...args) {
+		clearTimeout(inDebounce)
+		inDebounce = setTimeout(() => fn.apply(this, args), delay)
 	}
 }
