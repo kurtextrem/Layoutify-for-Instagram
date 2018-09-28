@@ -294,13 +294,22 @@ function fixVirtualList() {
 	}
 }
 
-function throttle(callback, wait) {
-	let time = Date.now()
+function throttle(fn, wait = 100) {
+	let time
+	let lastFunc
 
-	return function throttle(arg) {
-		if (time + wait - Date.now() < 0) {
-			callback(arg)
+	return function throttle(args) {
+		if (time === undefined) {
+			fn.apply(this, args)
 			time = Date.now()
+		} else {
+			clearTimeout(lastFunc)
+			lastFunc = setTimeout(() => {
+				if (Date.now() - time >= wait) {
+					fn.apply(this, args)
+					time = Date.now()
+				}
+			}, wait - (Date.now() - time))
 		}
 	}
 }
