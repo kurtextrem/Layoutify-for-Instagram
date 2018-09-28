@@ -11,17 +11,16 @@ function onChange(changes) {
 		if (change.isIntersecting) {
 			const target = change.target
 			target.src = target.dataset.src // not in a rIC because of https://github.com/necolas/react-native-web/issues/759
-			target.addEventListener('load', function(e) {
-				if (e.target === null) return
-
-				window.requestAnimationFrame(() => {
-					e.target.parentElement.classList.remove('img--placeholder')
-					e.target.parentElement.classList.add('img--loaded')
-				})
-			})
+			target.addEventListener('load', e => window.requestAnimationFrame(switchClass.bind(undefined, e.target)))
 			observer.unobserve(target)
 		}
 	}
+}
+
+function switchClass(el) {
+	if (el === null) return console.warn('target null', el)
+	el.parentElement.classList.remove('img--placeholder')
+	el.parentElement.classList.add('img--loaded')
 }
 
 let initiated = false
