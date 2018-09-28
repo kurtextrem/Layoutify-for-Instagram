@@ -123,7 +123,7 @@ export default class PostsContainer extends Component {
 
 	@bind
 	renderPost(post) {
-		if (!post.id) return console.warn('faulty post', post)
+		if (!post || !post.id) return console.warn('faulty post', post)
 
 		++this.postCount
 		const { id, defaultClass, toggleClass } = this.props
