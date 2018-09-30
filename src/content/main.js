@@ -173,7 +173,7 @@ function addExtendedButton() {
 	a.nodeValue = '' // clear content
 	a.textContent = '⋯'
 	a.title = 'Improved Layout for Instagram'
-	a.addEventListener('click', function(e) {
+	a.addEventListener('click', function (e) {
 		e.preventDefault()
 
 		Instagram.liked
@@ -210,7 +210,7 @@ const listenerActions = {
 }
 
 function addListener() {
-	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 		if (listenerActions[request.action] !== undefined && Instagram[request.which] !== undefined) {
 			listenerActions[request.action](request)
 		}
@@ -316,7 +316,7 @@ function throttle(fn, wait = 100) {
 
 const connection = navigator.connection.type,
 	speed = navigator.connection.downlink,
-	fullSizeCondition = connection === 'wifi' && speed > 1.54,
+	fullSizeCondition = connection === 'wifi' && speed > 1.9,
 	fullsizeObserver = observe(
 		undefined,
 		mutations => {
@@ -437,7 +437,7 @@ const OPTS_MODE = {
 		}
 	},
 	//highlightOP(arg) {},
-	_boxWidth(i) {},
+	_boxWidth(i) { },
 	rows(i) {
 		if (i !== 4) setBoxWidth(100 / i - 1)
 	},

@@ -4,12 +4,16 @@
 =============================================*/
 
 :root {
-	--blue: #1976D2;
+	--blue: #78909C;
 
-	--light-grey: #999;
-	--grey: #3b3b3b;
-	--dark: #262626;
-	--very-dark: #181818;
+	--primary: #212121;
+	--text: #bdbdbd;
+	--light: #484848;
+	--dark: #000000;
+
+	--secondary: #757575;
+	--secondary-light: #a4a4a4;
+	--secondary-text: #e0e0e0;
 }
 
 
@@ -20,58 +24,55 @@
 /* Body */
 body,
 /* Navbar */
-#react-root > section > nav > div > div,
+section > nav > div > div,
 /* Main */
-#react-root > section > main,
+section > main,
 /* Footer */
-#react-root > section > footer {
-	background-color: var(--very-dark);
+section > footer,
+div[role='dialog'] {
+	background-color: var(--dark);
+	color: var(--text) !important;
 }
 
-/* Icons in Navbar */
+li span {
+	color: var(--secondary-text) !important;
+}
+
+/** Hue Rotation 100% - Important: This has a drastic performance impact. Don't over-use! */
+nav input,
 [class^='coreSprite'],
-[class^='glyphsSprite'] {
-	filter: invert(60%);
+[class^='glyphsSprite'],
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div::after /** Stories after "shadow" **/ {
+	filter: invert(100%) hue-rotate(180deg); /* 60%, no hue rotation before */
+  	mix-blend-mode: screen;
 }
 
-/* Stories: show all stories */
-#react-root > section > main > section > div > div > a,
-/* Stories: usernames */
-#react-root > section > main > section > div > div > div > div > a > div > div > span,
+/** Hue Rotation 60%, easier on the eyes - Important: This has a drastic performance impact. Don't over-use! */
+a[href='/'] /* logo */ {
+	filter: invert(60%) hue-rotate(180deg); /* 60%, no hue rotation before */
+  	mix-blend-mode: screen;
+}
 
-/* Username Uploader */
-#react-root > section > main > section > div > div > div > article > header > div > div > div > a,
-/* Comments: tagged usernames */
-#react-root > section > main > section > div > div > div > article > div > div > ul > li > span > span > a {
-	color: var(--blue);
+a {
+	color: var(--blue) !important;
 }
 
 /* Header of post */
 #react-root > section > main > section > div > div > div > article,
 /* Description/comments/comment input */
-#react-root:not(.profile) header + div + div {
-	background: var(--dark);
+#react-root:not(.profile) header + div + div,
+nav input {
+	background: var(--primary);
 }
 
 /* Stories: "Stories" */
 #react-root > section > main > section > div > div > span,
 /* Stories: time */
 #react-root > section > main > section > div > div > div > div > a > div > div > time,
-/* Location */
-#react-root > section > main > section > div > div > div > article > header > div > div > a,
-/* Date */
-#react-root > section > main > section > div > div > div > article > div > div > a,
-/* Counter: likes */
-#react-root > section > main > section > div > div > div > article > div > section > div > a,
-/* Counter: views */
-#react-root > section > main > section > div > div > div > article > div > section > div,
-/* Comments: usernames */
-#react-root > section > main > section > div > div > div > article > div > div > ul > li > a,
-/* Comments: comments */
 #react-root > section > main > section > div > div > div > article > div > div,
 /* Comments: input */
 #react-root > section > main > section > div > div > div > article > div > section > form > textarea {
-	color: var(--light-grey);
+	color: var(--secondary);
 }
 
 /* No borders: around post and in header of post */
@@ -99,13 +100,13 @@ body,
 #react-root > section > main > article > header > section > div,
 /* Suggested: usernames */
 #react-root > section > main > article > div > div > div > div > div > ul > li > div > div > div > a {
-	color: var(--light-grey);
+	color: var(--secondary);
 }
 
 /* 3 dots next to follow button */
 body > div > div > div > div > ul > li > button {
-	background: var(--very-dark)!important;
-	color: var(--light-grey)!important;
+	background: var(--dark)!important;
+	color: var(--secondary)!important;
 }
 
 /* Followed by */
@@ -113,17 +114,13 @@ body > div > div > div > div > ul > li > button {
 	color: var(--blue);
 }
 
-.coreSpriteDropdownArrowGrey9 {
-	filter: invert(60%);
-}
-
 /* Suggested */
 #react-root > section > main > article > div {
-	background-color: var(--dark);
+	background-color: var(--primary);
 	border: none;
 }
 #react-root > section > main > article > div > div > div > div > div > ul > li > div > div {
-	background: var(--grey);
+	background: var(--light);
 	border: none;
 }
 
@@ -134,7 +131,7 @@ body > div > div > div > div > ul > li > button {
 
 /* Header, comments, ... */
 body > div > div > div > div > article {
-	background-color: var(--dark);
+	background-color: var(--primary);
 }
 
 /* Header: username */
@@ -156,7 +153,7 @@ body > div > div > div > div > article > div > div > ul > li > a,
 body > div > div > div > div > article > div> div > ul > li > span,
 /* Comments: input */
 body > div > div > div > div > article > div > section > form > textarea {
-	color: var(--light-grey)!important;
+	color: var(--secondary)!important;
 }
 
 /* Comments: tagged users */
@@ -177,7 +174,7 @@ body > div > div > div > div > article > div > section {
 
 /* Header, comments, ... */
 #react-root > section > main > div > div > article {
-	background-color: var(--dark);
+	background-color: var(--primary);
 }
 
 /* Header: username */
@@ -198,7 +195,7 @@ body > div > div > div > div > article > div > section {
 #react-root > section > main > div > div > article > div > div > ul > li > span > span,
 /* Comments: input */
 #react-root > section > main > div > div > article > div > section > form > textarea {
-	color: var(--light-grey)!important;
+	color: var(--secondary)!important;
 }
 
 /* Comments: tagged users */
