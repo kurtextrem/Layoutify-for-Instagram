@@ -29,12 +29,8 @@ body,
 }
 
 /* Icons in Navbar */
-.coreSpriteDesktopNavLogoAndWordmark,
-.coreSpriteDesktopNavExplore,
-.coreSpriteDesktopNavActivity,
-.coreSpriteDesktopNavProfile,
-.coreSpriteOptionsEllipsis,
-.coreSpriteHeartOpen {
+[class^='coreSprite'],
+[class^='glyphsSprite'] {
 	filter: invert(60%);
 }
 

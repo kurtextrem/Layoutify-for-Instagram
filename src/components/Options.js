@@ -3,8 +3,6 @@ import { Button, Col, Container, Form, FormGroup, FormText, Input, Label } from 
 import { Component, createElement } from 'nervjs'
 import { StorageSync, i18n, logAndReturn, throttle } from './Utils'
 
-const AllOptions = (items = {}, render) => Object.keys(items).map(render)
-
 /**
  * Options object.
  * If you add something here, you need to add it to src/content/main.js as well
@@ -106,6 +104,10 @@ const OPTS_ADDITIONAL = {
 			else chrome.runtime.sendMessage(null, { action: 'stopWatchInBackground' })
 		},
 	},
+}
+
+function AllOptions(items = {}, render) {
+	for (const opt in OPTS) render(opt)
 }
 
 export default class Options extends Component {
@@ -246,9 +248,9 @@ export default class Options extends Component {
 			additional === undefined || additional.onChange === undefined
 				? e => this.onChange(e).catch(logAndReturn)
 				: e =>
-						this.onChange(e)
-							.then(additional.onChange)
-							.catch(logAndReturn)
+					this.onChange(e)
+						.then(additional.onChange)
+						.catch(logAndReturn)
 
 		const type = OPTS[id]
 		if (type === undefined) return console.warn('outdated option', id, value)
