@@ -364,7 +364,6 @@ input[type='radio']:checked::before {
 input[type='text'],
 input[type='number'] {
 	display: inline;
-	width: auto !important;
 }
 
 .btn {
@@ -379,7 +378,21 @@ input[type='number'] {
 }
 
 /** Night */
-html[data-night] {
+/*
+:root {
+	--blue: #78909C;
+
+	--primary: #212121;
+	--text: #bdbdbd;
+	--light: #484848;
+	--dark: #000000;
+
+	--secondary: #757575;
+	--secondary-light: #a4a4a4;
+	--secondary-text: #e0e0e0;
+}
+*/
+html[data-night] .bg-light {
 	
 }
 

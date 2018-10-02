@@ -215,25 +215,24 @@ class InstagramAPI {
 
 		const len = items.length - 1
 		const oldItems = this.items,
-			safeLen = Math.min(len, oldItems.length - 1)
+			safeLen = Math.min(len, oldItems.length - 1) // Math.min so we don't loop through all old items
 
 		if (safeLen === -1 || len === -1) return false
 
 		let match = -1
 		outer: for (let i = safeLen; i >= 0; --i) {
 			for (let x = len; x >= 0; --x) {
-				// compare every X to i
-				if (oldItems[i].id === items[x].id) {
-					match = i
-					break outer
-				}
+				// compare every new item to `i` old item 
+				if (oldItems[i].id !== items[x].id) continue
+				match = i
+				break outer
 			}
 		}
 
 		// no match, no merge
 		if (match === -1) return false
 
-		this.items = items.concat(oldItems.splice(match)) // add stored items to back
+		this.items = items.concat(oldItems.splice(match)) // add new items to the start; @TODO: Replace with this.items.push(...items)
 		return true
 	}
 
