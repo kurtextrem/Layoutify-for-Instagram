@@ -180,6 +180,7 @@ class InstagramAPI {
 			.then(this.storeNext)
 			.then(this.normalize)
 			.then(this.storeData)
+			.catch(this.storeData)
 	}
 
 	storeNext(data) {
@@ -190,9 +191,15 @@ class InstagramAPI {
 	}
 
 	normalize(data) {
-		if (Array.isArray(data.items) && data.items[0].media !== undefined) {
+		const items = data.items
+		if (!Array.isArray(items)) return new Error('No items')
+
+		const len = items.length
+		if (len !== 0 && items[0].media !== undefined) {
 			// we need to normalize "saved"
-			data.items = data.items.map(item => item.media)
+			for (let i = 0; i < len; ++i) {
+				data.items[i] = items[i].media
+			}
 		}
 		return data
 	}
