@@ -149,9 +149,7 @@ class InstagramAPI {
 		this.uid = UID
 		this.uuid = UUID
 
-		this.firstNextMaxId = undefined
 		this.firstRun = true
-
 		this.nextMaxId = null
 		this.items = []
 
@@ -164,9 +162,9 @@ class InstagramAPI {
 	}
 
 	start() {
-		if (this.firstNextMaxId === undefined) {
+		if (this.firstRun) {
 			return window.IG_Storage.get(this.endpoint, { items: [], nextMaxId: '' }).then(data => {
-				this.firstNextMaxId = data.nextMaxId
+				this.nextMaxId = data.nextMaxId
 				this.items = data.items
 				return data
 			})
@@ -175,9 +173,9 @@ class InstagramAPI {
 	}
 
 	fetch() {
-		if (this.nextMaxId === '') return Promise.resolve(this.items) // nothing more to fetch
+		if (!this.firstRun && this.nextMaxId === '') return Promise.resolve(this.items) // nothing more to fetch
 
-		return fetchAux(`${API}feed/${this.endpoint}/?${this.nextMaxId ? `max_id=${this.nextMaxId}&` : ''}`) // maxId means "show everything before X"
+		return fetchAux(`${API}feed/${this.endpoint}/?${this.nextMaxId && !this.firstRun ? `max_id=${this.nextMaxId}&` : ''}`) // maxId means "show everything before X"
 			.then(this.storeNext)
 			.then(this.normalize)
 			.then(this.setData)
@@ -187,7 +185,7 @@ class InstagramAPI {
 
 	storeNext(data) {
 		console.log(data)
-		this.nextMaxId = data.next_max_id !== undefined ? `${data.next_max_id}` : ''
+		if (!this.firstRun) this.nextMaxId = data.next_max_id !== undefined ? `${data.next_max_id}` : ''
 
 		return data
 	}
@@ -217,20 +215,16 @@ class InstagramAPI {
 	 * This has one caveat: We can't replace older items and thus there might be deleted items still left. We can not delete them.
 	 *
 	 * @param {Object} items
-	 * @param {Bopl} fromStart Either loop through length m items from the start, or from the back
 	 * @return {Bool} True if a match has been found
 	 */
-	mergeItems(items, fromStart) {
+	mergeItems(items) {
 		const len = items.length - 1
 		const oldItems = this.items,
 			oldLen = oldItems.length - 1,
-			optimizedLen = fromStart ? Math.min(len, oldLen) : oldLen,
-			end = fromStart ? 0 : oldLen - len // Math.min so we don't loop through all old items
-
-		if (optimizedLen === -1 || len === -1) return false
+			optimizedLen = Math.min(len, oldLen)
 
 		let match = -1
-		outer: for (let i = optimizedLen; i >= end; --i) {
+		outer: for (let i = optimizedLen; i >= 0; --i) {
 			for (let x = len; x >= 0; --x) {
 				// compare every new item to `i` old item
 				if (oldItems[i].id !== items[x].id) continue
@@ -241,37 +235,24 @@ class InstagramAPI {
 
 		// no match
 		if (match === -1) {
-			// sometimes the new data set contains the last of the old set. I think this happens when new items were liked after the 'last' next max id had been stored.
-			if (!fromStart) return this.mergeItems(items, false)
-			this.items = oldItems.concat(items) // no match, add new (older) items to the back
+			this.items = items
 			return false
 		}
 
-		if (fromStart) {
-			oldItems.splice(match)
-			this.items = items.concat(oldItems) // add new items to the start
-		} else {
-			oldItems.splice(end - match)
-			this.items = oldItems.concat(items) // add new (older) items to the back
-		}
-
+		this.items = items.concat(oldItems.splice(match + 1)) // add new items to the start
 		return true
 	}
 
 	setData(data) {
-		const merged = this.mergeItems(data.items, true) // modifies this.items inline
-
-		// If this was first run and we found no matches that means our data is too old (e.g. items got removed by user, or a lot added)
-		if (this.firstRun && !merged && this.firstNextMaxId !== this.nextMaxId) {
-			this.items = [].concat(data.items)
-		}
+		if (this.firstRun) this.mergeItems(data.items)
+		else this.items = this.items.concat(data.items)
 		this.firstRun = false
 
 		return data
 	}
 
 	storeItems(data) {
-		window.IG_Storage.set(this.endpoint, { items: this.items, nextMaxId: this.nextMaxId })
+		window.IG_Storage.set(this.endpoint, { items: this.items })
 
 		return data
 	}

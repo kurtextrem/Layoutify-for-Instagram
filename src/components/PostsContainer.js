@@ -46,15 +46,12 @@ export default class PostsContainer extends Component {
 
 	state = {
 		items: null,
-		nextMaxId: '',
 		timeout: 0,
 	}
 
 	setTimeout(timeout) {
-		if (!this.state.items) {
-			this.setState((prevState, props) => ({ timeout }))
-			window.setTimeout(() => this.setTimeout(1000), 1000)
-		}
+		this.setState((prevState, props) => ({ timeout }))
+		window.setTimeout(() => this.setTimeout(1000), 1000)
 	}
 
 	@bind
@@ -101,6 +98,7 @@ export default class PostsContainer extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { timeout, items } = this.state
+		const nextItems = nextState.items
 		/*console.log(
 			nextProps.id !== this.props.id,
 			nextState.timeout !== timeout,
@@ -111,9 +109,9 @@ export default class PostsContainer extends Component {
 
 		return (
 			nextProps.id !== this.props.id ||
-			nextState.timeout !== timeout ||
-			(items === null && nextState.items !== null) || // first items
-			(items && nextState.items && nextState.items.length !== items.length)
+			(nextState.timeout !== timeout && (nextItems === null || nextItems.length === 0)) ||
+			(items === null && nextItems !== null) || // first items
+			(items !== null && nextItems !== null && nextItems.length !== items.length)
 		)
 	}
 
@@ -142,19 +140,19 @@ export default class PostsContainer extends Component {
 
 	// @TODO: Implement https://github.com/valdrinkoshi/virtual-list
 	render() {
-		const { categorys } = this.props
+		const { hasCategories } = this.props
 		const { items, timeout } = this.state
 
-		if (items)
+		if (items !== null && items.length !== 0)
 			return (
 				<div className="position-relative">
-					<CardDeck className="justify-content-center">{Posts(items, this.renderPost, categorys)}</CardDeck>
+					<CardDeck className="justify-content-center">{Posts(items, this.renderPost, hasCategories)}</CardDeck>
 					<Sentinel onVisible={this.handleScroll} />
 				</div>
 			)
 
 		if (timeout === 200) return PostsContainer.loading
-		if (timeout === 1000 && (!Array.isArray(items) || items.length === 0)) return PostsContainer.error
+		if (timeout === 1000) return PostsContainer.error
 		return PostsContainer.dummy // first paint & items === null
 	}
 }
@@ -163,4 +161,5 @@ PostsContainer.propTypes = {
 	id: PropTypes.string.isRequired,
 	defaultClass: PropTypes.string.isRequired,
 	toggleClass: PropTypes.string.isRequired,
+	hasCategories: PropTypes.bool.isRequired,
 }

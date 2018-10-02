@@ -173,7 +173,7 @@ function addExtendedButton() {
 	a.nodeValue = '' // clear content
 	a.textContent = '⋯'
 	a.title = 'Improved Layout for Instagram'
-	a.addEventListener('click', function (e) {
+	a.addEventListener('click', function(e) {
 		e.preventDefault()
 
 		Instagram.liked
@@ -210,7 +210,7 @@ const listenerActions = {
 }
 
 function addListener() {
-	chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		if (listenerActions[request.action] !== undefined && Instagram[request.which] !== undefined) {
 			listenerActions[request.action](request)
 		}
@@ -437,7 +437,7 @@ const OPTS_MODE = {
 		}
 	},
 	//highlightOP(arg) {},
-	_boxWidth(i) { },
+	_boxWidth(i) {},
 	rows(i) {
 		if (i !== 4) setBoxWidth(100 / i - 1)
 	},
@@ -557,8 +557,6 @@ function onReady() {
 	const $elem = $('div > article')
 	if ($elem !== null) docEl.style.setProperty('--boxHeight', `${$elem.offsetHeight}px`) // give boxes equal height
 
-	decideClass()
-	addClass()
 	loadOptions()
 	onNavigate()
 	window.requestIdleCallback(() =>
@@ -575,5 +573,7 @@ function onReady() {
 	addListener()
 }
 
+decideClass()
+addClass()
 if (document.readyState === 'interactive' || document.readyState === 'complete') onReady()
 else document.addEventListener('DOMContentLoaded', onReady)
