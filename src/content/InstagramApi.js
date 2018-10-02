@@ -252,7 +252,7 @@ class InstagramAPI {
 	}
 
 	storeItems(data) {
-		window.IG_Storage.set(this.endpoint, { items: this.items })
+		window.IG_Storage.set(this.endpoint, { items: this.items, nextMaxId: this.nextMaxId })
 
 		return data
 	}
