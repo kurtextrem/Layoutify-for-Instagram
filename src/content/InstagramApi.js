@@ -231,7 +231,7 @@ class InstagramAPI {
 
 		let match = -1
 		outer: for (let i = optimizedLen; i >= end; --i) {
-			for (let x = len; x >= end; --x) {
+			for (let x = len; x >= 0; --x) {
 				// compare every new item to `i` old item
 				if (oldItems[i].id !== items[x].id) continue
 				match = i
