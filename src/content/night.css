@@ -30,7 +30,7 @@ section > main,
 /* Footer */
 section > footer,
 div[role='dialog'] {
-	background-color: var(--dark);
+	background-color: var(--dark) !important;
 	color: var(--text) !important;
 }
 
@@ -53,8 +53,14 @@ a[href='/'] /* logo */ {
   	mix-blend-mode: screen;
 }
 
-a {
+a,
+button > div[role='button'] + div span /* Stories */ {
 	color: var(--blue) !important;
+}
+
+time,
+div > section + section > a /* likes/views */ {
+	color: var(--secondary-light) !important;
 }
 
 /* Header of post */

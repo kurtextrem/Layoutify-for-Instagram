@@ -107,7 +107,9 @@ const OPTS_ADDITIONAL = {
 }
 
 function AllOptions(items = {}, render) {
-	for (const opt in OPTS) render(opt)
+	const arr = []
+	for (const opt in OPTS) arr.push(render(opt))
+	return arr
 }
 
 export default class Options extends Component {
@@ -248,9 +250,9 @@ export default class Options extends Component {
 			additional === undefined || additional.onChange === undefined
 				? e => this.onChange(e).catch(logAndReturn)
 				: e =>
-					this.onChange(e)
-						.then(additional.onChange)
-						.catch(logAndReturn)
+						this.onChange(e)
+							.then(additional.onChange)
+							.catch(logAndReturn)
 
 		const type = OPTS[id]
 		if (type === undefined) return console.warn('outdated option', id, value)
