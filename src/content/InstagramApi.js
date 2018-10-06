@@ -185,7 +185,7 @@ class InstagramAPI {
 
 	storeNext(data) {
 		console.log(data)
-		if (!this.firstRun) this.nextMaxId = data.next_max_id !== undefined ? `${data.next_max_id}` : ''
+		if (!this.firstRun || this.nextMaxId === '') this.nextMaxId = data.next_max_id ? `${data.next_max_id}` : ''
 
 		return data
 	}
