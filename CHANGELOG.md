@@ -4,6 +4,14 @@
 
 - Maybe: Merge watched posts and watched stories to one setting
 
+## [2.8.3] - 2018-10-08
+
+### Bug Fixes
+
+- Night mode didn't work correctly
+
+- Some colors in night mode were not readable
+
 ## [2.8.2] - 2018-09-19
 
 ### Bug Fixes

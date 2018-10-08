@@ -10,7 +10,7 @@ function injectCSS(file) {
 	style.id = 'ige_style'
 	style.rel = 'stylesheet'
 	style.href = chrome.extension.getURL(`content/${file}.css`)
-	document.head.appendChild(style) // we don't need to append it to the body to prevent blocking rendering, as it requires a (huge) reflow anyway
+	document.head.appendChild(style) // inserted css is always non-blocking
 	style = null
 }
 injectCSS('content') // inject as early as possible
@@ -452,7 +452,11 @@ const OPTS_MODE = {
 	},
 	night(arg) {
 		const hour = new Date().getHours()
-		if ((hour >= OPTIONS.nightModeStart && hour < OPTIONS.nightModeEnd) || OPTIONS.nightModeStart === OPTIONS.nightModeEnd)
+		if (
+			(hour >= OPTIONS.nightModeStart && hour > OPTIONS.nightModeEnd) ||
+			(hour < OPTIONS.nightModeStart && hour < OPTIONS.nightModeEnd) ||
+			OPTIONS.nightModeStart === OPTIONS.nightModeEnd
+		)
 			injectCSS('night')
 	},
 	only3Dot(arg) {
