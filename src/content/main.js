@@ -1,5 +1,7 @@
 const docEl = document.documentElement,
-	$ = e => document.querySelector(e),
+	$ = e => {
+		return document.querySelector(e)
+	},
 	WIDTH = window.innerWidth
 
 /** Stores the current options */
@@ -7,6 +9,7 @@ let OPTIONS
 
 function injectCSS(file) {
 	let style = document.createElement('link')
+
 	style.id = 'ige_style'
 	style.rel = 'stylesheet'
 	style.href = chrome.extension.getURL(`content/${file}.css`)
@@ -16,11 +19,29 @@ function injectCSS(file) {
 injectCSS('content') // inject as early as possible
 
 // block middle mouse button
-window.addEventListener('click', e => (e.button > 0 ? e.stopPropagation() : undefined), true)
+window.addEventListener(
+	'click',
+	e => {
+		return e.button > 0 ? e.stopPropagation() : undefined
+	},
+	true
+)
 
 // prevent vid restart
-window.addEventListener('blur', e => e.stopPropagation(), true)
-window.addEventListener('visibilitychange', e => e.stopPropagation(), true)
+window.addEventListener(
+	'blur',
+	e => {
+		return e.stopPropagation()
+	},
+	true
+)
+window.addEventListener(
+	'visibilitychange',
+	e => {
+		return e.stopPropagation()
+	},
+	true
+)
 
 /**
  * Creates a new observer, starts observing and returns the observer.
@@ -32,6 +53,7 @@ window.addEventListener('visibilitychange', e => e.stopPropagation(), true)
  */
 function observe(elem, fn, options) {
 	const observer = new MutationObserver(fn)
+
 	if (elem) observer.observe(elem, options)
 
 	return {
@@ -48,6 +70,7 @@ function observe(elem, fn, options) {
  * Observe for node changes and add video controls if needed.
  */
 const root = document.getElementById('react-root')
+
 observe(
 	document.body,
 	mutations => {
@@ -57,6 +80,7 @@ observe(
 
 			for (const x in added) {
 				const el = added[x]
+
 				Promise.resolve()
 					.then(handleNode.bind(undefined, el, mutation))
 					.catch(window.logAndReturn)
@@ -85,6 +109,7 @@ const handleNodeFns = {
 
 function handleNode(node, mutation) {
 	const nodeName = node.nodeName
+
 	if (mutation.target.id === 'react-root' && nodeName === 'SECTION') onChange()
 	handleNodeFns[nodeName] !== undefined && handleNodeFns[nodeName](node)
 }
@@ -154,6 +179,7 @@ function addExtendedButton() {
 	if ($('.extended--btn') !== null) return
 
 	let $anchor = document.querySelectorAll('nav div > a:only-child')
+
 	if ($anchor.length === 0) return
 
 	$anchor = $anchor[$anchor.length - 1].parentNode
@@ -164,6 +190,7 @@ function addExtendedButton() {
 	a.classList.add('extended--btn')
 
 	let clickedExtendedBtn = true
+
 	if (window.localStorage.clickedExtendedBtn === undefined) {
 		a.classList.add('extended--btn__new')
 		clickedExtendedBtn = false
@@ -223,16 +250,18 @@ function addNamesToStories() {
 	)
 
 	const regex = /\./g
+
 	for (let i = 0; i < list.length; ++i) {
 		const elem = list[i]
+
 		elem.parentElement.parentElement.parentElement.parentElement.id = `igs_${elem.firstChild.data.replace(regex, 'dot')}` // faster than .textContent
 	}
 }
 
-let paddingLeft = 0,
+let paddingBottom = 0,
+	paddingLeft = 0,
 	paddingRight = 0,
-	paddingTop = 0,
-	paddingBottom = 0
+	paddingTop = 0
 
 /**
  * Switches bottom/top padding to right/left padding in order to fix horizontal endless scrolling in virtual lists.
@@ -280,14 +309,19 @@ const vlObserver = observe(
 		if (mutations.length === 0) return
 
 		const target = mutations[0].target
+
 		console.log(target.style.paddingTop, target.style.paddingBottom)
 
 		switchPaddingThrottled(target)
 	},
 	{ attributes: true, attributeFilter: ['style'] }
 )
+
 function fixVirtualList() {
-	const $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div') // virtual stories list
+	let $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div') // virtual stories list
+
+	if ($el === null) $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div')
+
 	if ($el !== null) {
 		switchPadding($el)
 		vlObserver.observe($el)
@@ -372,11 +406,13 @@ function toggleWatchlist(user) {
 	if (!OPTIONS.watchPosts) OPTIONS.watchPosts = [user]
 	else {
 		const i = OPTIONS.watchPosts.indexOf(user)
+
 		i === -1 ? OPTIONS.watchPosts.push(user) : OPTIONS.watchPosts.splice(i, 1)
 	}
 	if (!OPTIONS.watchStories) OPTIONS.watchStories = [user]
 	else {
 		const i = OPTIONS.watchStories.indexOf(user)
+
 		i === -1 ? OPTIONS.watchStories.push(user) : OPTIONS.watchStories.splice(i, 1)
 	}
 
@@ -390,11 +426,13 @@ function addWatched() {
 	const user = location.pathname.split('/')[1]
 
 	let $node = $(`h1[title="${user}"]`)
+
 	if ($node === null) return
 	$node = $node.parentElement.parentElement
 
-	let text = '',
-		cls = false
+	let cls = false,
+		text = ''
+
 	if (OPTIONS.watchPosts && OPTIONS.watchPosts.indexOf(user) !== -1) {
 		text += 'Posts '
 		cls = true
@@ -413,9 +451,11 @@ function addWatched() {
 		'click',
 		e => {
 			const target = e.target
+
 			if (target.nodeName !== 'SECTION') return
 
 			const list = target.classList
+
 			list.toggle('ige_watch')
 			list.toggle('ige_watched')
 
@@ -452,6 +492,7 @@ const OPTS_MODE = {
 	},
 	night(arg) {
 		const hour = new Date().getHours()
+
 		if (
 			(hour >= OPTIONS.nightModeStart && hour > OPTIONS.nightModeEnd) ||
 			(hour < OPTIONS.nightModeStart && hour < OPTIONS.nightModeEnd) ||
@@ -465,6 +506,7 @@ const OPTS_MODE = {
 	notify(arg) {
 		const now = Date.now(),
 			last = window.sessionStorage.ige_lastFetch !== undefined ? +window.sessionStorage.ige_lastFetch : 0
+
 		if (now - last > 60000) {
 			window.sessionStorage.ige_lastFetch = now
 			chrome.runtime.sendMessage(null, { action: 'watchNow' })
@@ -503,12 +545,15 @@ function handleOptions(options) {
 
 	for (const optName in options) {
 		const oFn = OPTS[optName]
+
 		if (oFn === undefined) continue
 
 		const optValue = options[optName]
+
 		if (typeof optValue === 'boolean') optValue && oFn(`ige_${optName}`)
 		else oFn(optValue)
 	}
+
 	return options
 }
 
@@ -542,8 +587,8 @@ function onChange() {
 function onNavigate() {
 	disconnectObservers()
 	decideClass()
-	window.requestIdleCallback(() =>
-		window.requestAnimationFrame(() => {
+	window.requestIdleCallback(() => {
+		return window.requestAnimationFrame(() => {
 			window.requestAnimationFrame(() => {
 				addClass()
 				if (currentClass === 'home') fixVirtualList()
@@ -551,7 +596,7 @@ function onNavigate() {
 				addExtendedButton()
 			})
 		})
-	) // double-rAF
+	}) // double-rAF
 }
 
 /**
@@ -559,19 +604,20 @@ function onNavigate() {
  */
 function onReady() {
 	const $elem = $('div > article')
+
 	if ($elem !== null) docEl.style.setProperty('--boxHeight', `${$elem.offsetHeight}px`) // give boxes equal height
 
 	loadOptions()
 	onNavigate()
-	window.requestIdleCallback(() =>
-		window.requestAnimationFrame(() => {
+	window.requestIdleCallback(() => {
+		return window.requestAnimationFrame(() => {
 			window.requestAnimationFrame(() => {
 				document.body.querySelectorAll('video').forEach(addControls)
 				document.body.querySelectorAll('img').forEach(fullPhoto)
 				if (currentClass === 'home') fixVirtualList()
 			})
 		})
-	) // double-rAF
+	}) // double-rAF
 
 	addExtendedButton()
 	addListener()

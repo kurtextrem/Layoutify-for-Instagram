@@ -417,7 +417,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 	margin: 0 5px;
 }
 
-/** Story items container */
+/** Story items container, old DOM */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div {
 	width: 100%;
 	height: 80px !important; /** @TODO: Enlargen story items */
@@ -426,7 +426,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 	overflow-y: hidden !important;
 }
 
-/** Stories virtual list */
+/** @deprecated Stories virtual list, old DOM */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div {
 	height: 68px !important;
 	contain: strict;
@@ -434,7 +434,17 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 	overflow-y: hidden !important;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div {
+/** Stories items container */
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div {
+	height: 55px !important;
+	contain: strict;
+	overflow-x: scroll !important;
+	overflow-y: hidden !important;
+}
+
+/* Virtual List */
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div, /* old DOM */
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div {
 	flex-direction: row !important;
 }
 
@@ -478,8 +488,9 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 	max-width: none;
 }
 
-/** Nav */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:last-child {
+/** Footer */
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:last-child, /* old DOM */
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-child {
 	display: block;
 	position: absolute;
 	bottom: 0;
@@ -491,6 +502,20 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:la
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:last-child > nav {
 	display: inline-block;
 	margin-bottom: 0;
+}
+
+/** Stories container */
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div {
+	width: 100%;
+	margin-top: 0;
+	border-right: 0;
+	border-left: 0;
+	border-radius: 0;
+}
+
+/** Suggestions */
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div + div:not(:last-child) {
+	display: none; /** @TODO */
 }
 
 /*=============================================
