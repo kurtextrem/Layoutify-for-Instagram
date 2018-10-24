@@ -1,21 +1,17 @@
-
 /*=============================================
 								Night Mode CSS
 =============================================*/
 
 :root {
-	--blue: #78909C;
-
+	--blue: #78909c;
 	--primary: #212121;
 	--text: #bdbdbd;
 	--light: #484848;
-	--dark: #000000;
-
+	--dark: #000;
 	--secondary: #757575;
 	--secondary-light: #a4a4a4;
 	--secondary-text: #e0e0e0;
 }
-
 
 /*=============================================
 									Feed
@@ -29,7 +25,10 @@ section > nav > div > div,
 section > main,
 /* Footer */
 section > footer,
-div[role='dialog'] {
+div[role='dialog'],
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div /* Stories */,
+nav input,
+nav input + div {
 	background-color: var(--dark) !important;
 	color: var(--text) !important;
 }
@@ -39,18 +38,17 @@ li span {
 }
 
 /** Hue Rotation 100% - Important: This has a drastic performance impact. Don't over-use! */
-nav input,
 [class^='coreSprite'],
 [class^='glyphsSprite'],
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div::after /** Stories after "shadow" **/ {
 	filter: invert(100%) hue-rotate(180deg); /* 60%, no hue rotation before */
-  	mix-blend-mode: screen;
+	mix-blend-mode: screen;
 }
 
 /** Hue Rotation 60%, easier on the eyes - Important: This has a drastic performance impact. Don't over-use! */
 a[href='/'] /* logo */ {
 	filter: invert(60%) hue-rotate(180deg); /* 60%, no hue rotation before */
-  	mix-blend-mode: screen;
+	mix-blend-mode: screen;
 }
 
 a,
@@ -66,8 +64,7 @@ div > section + section > a /* likes/views */ {
 /* Header of post */
 #react-root > section > main > section > div > div > div > article,
 /* Description/comments/comment input */
-#react-root:not(.profile) header + div + div,
-nav input {
+#react-root:not(.profile) header + div + div {
 	background: var(--primary);
 }
 
@@ -85,10 +82,10 @@ nav input {
 #react-root > section > main > section > div > div > div > article,
 #react-root > section > main > section > div > div > div > article > header,
 /* above like button and comment input */
-#react-root > section > main > section > div > div > div > article > div > section {
+#react-root > section > main > section > div > div > div > article > div > section,
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div /* Stories */ {
 	border: none;
 }
-
 
 /*=============================================
 									Profile
@@ -111,8 +108,8 @@ nav input {
 
 /* 3 dots next to follow button */
 body > div > div > div > div > ul > li > button {
-	background: var(--dark)!important;
-	color: var(--secondary)!important;
+	background: var(--dark) !important;
+	color: var(--secondary) !important;
 }
 
 /* Followed by */
@@ -122,14 +119,14 @@ body > div > div > div > div > ul > li > button {
 
 /* Suggested */
 #react-root > section > main > article > div {
+	border: none;
 	background-color: var(--primary);
-	border: none;
-}
-#react-root > section > main > article > div > div > div > div > div > ul > li > div > div {
-	background: var(--light);
-	border: none;
 }
 
+#react-root > section > main > article > div > div > div > div > div > ul > li > div > div {
+	border: none;
+	background: var(--light);
+}
 
 /*=============================================
 									Viewer (popup)
@@ -159,20 +156,19 @@ body > div > div > div > div > article > div > div > ul > li > a,
 body > div > div > div > div > article > div> div > ul > li > span,
 /* Comments: input */
 body > div > div > div > div > article > div > section > form > textarea {
-	color: var(--secondary)!important;
+	color: var(--secondary) !important;
 }
 
 /* Comments: tagged users */
 body > div > div > div > div > article > div > div > ul > li > span > a {
-	color: var(--blue)!important;
+	color: var(--blue) !important;
 }
 
 /* No borders below header and comments */
 body > div > div > div > div > article > header,
 body > div > div > div > div > article > div > section {
-	border: none!important;
+	border: none !important;
 }
-
 
 /*=============================================
 									Viewer (separate page)
@@ -201,12 +197,12 @@ body > div > div > div > div > article > div > section {
 #react-root > section > main > div > div > article > div > div > ul > li > span > span,
 /* Comments: input */
 #react-root > section > main > div > div > article > div > section > form > textarea {
-	color: var(--secondary)!important;
+	color: var(--secondary) !important;
 }
 
 /* Comments: tagged users */
 #react-root > section > main > div > div > article > div > div > ul > li > span > a {
-	color: var(--blue)!important;
+	color: var(--blue) !important;
 }
 
 /* No borders around post, below header and comments */
@@ -214,4 +210,9 @@ body > div > div > div > div > article > div > section {
 #react-root > section > main > div > div > article > header,
 #react-root > section > main > div > div > article > div > section {
 	border: none;
+}
+
+nav input,
+nav input + div {
+	border: 1px solid var(--dark) !important;
 }
