@@ -318,9 +318,9 @@ const vlObserver = observe(
 )
 
 function fixVirtualList() {
-	let $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div') // virtual stories list
+	let $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div > div') // virtual stories list
 
-	if ($el === null) $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div')
+	if ($el === null) $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div')
 
 	if ($el !== null) {
 		switchPadding($el)

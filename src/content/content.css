@@ -391,6 +391,8 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
 	flex: 1 100%;
 }
 */
+
+/* @deprecated, old DOM */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr {
 	display: none;
 }
@@ -444,7 +446,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div >
 
 /* Virtual List */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div, /* old DOM */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div > div {
 	flex-direction: row !important;
 }
 
