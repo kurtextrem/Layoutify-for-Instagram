@@ -11,13 +11,13 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
-const TerserPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
 // const ReplacePlugin = require('webpack-plugin-replace')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+//const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const replaceBuffer = require('replace-buffer')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
@@ -26,7 +26,7 @@ const glob = require('fast-glob')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
 
 //const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
-//const ShakePlugin = require('webpack-common-shake').Plugin
+const ShakePlugin = require('webpack-common-shake').Plugin
 const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // pureFuncsWithUsualException
 
 // const WebpackMonitor = require('webpack-monitor')
@@ -67,7 +67,9 @@ const html = {
 		  }
 		: false,
 	// hash: true,
-	ssr: params => (isProd ? prerender('dist', params) : ''), // @TODO: Replace with https://github.com/GoogleChromeLabs/prerender-loader
+	ssr: params => {
+		return isProd ? prerender('dist', params) : ''
+	}, // @TODO: Replace with https://github.com/GoogleChromeLabs/prerender-loader
 }
 
 const plugins = [
@@ -86,6 +88,7 @@ const plugins = [
 			from: '*.json',
 			transform: (content, path) => {
 				if (path.indexOf('manifest.json') === -1 || !isProd) return content
+
 				return replaceBuffer(
 					content,
 					"script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
@@ -165,8 +168,8 @@ if (isProd) {
 			}),
 			whitelistPatterns: [/col-/, /btn-warning/, /btn-secondary/],
 		}),
-		//new ShakePlugin(), // @todo: Broken 3dot page 08/14/2018
-		//new WebpackDeepScopeAnalysisPlugin(), // @todo: 09/02/2018 - doesn't reduce bundle size
+		new ShakePlugin(),
+		//new WebpackDeepScopeAnalysisPlugin(), // @todo: 25/10/2018 - doesn't reduce bundle size
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
@@ -210,11 +213,11 @@ if (isProd) {
 	)
 }
 
-plugins.push(
+/*plugins.push(
 	new HardSourceWebpackPlugin({
 		cacheDirectory: '../node_modules/.cache/hard-source/[confighash]',
 	})
-)
+) // @todo: Broken 25/10/2018, breaks repeated builds */
 
 const first = {
 	mode: isProd ? 'production' : 'development',
@@ -238,43 +241,34 @@ const first = {
 				minimizer: [
 					new TerserPlugin({
 						cache: true,
-						cacheKeys(defaultCacheKeys) {
-							return { ...defaultCacheKeys, ...{ terser: require('terser/package.json').version } }
+						sourceMap: !isProd,
+						terserOptions: {
+							ecma: 8,
+							compress: {
+								arguments: true, // test
+
+								pure_funcs: pureFuncs,
+								hoist_funs: true,
+								keep_infinity: true,
+
+								unsafe: true, // test
+								unsafe_arrows: true, // @fixme: Breaks report.html
+								unsafe_methods: true,
+								unsafe_Function: true,
+								unsafe_proto: true,
+								unsafe_regexp: true,
+								unsafe_undefined: true,
+
+								negate_iife: false,
+							},
+							output: {
+								comments: false,
+								semicolons: false, // size before gzip could be smaller; size after gzip insignificantly larger
+								wrap_iife: true,
+							},
+							toplevel: true,
 						},
-						minify(file, sourceMap) {
-							const terserOptions = {
-								ecma: 8,
-								compress: {
-									pure_funcs: pureFuncs,
-									hoist_funs: true,
-									keep_infinity: true,
-
-									unsafe_arrows: true, // @fixme: Breaks report.html
-									unsafe_methods: true,
-									unsafe_Function: true,
-									unsafe_proto: true,
-
-									negate_iife: false,
-
-									inline: true,
-								},
-								output: {
-									comments: false,
-									semicolons: false, // size before gzip could be smaller; size after gzip insignificantly larger
-									wrap_iife: true,
-								},
-								toplevel: true,
-							}
-
-							if (sourceMap) {
-								terserOptions.sourceMap = {
-									content: sourceMap,
-								}
-							}
-
-							return require('terser').minify(file, terserOptions)
-						},
-						parallel: false, // @todo: Broken 08/14/2018
+						parallel: true,
 					}),
 				],
 				splitChunks: {
@@ -283,7 +277,9 @@ const first = {
 							name: 'main',
 							chunks: 'all',
 							enforce: true,
-							test: module => module.nameForCondition && /\.cs{2}$/.test(module.nameForCondition()) && module.type.startsWith('javascript'),
+							test: module => {
+								return module.nameForCondition && /\.cs{2}$/.test(module.nameForCondition()) && module.type.startsWith('javascript')
+							},
 						},
 					},
 				},
