@@ -49,9 +49,10 @@ export default class PostsContainer extends Component {
 		timeout: 0,
 	}
 
+	@bind
 	setTimeout(timeout) {
 		this.setState((prevState, props) => ({ timeout }))
-		window.setTimeout(() => this.setTimeout(1000), 1000)
+		if (timeout !== 1000) window.setTimeout(() => this.setTimeout(1000), 1000)
 	}
 
 	@bind
@@ -67,6 +68,7 @@ export default class PostsContainer extends Component {
 	@bind
 	populateData() {
 		console.log('populating data')
+
 		return Storage.get(this.props.id, null)
 			.then(this.handleData)
 			.catch(logAndReturn)
@@ -75,7 +77,13 @@ export default class PostsContainer extends Component {
 	@bind
 	handleData(data) {
 		++this.initial
-		if (data !== null) this.setState((prevState, props) => ({ items: data.items, nextMaxId: data.nextMaxId, timeout: 400 }))
+		if (data !== null)
+			this.setState((prevState, props) => ({
+				items: data.items,
+				//nextMaxId: data.nextMaxId,
+				timeout: prevState.timeout > 400 ? prevState.timeout : 400,
+			}))
+
 		return data
 	}
 
@@ -153,6 +161,7 @@ export default class PostsContainer extends Component {
 
 		if (timeout === 200) return PostsContainer.loading
 		if (timeout === 1000) return PostsContainer.error
+
 		return PostsContainer.dummy // first paint & items === null
 	}
 }

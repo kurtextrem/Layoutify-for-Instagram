@@ -150,24 +150,14 @@ if (isProd) {
 		/*new PrepackWebpackPlugin({
 			prepack: { delayUnsupportedRequires: true, abstractEffectsInAdditionalFunctions: true, reactEnabled: true },
 		}), // 04.05.18: Not compatible with Webpack 4; 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
-		/*new PurifyCSSPlugin({
-			paths: glob
-				.sync(path.join(__dirname, 'src/components/*.js'))
-				.concat(glob.sync(path.join(__dirname, 'dist/*.html')))
-				.concat(glob.sync(path.join(__dirname, 'node_modules/reactstrap/dist/*.js'))),
-			verbose: true,
-			minimize: true,
-			purifyOptions: {
-				whitelist: ['*card*', '*dots*'],
-			},
-		}),*/
-		new PurgecssPlugin({
-			paths: glob.sync([`${path.join(__dirname, 'src')}/**/*`, `${path.join(__dirname, 'dist')}/**/*`], {
-				onlyFiles: true,
-				ignore: ['content/*'],
-			}),
-			whitelistPatterns: [/col-/, /btn-warning/, /btn-secondary/],
-		}),
+		*/
+		//new PurgecssPlugin({
+		//	paths: glob.sync([`${path.join(__dirname, 'src')}/**/*`, `${path.join(__dirname, 'dist')}/**/*`], {
+		//		onlyFiles: true,
+		//		ignore: ['content/*'],
+		//	}),
+		//	whitelistPatterns: [/col-/, /btn-warning/, /btn-secondary/],
+		//}),  // @todo: Breaks the img[src=''] code 27/10/2018
 		new ShakePlugin(),
 		//new WebpackDeepScopeAnalysisPlugin(), // @todo: 25/10/2018 - doesn't reduce bundle size
 		new BundleAnalyzerPlugin({
@@ -245,12 +235,11 @@ const first = {
 						terserOptions: {
 							ecma: 8,
 							compress: {
-								arguments: true, // test
-
 								pure_funcs: pureFuncs,
 								hoist_funs: true,
 								keep_infinity: true,
 
+								arguments: true, // test
 								unsafe: true, // test
 								unsafe_arrows: true, // @fixme: Breaks report.html
 								unsafe_methods: true,
@@ -258,7 +247,6 @@ const first = {
 								unsafe_proto: true,
 								unsafe_regexp: true,
 								unsafe_undefined: true,
-
 								negate_iife: false,
 							},
 							output: {
@@ -312,18 +300,7 @@ const first = {
 			},
 			{
 				test: /\.cs{2}$/, // .css
-				use: isProd
-					? [
-							MiniCssExtractPlugin.loader,
-							{
-								loader: 'css-loader',
-								options: {
-									importLoaders: 1,
-								},
-							},
-							'postcss-loader',
-					  ]
-					: ['style-loader', 'css-loader'],
+				use: isProd ? [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] : ['style-loader', 'css-loader'],
 			},
 		],
 		noParse: isProd
