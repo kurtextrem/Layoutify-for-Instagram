@@ -17,7 +17,7 @@ const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
 // const ReplacePlugin = require('webpack-plugin-replace')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-//const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const replaceBuffer = require('replace-buffer')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
@@ -151,13 +151,13 @@ if (isProd) {
 			prepack: { delayUnsupportedRequires: true, abstractEffectsInAdditionalFunctions: true, reactEnabled: true },
 		}), // 04.05.18: Not compatible with Webpack 4; 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
 		*/
-		//new PurgecssPlugin({
-		//	paths: glob.sync([`${path.join(__dirname, 'src')}/**/*`, `${path.join(__dirname, 'dist')}/**/*`], {
-		//		onlyFiles: true,
-		//		ignore: ['content/*'],
-		//	}),
-		//	whitelistPatterns: [/col-/, /btn-warning/, /btn-secondary/],
-		//}),  // @todo: Breaks the img[src=''] code 27/10/2018
+		new PurgecssPlugin({
+			paths: glob.sync([`${path.join(__dirname, 'src')}/**/*`, `${path.join(__dirname, 'dist')}/**/*`], {
+				onlyFiles: true,
+				ignore: ['content/*'],
+			}),
+			whitelistPatterns: [/col-/, /btn-warning/, /btn-secondary/],
+		}),
 		new ShakePlugin(),
 		//new WebpackDeepScopeAnalysisPlugin(), // @todo: 25/10/2018 - doesn't reduce bundle size
 		new BundleAnalyzerPlugin({
@@ -207,7 +207,7 @@ if (isProd) {
 	new HardSourceWebpackPlugin({
 		cacheDirectory: '../node_modules/.cache/hard-source/[confighash]',
 	})
-) // @todo: Broken 25/10/2018, breaks repeated builds */
+)*/
 
 const first = {
 	mode: isProd ? 'production' : 'development',
