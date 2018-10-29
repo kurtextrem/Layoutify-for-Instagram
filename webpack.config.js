@@ -23,6 +23,7 @@ const replaceBuffer = require('replace-buffer')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 // const Critters = require('critters-webpack-plugin')
 const glob = require('fast-glob')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
 
 //const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
@@ -151,6 +152,11 @@ if (isProd) {
 			prepack: { delayUnsupportedRequires: true, abstractEffectsInAdditionalFunctions: true, reactEnabled: true },
 		}), // 04.05.18: Not compatible with Webpack 4; 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
 		*/
+		new OptimizeCssAssetsPlugin({
+			cssProcessorPluginOptions: {
+				preset: 'advanced',
+			},
+		}),
 		new PurgecssPlugin({
 			paths: glob.sync([`${path.join(__dirname, 'src')}/**/*`, `${path.join(__dirname, 'dist')}/**/*`], {
 				onlyFiles: true,
@@ -300,7 +306,7 @@ const first = {
 			},
 			{
 				test: /\.cs{2}$/, // .css
-				use: isProd ? [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'] : ['style-loader', 'css-loader'],
+				use: isProd ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', 'css-loader'],
 			},
 		],
 		noParse: isProd
