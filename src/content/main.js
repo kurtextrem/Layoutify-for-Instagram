@@ -142,7 +142,9 @@ function decideClass() {
 	const pathname = location.pathname
 
 	if (
-		(hasNavigated && (location.search.indexOf('tagged') !== -1 || location.search.indexOf('taken-by=') !== -1)) ||
+		(hasNavigated &&
+			(location.search.indexOf('tagged') !== -1 ||
+				location.search.indexOf('taken-by=') !== -1)) ||
 		$('body > div > div[role="dialog"]') !== null
 	)
 		return (currentClass = '')
@@ -224,7 +226,10 @@ const listenerActions = {
 	},
 
 	_action(request) {
-		return Instagram[request.which][request.action] !== undefined && Instagram[request.which][request.action](request.id)
+		return (
+			Instagram[request.which][request.action] !== undefined &&
+			Instagram[request.which][request.action](request.id)
+		)
 	},
 
 	add(request) {
@@ -238,7 +243,10 @@ const listenerActions = {
 
 function addListener() {
 	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-		if (listenerActions[request.action] !== undefined && Instagram[request.which] !== undefined) {
+		if (
+			listenerActions[request.action] !== undefined &&
+			Instagram[request.which] !== undefined
+		) {
 			listenerActions[request.action](request)
 		}
 	})
@@ -254,7 +262,10 @@ function addNamesToStories() {
 	for (let i = 0; i < list.length; ++i) {
 		const elem = list[i]
 
-		elem.parentElement.parentElement.parentElement.parentElement.id = `igs_${elem.firstChild.data.replace(regex, 'dot')}` // faster than .textContent
+		elem.parentElement.parentElement.parentElement.parentElement.id = `igs_${elem.firstChild.data.replace(
+			regex,
+			'dot'
+		)}` // faster than .textContent
 	}
 }
 
@@ -269,6 +280,7 @@ let paddingBottom = 0,
  * @param {HTMLDivElement} target elem
  */
 function switchPadding(target) {
+	if (target === undefined) console.warn(target, 'is undefined')
 	const bottom = +target.style.paddingBottom.replace('px', '')
 	const top = +target.style.paddingTop.replace('px', '')
 
@@ -318,9 +330,14 @@ const vlObserver = observe(
 )
 
 function fixVirtualList() {
-	let $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div > div') // virtual stories list
+	let $el = $(
+		'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div > div'
+	) // virtual stories list
 
-	if ($el === null) $el = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div')
+	if ($el === null)
+		$el = $(
+			'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div'
+		)
 
 	if ($el !== null) {
 		switchPadding($el)
@@ -332,15 +349,15 @@ function throttle(fn, wait = 100) {
 	let time
 	let lastFunc
 
-	return function throttle(args) {
+	return function throttle() {
 		if (time === undefined) {
-			fn.apply(this, args)
+			fn.apply(this, arguments)
 			time = Date.now()
 		} else {
 			clearTimeout(lastFunc)
 			lastFunc = setTimeout(() => {
 				if (Date.now() - time >= wait) {
-					fn.apply(this, args)
+					fn.apply(this, arguments)
 					time = Date.now()
 				}
 			}, wait - (Date.now() - time))
@@ -413,7 +430,9 @@ function toggleWatchlist(user) {
 	else {
 		const i = OPTIONS.watchStories.indexOf(user)
 
-		i === -1 ? OPTIONS.watchStories.push(user) : OPTIONS.watchStories.splice(i, 1)
+		i === -1
+			? OPTIONS.watchStories.push(user)
+			: OPTIONS.watchStories.splice(i, 1)
 	}
 
 	window.IG_Storage_Sync.set('options', OPTIONS).catch(window.logAndReturn)
@@ -505,7 +524,10 @@ const OPTS_MODE = {
 	},
 	notify(arg) {
 		const now = Date.now(),
-			last = window.sessionStorage.ige_lastFetch !== undefined ? +window.sessionStorage.ige_lastFetch : 0
+			last =
+				window.sessionStorage.ige_lastFetch !== undefined
+					? +window.sessionStorage.ige_lastFetch
+					: 0
 
 		if (now - last > 60000) {
 			window.sessionStorage.ige_lastFetch = now
@@ -605,7 +627,8 @@ function onNavigate() {
 function onReady() {
 	const $elem = $('div > article')
 
-	if ($elem !== null) docEl.style.setProperty('--boxHeight', `${$elem.offsetHeight}px`) // give boxes equal height
+	if ($elem !== null)
+		docEl.style.setProperty('--boxHeight', `${$elem.offsetHeight}px`) // give boxes equal height
 
 	loadOptions()
 	onNavigate()
@@ -625,5 +648,6 @@ function onReady() {
 
 decideClass()
 addClass()
-if (document.readyState === 'interactive' || document.readyState === 'complete') onReady()
+if (document.readyState === 'interactive' || document.readyState === 'complete')
+	onReady()
 else document.addEventListener('DOMContentLoaded', onReady)

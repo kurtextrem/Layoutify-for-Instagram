@@ -63,7 +63,12 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div {
  * Previous DOM structure
  * @deprecated @TODO
  */
-main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
+main
+> section
+> div:not(#rcr-anchor)
+> div:not([class])
+> div:first-child
+> div {
 	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -159,12 +164,18 @@ body > div > div[role='dialog'] header + div + div,
 
 /** Views / likes */
 div > section + section {
+	/* @todo: Remove flex */
 	flex: 999 1 50%;
 	align-self: flex-start;
+
 	order: 1 !important;
 	max-width: 100%;
 	text-align: right;
 	grid-area: likes;
+}
+
+div > section + section > div > div {
+	justify-content: flex-end !important;
 }
 
 /** Posted date */
@@ -183,8 +194,18 @@ div > a > time {
 }
 
 /** Grow comments */
-body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child),
-#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
+body
+> div
+> div[role='dialog']
+header
++ div
++ div
+> div:first-of-type:not(:only-child),
+#react-root:not(.stories)
+header
++ div
++ div
+> div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	order: 2 !important;
 	margin: 0 !important;
@@ -268,8 +289,12 @@ video::-webkit-media-controls {
 }
 
 /** @TODO: Replace IG's play button with the native one once its been rolled out */
-body > div > div[role='dialog'] video:not([loop])::-webkit-media-controls-overlay-play-button,
-#react-root:not(.stories) video:not([loop])::-webkit-media-controls-overlay-play-button {
+body
+> div
+> div[role='dialog']
+video:not([loop])::-webkit-media-controls-overlay-play-button,
+#react-root:not(.stories)
+video:not([loop])::-webkit-media-controls-overlay-play-button {
 	display: none;
 }
 
@@ -304,12 +329,29 @@ div[role='button'] > div {
 }
 
 /** Multiple dots */
-.home article > div > div[role='button'] > div > div > div + div + div:not(:last-child) {
+.home
+article
+> div
+> div[role='button']
+> div
+> div
+> div
++ div
++ div:not(:last-child) {
 	margin-top: 0;
 	margin-bottom: 0;
 }
 
-.home article > div > div[role='button'] > div:not([role='dialog']) > div > div + div + div:not(:last-child) > div {
+.home
+article
+> div
+> div[role='button']
+> div:not([role='dialog'])
+> div
+> div
++ div
++ div:not(:last-child)
+> div {
 	margin-top: 10px;
 	margin-bottom: -6px;
 }
@@ -318,23 +360,49 @@ div[role='button'] > div {
 						Mark Videos in the Feed
 =============================================*/
 /** Outer div */
-.home div[role='button'] > div[role='dialog'] > div > div:first-child + div:nth-child(2) {
+.home
+div[role='button']
+> div[role='dialog']
+> div
+> div:first-child
++ div:nth-child(2) {
 	contain: content;
 	z-index: 3;
 }
 
 /** Small play button */
-.home div[role='button'] > div[role='dialog'] > div > div:first-child + div:nth-child(2) > div + div {
+.home
+div[role='button']
+> div[role='dialog']
+> div
+> div:first-child
++ div:nth-child(2)
+> div
++ div {
 	opacity: 1 !important;
 }
 
-.home div[role='button'] > div[role='dialog'] > div > div:first-child + div:nth-child(2) > div + div > span {
+.home
+div[role='button']
+> div[role='dialog']
+> div
+> div:first-child
++ div:nth-child(2)
+> div
++ div
+> span {
 	right: initial;
 	left: 0;
 }
 
 /** Hide "Click video for audio" */
-.home div[role='button'] > div[role='dialog'] > div > div:first-child + div:nth-child(2) > div:first-child {
+.home
+div[role='button']
+> div[role='dialog']
+> div
+> div:first-child
++ div:nth-child(2)
+> div:first-child {
 	display: none;
 }
 
@@ -398,7 +466,11 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr {
 }
 
 /** Owners Story */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child {
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> div:first-child {
 	/**! @TODO: Temporary */
 	display: none;
 
@@ -409,18 +481,35 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 }
 
 /* Stories / watch all */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div {
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> hr:first-of-type
++ div {
 	justify-content: start;
 	order: -1;
 	width: 100%;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div > :last-child {
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> hr:first-of-type
++ div
+> :last-child {
 	margin: 0 5px;
 }
 
 /** Story items container, old DOM */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div {
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> hr:first-of-type
++ div
++ div {
 	width: 100%;
 	height: 80px !important; /** @TODO: Enlargen story items */
 	margin-bottom: -5px;
@@ -429,7 +518,14 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 }
 
 /** @deprecated Stories virtual list, old DOM */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div {
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> hr:first-of-type
++ div
++ div
+> div {
 	height: 68px !important;
 	contain: strict;
 	overflow-x: scroll !important;
@@ -437,7 +533,25 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of
 }
 
 /** Stories items container */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div {
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> div
++ div
+> div
++ div
+> div,
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> div
++ div
+> div
++ div
+> div
+> div {
 	height: 55px !important;
 	contain: strict;
 	overflow-x: scroll !important;
@@ -501,13 +615,24 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-ch
 	text-align: center;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:last-child > nav {
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> hr
++ div:last-child
+> nav {
 	display: inline-block;
 	margin-bottom: 0;
 }
 
 /** Stories container */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div {
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> div:first-child
++ div {
 	width: 100%;
 	margin-top: 0;
 	border-right: 0;
@@ -516,7 +641,13 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 }
 
 /** Suggestions */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div + div:not(:last-child) {
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> div
++ div
++ div:not(:last-child) {
 	display: none; /** @TODO */
 }
 
@@ -524,7 +655,11 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div +
 										Spinner
 =============================================*/
 /** Profile spinner */
-.home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) {
+.home
+main
+> section
+> div:not(#rcr-anchor):first-child
+> div:last-child:not(:first-child) {
 	order: 3;
 	height: 60px;
 	margin: 10px 0;
@@ -532,7 +667,12 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div +
 	z-index: 2;
 }
 
-.home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) > div {
+.home
+main
+> section
+> div:not(#rcr-anchor):first-child
+> div:last-child:not(:first-child)
+> div {
 	top: 30%;
 }
 
@@ -682,11 +822,19 @@ footer > div > nav {
 	height: 40px !important;
 }
 
-.ige_picturesOnly:not(.profile):not(.explore) article > header > div:last-child > div:last-child {
+.ige_picturesOnly:not(.profile):not(.explore)
+article
+> header
+> div:last-child
+> div:last-child {
 	display: flex;
 }
 
-.ige_picturesOnly:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
+.ige_picturesOnly:not(.stories)
+header
++ div
++ div
+> div:first-of-type:not(:only-child) {
 	height: 0;
 }
 
@@ -696,7 +844,11 @@ footer > div > nav {
 }
 
 /*----------  Hide Stories  ----------*/
-.ige_hideStories main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
+.ige_hideStories
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child {
 	display: none;
 }
 
@@ -712,11 +864,20 @@ footer > div > nav {
 }
 
 /* @TODO: Make this work for 2 row layout too */
-.ige_noSpaceBetweenPosts main > section div > article:not(:first-child):not(:nth-child(5n)) {
+.ige_noSpaceBetweenPosts
+main
+> section
+div
+> article:not(:first-child):not(:nth-child(5n)) {
 	border-left: 0 !important;
 }
 
-.ige_noSpaceBetweenPosts main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+.ige_noSpaceBetweenPosts
+main
+> section
+> div:not(#rcr-anchor)
+> div:not([class])
+> div {
 	justify-content: center;
 }
 

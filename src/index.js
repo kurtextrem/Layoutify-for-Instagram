@@ -29,7 +29,6 @@ if (module.hot) {
 		firstInputDelay: true,
 		logging: true,
 		logPrefix: '⚡️',
-		timeToInteractive: true,
 	})
 
 	new PerformanceObserver((list, observer) => {
@@ -37,11 +36,14 @@ if (module.hot) {
 			// const time = Math.round(entry.startTime + entry.duration)
 			window.perf.log(entry.name, entry.duration)
 		}
-	}).observe({ entryTypes: ['event', 'measure', 'mark', 'navigation', 'longtask'] }) // resource, paint,
+	}).observe({
+		entryTypes: ['event', 'measure', 'mark', 'navigation', 'longtask', 'paint'],
+	}) // resource, paint,
 }
 
 const init = (fn, app, container) => fn(createElement(app), container)
-const ready = () => init(module.hot ? render : hydrate, App, document.body.children[2]) // @todo: https://css-tricks.com/render-caching-for-react/
+const ready = () =>
+	init(module.hot ? render : hydrate, App, document.body.children[2]) // @todo: https://css-tricks.com/render-caching-for-react/
 
 documentReady()
 	.then(ready)
