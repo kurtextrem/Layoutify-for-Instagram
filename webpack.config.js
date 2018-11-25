@@ -28,6 +28,7 @@ const PurgecssPlugin = require('purgecss-webpack-plugin')
 
 //const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
 const ShakePlugin = require('webpack-common-shake').Plugin
+const { DuplicatesPlugin } = require('inspectpack/plugin')
 const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // pureFuncsWithUsualException
 
 // const WebpackMonitor = require('webpack-monitor')
@@ -127,6 +128,12 @@ if (isProd) {
 			verbose: true,
 			showHelp: true,
 			strict: true,
+		}),
+		new DuplicatesPlugin({
+			// Emit compilation warning or error? (Default: `false`)
+			emitErrors: false,
+			// Display full duplicates information? (Default: `false`)
+			verbose: false,
 		}),
 		// new webpack.IgnorePlugin(/prop-types$/),
 		new MiniCssExtractPlugin('main.css'),
