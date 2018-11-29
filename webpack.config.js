@@ -6,7 +6,8 @@ const path = require('path')
 const webpack = require('webpack')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+	.BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -18,7 +19,7 @@ const prerender = require('./prerender')
 // const ReplacePlugin = require('webpack-plugin-replace')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
-const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
+//const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const replaceBuffer = require('replace-buffer')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 // const Critters = require('critters-webpack-plugin')
@@ -41,13 +42,17 @@ const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // 
 
 const ENV = process.env.NODE_ENV || 'development'
 const isProd = ENV === 'production'
-const STATS = process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
+const STATS =
+	process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
 
 const babelConfig = require('./babelConfig')(isProd, { modules: false })
 
 // by using min versions we speed up HMR
 function getMin(module) {
-	return path.resolve(__dirname, `node_modules/${module}/dist/${module.replace('js', '')}.min.js`)
+	return path.resolve(
+		__dirname,
+		`node_modules/${module}/dist/${module.replace('js', '')}.min.js`
+	)
 }
 const nerv = isProd ? 'nervjs' : getMin('nervjs') // around 20 KB smaller bundle in prod
 
@@ -123,12 +128,12 @@ if (isProd) {
 
 	plugins.push(
 		new webpack.HashedModuleIdsPlugin(),
-		new DuplicatePackageCheckerPlugin({
+		/*new DuplicatePackageCheckerPlugin({
 			emitError: true,
 			verbose: true,
 			showHelp: true,
 			strict: true,
-		}),
+		}),*/
 		new DuplicatesPlugin({
 			// Emit compilation warning or error? (Default: `false`)
 			emitErrors: false,
@@ -165,10 +170,16 @@ if (isProd) {
 			},
 		}),
 		new PurgecssPlugin({
-			paths: glob.sync([`${path.join(__dirname, 'src')}/**/*`, `${path.join(__dirname, 'dist')}/**/*`], {
-				onlyFiles: true,
-				ignore: ['content/*'],
-			}),
+			paths: glob.sync(
+				[
+					`${path.join(__dirname, 'src')}/**/*`,
+					`${path.join(__dirname, 'dist')}/**/*`,
+				],
+				{
+					onlyFiles: true,
+					ignore: ['content/*'],
+				}
+			),
 			whitelistPatterns: [/col-/, /btn-warning/, /btn-secondary/],
 		}),
 		new ShakePlugin(),
@@ -190,7 +201,11 @@ if (isProd) {
 				vendor: ['nervjs', 'nerv-devtool', 'decko'],
 			},
 		}),*/
-		new ZipPlugin({ filename: 'dist.zip', path: '../', exclude: 'ssr-bundle.js' })
+		new ZipPlugin({
+			filename: 'dist.zip',
+			path: '../',
+			exclude: 'ssr-bundle.js',
+		})
 	)
 } else {
 	plugins.push(
@@ -279,7 +294,11 @@ const first = {
 							chunks: 'all',
 							enforce: true,
 							test: module => {
-								return module.nameForCondition && /\.cs{2}$/.test(module.nameForCondition()) && module.type.startsWith('javascript')
+								return (
+									module.nameForCondition &&
+									/\.cs{2}$/.test(module.nameForCondition()) &&
+									module.type.startsWith('javascript')
+								)
 							},
 						},
 					},
@@ -313,7 +332,9 @@ const first = {
 			},
 			{
 				test: /\.cs{2}$/, // .css
-				use: isProd ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', 'css-loader'],
+				use: isProd
+					? [MiniCssExtractPlugin.loader, 'css-loader']
+					: ['style-loader', 'css-loader'],
 			},
 		],
 		noParse: isProd
@@ -334,7 +355,9 @@ const first = {
 		},
 	},
 
-	devtool: isProd ? false /*'source-map'*/ /* 'cheap-module-source-map'*/ : 'cheap-module-source-map', //'nosources-source-map', // + map Chrome Dev Tools workspace to your local folder
+	devtool: isProd
+		? false /* 'cheap-module-source-map'*/ /*'source-map'*/
+		: 'cheap-module-source-map', //'nosources-source-map', // + map Chrome Dev Tools workspace to your local folder
 
 	plugins,
 
@@ -367,7 +390,8 @@ if (!isProd)
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+			'Access-Control-Allow-Headers':
+				'X-Requested-With, content-type, Authorization',
 		},
 		hotOnly: true,
 	}

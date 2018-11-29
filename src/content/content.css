@@ -541,15 +541,6 @@ main
 + div
 > div
 + div
-> div,
-main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> div
-+ div
-> div
-+ div
 > div
 > div {
 	height: 55px !important;
