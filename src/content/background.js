@@ -13,11 +13,17 @@ function createTab(id, force) {
 	if (tabId !== undefined && !force) {
 		chrome.tabs.update(
 			tabId,
-			{ active: true, url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` },
+			{
+				active: true,
+				url: `${chrome.runtime.getURL('index.html')}?tabid=${id}`,
+			},
 			() => chrome.runtime.lastError && createTab(id, true) // only create new tab when there was an error
 		)
 	} else {
-		chrome.tabs.create({ url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` }, newTab => (tabId = newTab.id))
+		chrome.tabs.create(
+			{ url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` },
+			newTab => (tabId = newTab.id)
+		)
 	}
 }
 
@@ -45,6 +51,12 @@ function getSessionId() {
 
 getSessionId()
 
+const extraInfoSpec = ['blocking', 'requestHeaders']
+if (
+	chrome.webRequest.OnBeforeSendHeadersOptions.hasOwnProperty('EXTRA_HEADERS')
+)
+	extraInfoSpec.push('extraHeaders') // needed for Chrome 72+, https://groups.google.com/a/chromium.org/forum/#!topic/chromium-extensions/vYIaeezZwfQ
+
 // Hook into web request and modify headers before sending the request
 chrome.webRequest.onBeforeSendHeaders.addListener(
 	function listener(details) {
@@ -56,7 +68,8 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 			const header = headers[i]
 
 			if (header.name === 'User-Agent') {
-				header.value = 'Instagram 27.0.0.7.97 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US)'
+				header.value =
+					'Instagram 27.0.0.7.97 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US)'
 			} else if (header.name === 'Cookie') {
 				// add auth cookies to authenticate API requests
 				header.value = `${header.value}; sessionid=${sessionid}`
@@ -66,10 +79,13 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 		return { requestHeaders: headers }
 	},
 	{
-		urls: ['https://i.instagram.com/api/v1/feed/liked/*', 'https://i.instagram.com/api/v1/feed/saved/*'],
+		urls: [
+			'https://i.instagram.com/api/v1/feed/liked/*',
+			'https://i.instagram.com/api/v1/feed/saved/*',
+		],
 		types: ['xmlhttprequest'],
 	},
-	['blocking', 'requestHeaders']
+	extraInfoSpec
 )
 
 function checkStatus(response) {
@@ -81,7 +97,8 @@ function checkStatus(response) {
 	throw error
 }
 
-const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
+const get = (path, object) =>
+	path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
 
 function logAndReturn(e) {
 	console.warn(e)
@@ -109,7 +126,11 @@ function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-chrome.runtime.onMessage.addListener(function listener(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function listener(
+	request,
+	sender,
+	sendResponse
+) {
 	switch (request.action) {
 		case 'click':
 			createTab(sender.tab.id, false)
@@ -121,7 +142,10 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 
 		case 'watchInBackground':
 			chrome.alarms.clear('update', () => {
-				chrome.alarms.create('update', { delayInMinutes: 1, periodInMinutes: 5 })
+				chrome.alarms.create('update', {
+					delayInMinutes: 1,
+					periodInMinutes: 5,
+				})
 			})
 			break
 
@@ -165,27 +189,33 @@ chrome.runtime.onInstalled.addListener(details => {
 
 chrome.alarms.onAlarm.addListener(getWatchlist)
 
-chrome.notifications.onClicked.addListener(id => {
+function openIG(id) {
 	chrome.tabs.create({
-		url: `https://www.instagram.com/${id.replace('post_', '').replace('story_', '')}/`,
+		url: `https://www.instagram.com/${id
+			.replace('post_', '')
+			.replace('story_', '')
+			.replace('error_', '')}/`,
 	})
-})
+}
+chrome.notifications.onClicked.addListener(openIG)
 
 chrome.notifications.onButtonClicked.addListener((id, buttonIndex) => {
-	if (buttonIndex === -1)
-		return chrome.tabs.create({
-			url: `https://www.instagram.com/${id.replace('post_', '').replace('story_', '')}/`,
-		})
+	if (buttonIndex !== -1) return
+	openIG(id)
 })
 
 function getWatchlist(e) {
 	chrome.storage.sync.get({ options: null, watchData: null }, data => {
 		const options = data.options
-		if (chrome.runtime.lastError) return console.error(chrome.runtime.lastError.message)
-		if (options === null || data.watchData === null) return console.error('Empty options/watchData', options, data.watchData)
+		if (chrome.runtime.lastError)
+			return console.error(chrome.runtime.lastError.message)
+		if (options === null || data.watchData === null)
+			return console.error('Empty options/watchData', options, data.watchData)
 
-		if (options.watchPosts) checkForWatchedContent(options.watchPosts, 0, data.watchData)
-		if (options.watchStories) checkForWatchedContent(options.watchStories, 1, data.watchData)
+		if (options.watchPosts)
+			checkForWatchedContent(options.watchPosts, 0, data.watchData)
+		if (options.watchStories)
+			checkForWatchedContent(options.watchStories, 1, data.watchData)
 	})
 }
 
@@ -224,7 +254,10 @@ const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 //orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
 
 function handlePost(json, user, userObj, watchData, options) {
-	const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
+	const node = get(
+			['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'],
+			json
+		),
 		id = node !== null ? node.shortcode : null
 	if (id !== null && id != userObj.post) {
 		console.log(user, 'new post', json.graphql.user)
@@ -233,12 +266,16 @@ function handlePost(json, user, userObj, watchData, options) {
 		options.type = 'image'
 		options.title = chrome.i18n.getMessage('watch_newPost', user)
 
-		Promise.all([getBlobUrl(json.graphql.user.profile_pic_url_hd), getBlobUrl(node.thumbnail_src)])
+		Promise.all([
+			getBlobUrl(json.graphql.user.profile_pic_url_hd),
+			getBlobUrl(node.thumbnail_src),
+		])
 			.then(values => {
 				options.iconUrl = values[0]
 				options.imageUrl = values[1]
 				return chrome.notifications.create(`post_${user}`, options, nId => {
-					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+					if (chrome.runtime.lastError)
+						console.error(chrome.runtime.lastError.message)
 					URL.revokeObjectURL(values[0])
 					URL.revokeObjectURL(values[1])
 					// @todo: Maybe clear notification?
@@ -254,6 +291,8 @@ function handleStory(json, user, userObj, watchData, options) {
 
 	const reel = userJson.reel,
 		id = reel !== null ? reel.latest_reel_media : null
+
+	if (id !== null) console.log(id, reel.seen, reel.seen > id, reel.seen >= id) // @todo DEBUG, issue was seen > id and seen did not get updated => perma notification
 	if (id !== null && reel.seen !== id) {
 		// && id != userObj.story
 		console.log(user, 'new story')
@@ -266,7 +305,8 @@ function handleStory(json, user, userObj, watchData, options) {
 			.then(url => {
 				options.iconUrl = url
 				return chrome.notifications.create(`story_${user}`, options, nId => {
-					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+					if (chrome.runtime.lastError)
+						console.error(chrome.runtime.lastError.message)
 					URL.revokeObjectURL(url)
 					// @todo: Maybe clear notification?
 				})
@@ -309,8 +349,7 @@ function notify(user, userObj, type, watchData, len, i) {
 		})
 		.catch(e => {
 			console.warn(e)
-			if (e.status === 404)
-				notifyError(user, options)
+			if (e.status === 404) notifyError(user, options)
 			if (i === len) chrome.storage.sync.set({ watchData })
 			return e
 		})
@@ -329,8 +368,10 @@ function createUserObj(user, watchData) {
 		})
 		.catch(e => {
 			console.warn(e)
-			if (e.status === 404)
+			if (e.status === 404) {
+				const options = Object.assign({}, notificationOptions) // eslint-disable-line
 				notifyError(user, options)
+			}
 			return e
 		})
 }
@@ -339,7 +380,7 @@ function createUserObj(user, watchData) {
  * Fetches and compares data with saved data.
  *
  * @param {Array} users Instagram Username Array
- * @param {Integer} type 0 = Posts, 1 = Stories
+ * @param {number} type 0 = Posts, 1 = Stories
  * @param {watchData} watchData Saved data
  */
 function checkForWatchedContent(users, type, watchData) {
@@ -350,7 +391,8 @@ function checkForWatchedContent(users, type, watchData) {
 		const user = users[i],
 			userObj = watchData[user]
 
-		if (userObj === undefined || userObj.id === '') createUserObj(user, watchData)
+		if (userObj === undefined || userObj.id === '')
+			createUserObj(user, watchData)
 
 		timeout += getRandom(400, 800)
 		window.setTimeout(() => {
