@@ -267,6 +267,11 @@ article > div > section:last-child {
 	grid-area: comment;
 }
 
+/** Comments */
+ul > li > div > div > div {
+	user-select: auto;
+}
+
 /*=============================================
 								Media Controls
 =============================================*/
