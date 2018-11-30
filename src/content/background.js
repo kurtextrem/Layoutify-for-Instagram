@@ -289,16 +289,19 @@ function handlePost(json, user, userObj, watchData, options) {
 
 function handleStory(json, user, userObj, watchData, options) {
 	const userJson = get(['data', 'user'], json)
-	if (userJson === null) return notifyError(user, options)
+	if (userJson === null) {
+		notifyError(user, options)
+		return
+	}
 
 	const reel = userJson.reel,
 		id = reel !== null ? reel.latest_reel_media : null
 
-	if (id !== null) console.log(id, reel.seen, reel.seen > id, reel.seen >= id) // @todo DEBUG, issue was seen > id and seen did not get updated => perma notification
-	if (id !== null && reel.seen !== id) {
-		// && id != userObj.story // @todo: Maybe add this back to solve this issue ^^^ ?
+	if (reel.seen > id) console.warn('seen id > current id: story deleted?')
+	if (id !== null && id > reel.seen) {
+		// && id != userObj.story
 		console.log(user, 'new story')
-		//watchData[user].story = `${id}` // @todo: Maybe add this back to solve this issue ^^^ ?
+		//watchData[user].story = `${id}`
 
 		options.type = 'basic'
 		options.title = chrome.i18n.getMessage('watch_newStory', user)

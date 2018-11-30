@@ -19,7 +19,6 @@ const prerender = require('./prerender')
 // const ReplacePlugin = require('webpack-plugin-replace')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
-//const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const replaceBuffer = require('replace-buffer')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 // const Critters = require('critters-webpack-plugin')
@@ -29,9 +28,10 @@ const PurgecssPlugin = require('purgecss-webpack-plugin')
 
 //const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
 const ShakePlugin = require('webpack-common-shake').Plugin
-const { DuplicatesPlugin } = require('inspectpack/plugin')
 const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // pureFuncsWithUsualException
 
+// const { DuplicatesPlugin } = require('inspectpack/plugin')
+//const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 // const WebpackMonitor = require('webpack-monitor')
 // const AutoDllPlugin = require('autodll-webpack-plugin')
 // const PrepackWebpackPlugin = require('prepack-webpack-plugin').default
@@ -133,13 +133,13 @@ if (isProd) {
 			verbose: true,
 			showHelp: true,
 			strict: true,
-		}),*/
+		}),
 		new DuplicatesPlugin({
 			// Emit compilation warning or error? (Default: `false`)
 			emitErrors: false,
 			// Display full duplicates information? (Default: `false`)
 			verbose: false,
-		}),
+		}),*/
 		// new webpack.IgnorePlugin(/prop-types$/),
 		new MiniCssExtractPlugin('main.css'),
 		// new Critters(),
@@ -231,11 +231,11 @@ if (isProd) {
 	)
 }
 
-/*plugins.push(
+plugins.push(
 	new HardSourceWebpackPlugin({
 		cacheDirectory: '../node_modules/.cache/hard-source/[confighash]',
 	})
-)*/
+)
 
 const first = {
 	mode: isProd ? 'production' : 'development',
@@ -356,7 +356,7 @@ const first = {
 	},
 
 	devtool: isProd
-		? false /* 'cheap-module-source-map'*/ /*'source-map'*/
+		? false /*'source-map'*/ /* 'cheap-module-source-map'*/
 		: 'cheap-module-source-map', //'nosources-source-map', // + map Chrome Dev Tools workspace to your local folder
 
 	plugins,
