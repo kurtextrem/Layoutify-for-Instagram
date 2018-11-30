@@ -52,9 +52,7 @@ function getSessionId() {
 getSessionId()
 
 const extraInfoSpec = ['blocking', 'requestHeaders']
-if (
-	chrome.webRequest.OnBeforeSendHeadersOptions.hasOwnProperty('EXTRA_HEADERS')
-)
+if (chrome.webRequest.OnBeforeSendHeadersOptions.EXTRA_HEADERS !== undefined)
 	extraInfoSpec.push('extraHeaders') // needed for Chrome 72+, https://groups.google.com/a/chromium.org/forum/#!topic/chromium-extensions/vYIaeezZwfQ
 
 // Hook into web request and modify headers before sending the request
@@ -207,10 +205,14 @@ chrome.notifications.onButtonClicked.addListener((id, buttonIndex) => {
 function getWatchlist(e) {
 	chrome.storage.sync.get({ options: null, watchData: null }, data => {
 		const options = data.options
-		if (chrome.runtime.lastError)
-			return console.error(chrome.runtime.lastError.message)
-		if (options === null || data.watchData === null)
-			return console.error('Empty options/watchData', options, data.watchData)
+		if (chrome.runtime.lastError) {
+			console.error(chrome.runtime.lastError.message)
+			return
+		}
+		if (options === null || data.watchData === null) {
+			console.error('Empty options/watchData', options, data.watchData)
+			return
+		}
 
 		if (options.watchPosts)
 			checkForWatchedContent(options.watchPosts, 0, data.watchData)
@@ -294,9 +296,9 @@ function handleStory(json, user, userObj, watchData, options) {
 
 	if (id !== null) console.log(id, reel.seen, reel.seen > id, reel.seen >= id) // @todo DEBUG, issue was seen > id and seen did not get updated => perma notification
 	if (id !== null && reel.seen !== id) {
-		// && id != userObj.story
+		// && id != userObj.story // @todo: Maybe add this back to solve this issue ^^^ ?
 		console.log(user, 'new story')
-		//watchData[user].story = `${id}`
+		//watchData[user].story = `${id}` // @todo: Maybe add this back to solve this issue ^^^ ?
 
 		options.type = 'basic'
 		options.title = chrome.i18n.getMessage('watch_newStory', user)
