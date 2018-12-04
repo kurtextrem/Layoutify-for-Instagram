@@ -16,16 +16,19 @@ const TerserPlugin = require('terser-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin')
 const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
-// const ReplacePlugin = require('webpack-plugin-replace')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
-const replaceBuffer = require('replace-buffer')
+
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+const { WebpackPluginServe: Serve } = require('webpack-plugin-serve')
+
 // const Critters = require('critters-webpack-plugin')
 const glob = require('fast-glob')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
 
+// const ReplacePlugin = require('webpack-plugin-replace')
+const replaceBuffer = require('replace-buffer')
 //const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
 const ShakePlugin = require('webpack-common-shake').Plugin
 const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // pureFuncsWithUsualException
@@ -208,6 +211,25 @@ if (isProd) {
 		})
 	)
 } else {
+	const options = {
+		middleware: (app, builtins) =>
+			app.use(async (ctx, next) => {
+				await next()
+				ctx.set('Access-Control-Allow-Origin', '*')
+				ctx.set(
+					'Access-Control-Allow-Methods',
+					'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+				)
+				ctx.set(
+					'Access-Control-Allow-Headers',
+					'X-Requested-With, content-type, Authorization'
+				)
+			}),
+		static: path.join(__dirname, 'dist'),
+		host: 'localhost',
+		port: 8080,
+	}
+
 	plugins.push(
 		new HtmlWebpackHarddiskPlugin({
 			outputPath: path.resolve(__dirname, 'dist'),
@@ -215,8 +237,7 @@ if (isProd) {
 		new FriendlyErrorsPlugin(),
 		new CaseSensitivePathsPlugin(),
 		new webpack.NamedModulesPlugin(),
-		new webpack.HotModuleReplacementPlugin(),
-		new ErrorOverlayPlugin(),
+		new Serve(options),
 		/*new AutoDllPlugin({ // disabled as per https://github.com/mzgoddard/hard-source-webpack-plugin/issues/251
 			inject: true, // will inject the DLL bundles to index.html
 			filename: '[name]_[hash].js',
@@ -242,7 +263,11 @@ const first = {
 
 	context: path.join(__dirname, 'src'),
 
-	entry: ['./index.js'],
+	entry: isProd
+		? ['./index.js']
+		: ['./index.js', 'webpack-plugin-serve/client'],
+
+	watch: !isProd,
 
 	output: {
 		path: path.join(__dirname, 'dist'),
@@ -341,7 +366,7 @@ const first = {
 			? undefined
 			: [
 					// faster HMR
-					new RegExp(nerv),
+					//new RegExp(nerv),
 					new RegExp('proptypes/disabled'),
 			  ],
 	},
@@ -356,7 +381,7 @@ const first = {
 	},
 
 	devtool: isProd
-		? false /*'source-map'*/ /* 'cheap-module-source-map'*/
+		? false /* 'cheap-module-source-map'*/ /*'source-map'*/
 		: 'cheap-module-source-map', //'nosources-source-map', // + map Chrome Dev Tools workspace to your local folder
 
 	plugins,
@@ -376,25 +401,6 @@ const first = {
 
 	devServer: undefined,
 }
-
-if (!isProd)
-	first.devServer = {
-		contentBase: path.join(__dirname, 'dist/'),
-		publicPath: 'http://localhost:8080/',
-		compress: false,
-		overlay: {
-			warnings: true,
-			errors: true,
-		},
-		watchContentBase: false,
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-			'Access-Control-Allow-Headers':
-				'X-Requested-With, content-type, Authorization',
-		},
-		hotOnly: true,
-	}
 
 const second = {
 	mode: first.mode,
