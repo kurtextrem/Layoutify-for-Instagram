@@ -37,7 +37,7 @@ if (module.hot) {
 			window.perf.log(entry.name, entry.duration)
 		}
 	}).observe({
-		entryTypes: ['event', 'measure', 'mark', 'navigation', 'longtask', 'paint'],
+		entryTypes: PerformanceObserver.supportedEntryTypes !== undefined ? PerformanceObserver.supportedEntryTypes : ['event', 'measure', 'mark', 'navigation', 'longtask', 'paint'],
 	}) // resource, paint,
 }
 
