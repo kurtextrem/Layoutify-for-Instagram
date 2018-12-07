@@ -23,7 +23,7 @@ header > a {
 
 /** Improve picture quality */
 div > img {
-	contain: strict;
+	contain: layout style;
 	/** Moves the img over the "prevent right click copy"-element */
 	z-index: 1;
 	/* autoprefixer: off */
