@@ -382,7 +382,7 @@ const first = {
 
 	devtool: isProd
 		? false /* 'cheap-module-source-map'*/ /*'source-map'*/
-		: 'cheap-module-source-map', //'nosources-source-map', // + map Chrome Dev Tools workspace to your local folder
+		: 'inline-module-source-map', //'nosources-source-map',
 
 	plugins,
 
