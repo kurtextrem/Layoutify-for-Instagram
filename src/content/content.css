@@ -132,7 +132,7 @@ body > div > div[role='dialog'] header + div + div,
 /*----------  Improve new post layout  ----------*/
 /** Row layout */
 body > div > div[role='dialog'] header + div + div,
-#react-root:not(.profile) header + div + div {
+#react-root:not(.profile):not(.stories) header + div + div {
 	/* @TODO: Min Chrome v60 */
 	display: grid;
 	flex: auto;
