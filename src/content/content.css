@@ -5,7 +5,7 @@
 }
 
 body {
-	font-size: 15px !important; /** we're on desktop, okay? */
+	/** font-size: 15px !important; we're on desktop, okay? */
 	overflow-y: unset !important; /** de-opts scrolling */
 }
 
@@ -106,6 +106,10 @@ body > div > div[role='dialog'] article > header,
 	contain: strict;
 }
 
+#react-root.post.post.post article > header {
+	padding: 0 !important;
+}
+
 body > div > div[role='dialog'] article > header,
 #react-root.post article > header {
 	right: 8px;
@@ -151,7 +155,7 @@ body > div > div[role='dialog'] header + div + div,
 }
 
 body > div > div[role='dialog'] header + div + div,
-#react-root.post header + div + div {
+#react-root.post.post.post header + div + div {
 	height: auto !important;
 	padding: 0 8px 0 24px !important;
 
