@@ -169,7 +169,14 @@ if (isProd) {
 		*/
 		new OptimizeCssAssetsPlugin({
 			cssProcessorPluginOptions: {
-				preset: 'advanced',
+				preset: [
+					'advanced',
+					{
+						discardComments: {
+							removeAll: true,
+						},
+					},
+				],
 			},
 		}),
 		new PurgecssPlugin({
@@ -213,7 +220,7 @@ if (isProd) {
 } else {
 	const options = {
 		middleware: (app, builtins) =>
-			app.use(async (ctx, next) => {
+			app.use(async(ctx, next) => {
 				await next()
 				ctx.set('Access-Control-Allow-Origin', '*')
 				ctx.set(
@@ -252,11 +259,11 @@ if (isProd) {
 	)
 }
 
-plugins.push(
+/*plugins.push(
 	new HardSourceWebpackPlugin({
 		cacheDirectory: '../node_modules/.cache/hard-source/[confighash]',
 	})
-)
+)*/
 
 const first = {
 	mode: isProd ? 'production' : 'development',

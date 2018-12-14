@@ -182,7 +182,10 @@ function addExtendedButton() {
 
 	let $anchor = document.querySelectorAll('nav div > a:only-child')
 
-	if ($anchor.length === 0) return
+	if ($anchor.length === 0) {
+		console.warn('Nav Selector outdated')
+		return
+	}
 
 	$anchor = $anchor[$anchor.length - 1].parentNode
 	const el = $anchor.cloneNode(true),
@@ -252,14 +255,22 @@ function addListener() {
 	})
 }
 
+const vlSelector =
+	'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div > div'
+
 function addNamesToStories() {
 	const list = document.querySelectorAll(
-		'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div > a > div > div > span'
-	)
+			vlSelector + ' button > div + div span'
+		),
+		regex = /\./g,
+		len = list.length
 
-	const regex = /\./g
+	if (len === 0) {
+		console.warn('Stories Name Selector outdated')
+		return
+	}
 
-	for (let i = 0; i < list.length; ++i) {
+	for (let i = 0; i < len; ++i) {
 		const elem = list[i]
 
 		elem.parentElement.parentElement.parentElement.parentElement.id = `igs_${elem.firstChild.data.replace(
@@ -330,11 +341,10 @@ const vlObserver = observe(
 )
 
 function fixVirtualList() {
-	let $el = $(
-		'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div > div'
-	) // virtual stories list
+	let $el = $(vlSelector) // virtual stories list
 
 	if ($el === null)
+		// old DOM
 		$el = $(
 			'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div'
 		)
@@ -342,6 +352,8 @@ function fixVirtualList() {
 	if ($el !== null) {
 		switchPadding($el)
 		vlObserver.observe($el)
+	} else {
+		console.warn('Story Selector outdated')
 	}
 }
 
@@ -444,9 +456,13 @@ function toggleWatchlist(user) {
 function addWatched() {
 	const user = location.pathname.split('/')[1]
 
-	let $node = $(`h1[title="${user}"]`)
+	let $node = $('header div h1')
 
-	if ($node === null) return
+	if ($node === null || $node.textContent !== user) {
+		console.warn('User Selector outdated')
+		return
+	}
+
 	$node = $node.parentElement.parentElement
 
 	let cls = false,
@@ -613,8 +629,13 @@ function onNavigate() {
 		return window.requestAnimationFrame(() => {
 			window.requestAnimationFrame(() => {
 				addClass()
+
+				document.body.querySelectorAll('video').forEach(addControls)
+				document.body.querySelectorAll('img').forEach(fullPhoto)
+
 				if (currentClass === 'home') fixVirtualList()
 				if (currentClass === 'profile') addWatched()
+
 				addExtendedButton()
 			})
 		})
@@ -625,29 +646,12 @@ function onNavigate() {
  * Callback when DOM is ready.
  */
 function onReady() {
-	const $elem = $('div > article')
-
-	if ($elem !== null)
-		docEl.style.setProperty('--boxHeight', `${$elem.offsetHeight}px`) // give boxes equal height
-
 	loadOptions()
 	onNavigate()
-	window.requestIdleCallback(() => {
-		return window.requestAnimationFrame(() => {
-			window.requestAnimationFrame(() => {
-				document.body.querySelectorAll('video').forEach(addControls)
-				document.body.querySelectorAll('img').forEach(fullPhoto)
-				if (currentClass === 'home') fixVirtualList()
-			})
-		})
-	}) // double-rAF
 
-	addExtendedButton()
 	addListener()
 }
 
-decideClass()
-addClass()
 if (document.readyState === 'interactive' || document.readyState === 'complete')
 	onReady()
 else document.addEventListener('DOMContentLoaded', onReady)
