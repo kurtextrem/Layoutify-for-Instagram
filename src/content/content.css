@@ -101,13 +101,13 @@ canvas + span:focus {
 =============================================*/
 body > div > div[role='dialog'] article > header,
 #react-root:not(.profile):not(.explore) article > header {
-	height: 50px !important;
+	height: 53px !important;
 	padding: 16px 8px !important;
 	contain: strict;
 }
 
 #react-root.post.post.post article > header {
-	padding: 0 !important;
+	padding: 5px !important;
 }
 
 body > div > div[role='dialog'] article > header,
