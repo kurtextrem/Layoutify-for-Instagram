@@ -317,7 +317,8 @@ input[type='checkbox'] {
 	color: rgb(68, 68, 68);
 	font: inherit;
 	text-shadow: rgb(240, 240, 240) 0 1px 0;
-	box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
+	box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0,
+		rgba(255, 255, 255, 0.75) 0 1px 2px inset;
 	cursor: default;
 	/* autoprefixer: off */
 	-webkit-appearance: none;
@@ -393,6 +394,10 @@ input[type='number'] {
 }
 */
 html[data-night] .bg-light {
+}
+
+input::-webkit-inner-spin-button {
+	opacity: 1;
 }
 
 /** Mac OS Scrollbar */
