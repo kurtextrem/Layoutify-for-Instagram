@@ -220,7 +220,7 @@ if (isProd) {
 } else {
 	const options = {
 		middleware: (app, builtins) =>
-			app.use(async(ctx, next) => {
+			app.use(async (ctx, next) => {
 				await next()
 				ctx.set('Access-Control-Allow-Origin', '*')
 				ctx.set(
