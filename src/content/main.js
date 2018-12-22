@@ -280,103 +280,6 @@ function addNamesToStories() {
 	}
 }
 
-let paddingBottom = 0,
-	paddingLeft = 0,
-	paddingRight = 0,
-	paddingTop = 0
-
-/**
- * Switches bottom/top padding to right/left padding in order to fix horizontal endless scrolling in virtual lists.
- *
- * @param {HTMLDivElement} target elem
- */
-function switchPadding(target) {
-	if (target === undefined) console.warn(target, 'is undefined')
-	const bottom = +target.style.paddingBottom.replace('px', '')
-	const top = +target.style.paddingTop.replace('px', '')
-
-	if (paddingRight === 0 || paddingLeft === 0) {
-		// initial value
-		paddingRight = +target.style.paddingBottom.replace('px', '')
-		paddingLeft = +target.style.paddingTop.replace('px', '')
-		paddingBottom = paddingRight
-		paddingTop = paddingLeft
-	}
-
-	if (bottom > paddingBottom) paddingRight -= paddingRight - bottom
-	else paddingRight += bottom - paddingRight
-	if (top > paddingTop) paddingLeft -= paddingLeft - top
-	else paddingLeft += top - paddingLeft
-	if (top <= 0 && bottom <= WIDTH) {
-		target.style.paddingTop = '0px'
-		target.style.paddingBottom = `${WIDTH}px`
-		paddingLeft = 0
-		paddingRight = WIDTH
-	}
-
-	// Can't set paddingBottom to 0, as it breaks the VL mechanism
-	target.style.paddingRight = `${paddingRight}px`
-	target.style.paddingLeft = `${paddingLeft}px`
-	paddingTop = top
-	paddingBottom = bottom
-}
-
-const switchPaddingThrottled = throttle(target => {
-	switchPadding(target)
-	window.requestIdleCallback(addNamesToStories)
-}, 10)
-
-const vlObserver = observe(
-	undefined,
-	mutations => {
-		if (mutations.length === 0) return
-
-		const target = mutations[0].target
-
-		console.log(target.style.paddingTop, target.style.paddingBottom)
-
-		switchPaddingThrottled(target)
-	},
-	{ attributes: true, attributeFilter: ['style'] }
-)
-
-function fixVirtualList() {
-	let $el = $(vlSelector) // virtual stories list
-
-	if ($el === null)
-		// old DOM
-		$el = $(
-			'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div'
-		)
-
-	if ($el !== null) {
-		switchPadding($el)
-		vlObserver.observe($el)
-	} else {
-		console.warn('Story Selector outdated')
-	}
-}
-
-function throttle(fn, wait = 100) {
-	let time
-	let lastFunc
-
-	return function throttle() {
-		if (time === undefined) {
-			fn.apply(this, arguments)
-			time = Date.now()
-		} else {
-			clearTimeout(lastFunc)
-			lastFunc = setTimeout(() => {
-				if (Date.now() - time >= wait) {
-					fn.apply(this, arguments)
-					time = Date.now()
-				}
-			}, wait - (Date.now() - time))
-		}
-	}
-}
-
 const connection = navigator.connection.type,
 	speed = navigator.connection.downlink,
 	fullSizeCondition = connection === 'wifi' && speed > 1.9,
@@ -397,7 +300,6 @@ const connection = navigator.connection.type,
  */
 function disconnectObservers() {
 	fullsizeObserver.disconnect()
-	vlObserver.disconnect()
 }
 
 /**
@@ -633,7 +535,7 @@ function onNavigate() {
 				document.body.querySelectorAll('video').forEach(addControls)
 				document.body.querySelectorAll('img').forEach(fullPhoto)
 
-				if (currentClass === 'home') fixVirtualList()
+				if (currentClass === 'home') addNamesToStories()
 				if (currentClass === 'profile') addWatched()
 
 				addExtendedButton()

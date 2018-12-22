@@ -13,6 +13,7 @@ body {
 header + div,
 video {
 	contain: layout style;
+	z-index: 1;
 }
 
 form > textarea,
@@ -31,7 +32,7 @@ div > img {
 
 /** Likes & comments amount */
 a:hover > div + div {
-	z-index: 2;
+	z-index: 0;
 }
 
 img + video {
@@ -87,7 +88,7 @@ main > section div > article {
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
 	contain: layout style;
-	z-index: 1;
+	z-index: 0;
 }
 
 /** Remove stories thumb focus outline */
@@ -175,6 +176,11 @@ div > section + section {
 	max-width: 100%;
 	text-align: right;
 	grid-area: likes;
+}
+
+/* Liker's Avatars */
+div > section + section > div {
+	flex: 0;
 }
 
 div > section + section > div > div {
@@ -442,212 +448,111 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 										Stories
 =============================================*/
-/** Fix main feed */
+/* Fix main feed */
 main > section > div:first-child:not(#rcr-anchor) {
 	max-width: none;
 	margin-right: 0;
 	float: none;
+	contain: layout style;
 }
 
+/* Sidebar container */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
-	position: static;
-	flex-direction: row;
-	flex-wrap: wrap;
-	order: -1;
-	width: 100%;
-	max-width: 100%;
-	height: auto;
-	/*max-height: 150px;*/
+	top: 50px !important;
+	left: unset !important;
+	height: auto !important;
 	margin-bottom: 0;
-	contain: style;
+	padding-top: 45px;
+	padding-bottom: 45px;
+	transform: translateX(80%);
+	transition: transform 300ms ease-out, opacity 300ms ease-out;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	background-color: white;
+	box-shadow: 0 0 8px 0 #bdbdbd;
+	opacity: 0.8;
+	contain: content;
+	z-index: 10;
 }
 
-/** All children
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover {
+	transform: translateX(0%);
+	opacity: 1;
+}
+
+/* Remove the layer of the empty div */
+main > section > div:first-child:not(#rcr-anchor) + div:empty {
+	width: 0;
+	contain: strict;
+	z-index: 9;
+}
+
+/* Box container */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
-	flex: 1 100%;
-}
-*/
-
-/* @deprecated, old DOM */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr {
-	display: none;
-}
-
-/** Owners Story */
-main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> div:first-child {
-	/**! @TODO: Temporary */
-	display: none;
-
-	flex: 1 auto;
-	order: 1;
-	width: auto;
-	margin-right: 5px;
-}
-
-/* Stories / watch all */
-main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> hr:first-of-type
-+ div {
-	justify-content: start;
-	order: -1;
-	width: 100%;
-}
-
-main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> hr:first-of-type
-+ div
-> :last-child {
-	margin: 0 5px;
-}
-
-/** Story items container, old DOM */
-main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> hr:first-of-type
-+ div
-+ div {
-	width: 100%;
-	height: 80px !important; /** @TODO: Enlargen story items */
-	margin-bottom: -5px;
-	overflow-x: scroll !important;
-	overflow-y: hidden !important;
-}
-
-/** @deprecated Stories virtual list, old DOM */
-main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> hr:first-of-type
-+ div
-+ div
-> div {
-	height: 68px !important;
-	contain: strict;
-	overflow-x: scroll !important;
-	overflow-y: hidden !important;
-}
-
-/** Stories items container */
-main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> div
-+ div
-> div
-+ div
-> div
-> div {
-	height: 55px !important;
-	contain: strict;
-	overflow-x: scroll !important;
-	overflow-y: hidden !important;
-}
-
-/* Virtual List */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div, /* old DOM */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div > div {
-	flex-direction: row !important;
-}
-
-/** Other Stories
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div {
-	flex: 9999 0px;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	order: 2;
-	width: 100%;
-	max-width: 100%;
-	height: auto;
-	padding: 0 0 5px;
-	overflow-x: auto;
-	overflow-y: auto;
-}
-
-/** Other stories container
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div {
-	flex-direction: row;
-	flex-wrap: nowrap;
-	width: 100%;
-	max-width: 100%;
-	height: auto;
-	max-height: 150px;
-	overflow-x: auto;
-}
-
-/** Story Items
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div {
-	position: static;
-	flex-flow: row nowrap;
-	width: auto;
-	margin-right: 5px;
-}
-
-/** Story Items Inner
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div > a,
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div > div > div > div:last-child * {
-	width: auto;
-	max-width: none;
-}
-
-/** Footer */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr + div:last-child, /* old DOM */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-child {
-	display: block;
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	padding-bottom: 0;
-	text-align: center;
-}
-
-main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> hr
-+ div:last-child
-> nav {
-	display: inline-block;
-	margin-bottom: 0;
-}
-
-/** Stories container */
-main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> div:first-child
-+ div {
-	width: 100%;
-	margin-top: 0;
 	border-right: 0;
 	border-left: 0;
 	border-radius: 0;
 }
 
-/** Suggestions */
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child:not(:hover)
+> div
+> div,
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child:not(:hover)
+> div
+> div
+> div
+> div
+> div
+> div {
+	padding-right: 0;
+	padding-left: 0;
+}
+
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child:not(:hover)
+> div
+> div
+> div {
+	margin-right: 7px;
+	margin-left: 7px;
+}
+
+/* Only story box */
 main
 > section
 > div:first-child:not(#rcr-anchor)
 ~ div:last-child
+> div:first-child
++ div
 > div
 + div
-+ div:not(:last-child) {
-	display: none; /** @TODO */
+> div
+> div {
+	height: 43vh !important;
+}
+
+/* Copyright etc */
+main
+> section
+> div:first-child:not(#rcr-anchor)
+~ div:last-child
+> div:last-child {
+	padding-right: 17px;
+	padding-bottom: 0;
+	padding-left: 17px;
+}
+
+.ige_hideOwnerStory,
+.ige_hideSuggestions {
+	display: none;
 }
 
 /*=============================================
@@ -659,11 +564,11 @@ main
 > section
 > div:not(#rcr-anchor):first-child
 > div:last-child:not(:first-child) {
-	order: 3;
+	/* 	order: 3;
 	height: 60px;
 	margin: 10px 0;
 	contain: strict;
-	z-index: 2;
+	z-index: 2; */
 }
 
 .home
@@ -672,7 +577,7 @@ main
 > div:not(#rcr-anchor):first-child
 > div:last-child:not(:first-child)
 > div {
-	top: 30%;
+	/* 	top: 30%; */
 }
 
 /*=============================================
