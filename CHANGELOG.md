@@ -4,6 +4,17 @@
 
 - Maybe: Merge watched posts and watched stories to one setting
 
+## [2.9.0] - 2018-12-22
+
+### Changed
+
+- Stories now look different. You can find them on the right side of the screen
+- They are no longer buggy and work as expected
+
+### Bug Fixes
+
+- Many of them (since last changelog entry)
+
 ## [2.8.3] - 2018-10-08
 
 ### Bug Fixes
