@@ -1,6 +1,7 @@
 :root {
 	--boxWidth: 23vw;
 	--boxMarginRight: 10px;
+	--primary: white;
 }
 
 body {
@@ -24,8 +25,6 @@ header > a {
 /** Improve picture quality */
 div > img {
 	contain: layout style;
-	/** Moves the img over the "prevent right click copy"-element */
-	z-index: 1;
 	/* autoprefixer: off */
 	image-rendering: -webkit-optimize-contrast;
 }
@@ -178,13 +177,21 @@ div > section + section {
 	grid-area: likes;
 }
 
-/* Liker's Avatars */
+/* Views + likes */
 div > section + section > div {
-	flex: 0;
+	align-items: center !important;
+	justify-content: flex-end !important;
 }
 
-div > section + section > div > div {
+/* User Avatars */
+div > section + section > div > div:first-child {
+	align-items: flex-end !important;
 	justify-content: flex-end !important;
+	margin-right: 0;
+}
+
+div > section + section > div > div:last-child {
+	flex-grow: 0 !important;
 }
 
 /** Posted date */
@@ -342,6 +349,11 @@ div[role='button'] > div {
 	contain: layout style;
 }
 
+/** Moves the img over the "prevent right click copy"-element */
+div[role='button'] > div:first-child {
+	z-index: 1;
+}
+
 /** Multiple dots */
 .home
 article
@@ -468,7 +480,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	transition: transform 300ms ease-out, opacity 300ms ease-out;
 	border-top-left-radius: 4px;
 	border-bottom-left-radius: 4px;
-	background-color: white;
+	background-color: var(--primary);
 	box-shadow: 0 0 8px 0 #bdbdbd;
 	opacity: 0.8;
 	contain: content;
@@ -552,6 +564,7 @@ main
 
 .ige_hideOwnerStory,
 .ige_hideSuggestions {
+	/* @TODO */
 	display: none;
 }
 
