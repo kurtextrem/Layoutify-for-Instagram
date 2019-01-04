@@ -346,12 +346,13 @@ div[role='button']:hover ~ a {
 }
 
 div[role='button'] > div {
-	contain: layout style;
+	contain: style;
 }
 
 /** Moves the img over the "prevent right click copy"-element */
 div[role='button'] > div:first-child {
 	z-index: 1;
+	contain: layout style;
 }
 
 /** Multiple dots */
