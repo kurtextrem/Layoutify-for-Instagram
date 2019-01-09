@@ -10,9 +10,15 @@ function onChange(changes) {
 		const change = changes[i]
 		if (change.isIntersecting) {
 			const target = change.target
-			target.src = target.dataset.src // not in a rIC because of https://github.com/necolas/react-native-web/issues/759
-			target.addEventListener('load', e => window.requestAnimationFrame(switchClass.bind(undefined, e.target)))
+			const isModern = typeof target.intrinsicSize === 'string'
+
 			observer.unobserve(target)
+
+			target.src = target.dataset.src // not in a rIC because of https://github.com/necolas/react-native-web/issues/759
+			if (isModern)
+				target.addEventListener('load', e =>
+					window.requestAnimationFrame(switchClass.bind(undefined, e.target))
+				)
 		}
 	}
 }
@@ -37,7 +43,14 @@ export default class PostMedia extends Component {
 		super(props)
 
 		this.ref = null
-		this.style = { 'padding-bottom': '' }
+
+		const img = new Image()
+		this.isModern = true
+		this.style = undefined
+		if (img.intrinsicSize !== '') {
+			this.isModern = false
+			this.style = { 'padding-bottom': '' }
+		}
 
 		if (!initiated) init()
 	}
@@ -69,7 +82,7 @@ export default class PostMedia extends Component {
 	}
 
 	componentDidMount() {
-		observer.observe(this.ref)
+		if (!this.modern) observer.observe(this.ref)
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -86,6 +99,7 @@ export default class PostMedia extends Component {
 		const { isCarousel, carouselLen, initial, data } = this.props
 		const { carouselIndex } = this.state
 		const media = isCarousel ? data.carousel_media[carouselIndex] : data
+		const isModern = this.isModern
 
 		let mediaElement, candidate
 		if (media.media_type === 2) {
@@ -102,6 +116,9 @@ export default class PostMedia extends Component {
 					type="video/mp4"
 					preload="metadata"
 					className="img-fluid"
+					intrinsicsize={
+						isModern ? `${candidate.width}x${candidate.height}` : undefined
+					}
 					controls
 				/>
 			)
@@ -117,16 +134,27 @@ export default class PostMedia extends Component {
 					alt="If you see this, the post has probably been deleted"
 					className="img-fluid"
 					decoding="async"
+					intrinsicsize={
+						isModern ? `${candidate.width}x${candidate.height}` : undefined
+					}
 				/>
 			)
 		}
 
-		this.style['padding-bottom'] = `${(candidate.height / candidate.width) * 100}%`
+		if (!isModern)
+			this.style['padding-bottom'] = `${(candidate.height / candidate.width) *
+				100}%`
 
 		return (
-			<div className={`position-relative${isCarousel ? ' post--carousel' : ''}`}>
+			<div
+				className={`position-relative${isCarousel ? ' post--carousel' : ''}`}
+			>
 				{isCarousel ? (
-					<Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}>
+					<Button
+						className="arrow arrow--left"
+						color="link"
+						onClick={this.handleArrowClick}
+					>
 						<i className="material-icons">keyboard_arrow_left</i>
 					</Button>
 				) : null}
@@ -134,12 +162,19 @@ export default class PostMedia extends Component {
 					href={`https://www.instagram.com/p/${data.code}`}
 					target="_blank"
 					rel="noopener"
-					className="img--wrapper img--placeholder"
-					style={this.style}>
+					className={`img--wrapper ${
+						isModern ? 'img--loaded' : 'img--placeholder'
+					}`}
+					style={this.style}
+				>
 					{mediaElement}
 				</a>
 				{isCarousel ? (
-					<Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}>
+					<Button
+						className="arrow arrow--right"
+						color="link"
+						onClick={this.handleArrowClick}
+					>
 						<i className="material-icons">keyboard_arrow_right</i>
 					</Button>
 				) : null}
