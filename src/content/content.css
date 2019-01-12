@@ -26,7 +26,7 @@ header > a {
 div > img {
 	/** Moves the img over the "prevent right click copy"-element */
 	z-index: 1;
-	contain: layout style;
+	contain: layout;
 	/* autoprefixer: off */
 	image-rendering: -webkit-optimize-contrast;
 }
