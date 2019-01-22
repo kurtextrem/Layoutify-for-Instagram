@@ -61,10 +61,18 @@ module.exports = (isProd, options = {}) => ({
 				],
 				[
 					resolve('babel-plugin-transform-react-remove-prop-types'),
-					{ removeImport: true, additionalLibraries: ['react-immutable-proptypes'] },
+					{
+						removeImport: true,
+						additionalLibraries: ['react-immutable-proptypes'],
+					},
 				],
 				resolve('babel-plugin-transform-react-pure-class-to-function'),
-				[resolve('@babel/plugin-transform-react-jsx'), { pragma: 'createElement', useBuiltIns: true }],
+				[
+					resolve('@babel/plugin-transform-react-jsx'),
+					{ pragma: 'createElement', useBuiltIns: true },
+				],
+				resolve('babel-plugin-optimize-react'),
+				resolve('babel-plugin-react-local'),
 				//resolve('@babel/plugin-transform-react-constant-elements'), // see https://github.com/facebookincubator/create-react-app/issues/553#issuecomment-359196326
 				//[resolve('babel-plugin-transform-hoist-nested-functions'), { methods: true }], // see ^^^
 				resolve('babel-plugin-closure-elimination'), // @TODO: Benchmark w/ & w/o, see ^^^
@@ -99,7 +107,10 @@ module.exports = (isProd, options = {}) => ({
 				require('@babel/plugin-syntax-import-meta'),
 				[require('@babel/plugin-proposal-class-properties'), { loose: true }],
 				require('@babel/plugin-proposal-json-strings'),
-				[resolve('@babel/plugin-transform-react-jsx'), { pragma: 'createElement', useBuiltIns: true }],
+				[
+					resolve('@babel/plugin-transform-react-jsx'),
+					{ pragma: 'createElement', useBuiltIns: true },
+				],
 				resolve('@babel/plugin-transform-react-jsx-source'),
 				resolve('babel-plugin-transform-console-log-variable-names'),
 				resolve('babel-plugin-console-groupify'),
