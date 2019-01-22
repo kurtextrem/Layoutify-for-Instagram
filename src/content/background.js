@@ -51,9 +51,14 @@ function getSessionId() {
 
 getSessionId()
 
-const extraInfoSpec = ['blocking', 'requestHeaders']
+const extraInfoSpec = ['blocking']
 if (chrome.webRequest.OnBeforeSendHeadersOptions.EXTRA_HEADERS !== undefined)
 	extraInfoSpec.push('extraHeaders') // needed for Chrome 72+, https://groups.google.com/a/chromium.org/forum/#!topic/chromium-extensions/vYIaeezZwfQ
+
+const typeSpec = {
+	urls: ['https://i.instagram.com/*'],
+	types: ['xmlhttprequest'],
+},
 
 // Hook into web request and modify headers before sending the request
 chrome.webRequest.onBeforeSendHeaders.addListener(
@@ -66,8 +71,9 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 			const header = headers[i]
 
 			if (header.name === 'User-Agent') {
+				// credit https://github.com/mgp25/Instagram-API/master/src/Constants.php
 				header.value =
-					'Instagram 27.0.0.7.97 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US)'
+					'Instagram 42.0.0.19.95 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 104766893)'
 			} else if (header.name === 'Cookie') {
 				// add auth cookies to authenticate API requests
 				header.value = `${header.value}; sessionid=${sessionid}`
@@ -76,14 +82,31 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
 		return { requestHeaders: headers }
 	},
-	{
-		urls: [
-			'https://i.instagram.com/api/v1/feed/liked/*',
-			'https://i.instagram.com/api/v1/feed/saved/*',
-		],
-		types: ['xmlhttprequest'],
-	},
-	extraInfoSpec
+	typeSpec,
+	extraInfoSpec.concat('requestHeaders')
+)
+
+function modifyCspHeaders(details) {
+	const headers = details.responseHeaders
+
+	for (const i in headers) {
+		const header = headers[i]
+
+		if (header.name.toLowerCase() === 'content-security-policy') {
+			header.value.replace(
+				"connect-src 'self'",
+				`connect-src 'self' https://i.instagram.com`
+			)
+		}
+	}
+
+	return { responseHeaders: details.responseHeaders }
+}
+
+chrome.webRequest.onHeadersReceived.addListener(
+	modifyCspHeaders,
+	typeSpec,
+	extraInfoSpec.concat('responseHeaders')
 )
 
 function checkStatus(response) {

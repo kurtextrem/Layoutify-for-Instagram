@@ -75,7 +75,8 @@ class Storage {
 
 	promise(cb) {
 		return new Promise((resolve, reject) => {
-			if (chrome.storage[this.STORAGE] === undefined) return reject(new Error('Chrome storage not available'))
+			if (chrome.storage[this.STORAGE] === undefined)
+				return reject(new Error('Chrome storage not available'))
 
 			try {
 				return cb(resolve, reject)
@@ -87,22 +88,34 @@ class Storage {
 
 	set(key, value) {
 		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
+			chrome.storage[this.STORAGE].set({ [key]: value }, data =>
+				Storage.check(data, resolve, reject)
+			)
 		)
 	}
 
 	setObj(obj) {
-		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].set(obj, data => Storage.check(data, resolve, reject)))
+		return this.promise((resolve, reject) =>
+			chrome.storage[this.STORAGE].set(obj, data =>
+				Storage.check(data, resolve, reject)
+			)
+		)
 	}
 
 	get(key, defaultValue) {
 		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
+			chrome.storage[this.STORAGE].get({ [key]: defaultValue }, data =>
+				Storage.check(data[key], resolve, reject)
+			)
 		)
 	}
 
 	remove(key) {
-		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
+		return this.promise((resolve, reject) =>
+			chrome.storage[this.STORAGE].remove(key, data =>
+				Storage.check(data, resolve, reject)
+			)
+		)
 	}
 
 	static check(data, resolve, reject) {
@@ -163,7 +176,10 @@ class InstagramAPI {
 
 	start() {
 		if (this.firstRun) {
-			return window.IG_Storage.get(this.endpoint, { items: [], nextMaxId: '' }).then(data => {
+			return window.IG_Storage.get(this.endpoint, {
+				items: [],
+				nextMaxId: '',
+			}).then(data => {
 				this.nextMaxId = data.nextMaxId
 				this.items = data.items
 				return data
@@ -173,9 +189,14 @@ class InstagramAPI {
 	}
 
 	fetch() {
-		if (!this.firstRun && this.nextMaxId === '') return Promise.resolve(this.items) // nothing more to fetch
+		if (!this.firstRun && this.nextMaxId === '')
+			return Promise.resolve(this.items) // nothing more to fetch
 
-		return fetchAux(`${API}feed/${this.endpoint}/?${this.nextMaxId && !this.firstRun ? `max_id=${this.nextMaxId}&` : ''}`) // maxId means "show everything before X"
+		return fetchAux(
+			`${API}feed/${this.endpoint}/?${
+				this.nextMaxId && !this.firstRun ? `max_id=${this.nextMaxId}&` : ''
+			}`
+		) // maxId means "show everything before X"
 			.then(this.storeNext)
 			.then(this.normalize)
 			.then(this.setData)
@@ -185,7 +206,8 @@ class InstagramAPI {
 
 	storeNext(data) {
 		console.log(data)
-		if (!this.firstRun || this.nextMaxId === '') this.nextMaxId = data.next_max_id ? `${data.next_max_id}` : ''
+		if (!this.firstRun || this.nextMaxId === '')
+			this.nextMaxId = data.next_max_id ? `${data.next_max_id}` : ''
 
 		return data
 	}
@@ -252,7 +274,10 @@ class InstagramAPI {
 	}
 
 	storeItems(data) {
-		window.IG_Storage.set(this.endpoint, { items: this.items, nextMaxId: this.nextMaxId })
+		window.IG_Storage.set(this.endpoint, {
+			items: this.items,
+			nextMaxId: this.nextMaxId,
+		})
 
 		return data
 	}
