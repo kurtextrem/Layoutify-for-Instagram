@@ -58,7 +58,7 @@ if (chrome.webRequest.OnBeforeSendHeadersOptions.EXTRA_HEADERS !== undefined)
 const typeSpec = {
 	urls: ['https://i.instagram.com/*'],
 	types: ['xmlhttprequest'],
-},
+}
 
 // Hook into web request and modify headers before sending the request
 chrome.webRequest.onBeforeSendHeaders.addListener(
@@ -109,38 +109,110 @@ chrome.webRequest.onHeadersReceived.addListener(
 	extraInfoSpec.concat('responseHeaders')
 )
 
+const fetchOptions = {
+	credentials: 'include',
+	mode: 'cors',
+}
+
 function checkStatus(response) {
 	if (response.ok) return response
 
-	const error = new Error(response.statusText)
-	error.status = response.status
+	const error = new Error(`HTTP Error ${response.statusText}`)
+	error.status = response.statusText
 	error.response = response
 	throw error
 }
 
-const get = (path, object) =>
-	path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
+function toText(response) {
+	return response.text()
+}
+
+function toJSON(response) {
+	return response.json()
+}
 
 function logAndReturn(e) {
 	console.warn(e)
 	return e
 }
 
-function toJSON(e) {
-	return e.json()
+function fixMaxId(response) {
+	return response.replace(/"next_max_id": (\d+)/g, '"next_max_id": "$1"')
 }
 
-function fetchAux(url) {
-	return window
-		.fetch(url, {
-			headers: new Headers({
-				'x-requested-with': 'XMLHttpRequest',
-			}),
-			credentials: 'include',
-			mode: 'cors',
-		})
+function parseJSON(response) {
+	return JSON.parse(response)
+}
+
+const API_URL = {
+	PRIVATE: 'https://i.instagram.com/api/v1/',
+	PUBLIC: 'https://www.instagram.com/web/',
+}
+
+const PRIVATE_API_OPTS = {
+	referrerPolicy: 'no-referrer',
+
+	// credits to https://github.com/mgp25/Instagram-API/blob/master/src/Request.php#L377
+	headers: new Headers({
+		'X-IG-App-ID': '567067343352427',
+		'X-IG-Capabilities': '3brTBw==',
+		'X-IG-Connection-Type': 'WIFI',
+		'X-IG-Connection-Speed': '3700kbps',
+		'X-IG-Bandwidth-Speed-KBPS': '-1.000',
+		'X-IG-Bandwidth-TotalBytes-B': '0',
+		'X-IG-Bandwidth-TotalTime-MS': '0',
+		'X-FB-HTTP-Engine': 'Liger',
+		Accept: '*/*',
+		'Accept-Language': 'en-US',
+		'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+		Connection: 'keep-alive',
+	}),
+}
+
+const PUBLIC_API_OPTS = {
+	method: 'POST',
+	headers: new Headers({
+		'x-csrftoken': '',
+		'x-instagram-ajax': '1',
+		'x-requested-with': 'XMLHttpRequest',
+	}),
+}
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	const which = request.which.toUpperCase()
+	if (which === 'public') {
+		getCookie('csrftoken')
+			.then(value => {
+				PUBLIC_API_OPTS.headers.set('x-csrftoken', value)
+				fetchAux(API_URL[which] + request.path, PUBLIC_API_OPTS)
+
+				return value
+			})
+			.catch(logAndReturn)
+
+		return false // for now
+	}
+
+	fetchAux(API_URL[which] + request.path, PRIVATE_API_OPTS)
+		.then(toText)
+		.then(fixMaxId)
+		.then(parseJSON)
+		.then(sendResponse)
+		.catch(sendResponse)
+
+	return true
+})
+
+//const UID = getCookie('ds_user_id').then(value => value),
+//	UUID = '' // 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
+
+function fetchAux(url, options) {
+	const opts = fetchOptions
+	if (options !== undefined) Object.assign({}, opts, options) // eslint-disable-line
+
+	return fetch(url, opts)
 		.then(checkStatus)
-		.then(toJSON)
+		.catch(window.logAndReturn)
 }
 
 function getRandom(min, max) {
@@ -278,6 +350,9 @@ const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 	}
 //orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
 
+const get = (path, object) =>
+	path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
+
 function handlePost(json, user, userObj, watchData, options) {
 	const node = get(
 			['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'],
@@ -351,6 +426,12 @@ function notifyError(user, options) {
 	chrome.notifications.create(`error_${user}`, options, undefined) // @TODO: Add 'click to remove'
 }
 
+const WEB_OPTS = {
+	headers: new Headers({
+		'x-requested-with': 'XMLHttpRequest',
+	}),
+}
+
 function notify(user, userObj, type, watchData, len, i) {
 	let url
 	if (type === 0) url = `https://www.instagram.com/${user}/?__a=1`
@@ -364,7 +445,8 @@ function notify(user, userObj, type, watchData, len, i) {
 	}
 
 	const options = Object.assign({}, notificationOptions) // eslint-disable-line
-	fetchAux(url)
+	fetchAux(url, WEB_OPTS)
+		.then(toJSON)
 		.then(json => {
 			if (type === 0) {
 				handlePost(json, user, userObj, watchData, options)
@@ -384,7 +466,8 @@ function notify(user, userObj, type, watchData, len, i) {
 }
 
 function createUserObj(user, watchData) {
-	fetchAux(`https://www.instagram.com/${user}/?__a=1`)
+	fetchAux(`https://www.instagram.com/${user}/?__a=1`, WEB_OPTS)
+		.then(toJSON)
 		.then(json => {
 			if (watchData[user] === undefined)
 				return (watchData[user] = {
