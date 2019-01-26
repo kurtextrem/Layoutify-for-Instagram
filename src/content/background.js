@@ -178,13 +178,12 @@ const PUBLIC_API_OPTS = {
 	}),
 }
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	const which = request.which.toUpperCase()
-	if (which === 'public') {
+function fetchFromBackground(which, path, sendResponse) {
+	if (which === 'PUBLIC') {
 		getCookie('csrftoken')
 			.then(value => {
 				PUBLIC_API_OPTS.headers.set('x-csrftoken', value)
-				fetchAux(API_URL[which] + request.path, PUBLIC_API_OPTS)
+				fetchAux(API_URL[which] + path, PUBLIC_API_OPTS)
 
 				return value
 			})
@@ -193,7 +192,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		return false // for now
 	}
 
-	fetchAux(API_URL[which] + request.path, PRIVATE_API_OPTS)
+	fetchAux(API_URL[which] + path, PRIVATE_API_OPTS)
 		.then(toText)
 		.then(fixMaxId)
 		.then(parseJSON)
@@ -201,7 +200,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		.catch(sendResponse)
 
 	return true
-})
+}
 
 //const UID = getCookie('ds_user_id').then(value => value),
 //	UUID = '' // 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
@@ -246,9 +245,19 @@ chrome.runtime.onMessage.addListener(function listener(
 			chrome.alarms.clear('update')
 			break
 
+		case 'fetch':
+			fetchFromBackground(
+				request.which.toUpperCase(),
+				request.path,
+				sendResponse
+			)
+			return true
+
 		default:
 			break
 	}
+
+	return false
 })
 
 /** Open Changelog when updating to a new major/minor version. */

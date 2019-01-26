@@ -75,12 +75,15 @@ window.IG_Storage_Sync = new Storage('sync')
 
 function fetchFromBackground(which, path, options) {
 	return new Promise((resolve, reject) => {
-		chrome.runtime.sendMessage({ which, path, options }, text => {
-			if (text === undefined && chrome.runtime.lastError)
-				return reject(chrome.runtime.lastError.message)
+		chrome.runtime.sendMessage(
+			{ action: 'fetch', which, path, options },
+			text => {
+				if (text === undefined && chrome.runtime.lastError)
+					return reject(chrome.runtime.lastError.message)
 
-			return resolve(text)
-		})
+				return resolve(text)
+			}
+		)
 	})
 }
 
@@ -128,7 +131,6 @@ class InstagramAPI {
 				this.nextMaxId && !this.firstRun ? `max_id=${this.nextMaxId}&` : ''
 			}`
 		) // maxId means "show everything before X"
-			.then(parseJSON)
 			.then(this.storeNext)
 			.then(this.normalize)
 			.then(this.setData)
