@@ -24,9 +24,9 @@ header > a {
 
 /** Improve picture quality */
 div > img {
+	contain: layout;
 	/** Moves the img over the "prevent right click copy"-element */
 	z-index: 1;
-	contain: layout;
 	/* autoprefixer: off */
 	image-rendering: -webkit-optimize-contrast;
 }
@@ -353,8 +353,12 @@ div[role='button'] > div {
 
 /** Moves the img over the "prevent right click copy"-element */
 div[role='button'] > div:first-child {
-	z-index: 1;
 	contain: layout style;
+	z-index: 1;
+}
+
+div[role='button'] {
+	z-index: 0; /* so it doesn't overlap tagged users */
 }
 
 /** Multiple dots */
@@ -488,6 +492,10 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	opacity: 0.8;
 	contain: content;
 	z-index: 10;
+}
+
+canvas {
+	z-index: 9;
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover {
