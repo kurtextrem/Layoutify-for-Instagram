@@ -53,18 +53,26 @@ class Storage {
 
 	set(key, value) {
 		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
+			chrome.storage[this.STORAGE].set({ [key]: value }, data =>
+				Storage.check(data, resolve, reject)
+			)
 		)
 	}
 
 	get(key, defaultValue) {
 		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
+			chrome.storage[this.STORAGE].get({ [key]: defaultValue }, data =>
+				Storage.check(data[key], resolve, reject)
+			)
 		)
 	}
 
 	remove(key) {
-		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
+		return this.promise((resolve, reject) =>
+			chrome.storage[this.STORAGE].remove(key, data =>
+				Storage.check(data, resolve, reject)
+			)
+		)
 	}
 
 	static check(data, resolve, reject) {
@@ -86,9 +94,11 @@ export class Chrome {
 			index = search.indexOf('tabid')
 		if (index !== -1) {
 			console.log('sending req', action, additional)
-			chrome.tabs.sendMessage(+search[index + 1], { action, ...additional }, null, function() {
-				if (chrome.runtime.lastError) return console.error(chrome.runtime.lastError.message)
-			})
+			chrome.tabs.sendMessage(
+				+search[index + 1],
+				{ action, ...additional },
+				null
+			)
 			return true
 		}
 		return false
@@ -128,7 +138,11 @@ self.addEventListener('message', event => {
 
 export function documentReady() {
 	return new Promise((resolve, reject) => {
-		if (document.readyState === 'interactive' || document.readyState === 'complete') resolve()
+		if (
+			document.readyState === 'interactive' ||
+			document.readyState === 'complete'
+		)
+			resolve()
 		else document.addEventListener('DOMContentLoaded', resolve)
 	})
 }
@@ -136,7 +150,10 @@ export function documentReady() {
 let workerBlob
 export async function getWorkerBlob() {
 	await documentReady() // creating a blob is synchronous and takes around 120ms on a powerful machine
-	if (workerBlob === undefined) workerBlob = URL.createObjectURL(new Blob([webWorkerScript], { type: 'application/javascript' }))
+	if (workerBlob === undefined)
+		workerBlob = URL.createObjectURL(
+			new Blob([webWorkerScript], { type: 'application/javascript' })
+		)
 	return workerBlob
 }
 
@@ -147,8 +164,14 @@ const formReducer = (data, element) => {
 	else if (type === 'checkbox')
 		// option
 		data[element.name] = element.checked
-	else if (type.indexOf('select') !== -1) data[element.name] = [].reduce.call(element.options, formReducer, [])
-	else if (type === 'button' || element.name.indexOf('_add') !== -1 || type === 'submit') undefined
+	else if (type.indexOf('select') !== -1)
+		data[element.name] = [].reduce.call(element.options, formReducer, [])
+	else if (
+		type === 'button' ||
+		element.name.indexOf('_add') !== -1 ||
+		type === 'submit'
+	)
+		undefined
 	else if (type === 'number') data[element.name] = +element.value
 	else data[element.name] = element.value // number, text, etc
 
