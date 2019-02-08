@@ -1,5 +1,14 @@
 import bind from 'autobind-decorator'
-import { Button, Col, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap'
+import {
+	Button,
+	Col,
+	Container,
+	Form,
+	FormGroup,
+	FormText,
+	Input,
+	Label,
+} from 'reactstrap'
 import { Component, createElement } from 'nervjs'
 import { StorageSync, i18n, logAndReturn, throttle } from './Utils'
 
@@ -100,7 +109,8 @@ const OPTS_ADDITIONAL = {
 	watchInBackground: {
 		help: true,
 		onChange(e) {
-			if (e.target.checked === true) chrome.runtime.sendMessage(null, { action: 'watchInBackground' })
+			if (e.target.checked === true)
+				chrome.runtime.sendMessage(null, { action: 'watchInBackground' })
 			else chrome.runtime.sendMessage(null, { action: 'stopWatchInBackground' })
 		},
 	},
@@ -172,7 +182,8 @@ export default class Options extends Component {
 		if (!value || (opt !== null && opt.indexOf(value) !== -1)) return
 
 		const additional = OPTS_ADDITIONAL[name]
-		if (additional !== undefined && additional.onChange !== undefined) additional.onChange(value)
+		if (additional !== undefined && additional.onChange !== undefined)
+			additional.onChange(value)
 
 		this.save(name, value, false)
 	}
@@ -193,7 +204,8 @@ export default class Options extends Component {
 	@bind
 	async onChange(e) {
 		const target = e.target
-		if (!target.reportValidity()) return Promise.reject(new Error('Invalid Entry'))
+		if (!target.reportValidity())
+			return Promise.reject(new Error('Invalid Entry'))
 
 		switch (target.type) {
 			case 'checkbox':
@@ -238,13 +250,18 @@ export default class Options extends Component {
 	@bind
 	renderOption(key) {
 		return (
-			<option key={key} value={key} title="Right click to remove" onDoubleClick={this.remove} onContextMenu={this.remove}>
+			<option
+				key={key}
+				value={key}
+				title="Right click to remove"
+				onDoubleClick={this.remove}
+				onContextMenu={this.remove}
+			>
 				{key}
 			</option>
 		)
 	}
 
-	@bind
 	renderBasedOnType(id, value, additional) {
 		const onChange =
 			additional === undefined || additional.onChange === undefined
@@ -257,7 +274,16 @@ export default class Options extends Component {
 		const type = OPTS[id]
 		if (type === undefined) return console.warn('outdated option', id, value)
 
-		if (typeof type === 'boolean') return <Input type="checkbox" name={id} id={id} checked={value ? true : undefined} onChange={onChange} />
+		if (typeof type === 'boolean')
+			return (
+				<Input
+					type="checkbox"
+					name={id}
+					id={id}
+					checked={value ? true : undefined}
+					onChange={onChange}
+				/>
+			)
 		if (Array.isArray(type) || type === null)
 			// @TODO: Fragments
 			return (
@@ -265,7 +291,12 @@ export default class Options extends Component {
 					<Input name={id} type="select" multiple>
 						{value && value.map(this.renderOption)}
 					</Input>
-					<Input type="text" name={`${id}_add`} placeholder="Instagram Username" onKeyUp={this.add} />
+					<Input
+						type="text"
+						name={`${id}_add`}
+						placeholder="Instagram Username"
+						onKeyUp={this.add}
+					/>
 					<Button type="button" onClick={this.add}>
 						Add
 					</Button>
@@ -290,7 +321,14 @@ export default class Options extends Component {
 			for (let i = min; i <= max; i += step) {
 				radio.push(
 					<Label key={i}>
-						<Input type="radio" name={id} value={i} onChange={onChange} checked={i === value ? true : undefined} /> {i}
+						<Input
+							type="radio"
+							name={id}
+							value={i}
+							onChange={onChange}
+							checked={i === value ? true : undefined}
+						/>{' '}
+						{i}
 					</Label>
 				)
 			}
@@ -309,7 +347,9 @@ export default class Options extends Component {
 				{Options.renderLabel(id)}
 				<Col sm={9}>
 					{this.renderBasedOnType(id, this.state.options[id], additional)}
-					{additional !== undefined && additional.help && Options.renderHelp(id)}
+					{additional !== undefined &&
+						additional.help &&
+						Options.renderHelp(id)}
 				</Col>
 			</FormGroup>
 		)

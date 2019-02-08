@@ -3,10 +3,10 @@
  */
 
 import PropTypes from 'prop-types'
-import bind from 'autobind-decorator'
-import { Children, Component, createElement } from 'nervjs'
+import { Children, createElement } from 'nervjs'
+import { EventComponent } from './EventComponent'
 
-export class HashRouter extends Component {
+export class HashRouter extends EventComponent {
 	static defaultProps = {
 		onLocationChanged: (childKey, params, cb) => cb(),
 	}
@@ -27,7 +27,6 @@ export class HashRouter extends Component {
 		}
 	}
 
-	@bind
 	getMatchedPage() {
 		const hash = window.location !== undefined ? window.location.hash : '#/'
 
@@ -93,7 +92,6 @@ export class HashRouter extends Component {
 		return null
 	}
 
-	@bind
 	clearArrays() {
 		this.locations.length = 0
 		this.scores.length = 0
@@ -101,7 +99,6 @@ export class HashRouter extends Component {
 		this.params.length = 0
 	}
 
-	@bind
 	calcChildren(props) {
 		Children.forEach(props.children, child => {
 			const childArray = child.props.hash.split('/')
@@ -114,8 +111,7 @@ export class HashRouter extends Component {
 		})
 	}
 
-	@bind
-	onHashChange() {
+	onhashchange() {
 		const render = this.getMatchedPage()
 		if (render === null) return
 
@@ -125,8 +121,7 @@ export class HashRouter extends Component {
 	}
 
 	componentDidMount() {
-		this.onHashChange()
-		window.addEventListener('hashchange', this.onHashChange)
+		window.addEventListener('hashchange', this)
 	}
 
 	// static getDerivedStateFromProps(nextProps, prevState)
@@ -137,7 +132,8 @@ export class HashRouter extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		if (nextState.render !== this.state.render) return true
-		if (nextProps.onLocationChanged !== this.props.onLocationChanged) return true
+		if (nextProps.onLocationChanged !== this.props.onLocationChanged)
+			return true
 		return false
 	}
 
@@ -148,7 +144,7 @@ export class HashRouter extends Component {
 		this.params = null
 		this.childKey = null
 		this.currentParams = null
-		window.removeEventListener('hashchange', this.onHashChange)
+		window.removeEventListener('hashchange', this)
 	}
 
 	render() {

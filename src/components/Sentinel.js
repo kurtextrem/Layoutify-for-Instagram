@@ -19,24 +19,24 @@ export default class Sentinel extends Component {
 	}
 
 	@bind
+	setRef(ref) {
+		this.ref = ref
+	}
+
+	@bind
 	onUpdate(entries) {
 		const entry = entries[0]
 		if (entry.isIntersecting) this.onVisible()
 		else this.onHide()
 	}
 
-	@bind
-	setRef(ref) {
-		this.ref = ref
+	componentDidMount() {
+		this.io = new IntersectionObserver(this.onUpdate)
+		this.io.observe(this.ref)
 	}
 
 	shouldComponentUpdate() {
 		return false
-	}
-
-	componentDidMount() {
-		this.io = new IntersectionObserver(this.onUpdate)
-		this.io.observe(this.ref)
 	}
 
 	componentWillUnmount() {

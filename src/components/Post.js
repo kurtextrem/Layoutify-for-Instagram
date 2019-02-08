@@ -1,11 +1,17 @@
-import bind from 'autobind-decorator'
 //import ImgWorker from './ImgWorker'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import PostMedia from './PostMedia'
 import { CardBody, CardText } from 'reactstrap'
-import { Chrome, Storage, getWorkerBlob, logAndReturn, updateCDN } from './Utils'
-import { Component, createElement } from 'nervjs'
+import {
+	Chrome,
+	Storage,
+	getWorkerBlob,
+	logAndReturn,
+	updateCDN,
+} from './Utils'
+import { EventComponent } from './EventComponent'
+import { createElement } from 'nervjs'
 
 let initiated = false,
 	worker
@@ -18,7 +24,7 @@ function init() {
 	}
 }
 
-export default class Post extends Component {
+export default class Post extends EventComponent {
 	static removeItem(id) {
 		Storage.get('items', null)
 			.then(data => {
@@ -47,8 +53,7 @@ export default class Post extends Component {
 		active: true,
 	}
 
-	@bind
-	preloadAll() {
+	onmouseenter() {
 		if (this.preloaded) return
 
 		this.preloaded = true
@@ -59,13 +64,20 @@ export default class Post extends Component {
 
 	preload(index) {
 		if (worker !== undefined) {
-			console.log('preloading', this.props.data.carousel_media[index].image_versions2.candidates[0].url)
-			worker.postMessage(updateCDN(this.props.data.carousel_media[index].image_versions2.candidates[0].url))
+			console.log(
+				'preloading',
+				this.props.data.carousel_media[index].image_versions2.candidates[0].url
+			)
+			worker.postMessage(
+				updateCDN(
+					this.props.data.carousel_media[index].image_versions2.candidates[0]
+						.url
+				)
+			)
 		}
 	}
 
-	@bind
-	onBtnClick(e) {
+	onclick(e) {
 		e.stopPropagation()
 		e.preventDefault()
 
@@ -100,13 +112,28 @@ export default class Post extends Component {
 		const text = (caption && caption.text) || ''
 
 		return (
-			<article className={`card${active ? '' : ' fadeOut'}`} id={`post_${this.id}`} onMouseEnter={isCarousel ? this.preloadAll : undefined}>
+			<article
+				className={`card${active ? '' : ' fadeOut'}`}
+				id={`post_${this.id}`}
+				onMouseEnter={isCarousel ? this : undefined}
+			>
 				<PostHeader user={user} code={data.code} taken_at={data.taken_at} />
-				<PostMedia isCarousel={isCarousel} carouselLen={carouselLen} initial={initial} data={data} />
+				<PostMedia
+					isCarousel={isCarousel}
+					carouselLen={carouselLen}
+					initial={initial}
+					data={data}
+				/>
 				<CardBody className="overflow-auto p-3 card-body">
 					<CardText>{text}</CardText>
 				</CardBody>
-				<PostFooter active={active} btnClick={this.onBtnClick} defaultClass={defaultClass} toggleClass={toggleClass} parent={parent} />
+				<PostFooter
+					active={active}
+					btnClick={this}
+					defaultClass={defaultClass}
+					toggleClass={toggleClass}
+					parent={parent}
+				/>
 			</article>
 		)
 	}

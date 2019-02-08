@@ -49,7 +49,6 @@ export default class PostsContainer extends Component {
 		timeout: 0,
 	}
 
-	@bind
 	setTimeout(timeout) {
 		this.setState((prevState, props) => ({ timeout }))
 		if (timeout !== 1000) window.setTimeout(() => this.setTimeout(1000), 1000)
@@ -65,7 +64,6 @@ export default class PostsContainer extends Component {
 		}
 	}
 
-	@bind
 	populateData() {
 		console.log('populating data')
 
@@ -117,9 +115,12 @@ export default class PostsContainer extends Component {
 
 		return (
 			nextProps.id !== this.props.id ||
-			(nextState.timeout !== timeout && (nextItems === null || nextItems.length === 0)) ||
+			(nextState.timeout !== timeout &&
+				(nextItems === null || nextItems.length === 0)) ||
 			(items === null && nextItems !== null) || // first items
-			(items !== null && nextItems !== null && nextItems.length !== items.length)
+			(items !== null &&
+				nextItems !== null &&
+				nextItems.length !== items.length)
 		)
 	}
 
@@ -154,7 +155,9 @@ export default class PostsContainer extends Component {
 		if (items !== null && items.length !== 0)
 			return (
 				<div className="position-relative">
-					<CardDeck className="justify-content-center">{Posts(items, this.renderPost, hasCategories)}</CardDeck>
+					<CardDeck className="justify-content-center">
+						{Posts(items, this.renderPost, hasCategories)}
+					</CardDeck>
 					<Sentinel onVisible={this.handleScroll} />
 				</div>
 			)
