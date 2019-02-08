@@ -357,8 +357,13 @@ div[role='button'] > div:first-child {
 	z-index: 1;
 }
 
-div[role='button'] {
-	z-index: 0; /* so it doesn't overlap tagged users */
+div[role='button'] > div > div:not(:first-child):not(:last-child),
+div[role='button'] > div > button {
+	z-index: 1; /* so it doesn't overlap tagged users */
+}
+
+div[role='button'] > div > button {
+	opacity: 1; /* always show */
 }
 
 /** Multiple dots */

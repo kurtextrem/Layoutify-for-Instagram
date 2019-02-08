@@ -281,7 +281,7 @@ function addNamesToStories() {
 }
 
 const connection = navigator.connection.type,
-	speed = navigator.connection.downlink,
+	speed = 2, //navigator.connection.downlink, // @todo: Chrome is running some kind of weird experiment, that messes with downlink.
 	fullSizeCondition = connection === 'wifi' && speed > 1.9,
 	fullsizeObserver = observe(
 		undefined,

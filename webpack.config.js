@@ -85,10 +85,12 @@ const html = {
 const plugins = [
 	new ProgressBarPlugin({
 		messageTemplate:
-			'\u001B[90m\u001B[49m\u001B[39m [:bar] \u001B[32m\u001B[1m:percent\u001B[22m\u001B[39m (:elapseds) \u001B[2m:msg\u001B[22m',
+			'[:bar] \u001B[32m\u001B[1m:percent\u001B[22m\u001B[39m (:elapseds) \u001B[2m:msg\u001B[22m',
 		progressOptions: {
-			renderThrottle: 100,
+			renderThrottle: 112,
 			clear: true,
+			complete: '=',
+			incomplete: ' ',
 		},
 	}),
 	new HtmlWebpackPlugin(html),
@@ -220,7 +222,7 @@ if (isProd) {
 } else {
 	const options = {
 		middleware: (app, builtins) =>
-			app.use(async (ctx, next) => {
+			app.use(async(ctx, next) => {
 				await next()
 				ctx.set('Access-Control-Allow-Origin', '*')
 				ctx.set(
@@ -388,7 +390,7 @@ const first = {
 	},
 
 	devtool: isProd
-		? false /* 'cheap-module-source-map'*/ /*'source-map'*/
+		? false /*'source-map'*/ /* 'cheap-module-source-map'*/
 		: 'inline-module-source-map', //'nosources-source-map',
 
 	plugins,
