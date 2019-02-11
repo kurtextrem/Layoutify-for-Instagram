@@ -53,12 +53,27 @@ export default class Post extends EventComponent {
 		active: true,
 	}
 
-	onmouseenter() {
+	mouseenter() {
 		if (this.preloaded) return
 
 		this.preloaded = true
 		for (let i = 1; i < this.carouselLen; ++i) {
 			this.preload(i)
+		}
+	}
+
+	click(e) {
+		e.stopPropagation()
+		e.preventDefault()
+
+		if (this.state.active) {
+			Chrome.send('remove', { which: this.props.parent, id: this.id })
+			this.setState((prevState, props) => ({ active: false }))
+			this.timeout = window.setTimeout(() => Post.removeItem(this.id), 7500)
+		} else {
+			Chrome.send('add', { which: this.props.parent, id: this.id })
+			this.setState((prevState, props) => ({ active: true }))
+			window.clearTimeout(this.timeout)
 		}
 	}
 
@@ -74,21 +89,6 @@ export default class Post extends EventComponent {
 						.url
 				)
 			)
-		}
-	}
-
-	onclick(e) {
-		e.stopPropagation()
-		e.preventDefault()
-
-		if (this.state.active) {
-			Chrome.send('remove', { which: this.props.parent, id: this.id })
-			this.setState((prevState, props) => ({ active: false }))
-			this.timeout = window.setTimeout(() => Post.removeItem(this.id), 7500)
-		} else {
-			Chrome.send('add', { which: this.props.parent, id: this.id })
-			this.setState((prevState, props) => ({ active: true }))
-			window.clearTimeout(this.timeout)
 		}
 	}
 

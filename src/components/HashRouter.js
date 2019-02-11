@@ -111,7 +111,7 @@ export class HashRouter extends EventComponent {
 		})
 	}
 
-	onhashchange() {
+	hashchange() {
 		const render = this.getMatchedPage()
 		if (render === null) return
 
