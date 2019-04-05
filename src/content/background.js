@@ -404,7 +404,7 @@ function handleStory(json, user, userObj, watchData, options) {
 	const reel = userJson.reel,
 		id = reel !== null ? reel.latest_reel_media : null
 
-	if (reel.seen > id) console.warn('seen id > current id: story deleted?')
+	if (reel.seen > id) console.warn(user, 'seen id > current id: story deleted?')
 	if (id !== null && id > reel.seen) {
 		// && id != userObj.story
 		console.log(user, 'new story')

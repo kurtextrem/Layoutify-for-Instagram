@@ -9,6 +9,11 @@ import { CardDeck } from 'reactstrap'
 import { Chrome, Storage, logAndReturn } from './Utils'
 import { Component, createElement } from 'nervjs'
 
+const TIME_STATE = {
+	LOADING: 900,
+	ERROR: 2000,
+}
+
 export default class PostsContainer extends Component {
 	static loading = <Loading />
 
@@ -34,14 +39,17 @@ export default class PostsContainer extends Component {
 		</div>
 	)
 
-	constructor(props) {
-		super(props)
+	constructor(properties) {
+		super(properties)
 
 		this.initial = 0
 		this.postCount = 0
 
 		this.populateData()
-		window.setTimeout(() => this.setTimeout(200), 200)
+		window.setTimeout(
+			() => this.setTimeout(TIME_STATE.LOADING),
+			TIME_STATE.LOADING
+		)
 	}
 
 	state = {
@@ -50,8 +58,12 @@ export default class PostsContainer extends Component {
 	}
 
 	setTimeout(timeout) {
-		this.setState((prevState, props) => ({ timeout }))
-		if (timeout !== 1000) window.setTimeout(() => this.setTimeout(1000), 1000)
+		this.setState((previousState, properties) => ({ timeout }))
+		if (timeout !== TIME_STATE.ERROR)
+			window.setTimeout(
+				() => this.setTimeout(TIME_STATE.ERROR),
+				TIME_STATE.ERROR
+			)
 	}
 
 	@bind
@@ -76,10 +88,10 @@ export default class PostsContainer extends Component {
 	handleData(data) {
 		++this.initial
 		if (data !== null)
-			this.setState((prevState, props) => ({
+			this.setState((previousState, props) => ({
 				items: data.items,
 				//nextMaxId: data.nextMaxId,
-				timeout: prevState.timeout > 400 ? prevState.timeout : 400,
+				timeout: previousState.timeout,
 			}))
 
 		return data
@@ -102,7 +114,7 @@ export default class PostsContainer extends Component {
 		this.addStorageListener()
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProperties, nextState) {
 		const { timeout, items } = this.state
 		const nextItems = nextState.items
 		/*console.log(
@@ -114,7 +126,7 @@ export default class PostsContainer extends Component {
 		)*/
 
 		return (
-			nextProps.id !== this.props.id ||
+			nextProperties.id !== this.props.id ||
 			(nextState.timeout !== timeout &&
 				(nextItems === null || nextItems.length === 0)) ||
 			(items === null && nextItems !== null) || // first items
@@ -162,8 +174,8 @@ export default class PostsContainer extends Component {
 				</div>
 			)
 
-		if (timeout === 200) return PostsContainer.loading
-		if (timeout === 1000) return PostsContainer.error
+		if (timeout === TIME_STATE.LOADING) return PostsContainer.loading
+		if (timeout === TIME_STATE.ERROR) return PostsContainer.error
 
 		return PostsContainer.dummy // first paint & items === null
 	}

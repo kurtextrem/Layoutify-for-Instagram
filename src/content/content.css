@@ -4,6 +4,13 @@
 	--primary: white;
 }
 
+/*html,
+body,
+#react-root {
+	height: unset !important;
+	min-height: 100%;
+}*/
+
 body {
 	/** font-size: 15px !important; we're on desktop, okay? */
 	overflow-y: unset !important; /** de-opts scrolling */
@@ -102,9 +109,14 @@ canvas + span:focus {
 =============================================*/
 body > div > div[role='dialog'] article > header,
 #react-root:not(.profile):not(.explore) article > header {
+	width: 99%;
 	height: 53px !important;
+	margin: auto;
 	padding: 16px 8px !important;
 	contain: strict;
+
+	/** don't overlap, so article won't get promoted to a layer */
+	z-index: 8;
 }
 
 #react-root.post.post.post article > header {
@@ -114,7 +126,7 @@ body > div > div[role='dialog'] article > header,
 body > div > div[role='dialog'] article > header,
 #react-root.post article > header {
 	right: 8px;
-	width: 305px;
+	width: 305px !important;
 }
 
 body > div > div[role='dialog'] article > header {
@@ -233,6 +245,26 @@ header
 	overflow-y: auto;
 	overflow-x: hidden;
 	grid-area: c;
+}
+
+body
+> div
+> div[role='dialog']
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+> ul,
+#react-root:not(.stories)
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+> ul {
+	max-height: 100%;
+	contain: content;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 /** Heart / Comment / Save */
