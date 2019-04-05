@@ -10,7 +10,7 @@
 	--dark: #000;
 	--secondary: #757575;
 	--secondary-light: #a4a4a4;
-	--secondary-text: #e0e0e0;
+	--secondary-text: #c5c5c5;
 }
 
 /*=============================================
@@ -23,6 +23,7 @@ body,
 section > nav > div > div,
 /* Main */
 section > main,
+section > main *:not(canvas):not([class^='glyphsSprite']):not([class^='coreSprite']),
 /* Footer */
 section > footer,
 div[role='dialog'],
@@ -123,7 +124,19 @@ body > div > div > div > div > ul > li > button {
 	background-color: var(--primary);
 }
 
-#react-root > section > main > article > div > div > div > div > div > ul > li > div > div {
+#react-root
+> section
+> main
+> article
+> div
+> div
+> div
+> div
+> div
+> ul
+> li
+> div
+> div {
 	border: none;
 	background: var(--light);
 }
@@ -201,7 +214,18 @@ body > div > div > div > div > article > div > section {
 }
 
 /* Comments: tagged users */
-#react-root > section > main > div > div > article > div > div > ul > li > span > a {
+#react-root
+> section
+> main
+> div
+> div
+> article
+> div
+> div
+> ul
+> li
+> span
+> a {
 	color: var(--blue) !important;
 }
 
