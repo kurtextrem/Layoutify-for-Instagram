@@ -120,13 +120,14 @@ body > div > div[role='dialog'] article > header,
 }
 
 #react-root.post.post.post article > header {
-	padding: 5px !important;
+	padding: 4px !important;
 }
 
 body > div > div[role='dialog'] article > header,
 #react-root.post article > header {
 	right: 8px;
 	width: 305px !important;
+	border: 0;
 }
 
 body > div > div[role='dialog'] article > header {
@@ -170,7 +171,7 @@ body > div > div[role='dialog'] header + div + div,
 body > div > div[role='dialog'] header + div + div,
 #react-root.post.post.post header + div + div {
 	height: auto !important;
-	padding: 0 8px 0 24px !important;
+	padding: 0 8px 0 23px !important;
 
 	grid-template:
 		'date likes' min-content
@@ -187,6 +188,7 @@ div > section + section {
 
 	order: 1 !important;
 	max-width: 100%;
+	padding: 0 !important;
 	text-align: right;
 	grid-area: likes;
 }
@@ -215,12 +217,51 @@ div > section + div + div {
 	order: 0 !important;
 	margin-bottom: 4px !important;
 	grid-area: date;
+	padding: 0 !important;
 }
 
 /** Larger timestamp */
-div > a > time {
+time {
 	font-size: 14px !important;
 	text-transform: none;
+}
+
+body
+> div
+> div[role='dialog']
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+> ul
+> ul
+> li,
+#react-root:not(.stories)
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+> ul
+> ul
+> li {
+	padding: 0 16px;
+}
+
+/** Comments comments timestamp, reply, liked */
+ul li div > time,
+ul li div > time + a,
+ul li div > time + a + button {
+	margin-right: 12px !important;
+}
+
+/** Comments comments timestamp */
+ul li div > time {
+	font-size: 12px !important;
+}
+
+/** Comments comments timestamp, reply, liked container */
+h3 + span + div {
+	margin-top: 6px;
 }
 
 /** Grow comments */
@@ -261,10 +302,113 @@ header
 + div
 > div:first-of-type:not(:only-child)
 > ul {
-	max-height: 100%;
+	width: 100%;
+	height: 100%;
+	padding: 0;
 	contain: content;
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+
+body
+> div
+> div[role='dialog']
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+> ul
+> li,
+#react-root:not(.stories)
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+> ul
+> li {
+	margin-top: 0;
+	margin-right: -2px;
+	margin-left: 0;
+	padding: 5px;
+}
+
+/** Comments comment profile pic */
+body
+> div
+> div[role='dialog']
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+ul
+> li
+> div
+> div
+> div,
+#react-root:not(.stories)
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+ul
+> li
+> div
+> div
+> div {
+	align-self: flex-start;
+	margin-right: 7px;
+}
+
+/** Comments comments replies */
+body
+> div
+> div[role='dialog']
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+> ul
+> ul
+> li
+> ul,
+#react-root:not(.stories)
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+> ul
+> ul
+> li
+> ul {
+	width: calc(100% - 18px);
+	margin: 4px 0 0 36px;
+}
+
+body
+> div
+> div[role='dialog']
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+> ul
+> ul
+> li
+> ul
+> li:first-child
+> div,
+#react-root:not(.stories)
+header
++ div
++ div
+> div:first-of-type:not(:only-child)
+> ul
+> ul
+> li
+> ul
+> li:first-child
+> div {
+	margin-bottom: 0;
 }
 
 /** Heart / Comment / Save */
@@ -275,6 +419,7 @@ header + div + div > section:first-child {
 	height: 56px;
 	margin-top: 0 !important;
 	margin-right: 0 !important;
+	padding: 0 !important;
 	border-top: 1px solid #efefef;
 	contain: content;
 	grid-area: buttons;
@@ -371,7 +516,8 @@ div[role='button'] > div[role='dialog'] > div + div > div + div + a, /* Big vide
 .coreSpriteVideoIconLarge,
 .coreSpriteRightChevron,
 .videoSpritePlayButton,
-.coreSpriteLeftChevron {
+.coreSpriteLeftChevron,
+div[role='button'] > div[role='dialog'] + button /* Taged Users icon */ {
 	z-index: 3;
 }
 
