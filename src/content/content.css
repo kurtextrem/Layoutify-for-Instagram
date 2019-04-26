@@ -125,9 +125,9 @@ body > div > div[role='dialog'] article > header,
 
 body > div > div[role='dialog'] article > header,
 #react-root.post article > header {
-	right: 8px;
+	right: 8px !important;
 	width: 305px !important;
-	border: 0;
+	border: 0 !important;
 }
 
 body > div > div[role='dialog'] article > header {
@@ -250,8 +250,14 @@ header
 /** Comments comments timestamp, reply, liked */
 ul li div > time,
 ul li div > time + a,
-ul li div > time + a + button {
+ul li div > time + button,
+ul li div > time + a + button,
+ul li div > time + button + button {
 	margin-right: 12px !important;
+}
+
+li[role='menuitem'] > div > div {
+	width: calc(100% - 7px);
 }
 
 /** Comments comments timestamp */
@@ -319,7 +325,7 @@ header
 > div:first-of-type:not(:only-child)
 > ul
 > li,
-#react-root:not(.stories)
+#react-root.post
 header
 + div
 + div
