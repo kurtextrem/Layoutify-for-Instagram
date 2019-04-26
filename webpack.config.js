@@ -44,11 +44,11 @@ const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // 
 // const smp = new SpeedMeasurePlugin({ granularLoaderData: false })
 
 const ENV = process.env.NODE_ENV || 'development'
-const isProd = ENV === 'production'
+const isProduction = ENV === 'production'
 const STATS =
 	process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
 
-const babelConfig = require('./babelConfig')(isProd, { modules: false })
+const babelConfig = require('./babelConfig')(isProduction, { modules: false })
 
 // by using min versions we speed up HMR
 function getMin(module) {
@@ -57,15 +57,15 @@ function getMin(module) {
 		`node_modules/${module}/dist/${module.replace('js', '')}.min.js`
 	)
 }
-const nerv = isProd ? 'nervjs' : getMin('nervjs') // around 20 KB smaller bundle in prod
+const nerv = isProduction ? 'nervjs' : getMin('nervjs') // around 20 KB smaller bundle in prod
 
 const html = {
 	title: 'Improved Layout for Instagram',
 	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	cache: true,
-	inject: isProd ? false : 'head',
-	minify: isProd
+	inject: isProduction ? false : 'head',
+	minify: isProduction
 		? {
 				removeComments: false,
 				collapseWhitespace: true,
@@ -78,7 +78,7 @@ const html = {
 		: false,
 	// hash: true,
 	ssr: params => {
-		return isProd ? prerender('dist', params) : ''
+		return isProduction ? prerender('dist', params) : ''
 	}, // @TODO: Replace with https://github.com/GoogleChromeLabs/prerender-loader
 }
 
@@ -99,7 +99,7 @@ const plugins = [
 		{
 			from: '*.json',
 			transform: (content, path) => {
-				if (path.indexOf('manifest.json') === -1 || !isProd) return content
+				if (!path.includes('manifest.json') || !isProduction) return content
 
 				return replaceBuffer(
 					content,
@@ -115,7 +115,7 @@ const plugins = [
 	]),
 ]
 
-if (isProd) {
+if (isProduction) {
 	pureFuncs.push(
 		'classCallCheck',
 		'_classCallCheck',
@@ -132,7 +132,7 @@ if (isProd) {
 	)
 
 	plugins.push(
-		new webpack.HashedModuleIdsPlugin(),
+		new webpack.HashedModuleIdsPlugin(), // @TODO Remove @ webpack5
 		/*new DuplicatePackageCheckerPlugin({
 			emitError: true,
 			verbose: true,
@@ -222,14 +222,14 @@ if (isProd) {
 } else {
 	const options = {
 		middleware: (app, builtins) =>
-			app.use(async(ctx, next) => {
+			app.use(async (context, next) => {
 				await next()
-				ctx.set('Access-Control-Allow-Origin', '*')
-				ctx.set(
+				context.set('Access-Control-Allow-Origin', '*')
+				context.set(
 					'Access-Control-Allow-Methods',
 					'GET, POST, PUT, DELETE, PATCH, OPTIONS'
 				)
-				ctx.set(
+				context.set(
 					'Access-Control-Allow-Headers',
 					'X-Requested-With, content-type, Authorization'
 				)
@@ -268,19 +268,19 @@ if (isProd) {
 )*/
 
 const first = {
-	mode: isProd ? 'production' : 'development',
+	mode: isProduction ? 'production' : 'development',
 
 	context: path.join(__dirname, 'src'),
 
-	entry: isProd
+	entry: isProduction
 		? ['./index.js']
 		: ['./index.js', 'webpack-plugin-serve/client'],
 
-	watch: !isProd,
+	watch: !isProduction,
 
 	output: {
 		path: path.join(__dirname, 'dist'),
-		publicPath: isProd ? '' : 'http://localhost:8080/',
+		publicPath: isProduction ? '' : 'http://localhost:8080/',
 		filename: 'bundle.js',
 		pathinfo: false, // @todo: check if false does impact development
 		//devtoolModuleFilenameTemplate: info => (isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`),
@@ -288,12 +288,12 @@ const first = {
 
 	recordsPath: path.resolve(__dirname, './records.json'),
 
-	optimization: isProd
+	optimization: isProduction
 		? {
 				minimizer: [
 					new TerserPlugin({
 						cache: true,
-						sourceMap: !isProd,
+						sourceMap: !isProduction,
 						terserOptions: {
 							ecma: 8,
 							compress: {
@@ -366,12 +366,18 @@ const first = {
 			},
 			{
 				test: /\.cs{2}$/, // .css
-				use: isProd
-					? [MiniCssExtractPlugin.loader, 'css-loader']
-					: ['style-loader', 'css-loader'],
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader,
+						options: {
+							hmr: !isProduction,
+						},
+					},
+					'css-loader',
+				],
 			},
 		],
-		noParse: isProd
+		noParse: isProduction
 			? undefined
 			: [
 					// faster HMR
@@ -389,20 +395,20 @@ const first = {
 		},
 	},
 
-	devtool: isProd
-		? false /*'source-map'*/ /* 'cheap-module-source-map'*/
+	devtool: isProduction
+		? false /* 'cheap-module-source-map'*/ /*'source-map'*/
 		: 'inline-module-source-map', //'nosources-source-map',
 
 	plugins,
 
 	performance: {
-		hints: isProd ? 'warning' : false,
+		hints: isProduction ? 'warning' : false,
 	},
 
 	node: false,
 
 	stats:
-		isProd && STATS
+		isProduction && STATS
 			? {
 					reasons: true,
 			  }
@@ -434,4 +440,4 @@ const second = {
 // @TODO: https://blog.box.com/blog/how-we-improved-webpack-build-performance-95/
 // requireSoSlow.write('require-trace.trace')
 // module.exports = isProd ? [smp.wrap(first), second] : first
-module.exports = isProd ? [first, second] : first
+module.exports = isProduction ? [first, second] : first
