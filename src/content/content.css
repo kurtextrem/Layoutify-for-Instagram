@@ -327,9 +327,8 @@ header
 > ul
 > li {
 	margin-top: 0;
-	margin-right: -2px;
 	margin-left: 0;
-	padding: 5px;
+	padding: 2px;
 }
 
 /** Comments comment profile pic */
