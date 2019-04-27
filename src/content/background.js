@@ -203,8 +203,8 @@ function fetchFromBackground(which, path, sendResponse) {
 //	UUID = '' // 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
 
 function fetchAux(url, options) {
-	const options_ = fetchOptions
-	if (options !== undefined) Object.assign({}, options_, options) // eslint-disable-line
+	let options_ = fetchOptions
+	if (options !== undefined) options_ = { ...options_, ...options }
 
 	return fetch(url, options_)
 		.then(checkStatus)
@@ -446,7 +446,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 	let url
 	if (type === 0) url = `https://www.instagram.com/${user}/?__a=1`
 	if (type === 1) {
-		const params = Object.assign({}, storiesParams) // eslint-disable-line
+		const params = { ...storiesParams }
 		params.user_id = userObject.id
 		url = `https://www.instagram.com/graphql/query/?${new URLSearchParams({
 			query_hash: QUERY_HASH,
@@ -454,7 +454,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 		}).toString()}`
 	}
 
-	const options = Object.assign({}, notificationOptions) // eslint-disable-line
+	const options = { ...notificationOptions }
 	fetchAux(url, WEB_OPTS)
 		.then(toJSON)
 		.then(json => {
@@ -490,7 +490,7 @@ function createUserObject(user, watchData) {
 		.catch(e => {
 			console.warn(e)
 			if (e.status === 404) {
-				const options = Object.assign({}, notificationOptions) // eslint-disable-line
+				const options = { ...notificationOptions }
 				notifyError(user, options)
 			}
 			return e

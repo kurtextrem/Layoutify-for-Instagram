@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extTitle__",
-	"version": "2.9.3.2",
+	"version": "2.9.4",
 	"manifest_version": 2,
 
 	"description": "__MSG_extDesc__",
@@ -25,7 +25,7 @@
 		"persistent": true
 	},
 	"options_page": "index.html",
-	"minimum_chrome_version": "55",
+	"minimum_chrome_version": "72",
 
 	"permissions": [
 		"*://*.instagram.com/*",
