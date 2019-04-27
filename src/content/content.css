@@ -256,7 +256,7 @@ ul li div > time + button + button {
 	margin-right: 12px !important;
 }
 
-li[role='menuitem'] > div > div {
+.profile li[role='menuitem'] > div > div:not(:hover) {
 	width: calc(100% - 7px);
 }
 
@@ -507,21 +507,12 @@ video:not([loop])::-webkit-media-controls-overlay-play-button {
 div > div + a + div,
 div > div + [style][href],
 div > div + [style][href] ~ a,
-
 /** Sprites */
-/*#react-root:not(.profile) div[role='button'] + div, /* Heart Animation */
-.coreSpriteSidecarIconLarge, /* @TODO: Update me */
 div[role='button'] ~ a, /* Multiple dots arrows */
 div[role='button'] ~ a ~ div, /* Multiple videos/images dots */
 div[role='button'] > div[role='dialog'] > div + div > div + div > span, /* Tiny video icon */
 div[role='button'] > div[role='dialog'] > div + div > div + div + a, /* Big video icon */
-.coreSpriteLikeAnimationHeart,
-.coreSpriteSidecarIconLarge,
-.coreSpriteUserTagIndicator,
-.coreSpriteVideoIconLarge,
-.coreSpriteRightChevron,
-.videoSpritePlayButton,
-.coreSpriteLeftChevron,
+[class*="Sprite"],
 div[role='button'] > div[role='dialog'] + button /* Taged Users icon */ {
 	z-index: 3;
 }
@@ -866,6 +857,14 @@ body > div > div[role='dialog'] article,
 
 .profile section > main > div > * {
 	margin-bottom: 20px;
+}
+
+/*=============================================
+									Explore
+=============================================*/
+/** Liked amount */
+.explore article > div > div > div > div:hover > a > div:last-child {
+	z-index: 1;
 }
 
 /*=============================================
