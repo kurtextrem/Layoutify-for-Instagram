@@ -6,11 +6,14 @@ import { Media } from 'reactstrap'
 import { updateCDN } from './Utils'
 
 export default class PostHeader extends Component {
-	constructor(props) {
-		super(props)
+	constructor(properties) {
+		super(properties)
 
 		this.state = {
-			date: props.taken_at !== 0 ? new Date(+`${props.taken_at}000`) : null,
+			date:
+				properties.taken_at !== 0
+					? new Date(+`${properties.taken_at}000`)
+					: null,
 		}
 	}
 
@@ -24,16 +27,38 @@ export default class PostHeader extends Component {
 
 		return (
 			<header className="media align-items-center card-block grow-0 pl-2 pr-2">
-				<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener">
-					<img src={updateCDN(user.profile_pic_url)} className="img-fluid profile-pic rounded mr-2" alt="❌" decoding="async" />
+				<a
+					href={`https://www.instagram.com/${user.username}`}
+					target="_blank"
+					rel="noopener"
+				>
+					<img
+						src={updateCDN(user.profile_pic_url)}
+						className="img-fluid profile-pic rounded mr-2"
+						alt="❌"
+						decoding="async"
+					/>
 				</a>
 				<Media body>
-					<a href={`https://instagram.com/${user.username}`} target="_blank" rel="noopener">
+					<a
+						href={`https://instagram.com/${user.username}`}
+						target="_blank"
+						rel="noopener"
+					>
 						{user.full_name || user.username}
 					</a>
 				</Media>
-				<a href={`https://www.instagram.com/p/${code}`} target="_blank" rel="noopener">
-					{date !== null ? <TimeAgo className="text-muted" date={date} /> : <time className="text-muted" />}
+				<span className="text-muted">posted&nbsp;</span>
+				<a
+					href={`https://www.instagram.com/p/${code}`}
+					target="_blank"
+					rel="noopener"
+				>
+					{date !== null ? (
+						<TimeAgo className="text-muted" date={date} />
+					) : (
+						<time className="text-muted" />
+					)}
 				</a>
 			</header>
 		)
