@@ -51,15 +51,6 @@ function getSessionId() {
 
 getSessionId()
 
-const extraInfoSpec = ['blocking']
-if (chrome.webRequest.OnBeforeSendHeadersOptions.EXTRA_HEADERS !== undefined)
-	extraInfoSpec.push('extraHeaders') // needed for Chrome 72+, https://groups.google.com/a/chromium.org/forum/#!topic/chromium-extensions/vYIaeezZwfQ
-
-const typeSpec = {
-	urls: ['https://i.instagram.com/*'],
-	types: ['xmlhttprequest'],
-}
-
 // Hook into web request and modify headers before sending the request
 chrome.webRequest.onBeforeSendHeaders.addListener(
 	function listener(details) {
@@ -82,8 +73,20 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
 		return { requestHeaders: headers }
 	},
-	typeSpec,
-	extraInfoSpec.concat('requestHeaders')
+	{
+		urls: ['https://i.instagram.com/*'],
+		types: ['xmlhttprequest'],
+	},
+	['blocking', 'requestHeaders', 'extraHeaders']
+)
+
+chrome.webRequest.onHeadersReceived.addListener(
+	modifyCspHeaders,
+	{
+		urls: ['https://i.instagram.com/*'],
+		types: ['xmlhttprequest'],
+	},
+	['blocking', 'responseHeaders', 'extraHeaders']
 )
 
 function modifyCspHeaders(details) {
@@ -102,12 +105,6 @@ function modifyCspHeaders(details) {
 
 	return { responseHeaders: details.responseHeaders }
 }
-
-chrome.webRequest.onHeadersReceived.addListener(
-	modifyCspHeaders,
-	typeSpec,
-	extraInfoSpec.concat('responseHeaders')
-)
 
 const fetchOptions = {
 	credentials: 'include',
@@ -206,10 +203,10 @@ function fetchFromBackground(which, path, sendResponse) {
 //	UUID = '' // 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
 
 function fetchAux(url, options) {
-	const opts = fetchOptions
-	if (options !== undefined) Object.assign({}, opts, options) // eslint-disable-line
+	const options_ = fetchOptions
+	if (options !== undefined) Object.assign({}, options_, options) // eslint-disable-line
 
-	return fetch(url, opts)
+	return fetch(url, options_)
 		.then(checkStatus)
 		.catch(window.logAndReturn)
 }
@@ -233,12 +230,7 @@ chrome.runtime.onMessage.addListener(function listener(
 			break
 
 		case 'watchInBackground':
-			chrome.alarms.clear('update', () => {
-				chrome.alarms.create('update', {
-					delayInMinutes: 1,
-					periodInMinutes: 5,
-				})
-			})
+			createUpdateAlarm()
 			break
 
 		case 'stopWatchInBackground':
@@ -260,6 +252,13 @@ chrome.runtime.onMessage.addListener(function listener(
 	return false
 })
 
+function createUpdateAlarm() {
+	chrome.alarms.create('update', {
+		delayInMinutes: 1,
+		periodInMinutes: 4,
+	})
+}
+
 /** Open Changelog when updating to a new major/minor version. */
 chrome.runtime.onInstalled.addListener(details => {
 	if (details.reason !== 'update') return
@@ -277,6 +276,8 @@ chrome.runtime.onInstalled.addListener(details => {
 		chrome.storage.sync.set({ watchData: data.watchData })
 		chrome.storage.local.remove('watchData')
 	})
+
+	createUpdateAlarm()
 
 	const currentVersion = chrome.runtime.getManifest().version,
 		splitNew = currentVersion.split('.'),
@@ -362,13 +363,13 @@ const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 const get = (path, object) =>
 	path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
 
-function handlePost(json, user, userObj, watchData, options) {
+function handlePost(json, user, userObject, watchData, options) {
 	const node = get(
 			['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'],
 			json
 		),
 		id = node !== null ? node.shortcode : null
-	if (id !== null && id != userObj.post) {
+	if (id !== null && id != userObject.post) {
 		console.log(user, 'new post', json.graphql.user)
 		watchData[user].post = id
 
@@ -394,7 +395,7 @@ function handlePost(json, user, userObj, watchData, options) {
 	}
 }
 
-function handleStory(json, user, userObj, watchData, options) {
+function handleStory(json, user, userObject, watchData, options) {
 	const userJson = get(['data', 'user'], json)
 	if (userJson === null) {
 		notifyError(user, options)
@@ -441,12 +442,12 @@ const WEB_OPTS = {
 	}),
 }
 
-function notify(user, userObj, type, watchData, len, i) {
+function notify(user, userObject, type, watchData, length_, i) {
 	let url
 	if (type === 0) url = `https://www.instagram.com/${user}/?__a=1`
 	if (type === 1) {
 		const params = Object.assign({}, storiesParams) // eslint-disable-line
-		params.user_id = userObj.id
+		params.user_id = userObject.id
 		url = `https://www.instagram.com/graphql/query/?${new URLSearchParams({
 			query_hash: QUERY_HASH,
 			variables: JSON.stringify(params),
@@ -458,23 +459,23 @@ function notify(user, userObj, type, watchData, len, i) {
 		.then(toJSON)
 		.then(json => {
 			if (type === 0) {
-				handlePost(json, user, userObj, watchData, options)
+				handlePost(json, user, userObject, watchData, options)
 			} else if (type === 1) {
-				handleStory(json, user, userObj, watchData, options)
+				handleStory(json, user, userObject, watchData, options)
 			}
 
-			if (i === len) chrome.storage.sync.set({ watchData })
+			if (i === length_) chrome.storage.sync.set({ watchData })
 			return json
 		})
 		.catch(e => {
 			console.warn(e)
 			if (e.status === 404) notifyError(user, options)
-			if (i === len) chrome.storage.sync.set({ watchData })
+			if (i === length_) chrome.storage.sync.set({ watchData })
 			return e
 		})
 }
 
-function createUserObj(user, watchData) {
+function createUserObject(user, watchData) {
 	fetchAux(`https://www.instagram.com/${user}/?__a=1`, WEB_OPTS)
 		.then(toJSON)
 		.then(json => {
@@ -504,19 +505,19 @@ function createUserObj(user, watchData) {
  * @param {watchData} watchData Saved data
  */
 function checkForWatchedContent(users, type, watchData) {
-	const len = users.length - 1
+	const length_ = users.length - 1
 
 	let timeout = 0
-	for (let i = 0; i <= len; ++i) {
+	for (let i = 0; i <= length_; ++i) {
 		const user = users[i],
-			userObj = watchData[user]
+			userObject = watchData[user]
 
-		if (userObj === undefined || userObj.id === '')
-			createUserObj(user, watchData)
+		if (userObject === undefined || userObject.id === '')
+			createUserObject(user, watchData)
 
 		timeout += getRandom(400, 800)
 		window.setTimeout(() => {
-			notify(user, watchData[user], type, watchData, len, i)
+			notify(user, watchData[user], type, watchData, length_, i)
 		}, timeout)
 		// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
 	}
