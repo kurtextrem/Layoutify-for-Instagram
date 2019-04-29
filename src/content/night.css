@@ -23,7 +23,7 @@ body,
 section > nav > div > div,
 /* Main */
 section > main,
-section > main *:not(canvas):not([class^='glyphsSprite']):not([class^='coreSprite']),
+section > main *:not(canvas):not([class*='Sprite']):not(video),
 /* Footer */
 section > footer,
 div[role='dialog'],
@@ -39,8 +39,7 @@ li span {
 }
 
 /** Hue Rotation 100% - Important: This has a drastic performance impact. Don't over-use! */
-[class^='coreSprite'],
-[class^='glyphsSprite'],
+[class*='Sprite'],
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div::after /** Stories after "shadow" **/ {
 	filter: invert(100%) hue-rotate(180deg); /* 60%, no hue rotation before */
 	mix-blend-mode: screen;
