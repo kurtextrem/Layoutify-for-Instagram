@@ -94,11 +94,9 @@ const handleNodeFns = {
 	DIV(node) {
 		node.querySelectorAll('img').forEach(fullPhoto)
 		node.querySelectorAll('video').forEach(addControls)
-		//addNamesToStories()
 	},
 	ARTICLE(node) {
 		handleNodeFns.DIV(node)
-		//addNamesToStories()
 	},
 
 	VIDEO: addControls,
@@ -106,7 +104,6 @@ const handleNodeFns = {
 
 	SECTION(node) {
 		handleNodeFns.DIV(node)
-		//addNamesToStories()
 	},
 }
 
@@ -257,28 +254,6 @@ function addListener() {
 		}
 	})
 }
-
-const vlSelector =
-	'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div > div'
-
-/*function addNamesToStories() {
-	const list = document.querySelectorAll(
-			vlSelector + ' button > div + div span'
-		),
-		regex = /\./g
-
-	let i = 0
-	for (; i < list.length; ++i) {
-		const element = list[i]
-
-		element.parentElement.parentElement.parentElement.parentElement.id = `igs_${element.firstChild.data.replace(
-			regex,
-			'dot'
-		)}` // faster than .textContent
-	}
-
-	if (i === 0) console.warn('Stories Name Selector outdated')
-}*/
 
 const connection = navigator.connection.type,
 	speed = navigator.connection.downlink,
