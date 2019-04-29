@@ -25,11 +25,11 @@ const OPTS = {
 	// blockPosts: null, // [] // @TODO: This probably breaks the VL
 	watchPosts: null, // []
 	watchStories: null, // []
-	watchInBackground: false,
+	watchInBackground: true,
 
-	night: false,
-	nightModeStart: 0,
-	nightModeEnd: 0,
+	night: true,
+	nightModeStart: 23,
+	nightModeEnd: 6,
 
 	picturesOnly: false,
 	hideStories: false,
@@ -117,18 +117,18 @@ const OPTS_ADDITIONAL = {
 }
 
 function AllOptions(items = {}, render) {
-	const arr = []
-	for (const opt in OPTS) arr.push(render(opt))
-	return arr
+	const array = []
+	for (const opt in OPTS) array.push(render(opt))
+	return array
 }
 
 export default class Options extends Component {
-	constructor(props) {
-		super(props)
+	constructor(properties) {
+		super(properties)
 
 		StorageSync.get('options', OPTS)
 			.then(data => {
-				this.setState((prevState, props) => ({ options: data }))
+				this.setState((previousState, properties) => ({ options: data }))
 				return data
 			})
 			.catch(logAndReturn)
@@ -142,8 +142,8 @@ export default class Options extends Component {
 	}
 
 	@bind
-	setRef(ref) {
-		return (this.ref = ref)
+	setRef(reference) {
+		return (this.ref = reference)
 	}
 
 	/**
@@ -153,8 +153,8 @@ export default class Options extends Component {
 	 * @param {boolean} remove If array, remove `key`?
 	 */
 	save(key, value, remove) {
-		this.setState((prevState, props) => {
-			const options = prevState.options,
+		this.setState((previousState, properties) => {
+			const options = previousState.options,
 				option = options[key]
 
 			if (Array.isArray(option)) {
@@ -229,7 +229,7 @@ export default class Options extends Component {
 		return e
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProperties, nextState) {
 		return nextState !== this.state
 	}
 
