@@ -367,7 +367,9 @@ ul
 
 /** Comments timestamp */
 body > div > div[role='dialog'] h2 + span + div,
-#react-root:not(.stories) h2 + span + div {
+#react-root:not(.stories) h2 + span + div,
+body > div > div[role='dialog'] h3 + span + div,
+#react-root:not(.stories) h3 + span + div {
 	margin-top: 0;
 	margin-bottom: 10px;
 }
@@ -516,10 +518,10 @@ div > div + a + div,
 div > div + [style][href],
 div > div + [style][href] ~ a,
 
-div[role='button'] ~ a, 
-div[role='button'] ~ a ~ div, 
-div[role='button'] > div[role='dialog'] > div + div > div + div > span, 
-div[role='button'] > div[role='dialog'] > div + div > div + div + a, 
+div[role='button'] ~ a,
+div[role='button'] ~ a ~ div,
+div[role='button'] > div[role='dialog'] > div + div > div + div > span,
+div[role='button'] > div[role='dialog'] > div + div > div + div + a,
 [class*='Sprite'],
 div[role='button'] > div[role='dialog'] + button /* Taged Users icon */ {
 	z-index: 3;
