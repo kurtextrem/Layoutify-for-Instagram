@@ -211,7 +211,8 @@ div > section + section > div > div:last-child {
 }
 
 /** Posted date */
-div > section + div + div {
+div > section + div + div,
+div > section + section + div:only-of-type {
 	flex: 1 1 auto;
 	/* higher than views / likes to push it to the right */
 	order: 0 !important;
@@ -364,6 +365,13 @@ ul
 	margin-right: 7px;
 }
 
+/** Comments timestamp */
+body > div > div[role='dialog'] h2 + span + div,
+#react-root:not(.stories) h2 + span + div {
+	margin-top: 0;
+	margin-bottom: 10px;
+}
+
 /** Comments comments replies */
 body
 > div
@@ -507,12 +515,12 @@ video:not([loop])::-webkit-media-controls-overlay-play-button {
 div > div + a + div,
 div > div + [style][href],
 div > div + [style][href] ~ a,
-/** Sprites */
-div[role='button'] ~ a, /* Multiple dots arrows */
-div[role='button'] ~ a ~ div, /* Multiple videos/images dots */
-div[role='button'] > div[role='dialog'] > div + div > div + div > span, /* Tiny video icon */
-div[role='button'] > div[role='dialog'] > div + div > div + div + a, /* Big video icon */
-[class*="Sprite"],
+
+div[role='button'] ~ a, 
+div[role='button'] ~ a ~ div, 
+div[role='button'] > div[role='dialog'] > div + div > div + div > span, 
+div[role='button'] > div[role='dialog'] > div + div > div + div + a, 
+[class*='Sprite'],
 div[role='button'] > div[role='dialog'] + button /* Taged Users icon */ {
 	z-index: 3;
 }
