@@ -842,6 +842,7 @@ body > div > div[role='dialog'] article,
 #react-root:not(.home) article {
 	flex-grow: 1;
 	justify-content: center;
+	max-height: 100%;
 }
 
 .post > section > main {
