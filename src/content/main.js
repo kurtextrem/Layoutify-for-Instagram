@@ -1,4 +1,4 @@
-const docEl = document.documentElement,
+const documentElement = document.documentElement,
 	$ = e => {
 		return document.querySelector(e)
 	},
@@ -51,14 +51,14 @@ window.addEventListener(
  * @param {MutationOptions} options Options
  * @return {MutationObserver} Callback
  */
-function observe(elem, fn, options) {
+function observe(element, fn, options) {
 	const observer = new MutationObserver(fn)
 
-	if (elem) observer.observe(elem, options)
+	if (element) observer.observe(element, options)
 
 	return {
-		observe(el) {
-			observer.observe(el, options) // MutationObservers have no unobserve, so we just return an observe function.
+		observe(element) {
+			observer.observe(element, options) // MutationObservers have no unobserve, so we just return an observe function.
 		},
 		disconnect() {
 			observer.disconnect()
@@ -79,10 +79,10 @@ observe(
 				added = mutation.addedNodes
 
 			for (const x in added) {
-				const el = added[x]
+				const element = added[x]
 
 				Promise.resolve()
-					.then(handleNode.bind(undefined, el, mutation))
+					.then(handleNode.bind(undefined, element, mutation))
 					.catch(window.logAndReturn)
 			}
 		}
@@ -94,9 +94,11 @@ const handleNodeFns = {
 	DIV(node) {
 		node.querySelectorAll('img').forEach(fullPhoto)
 		node.querySelectorAll('video').forEach(addControls)
+		//addNamesToStories()
 	},
 	ARTICLE(node) {
 		handleNodeFns.DIV(node)
+		//addNamesToStories()
 	},
 
 	VIDEO: addControls,
@@ -104,6 +106,7 @@ const handleNodeFns = {
 
 	SECTION(node) {
 		handleNodeFns.DIV(node)
+		//addNamesToStories()
 	},
 }
 
@@ -115,15 +118,15 @@ function handleNode(node, mutation) {
 }
 
 let hasNavigated = false,
-	prevUrl = location.href,
+	previousUrl = location.href,
 	currentClass = ''
 
 /**
  * Checks the URL for changes.
  */
 function checkURL() {
-	if (location.href !== prevUrl) {
-		prevUrl = location.href
+	if (location.href !== previousUrl) {
+		previousUrl = location.href
 		hasNavigated = true
 		onNavigate()
 	}
@@ -188,17 +191,17 @@ function addExtendedButton() {
 	}
 
 	$anchor = $anchor[$anchor.length - 1].parentNode
-	const el = $anchor.cloneNode(true),
-		a = el.firstChild
+	const element = $anchor.cloneNode(true),
+		a = element.firstChild
 
 	a.className = ''
 	a.classList.add('extended--btn')
 
-	let clickedExtendedBtn = true
+	let clickedExtendedButton = true
 
 	if (window.localStorage.clickedExtendedBtn === undefined) {
 		a.classList.add('extended--btn__new')
-		clickedExtendedBtn = false
+		clickedExtendedButton = false
 	}
 
 	a.href = '#'
@@ -218,9 +221,9 @@ function addExtendedButton() {
 			.catch(window.logAndReturn)
 
 		chrome.runtime.sendMessage(null, { action: 'click' })
-		if (!clickedExtendedBtn) window.localStorage.clickedExtendedBtn = true
+		if (!clickedExtendedButton) window.localStorage.clickedExtendedBtn = true
 	})
-	$anchor.after(el)
+	$anchor.after(element)
 }
 
 const listenerActions = {
@@ -258,30 +261,27 @@ function addListener() {
 const vlSelector =
 	'main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div + div > div > div > div'
 
-function addNamesToStories() {
+/*function addNamesToStories() {
 	const list = document.querySelectorAll(
 			vlSelector + ' button > div + div span'
 		),
-		regex = /\./g,
-		len = list.length
+		regex = /\./g
 
-	if (len === 0) {
-		console.warn('Stories Name Selector outdated')
-		return
-	}
+	let i = 0
+	for (; i < list.length; ++i) {
+		const element = list[i]
 
-	for (let i = 0; i < len; ++i) {
-		const elem = list[i]
-
-		elem.parentElement.parentElement.parentElement.parentElement.id = `igs_${elem.firstChild.data.replace(
+		element.parentElement.parentElement.parentElement.parentElement.id = `igs_${element.firstChild.data.replace(
 			regex,
 			'dot'
 		)}` // faster than .textContent
 	}
-}
+
+	if (i === 0) console.warn('Stories Name Selector outdated')
+}*/
 
 const connection = navigator.connection.type,
-	speed = 2, //navigator.connection.downlink, // @todo: Chrome is running some kind of weird experiment, that messes with downlink.
+	speed = navigator.connection.downlink,
 	fullSizeCondition = connection === 'wifi' && speed > 1.9,
 	fullsizeObserver = observe(
 		undefined,
@@ -306,14 +306,14 @@ function disconnectObservers() {
  *
  * @param {HTMLImageElement} el Image
  */
-function fullPhoto(el) {
-	if (!el) return
+function fullPhoto(element) {
+	if (!element) return
 
-	el.decoding = 'async'
+	element.decoding = 'async'
 	if (fullSizeCondition) {
 		// @todo: Make sure this also happens on first time load on a profile
-		el.sizes = '1080px'
-		fullsizeObserver.observe(el)
+		element.sizes = '1080px'
+		fullsizeObserver.observe(element)
 	}
 }
 
@@ -322,15 +322,15 @@ function fullPhoto(el) {
  *
  * @param {HTMLVideoElement} el Video
  */
-function addControls(el) {
-	if (!el) return
+function addControls(element) {
+	if (!element) return
 
-	el.controls = 'true'
-	if (fullSizeCondition) el.preload = 'auto'
+	element.controls = 'true'
+	if (fullSizeCondition) element.preload = 'auto'
 }
 
 function setBoxWidth(i) {
-	docEl.style.setProperty('--boxWidth', `${i}vw`)
+	documentElement.style.setProperty('--boxWidth', `${i}vw`)
 }
 
 function toggleWatchlist(user) {
@@ -408,11 +408,6 @@ function addWatched() {
 
 /** Options handlers */
 const OPTS_MODE = {
-	blockStories(value) {
-		for (const i in value) {
-			document.getElementById(`igs_${value[i]}`).style.display = 'none'
-		}
-	},
 	//highlightOP(arg) {},
 	_boxWidth(i) {},
 	rows(i) {
@@ -427,7 +422,7 @@ const OPTS_MODE = {
 	klass(cls) {
 		if (!root.classList.contains(cls)) root.classList.add(cls)
 	},
-	night(arg) {
+	night(argument) {
 		const hour = new Date().getHours()
 
 		if (
@@ -437,10 +432,10 @@ const OPTS_MODE = {
 		)
 			injectCSS('night')
 	},
-	only3Dot(arg) {
+	only3Dot(argument) {
 		$('#ige_style').remove()
 	},
-	notify(arg) {
+	notify(argument) {
 		const now = Date.now(),
 			last =
 				window.sessionStorage.ige_lastFetch !== undefined
@@ -458,8 +453,6 @@ const OPTS_MODE = {
  * Options mapper.
  */
 const OPTS = {
-	// blockPosts: null, // []
-	blockStories: OPTS_MODE.blockStories, // []
 	night: OPTS_MODE.night,
 	nightModeStart: undefined,
 	nightModeEnd: undefined,
@@ -535,7 +528,6 @@ function onNavigate() {
 				document.body.querySelectorAll('video').forEach(addControls)
 				document.body.querySelectorAll('img').forEach(fullPhoto)
 
-				if (currentClass === 'home') addNamesToStories()
 				if (currentClass === 'profile') addWatched()
 
 				addExtendedButton()

@@ -22,7 +22,6 @@ import { StorageSync, i18n, logAndReturn, throttle } from './Utils'
  * - number
  */
 const OPTS = {
-	// blockPosts: null, // [] // @TODO: This probably breaks the VL
 	watchPosts: null, // []
 	watchStories: null, // []
 	watchInBackground: true,
@@ -38,7 +37,6 @@ const OPTS = {
 	rows: window.innerWidth < 1367 ? 2 : 4,
 	rowsFourBoxWidth: 23,
 	rowsTwoBoxWidth: 40,
-	blockStories: null, // []
 
 	// hideRecommended: false, // @TODO: Implement (easy)
 	// highlightOP: true, // @TODO: Implement (easy)

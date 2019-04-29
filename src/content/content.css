@@ -826,6 +826,11 @@ body > div > div[role='dialog'] article > header + div {
 	margin-right: 320px !important;
 }
 
+article > header + div > div > div > div > div + div + div:last-child {
+	margin-top: 12px;
+	margin-bottom: -3px;
+}
+
 /** Center the image */
 body > div > div[role='dialog'] article,
 #react-root:not(.home) article {
