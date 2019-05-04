@@ -239,3 +239,7 @@ nav input,
 nav input + div {
 	border: 1px solid var(--dark) !important;
 }
+
+div[role='dialog'] > div > div + div {
+	background-color: transparent !important;
+}
