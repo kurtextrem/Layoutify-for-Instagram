@@ -166,6 +166,7 @@ body > div > div[role='dialog'] header + div + div,
 		'c c' 1fr
 		'buttons comment' 56px
 		/ auto 2fr;
+	overflow-y: auto;
 }
 
 body > div > div[role='dialog'] header + div + div,
@@ -290,8 +291,6 @@ header
 	padding: 0 0 5px !important;
 
 	contain: content;
-	overflow-y: auto;
-	overflow-x: hidden;
 	grid-area: c;
 }
 
@@ -313,7 +312,6 @@ header
 	height: 100%;
 	padding: 0;
 	contain: content;
-	overflow-y: auto;
 	overflow-x: hidden;
 }
 
