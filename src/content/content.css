@@ -368,8 +368,8 @@ body > div > div[role='dialog'] h2 + span + div,
 #react-root:not(.stories) h2 + span + div,
 body > div > div[role='dialog'] h3 + span + div,
 #react-root:not(.stories) h3 + span + div {
-	margin-top: 0;
-	margin-bottom: 10px;
+	margin-top: 7px;
+	margin-bottom: 5px;
 }
 
 /** Comments comments replies */
