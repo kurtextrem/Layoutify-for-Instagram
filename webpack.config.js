@@ -48,8 +48,6 @@ const isProduction = ENV === 'production'
 const STATS =
 	process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
 
-const babelConfig = require('./babelConfig')(isProduction, { modules: false })
-
 // by using min versions we speed up HMR
 function getMin(module) {
 	return path.resolve(
@@ -222,7 +220,7 @@ if (isProduction) {
 } else {
 	const options = {
 		middleware: (app, builtins) =>
-			app.use(async (context, next) => {
+			app.use(async(context, next) => {
 				await next()
 				context.set('Access-Control-Allow-Origin', '*')
 				context.set(
@@ -362,7 +360,6 @@ const first = {
 				test: /\.jsx?$/i,
 				exclude: /node_modules/,
 				loader: 'babel-loader?cacheDirectory',
-				options: babelConfig,
 			},
 			{
 				test: /\.cs{2}$/, // .css
