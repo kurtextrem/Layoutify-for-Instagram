@@ -83,7 +83,7 @@ observe(
 
 				Promise.resolve()
 					.then(handleNode.bind(undefined, element, mutation))
-					.catch(window.logAndReturn)
+					.catch(window.logAndReject)
 			}
 		}
 	},
@@ -211,11 +211,11 @@ function addExtendedButton() {
 		Instagram.liked
 			.start()
 			.then(Instagram.liked.fetch)
-			.catch(window.logAndReturn)
+			.catch(window.logAndReject)
 		Instagram.saved
 			.start()
 			.then(Instagram.saved.fetch)
-			.catch(window.logAndReturn)
+			.catch(window.logAndReject)
 
 		chrome.runtime.sendMessage(null, { action: 'click' })
 		if (!clickedExtendedButton) window.localStorage.clickedExtendedBtn = true
@@ -324,7 +324,7 @@ function toggleWatchlist(user) {
 			: OPTIONS.watchStories.splice(i, 1)
 	}
 
-	window.IG_Storage_Sync.set('options', OPTIONS).catch(window.logAndReturn)
+	window.IG_Storage_Sync.set('options', OPTIONS).catch(window.logAndReject)
 }
 
 /**
@@ -475,7 +475,7 @@ function updateStorage(changes, area) {
 function loadOptions() {
 	window.IG_Storage_Sync.get('options', null)
 		.then(handleOptions)
-		.catch(window.logAndReturn)
+		.catch(window.logAndReject)
 
 	chrome.storage.onChanged.addListener(updateStorage)
 }

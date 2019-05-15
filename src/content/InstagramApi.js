@@ -1,8 +1,8 @@
 'use strict'
 
-window.logAndReturn = function logAndReturn(e) {
+window.logAndReject = function logAndReject(e) {
 	console.error(e)
-	return e
+	return Promise.reject(e)
 }
 
 class Storage {
@@ -15,13 +15,13 @@ class Storage {
 		this.remove = this.remove.bind(this)
 	}
 
-	promise(cb) {
+	promise(callback) {
 		return new Promise((resolve, reject) => {
 			if (chrome.storage[this.STORAGE] === undefined)
 				return reject(new Error('Chrome storage not available'))
 
 			try {
-				return cb(resolve, reject)
+				return callback(resolve, reject)
 			} catch (e) {
 				return reject(e)
 			}
@@ -36,9 +36,9 @@ class Storage {
 		)
 	}
 
-	setObj(obj) {
+	setObj(object) {
 		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].set(obj, data =>
+			chrome.storage[this.STORAGE].set(object, data =>
 				Storage.check(data, resolve, reject)
 			)
 		)
@@ -150,10 +150,10 @@ class InstagramAPI {
 		const items = data.items
 		if (!Array.isArray(items)) return new Error('No items')
 
-		const len = items.length
-		if (len !== 0 && items[0].media !== undefined) {
+		const length_ = items.length
+		if (length_ !== 0 && items[0].media !== undefined) {
 			// we need to normalize "saved"
-			for (let i = 0; i < len; ++i) {
+			for (let i = 0; i < length_; ++i) {
 				data.items[i] = items[i].media
 			}
 		}
@@ -174,14 +174,14 @@ class InstagramAPI {
 	 * @return {Bool} True if a match has been found
 	 */
 	mergeItems(items) {
-		const len = items.length - 1
+		const length_ = items.length - 1
 		const oldItems = this.items,
 			oldLen = oldItems.length - 1,
-			optimizedLen = Math.min(len, oldLen)
+			optimizedLen = Math.min(length_, oldLen)
 
 		let match = -1
 		outer: for (let i = optimizedLen; i >= 0; --i) {
-			for (let x = len; x >= 0; --x) {
+			for (let x = length_; x >= 0; --x) {
 				// compare every new item to `i` old item
 				if (oldItems[i].id !== items[x].id) continue
 				match = i

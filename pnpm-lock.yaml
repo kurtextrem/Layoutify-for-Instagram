@@ -27,7 +27,7 @@ dependencies:
   autobind-decorator: 2.4.0
   autodll-webpack-plugin: 0.4.2
   autoprefixer: 9.5.1
-  babel-loader: 8.0.5
+  babel-loader: 8.0.6
   babel-plugin-annotate-pure-calls: 0.4.0
   babel-plugin-closure-elimination: 1.3.0
   babel-plugin-console-groupify: 0.0.9
@@ -41,7 +41,7 @@ dependencies:
   babel-plugin-transform-react-pure-class-to-function: 1.0.1
   babel-plugin-transform-react-remove-prop-types: 0.4.24
   bootstrap: 4.3.1
-  browserslist: 4.5.6
+  browserslist: 4.6.0
   case-sensitive-paths-webpack-plugin: 2.2.0
   copy-webpack-plugin: 5.0.3
   critters-webpack-plugin: 2.3.0
@@ -82,10 +82,10 @@ dependencies:
   speed-measure-webpack-plugin: 1.3.1
   statuses: 1.5.0
   terser: 3.17.0
-  terser-webpack-plugin: 1.2.3
+  terser-webpack-plugin: 1.2.4
   url: 0.11.0
-  v8-compile-cache: 2.0.2
-  webpack: 4.30.0
+  v8-compile-cache: 2.0.3
+  webpack: 4.31.0
   webpack-bundle-analyzer: 3.3.2
   webpack-cli: 3.3.2
   webpack-common-shake: 2.1.0
@@ -1652,12 +1652,13 @@ packages:
       node: '>=0.8'
     resolution:
       integrity: sha1-8S4PPF13sLHN2RRpQuTpbB5N1SU=
-  /assert/1.4.1:
+  /assert/1.5.0:
     dependencies:
+      object-assign: 4.1.1
       util: 0.10.3
     dev: false
     resolution:
-      integrity: sha1-mZEtWRg2tab1s0XA8H7vwI/GXZE=
+      integrity: sha512-EDsgawzwoun2CZkCgtxJbv392v4nbk9XDD06zI+kQYoBM/3RBWLlEyJARDOmhAAosBjWACEkKL6S+lIZtcAubA==
   /assign-symbols/1.0.0:
     dev: false
     engines:
@@ -1789,12 +1790,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-NHHenK7DiOXIUOWX5Yom3fN2ArI=
-  /babel-loader/8.0.5:
+  /babel-loader/8.0.6:
     dependencies:
       find-cache-dir: 2.1.0
       loader-utils: 1.2.3
       mkdirp: 0.5.1
-      util.promisify: 1.0.0
+      pify: 4.0.1
     dev: false
     engines:
       node: '>= 6.9'
@@ -1802,7 +1803,7 @@ packages:
       '@babel/core': ^7.0.0
       webpack: '>=2'
     resolution:
-      integrity: sha512-NTnHnVRd2JnRqPC0vW+iOQWU5pchDbYXsG2E6DMXEpMfUcQKclF9gmf3G3ZMhzG7IG9ji4coL0cm+FxeWxDpnw==
+      integrity: sha512-4BmWKtBOBm13uoUwd08UwjZlaw3O9GWf456R9j+5YykFZ6LUIjIKLc0zEZf+hauxPOJs96C8k6FvYD09vWzhYw==
   /babel-messages/6.23.0:
     dependencies:
       babel-runtime: 6.26.0
@@ -2153,15 +2154,15 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-0QFO1r/2c792Ohkit5XI8Cm8pDtZxgNl2H6HU4mHrpYz7314pEYcsAVVatM0l/YmxPnEzh9VygXouj4gkFUTKA==
-  /browserslist/4.5.6:
+  /browserslist/4.6.0:
     dependencies:
-      caniuse-lite: 1.0.30000966
-      electron-to-chromium: 1.3.131
-      node-releases: 1.1.17
+      caniuse-lite: 1.0.30000967
+      electron-to-chromium: 1.3.134
+      node-releases: 1.1.19
     dev: false
     hasBin: true
     resolution:
-      integrity: sha512-o/hPOtbU9oX507lIqon+UvPYqpx3mHc8cV3QemSBTXwkG8gSQSK6UKvXcE/DcleU3+A59XTUHyCvZ5qGy8xVAg==
+      integrity: sha512-Jk0YFwXBuMOOol8n6FhgkDzn3mY9PYLYGk29zybF05SbRTsMgPqmTNeQQhOghCxq5oFqAXE3u4sYddr4C0uRhg==
   /buffer-crc32/0.2.13:
     dev: false
     resolution:
@@ -2207,7 +2208,7 @@ packages:
       bluebird: 3.5.4
       chownr: 1.1.1
       figgy-pudding: 3.5.1
-      glob: 7.1.3
+      glob: 7.1.4
       graceful-fs: 4.1.15
       lru-cache: 5.1.1
       mississippi: 3.0.0
@@ -2314,10 +2315,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-n4HUiullc7Lw0LyzpeLa2ffP8KxFBGdxqD/8G3bSL6oB758hZ2UE2CVK+tQN958tJIi0/tfpjAc67aAtoHgnrQ==
-  /caniuse-lite/1.0.30000966:
+  /caniuse-lite/1.0.30000967:
     dev: false
     resolution:
-      integrity: sha512-qqLQ/uYrpZmFhPY96VuBkMEo8NhVFBZ9y/Bh+KnvGzGJ5I8hvpIaWlF2pw5gqe4PLAL+ZjsPgMOvoXSpX21Keg==
+      integrity: sha512-rUBIbap+VJfxTzrM4akJ00lkvVb5/n5v3EGXfWzSH5zT8aJmGzjA8HWhJ4U6kCpzxozUSnB+yvAYDRPY6mRpgQ==
   /capture-stack-trace/1.0.1:
     dev: false
     engines:
@@ -2379,7 +2380,7 @@ packages:
       upath: 1.1.2
     dev: false
     optionalDependencies:
-      fsevents: 1.2.8
+      fsevents: 1.2.9
     resolution:
       integrity: sha512-i0TprVWp+Kj4WRPtInjexJ8Q+BqTE909VpH8xVhXrJkoc5QC8VO9TryGOqTr+2hljzc1sC62t22h5tZePodM/A==
   /chownr/1.1.1:
@@ -3435,10 +3436,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1o25iFRf/dbgauTWalEzmD1EmRN3a2CzP/K7UVpYLEBduk96LF0FyUdCcf4Ry2mAWJ1VxyblFjC93q6qlLwA2A==
-  /electron-to-chromium/1.3.131:
+  /electron-to-chromium/1.3.134:
     dev: false
     resolution:
-      integrity: sha512-NSO4jLeyGLWrT4mzzfYX8vt1MYCoMI5LxSYAjt0H9+LF/14JyiKJSyyjA6AJTxflZlEM5v3QU33F0ohbPMCAPg==
+      integrity: sha512-C3uK2SrtWg/gSWaluLHWSHjyebVZCe4ZC0NVgTAoTq8tCR9FareRK5T7R7AS/nPZShtlEcjVMX1kQ8wi4nU68w==
   /elliptic/6.4.1:
     dependencies:
       bn.js: 4.11.8
@@ -4120,7 +4121,7 @@ packages:
     dev: false
     resolution:
       integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
-  /fsevents/1.2.8:
+  /fsevents/1.2.9:
     bundledDependencies:
       - node-pre-gyp
     dependencies:
@@ -4131,7 +4132,7 @@ packages:
     optional: true
     requiresBuild: true
     resolution:
-      integrity: sha512-tPvHgPGB7m40CZ68xqFGkKuzN+RnpGmSV+hgeKxhRpbxdqKXUFJGC3yonBOLzQBcJyGpdZFDfCsdOC2KFsXzeA==
+      integrity: sha512-oeyj2H3EjjonWcFjD5NvZNE9Rqe4UW+nQBU2HNeKw0koVLEFIhtyETyAakeAM3de7Z/SW5kcA+fZUait9EApnw==
   /function-bind/1.1.1:
     dev: false
     resolution:
@@ -4208,6 +4209,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-vcfuiIxogLV4DlGBHIUOwI0IbrJ8HWPc4MU7HzviGeNho/UJDfi6B5p3sHeWIQ0KGIU0Jpxi5ZHxemQfLkkAwQ==
+  /glob/7.1.4:
+    dependencies:
+      fs.realpath: 1.0.0
+      inflight: 1.0.6
+      inherits: 2.0.3
+      minimatch: 3.0.4
+      once: 1.4.0
+      path-is-absolute: 1.0.1
+    dev: false
+    resolution:
+      integrity: sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==
   /global-dirs/0.1.1:
     dependencies:
       ini: 1.3.5
@@ -6155,6 +6167,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-MFh0d/Wa7vkKO3Y3LlacqAEeHK0mckVqzDieUKTT+KGxi+zIpeVsFxymkIiRpbpDziHc290Xr9A1O4Om7otoRA==
+  /neo-async/2.6.1:
+    dev: false
+    resolution:
+      integrity: sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
   /nerv-devtools/1.4.0-beta.2:
     dependencies:
       nerv-shared: 1.4.0-beta.2
@@ -6209,7 +6225,7 @@ packages:
       integrity: sha512-NhZ4CsKx7cYm2vSrBAr2PvFOe6sWDf0UYLRqA6svUYg7+/TSfVAu49jYC4BvQ4Sms9SZgdqGBgroqfDhJdTyKQ==
   /node-libs-browser/2.2.0:
     dependencies:
-      assert: 1.4.1
+      assert: 1.5.0
       browserify-zlib: 0.2.0
       buffer: 4.9.1
       console-browserify: 1.1.0
@@ -6270,6 +6286,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-/SCjetyta1m7YXLgtACZGDYJdCSIBAWorDWkGCGZlydP2Ll7J48l7j/JxNYZ+xsgSPbWfdulVS/aY+GdjUsQ7Q==
+  /node-releases/1.1.19:
+    dependencies:
+      semver: 5.7.0
+    dev: false
+    resolution:
+      integrity: sha512-SH/B4WwovHbulIALsQllAVwqZZD1kPmKCqrhGfR29dXjLAVZMHvBjD3S6nL9D/J9QkmZ1R92/0wCMDKXUUvyyA==
   /node-zip/1.1.1:
     dependencies:
       jszip: 2.5.0
@@ -8782,6 +8804,24 @@ packages:
       webpack: ^4.0.0
     resolution:
       integrity: sha512-GOK7q85oAb/5kE12fMuLdn2btOS9OBZn4VsecpHDywoUC/jLhSAKOiYo0ezx7ss2EXPMzyEWFoE0s1WLE+4+oA==
+  /terser-webpack-plugin/1.2.4:
+    dependencies:
+      cacache: 11.3.2
+      find-cache-dir: 2.1.0
+      is-wsl: 1.1.0
+      schema-utils: 1.0.0
+      serialize-javascript: 1.7.0
+      source-map: 0.6.1
+      terser: 3.17.0
+      webpack-sources: 1.3.0
+      worker-farm: 1.7.0
+    dev: false
+    engines:
+      node: '>= 6.9.0'
+    peerDependencies:
+      webpack: ^4.0.0
+    resolution:
+      integrity: sha512-64IiILNQlACWZLzFlpzNaG0bpQ4ytaB7fwOsbpsdIV70AfLUmIGGeuKL0YV2WmtcrURjE2aOvHD4/lrFV3Rg+Q==
   /terser/3.17.0:
     dependencies:
       commander: 2.20.0
@@ -9223,6 +9263,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1wFuMUIM16MDJRCrpbpuEPTUGmM5QMUg0cr3KFwra2XgOgFcPGDQHDh3CszSCD2Zewc/dh/pamNEW8CbfDebUw==
+  /v8-compile-cache/2.0.3:
+    dev: false
+    resolution:
+      integrity: sha512-CNmdbwQMBjwr9Gsmohvm0pbL954tJrNzf6gWL3K+QMQf00PF7ERGrEiLgjuU3mKreLC2MeGhUsNV9ybTbLgd3w==
   /v8-profiler-node8/6.0.1:
     dependencies:
       nan: 2.13.2
@@ -9308,7 +9352,7 @@ packages:
     dependencies:
       chokidar: 2.1.5
       graceful-fs: 4.1.15
-      neo-async: 2.6.0
+      neo-async: 2.6.1
     dev: false
     resolution:
       integrity: sha512-i6dHe3EyLjMmDlU1/bGQpEw25XSjkJULPuAVKCbNRefQVq48yXKUpwg538F7AZTf9kyr57zj++pQFltUa5H7yA==
@@ -9492,6 +9536,38 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-4hgvO2YbAFUhyTdlR4FNyt2+YaYBYHavyzjCMbZzgglo02rlKi/pcsEzwCuCpsn1ryzIl1cq/u8ArIKu8JBYMg==
+  /webpack/4.31.0:
+    dependencies:
+      '@webassemblyjs/ast': 1.8.5
+      '@webassemblyjs/helper-module-context': 1.8.5
+      '@webassemblyjs/wasm-edit': 1.8.5
+      '@webassemblyjs/wasm-parser': 1.8.5
+      acorn: 6.1.1
+      acorn-dynamic-import: 4.0.0_acorn@6.1.1
+      ajv: 6.10.0
+      ajv-keywords: 3.4.0_ajv@6.10.0
+      chrome-trace-event: 1.0.0
+      enhanced-resolve: 4.1.0
+      eslint-scope: 4.0.3
+      json-parse-better-errors: 1.0.2
+      loader-runner: 2.4.0
+      loader-utils: 1.2.3
+      memory-fs: 0.4.1
+      micromatch: 3.1.10
+      mkdirp: 0.5.1
+      neo-async: 2.6.1
+      node-libs-browser: 2.2.0
+      schema-utils: 1.0.0
+      tapable: 1.1.3
+      terser-webpack-plugin: 1.2.4
+      watchpack: 1.6.0
+      webpack-sources: 1.3.0
+    dev: false
+    engines:
+      node: '>=6.11.5'
+    hasBin: true
+    resolution:
+      integrity: sha512-n6RVO3X0LbbipoE62akME9K/JI7qYrwwufs20VvgNNpqUoH4860KkaxJTbGq5bgkVZF9FqyyTG/0WPLH3PVNJA==
   /websocket-driver/0.7.0:
     dependencies:
       http-parser-js: 0.5.0
@@ -9827,7 +9903,7 @@ specifiers:
   autobind-decorator: ^2.4.0
   autodll-webpack-plugin: ^0.4.2
   autoprefixer: ^9.5.1
-  babel-loader: ^8.0.5
+  babel-loader: ^8.0.6
   babel-plugin-annotate-pure-calls: ^0.4.0
   babel-plugin-closure-elimination: ^1.3.0
   babel-plugin-console-groupify: ^0.0.9
@@ -9841,7 +9917,7 @@ specifiers:
   babel-plugin-transform-react-pure-class-to-function: ^1.0.1
   babel-plugin-transform-react-remove-prop-types: ^0.4.24
   bootstrap: ^4.3.1
-  browserslist: ^4.5.6
+  browserslist: ^4.6.0
   case-sensitive-paths-webpack-plugin: ^2.2.0
   copy-webpack-plugin: ^5.0.3
   critters-webpack-plugin: ^2.3.0
@@ -9882,10 +9958,10 @@ specifiers:
   speed-measure-webpack-plugin: ^1.3.1
   statuses: ^1.5.0
   terser: ^3.17.0
-  terser-webpack-plugin: ^1.2.3
+  terser-webpack-plugin: ^1.2.4
   url: ^0.11.0
-  v8-compile-cache: ^2.0.2
-  webpack: ^4.30.0
+  v8-compile-cache: ^2.0.3
+  webpack: ^4.31.0
   webpack-bundle-analyzer: ^3.3.2
   webpack-cli: ^3.3.2
   webpack-common-shake: ^2.1.0
