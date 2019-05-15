@@ -46,7 +46,7 @@ let sessionid = ''
 function getSessionId() {
 	getCookie('sessionid')
 		.then(value => (sessionid = value))
-		.catch(logAndReturn)
+		.catch(logAndReject)
 }
 
 getSessionId()
@@ -115,7 +115,7 @@ function checkStatus(response) {
 	if (response.ok) return response
 
 	const error = new Error(`HTTP Error ${response.statusText}`)
-	error.status = response.statusText
+	error.status = response.status
 	error.response = response
 	throw error
 }
@@ -128,9 +128,9 @@ function toJSON(response) {
 	return response.json()
 }
 
-function logAndReturn(e) {
+function logAndReject(e) {
 	console.warn(e)
-	return e
+	return Promise.reject(e)
 }
 
 function fixMaxId(response) {
@@ -184,7 +184,7 @@ function fetchFromBackground(which, path, sendResponse) {
 
 				return value
 			})
-			.catch(logAndReturn)
+			.catch(logAndReject)
 
 		return false // for now
 	}
@@ -208,7 +208,7 @@ function fetchAux(url, options) {
 
 	return fetch(url, options_)
 		.then(checkStatus)
-		.catch(window.logAndReturn)
+		.catch(logAndReject)
 }
 
 function getRandom(min, max) {
@@ -391,7 +391,7 @@ function handlePost(json, user, userObject, watchData, options) {
 					// @todo: Maybe clear notification?
 				})
 			})
-			.catch(logAndReturn)
+			.catch(logAndReject)
 	}
 }
 
@@ -424,7 +424,7 @@ function handleStory(json, user, userObject, watchData, options) {
 					// @todo: Maybe clear notification?
 				})
 			})
-			.catch(logAndReturn)
+			.catch(logAndReject)
 	} else console.log(user, 'no new story', reel)
 }
 
