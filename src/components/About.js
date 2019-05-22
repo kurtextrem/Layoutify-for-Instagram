@@ -8,7 +8,7 @@ export default class About extends Component {
 	onBtnClick(e) {
 		Storage.remove('liked')
 		Storage.remove('saved')
-		e.target.innerText = 'Cleared!'
+		e.target.textContent = 'Cleared!'
 	}
 
 	shouldComponentUpdate() {
@@ -119,6 +119,16 @@ export default class About extends Component {
 					This project is in no way affiliated with, authorized, maintained,
 					sponsored or endorsed by Instagram or any of its affiliates or
 					subsidiaries. This is an independent project. Use at your own risk.
+					<br />
+					<a
+						href="https://kurtextrem.de/chrome/PRIVACY.html"
+						target="_blank"
+						rel="noopener"
+					>
+						Privacy Policy
+					</a>{' '}
+					(Sensitive data is <b>only</b> collected and stored{' '}
+					<b>on your own PC</b>, options are synced if Chrome Sync is turned on)
 				</small>
 			</div>
 		)
