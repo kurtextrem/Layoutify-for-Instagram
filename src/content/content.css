@@ -153,7 +153,7 @@ body > div > div[role='dialog'] header + div + div,
 #react-root:not(.profile):not(.stories) header + div + div {
 	/* @TODO: Min Chrome v60 */
 	display: grid;
-	flex: auto;
+	flex: 1;
 	flex-direction: row;
 	flex-wrap: wrap;
 	align-content: normal;
