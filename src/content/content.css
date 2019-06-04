@@ -68,8 +68,7 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div {
 }
 
 /**
- * Previous DOM structure
- * @deprecated @TODO
+ * Stories in between posts
  */
 main
 > section
@@ -77,12 +76,9 @@ main
 > div:not([class])
 > div:first-child
 > div {
-	flex-direction: row !important;
-	flex-wrap: wrap;
-	justify-content: center;
-	width: 100%;
-	max-width: 100%;
-	margin-top: 10px !important;
+	width: calc(100% - 7.4vw);
+	margin-top: 30px;
+	margin-bottom: 30px;
 	contain: layout style;
 }
 
@@ -994,7 +990,7 @@ main
 	border-radius: 0 !important;
 }
 
-.ige_noSpaceBetweenPosts main > section div > article:not(:nth-child(4n)) {
+.ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n)) {
 	border-right: 0 !important;
 }
 
@@ -1003,8 +999,12 @@ main
 main
 > section
 div
-> article:not(:first-child):not(:nth-child(5n)) {
-	border-left: 0 !important;
+> article:not(:first-child):not(:nth-of-type(5n)) {
+	border-left-width: 0 !important;
+}
+
+.ige_noSpaceBetweenPosts main > section div > div + article {
+	border-left-width: 1px;
 }
 
 .ige_noSpaceBetweenPosts
