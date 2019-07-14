@@ -494,7 +494,7 @@ function checkForWatchedContent(users, type, watchData) {
 		timeout += getRandom(400, 800)
 		if (userObject === undefined || userObject.id === '') {
 			createUserObject(user, watchData)
-				.then(window.setTimeout.bind(window, notify.bind(undefined, user, watchData[user], type, watchData, length_, i), timeout))
+				.then(() => window.setTimeout(notify.bind(undefined, user, watchData[user], type, watchData, length_, i), timeout))
 				.catch(logAndReject)
 			// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
 		} else window.setTimeout.bind(window, notify.bind(undefined, user, watchData[user], type, watchData, length_, i), timeout)
