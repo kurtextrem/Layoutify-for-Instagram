@@ -20,10 +20,7 @@ function createTab(id, force) {
 			() => chrome.runtime.lastError && createTab(id, true) // only create new tab when there was an error
 		)
 	} else {
-		chrome.tabs.create(
-			{ url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` },
-			newTab => (tabId = newTab.id)
-		)
+		chrome.tabs.create({ url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` }, newTab => (tabId = newTab.id))
 	}
 }
 
@@ -96,10 +93,7 @@ function modifyCspHeaders(details) {
 		const header = headers[i]
 
 		if (header.name.toLowerCase() === 'content-security-policy') {
-			header.value.replace(
-				"connect-src 'self'",
-				`connect-src 'self' https://i.instagram.com`
-			)
+			header.value.replace("connect-src 'self'", `connect-src 'self' https://i.instagram.com`)
 		}
 	}
 
@@ -215,11 +209,7 @@ function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-chrome.runtime.onMessage.addListener(function listener(
-	request,
-	sender,
-	sendResponse
-) {
+chrome.runtime.onMessage.addListener(function listener(request, sender, sendResponse) {
 	switch (request.action) {
 		case 'click':
 			createTab(sender.tab.id, false)
@@ -238,11 +228,7 @@ chrome.runtime.onMessage.addListener(function listener(
 			break
 
 		case 'fetch':
-			fetchFromBackground(
-				request.which.toUpperCase(),
-				request.path,
-				sendResponse
-			)
+			fetchFromBackground(request.which.toUpperCase(), request.path, sendResponse)
 			return true
 
 		default:
@@ -314,15 +300,17 @@ function getWatchlist(e) {
 			console.error(chrome.runtime.lastError.message)
 			return
 		}
-		if (options === null || data.watchData === null) {
-			console.error('Empty options/watchData', options, data.watchData)
+		if (options === null) {
+			console.error('Empty options', options, data.watchData)
 			return
 		}
 
-		if (options.watchPosts)
-			checkForWatchedContent(options.watchPosts, 0, data.watchData)
-		if (options.watchStories)
-			checkForWatchedContent(options.watchStories, 1, data.watchData)
+		if (data.watchData === null) {
+			data.watchData = {}
+		}
+
+		if (options.watchPosts) checkForWatchedContent(options.watchPosts, 0, data.watchData)
+		if (options.watchStories) checkForWatchedContent(options.watchStories, 1, data.watchData)
 	})
 }
 
@@ -360,14 +348,10 @@ const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 	}
 //orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
 
-const get = (path, object) =>
-	path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
+const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
 
 function handlePost(json, user, userObject, watchData, options) {
-	const node = get(
-			['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'],
-			json
-		),
+	const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
 		id = node !== null ? node.shortcode : null
 	if (id !== null && id != userObject.post) {
 		console.log(user, 'new post', json.graphql.user)
@@ -376,16 +360,12 @@ function handlePost(json, user, userObject, watchData, options) {
 		options.type = 'image'
 		options.title = chrome.i18n.getMessage('watch_newPost', user)
 
-		Promise.all([
-			getBlobUrl(json.graphql.user.profile_pic_url_hd),
-			getBlobUrl(node.thumbnail_src),
-		])
+		Promise.all([getBlobUrl(json.graphql.user.profile_pic_url_hd), getBlobUrl(node.thumbnail_src)])
 			.then(values => {
 				options.iconUrl = values[0]
 				options.imageUrl = values[1]
 				return chrome.notifications.create(`post_${user}`, options, nId => {
-					if (chrome.runtime.lastError)
-						console.error(chrome.runtime.lastError.message)
+					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
 					URL.revokeObjectURL(values[0])
 					URL.revokeObjectURL(values[1])
 					// @todo: Maybe clear notification?
@@ -418,8 +398,7 @@ function handleStory(json, user, userObject, watchData, options) {
 			.then(url => {
 				options.iconUrl = url
 				return chrome.notifications.create(`story_${user}`, options, nId => {
-					if (chrome.runtime.lastError)
-						console.error(chrome.runtime.lastError.message)
+					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
 					URL.revokeObjectURL(url)
 					// @todo: Maybe clear notification?
 				})
@@ -512,8 +491,7 @@ function checkForWatchedContent(users, type, watchData) {
 		const user = users[i],
 			userObject = watchData[user]
 
-		if (userObject === undefined || userObject.id === '')
-			createUserObject(user, watchData)
+		if (userObject === undefined || userObject.id === '') createUserObject(user, watchData)
 
 		timeout += getRandom(400, 800)
 		window.setTimeout(() => {
