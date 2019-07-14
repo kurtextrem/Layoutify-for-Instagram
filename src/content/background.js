@@ -495,7 +495,7 @@ function checkForWatchedContent(users, type, watchData) {
 			window.setTimeout(function() {
 				createUserObject(user, watchData)
 					.then(function(e) {
-						notify.bind(undefined, user, watchData[user], type, watchData, length_, i)
+						notify(user, watchData[user], type, watchData, length_, i)
 						return e
 					})
 					.catch(logAndReject)
