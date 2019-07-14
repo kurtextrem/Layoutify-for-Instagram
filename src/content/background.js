@@ -455,7 +455,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 }
 
 function createUserObject(user, watchData) {
-	fetchAux(`https://www.instagram.com/${user}/?__a=1`, WEB_OPTS)
+	return fetchAux(`https://www.instagram.com/${user}/?__a=1`, WEB_OPTS)
 		.then(toJSON)
 		.then(json => {
 			if (watchData[user] === undefined)
@@ -491,12 +491,12 @@ function checkForWatchedContent(users, type, watchData) {
 		const user = users[i],
 			userObject = watchData[user]
 
-		if (userObject === undefined || userObject.id === '') createUserObject(user, watchData)
-
 		timeout += getRandom(400, 800)
-		window.setTimeout(() => {
-			notify(user, watchData[user], type, watchData, length_, i)
-		}, timeout)
-		// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
+		if (userObject === undefined || userObject.id === '') {
+			createUserObject(user, watchData)
+				.then(window.setTimeout.bind(window, notify.bind(undefined, user, watchData[user], type, watchData, length_, i), timeout))
+				.catch(logAndReject)
+			// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
+		} else window.setTimeout.bind(window, notify.bind(undefined, user, watchData[user], type, watchData, length_, i), timeout)
 	}
 }
