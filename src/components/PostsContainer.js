@@ -23,7 +23,7 @@ export default class PostsContainer extends Component {
 			<a href="https://www.instagram.com" _target="blank" rel="noopener">
 				Instagram.com
 			</a>
-			?)
+			)? Please leave the Instagram tab open.
 		</div>
 	)
 
@@ -46,10 +46,11 @@ export default class PostsContainer extends Component {
 		this.postCount = 0
 
 		this.populateData()
-		window.setTimeout(
-			() => this.setTimeout(TIME_STATE.LOADING),
-			TIME_STATE.LOADING
-		)
+		window.setTimeout(() => this.setTimeout(TIME_STATE.LOADING), TIME_STATE.LOADING)
+
+		this.preloadCounter = 0
+		this.preloadUpperLimit = properties.preload
+		if (properties.preload > 0) this.preload()
 	}
 
 	state = {
@@ -59,11 +60,17 @@ export default class PostsContainer extends Component {
 
 	setTimeout(timeout) {
 		this.setState((previousState, properties) => ({ timeout }))
-		if (timeout !== TIME_STATE.ERROR)
-			window.setTimeout(
-				() => this.setTimeout(TIME_STATE.ERROR),
-				TIME_STATE.ERROR
-			)
+		if (timeout !== TIME_STATE.ERROR) window.setTimeout(() => this.setTimeout(TIME_STATE.ERROR), TIME_STATE.ERROR)
+	}
+
+	@bind
+	preload() {
+		const { preload, id } = this.props
+		if (++this.preloadCounter > preload) return
+
+		console.log('preloading')
+		Chrome.send('load', { which: id })
+		window.setTimeout(this.preload, this.preloadCounter * 1000)
 	}
 
 	@bind
@@ -88,7 +95,7 @@ export default class PostsContainer extends Component {
 	handleData(data) {
 		++this.initial
 		if (data !== null)
-			this.setState((previousState, props) => ({
+			this.setState((previousState, properties) => ({
 				items: data.items,
 				//nextMaxId: data.nextMaxId,
 				timeout: previousState.timeout,
@@ -97,9 +104,13 @@ export default class PostsContainer extends Component {
 		return data
 	}
 
+	loadData() {
+		Chrome.send('load', { which: this.props.id })
+	}
+
 	@bind
 	handleScroll() {
-		Chrome.send('load', { which: this.props.id })
+		this.loadData()
 	}
 
 	addStorageListener() {
@@ -127,12 +138,9 @@ export default class PostsContainer extends Component {
 
 		return (
 			nextProperties.id !== this.props.id ||
-			(nextState.timeout !== timeout &&
-				(nextItems === null || nextItems.length === 0)) ||
+			(nextState.timeout !== timeout && (nextItems === null || nextItems.length === 0)) ||
 			(items === null && nextItems !== null) || // first items
-			(items !== null &&
-				nextItems !== null &&
-				nextItems.length !== items.length)
+			(items !== null && nextItems !== null && nextItems.length !== items.length)
 		)
 	}
 
@@ -167,9 +175,7 @@ export default class PostsContainer extends Component {
 		if (items !== null && items.length !== 0)
 			return (
 				<div className="position-relative">
-					<CardDeck className="justify-content-center">
-						{Posts(items, this.renderPost, hasCategories)}
-					</CardDeck>
+					<CardDeck className="justify-content-center">{Posts(items, this.renderPost, hasCategories)}</CardDeck>
 					<Sentinel onVisible={this.handleScroll} />
 				</div>
 			)
@@ -186,4 +192,5 @@ PostsContainer.propTypes = {
 	defaultClass: PropTypes.string.isRequired,
 	toggleClass: PropTypes.string.isRequired,
 	hasCategories: PropTypes.bool.isRequired,
+	preload: PropTypes.bool.isRequired,
 }
