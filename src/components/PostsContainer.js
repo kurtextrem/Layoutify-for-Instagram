@@ -49,7 +49,6 @@ export default class PostsContainer extends Component {
 		window.setTimeout(() => this.setTimeout(TIME_STATE.LOADING), TIME_STATE.LOADING)
 
 		this.preloadCounter = 0
-		this.preloadUpperLimit = properties.preload
 		if (properties.preload > 0) this.preload()
 	}
 

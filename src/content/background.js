@@ -24,6 +24,9 @@ function createTab(id, force) {
 	}
 }
 
+/**
+ *
+ */
 function getCookie(name) {
 	return new Promise((resolve, reject) => {
 		chrome.cookies.get(
@@ -40,6 +43,9 @@ function getCookie(name) {
 }
 
 let sessionid = ''
+/**
+ *
+ */
 function getSessionId() {
 	getCookie('sessionid')
 		.then(value => (sessionid = value))
@@ -86,6 +92,9 @@ chrome.webRequest.onHeadersReceived.addListener(
 	['blocking', 'responseHeaders', 'extraHeaders']
 )
 
+/**
+ *
+ */
 function modifyCspHeaders(details) {
 	const headers = details.responseHeaders
 
@@ -105,6 +114,9 @@ const fetchOptions = {
 	mode: 'cors',
 }
 
+/**
+ *
+ */
 function checkStatus(response) {
 	if (response.ok) return response
 
@@ -114,23 +126,38 @@ function checkStatus(response) {
 	throw error
 }
 
+/**
+ *
+ */
 function toText(response) {
 	return response.text()
 }
 
+/**
+ *
+ */
 function toJSON(response) {
 	return response.json()
 }
 
+/**
+ *
+ */
 function logAndReject(e) {
 	console.warn(e)
 	return Promise.reject(e)
 }
 
+/**
+ *
+ */
 function fixMaxId(response) {
 	return response.replace(/"next_max_id": (\d+)/g, '"next_max_id": "$1"')
 }
 
+/**
+ *
+ */
 function parseJSON(response) {
 	return JSON.parse(response)
 }
@@ -169,6 +196,9 @@ const PUBLIC_API_OPTS = {
 	}),
 }
 
+/**
+ *
+ */
 function fetchFromBackground(which, path, sendResponse) {
 	if (which === 'PUBLIC') {
 		getCookie('csrftoken')
@@ -196,6 +226,9 @@ function fetchFromBackground(which, path, sendResponse) {
 //const UID = getCookie('ds_user_id').then(value => value),
 //	UUID = '' // 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
 
+/**
+ *
+ */
 function fetchAux(url, options) {
 	let options_ = fetchOptions
 	if (options !== undefined) options_ = { ...options_, ...options }
@@ -205,6 +238,9 @@ function fetchAux(url, options) {
 		.catch(logAndReject)
 }
 
+/**
+ *
+ */
 function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
@@ -238,6 +274,9 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 	return false
 })
 
+/**
+ *
+ */
 function createUpdateAlarm() {
 	chrome.alarms.create('update', {
 		delayInMinutes: 1,
@@ -278,6 +317,9 @@ chrome.runtime.onInstalled.addListener(details => {
 
 chrome.alarms.onAlarm.addListener(getWatchlist)
 
+/**
+ *
+ */
 function openIG(id) {
 	chrome.tabs.create({
 		url: `https://www.instagram.com/${id
@@ -293,6 +335,9 @@ chrome.notifications.onButtonClicked.addListener((id, buttonIndex) => {
 	openIG(id)
 })
 
+/**
+ *
+ */
 function getWatchlist(e) {
 	chrome.storage.sync.get({ options: null, watchData: null }, data => {
 		const options = data.options
@@ -314,6 +359,9 @@ function getWatchlist(e) {
 	})
 }
 
+/**
+ *
+ */
 function getBlobUrl(url) {
 	return new Promise((resolve, reject) => {
 		window
@@ -350,6 +398,9 @@ const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 
 const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
 
+/**
+ *
+ */
 function handlePost(json, user, userObject, watchData, options) {
 	const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
 		id = node !== null ? node.shortcode : null
@@ -375,6 +426,9 @@ function handlePost(json, user, userObject, watchData, options) {
 	}
 }
 
+/**
+ *
+ */
 function handleStory(json, user, userObject, watchData, options) {
 	const userJson = get(['data', 'user'], json)
 	if (userJson === null) {
@@ -407,6 +461,9 @@ function handleStory(json, user, userObject, watchData, options) {
 	} else console.log(user, 'no new story', reel)
 }
 
+/**
+ *
+ */
 function notifyError(user, options) {
 	options.type = 'basic'
 	options.title = `${user} could not be found`
@@ -421,10 +478,17 @@ const WEB_OPTS = {
 	}),
 }
 
+/**
+ *
+ */
 function notify(user, userObject, type, watchData, length_, i) {
-	let url
-	if (type === 0) url = `https://www.instagram.com/${user}/?__a=1`
-	if (type === 1) {
+	let url,
+		fetchOptions_ = WEB_OPTS
+
+	if (type === 0) {
+		url = `https://www.instagram.com/${user.replace('$$ANON$$', '')}/?__a=1`
+		if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
+	} /*if (type === 1)*/ else {
 		const params = { ...storiesParams }
 		params.user_id = userObject.id
 		url = `https://www.instagram.com/graphql/query/?${new URLSearchParams({
@@ -434,7 +498,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 	}
 
 	const options = { ...notificationOptions }
-	fetchAux(url, WEB_OPTS)
+	fetchAux(url, fetchOptions_)
 		.then(toJSON)
 		.then(json => {
 			if (type === 0) {
@@ -454,8 +518,14 @@ function notify(user, userObject, type, watchData, length_, i) {
 		})
 }
 
+/**
+ *
+ */
 function createUserObject(user, watchData) {
-	return fetchAux(`https://www.instagram.com/${user}/?__a=1`, WEB_OPTS)
+	let fetchOptions_ = WEB_OPTS
+	if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
+
+	return fetchAux(`https://www.instagram.com/${user.replace('$$ANON$$', '')}/?__a=1`, fetchOptions_)
 		.then(toJSON)
 		.then(json => {
 			if (watchData[user] === undefined)

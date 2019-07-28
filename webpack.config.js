@@ -47,6 +47,9 @@ const isProduction = ENV === 'production'
 const STATS = process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
 
 // by using min versions we speed up HMR
+/**
+ *
+ */
 function getMin(module) {
 	return path.resolve(__dirname, `node_modules/${module}/dist/${module.replace('js', '')}.min.js`)
 }
@@ -208,7 +211,7 @@ if (isProduction) {
 } else {
 	const options = {
 		middleware: (app, builtins) =>
-			app.use(async (context, next) => {
+			app.use(async(context, next) => {
 				await next()
 				context.set('Access-Control-Allow-Origin', '*')
 				context.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
@@ -389,7 +392,7 @@ const first = {
 }
 
 const second = {
-	mode: first.mode,
+	mode: 'development',
 
 	target: 'node',
 

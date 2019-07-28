@@ -1,9 +1,12 @@
 const { resolve } = require('path')
 
-function prerender(outputDir, params) {
+/**
+ *
+ */
+function prerender(outputDirectory, params) {
 	params = params || {}
 
-	const entry = './' + outputDir + '/ssr-bundle.js',
+	const entry = './' + outputDirectory + '/ssr-bundle.js',
 		url = params.url || '/'
 
 	global.window = {
@@ -11,7 +14,7 @@ function prerender(outputDir, params) {
 			createElement() {
 				return {}
 			},
-			location: { href: url, pathname: url, replace() {}, hash: '#' + url },
+			location: { href: url, pathname: url, replace() {}, hash: '#' + url, search: '' },
 		},
 		history: {},
 		navigator: { userAgent: '' },
