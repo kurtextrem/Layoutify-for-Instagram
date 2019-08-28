@@ -4,6 +4,20 @@
 
 - Maybe: Merge watched posts and watched stories to one setting
 
+## [2.10.0] - 2019-08-28
+
+The latest bigger release was in December, but don't worry, in the time between I have done a lot of bug fixes. E-Mail me feedback to "kurtextrem at gmail.com" :)
+
+Enjoy your summer!
+
+### Changed
+
+- You now get a notification if a person changed his/her profile picture when watching their posts
+
+### Bug Fixes
+
+- A few bug fixes
+
 ## [2.9.0] - 2018-12-22
 
 ### Changed

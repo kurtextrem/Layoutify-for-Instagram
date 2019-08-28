@@ -1,6 +1,6 @@
 {
 	"name": "improved-layout-for-instagram",
-	"version": "2.7.0",
+	"version": "2.9.6",
 	"dependencies": {
 		"@babel/core": "7.5.5",
 		"@babel/plugin-proposal-class-properties": "7.5.5",
@@ -105,7 +105,7 @@
 	},
 	"scripts": {
 		"clean": "rimraf /dist",
-		"prebuild": "npm run clean",
+		"prebuild": "npm run clean & npm version patch",
 		"build": "npm run build-bundle",
 		"build-bundle": "cross-env NODE_ENV=production parallel-webpack --no-stats",
 		"build-stats": "cross-env NODE_ENV=production STATS_ENABLE=true webpack --profile --json > stats.json",

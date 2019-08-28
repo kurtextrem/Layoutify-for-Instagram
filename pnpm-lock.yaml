@@ -31,6 +31,7 @@ dependencies:
   babel-plugin-annotate-pure-calls: 0.4.0_@babel+core@7.5.5
   babel-plugin-closure-elimination: 1.3.0
   babel-plugin-console-groupify: 0.0.9
+  babel-plugin-minify-constant-folding: 0.5.0
   babel-plugin-optimize-clsx: 2.3.0
   babel-plugin-optimize-react: 0.0.4_@babel+core@7.5.5
   babel-plugin-react-local: 0.5.0
@@ -40,6 +41,7 @@ dependencies:
   babel-plugin-transform-imports: 2.0.0
   babel-plugin-transform-react-pure-class-to-function: 1.0.1
   babel-plugin-transform-react-remove-prop-types: 0.4.24
+  babel-preset-minify: 0.5.0
   bootstrap: 4.3.1
   browserslist: 4.6.6
   case-sensitive-paths-webpack-plugin: 2.2.0
@@ -1824,10 +1826,38 @@ packages:
     dev: false
     resolution:
       integrity: sha512-HyfwY6ApZj7BYTcJURpM5tznulaBvyio7/0d4zFOeMPUmfxkCjHocCuoLa2SAGzBI8AREcH3eP3758F672DppA==
+  /babel-helper-evaluate-path/0.5.0:
+    dev: false
+    resolution:
+      integrity: sha512-mUh0UhS607bGh5wUMAQfOpt2JX2ThXMtppHRdRU1kL7ZLRWIXxoV2UIV1r2cAeeNeU1M5SB5/RSUgUxrK8yOkA==
+  /babel-helper-flip-expressions/0.4.3:
+    dev: false
+    resolution:
+      integrity: sha1-NpZzahKKwYvCUlS19AoizrPB0/0=
+  /babel-helper-is-nodes-equiv/0.0.1:
+    dev: false
+    resolution:
+      integrity: sha1-NOmzALFHnd2Y7HfqC76TQt/jloQ=
   /babel-helper-is-react-class/1.0.0:
     dev: false
     resolution:
       integrity: sha1-7282eLBcdtve7a3q16+YwnJNhDE=
+  /babel-helper-is-void-0/0.4.3:
+    dev: false
+    resolution:
+      integrity: sha1-fZwBtFYee5Xb2g9u7kj1tg5nMT4=
+  /babel-helper-mark-eval-scopes/0.4.3:
+    dev: false
+    resolution:
+      integrity: sha1-0kSjvvmESHJgP/tG4izorN9VFWI=
+  /babel-helper-remove-or-void/0.4.3:
+    dev: false
+    resolution:
+      integrity: sha1-pPA7QAd6D/6I5F0HAQ3uJB/1rmA=
+  /babel-helper-to-multiple-sequence-expressions/0.5.0:
+    dev: false
+    resolution:
+      integrity: sha512-m2CvfDW4+1qfDdsrtf4dwOslQC3yhbgyBFptncp4wvtdrDHqueW7slsYv4gArie056phvQFhT2nRcGS4bnm6mA==
   /babel-helpers/6.24.1:
     dependencies:
       babel-runtime: 6.26.0
@@ -1881,6 +1911,69 @@ packages:
     dev: false
     resolution:
       integrity: sha512-o6qFkpeQEBxcqt0XYlWzAVxNCSCZdUgcR8IRlhD/8DylxjjO4foPcvTW0GGKa/cVt3rvxZ7o5ippJ+/0nvLhlQ==
+  /babel-plugin-minify-builtins/0.5.0:
+    dev: false
+    resolution:
+      integrity: sha512-wpqbN7Ov5hsNwGdzuzvFcjgRlzbIeVv1gMIlICbPj0xkexnfoIDe7q+AZHMkQmAE/F9R5jkrB6TLfTegImlXag==
+  /babel-plugin-minify-constant-folding/0.5.0:
+    dependencies:
+      babel-helper-evaluate-path: 0.5.0
+    dev: false
+    resolution:
+      integrity: sha512-Vj97CTn/lE9hR1D+jKUeHfNy+m1baNiJ1wJvoGyOBUx7F7kJqDZxr9nCHjO/Ad+irbR3HzR6jABpSSA29QsrXQ==
+  /babel-plugin-minify-dead-code-elimination/0.5.0:
+    dependencies:
+      babel-helper-evaluate-path: 0.5.0
+      babel-helper-mark-eval-scopes: 0.4.3
+      babel-helper-remove-or-void: 0.4.3
+      lodash.some: 4.6.0
+    dev: false
+    resolution:
+      integrity: sha512-XQteBGXlgEoAKc/BhO6oafUdT4LBa7ARi55mxoyhLHNuA+RlzRmeMAfc31pb/UqU01wBzRc36YqHQzopnkd/6Q==
+  /babel-plugin-minify-flip-comparisons/0.4.3:
+    dependencies:
+      babel-helper-is-void-0: 0.4.3
+    dev: false
+    resolution:
+      integrity: sha1-AMqHDLjxO0XAOLPB68DyJyk8llo=
+  /babel-plugin-minify-guarded-expressions/0.4.3:
+    dependencies:
+      babel-helper-flip-expressions: 0.4.3
+    dev: false
+    resolution:
+      integrity: sha1-zHCbRFP9IbHzAod0RMifiEJ845c=
+  /babel-plugin-minify-infinity/0.4.3:
+    dev: false
+    resolution:
+      integrity: sha1-37h2obCKBldjhO8/kuZTumB7Oco=
+  /babel-plugin-minify-mangle-names/0.5.0:
+    dependencies:
+      babel-helper-mark-eval-scopes: 0.4.3
+    dev: false
+    resolution:
+      integrity: sha512-3jdNv6hCAw6fsX1p2wBGPfWuK69sfOjfd3zjUXkbq8McbohWy23tpXfy5RnToYWggvqzuMOwlId1PhyHOfgnGw==
+  /babel-plugin-minify-numeric-literals/0.4.3:
+    dev: false
+    resolution:
+      integrity: sha1-jk/VYcefeAEob/YOjF/Z3u6TwLw=
+  /babel-plugin-minify-replace/0.5.0:
+    dev: false
+    resolution:
+      integrity: sha512-aXZiaqWDNUbyNNNpWs/8NyST+oU7QTpK7J9zFEFSA0eOmtUNMU3fczlTTTlnCxHmq/jYNFEmkkSG3DDBtW3Y4Q==
+  /babel-plugin-minify-simplify/0.5.0:
+    dependencies:
+      babel-helper-flip-expressions: 0.4.3
+      babel-helper-is-nodes-equiv: 0.0.1
+      babel-helper-to-multiple-sequence-expressions: 0.5.0
+    dev: false
+    resolution:
+      integrity: sha512-TM01J/YcKZ8XIQd1Z3nF2AdWHoDsarjtZ5fWPDksYZNsoOjQ2UO2EWm824Ym6sp127m44gPlLFiO5KFxU8pA5Q==
+  /babel-plugin-minify-type-constructors/0.4.3:
+    dependencies:
+      babel-helper-is-void-0: 0.4.3
+    dev: false
+    resolution:
+      integrity: sha1-G8bxW4f3qxCF1CszC3F2V6IVZQA=
   /babel-plugin-optimize-clsx/2.3.0:
     dependencies:
       '@babel/generator': 7.5.5
@@ -1937,6 +2030,28 @@ packages:
     dev: false
     resolution:
       integrity: sha512-65ewumYJ85QiXdcB/jmiU0y0jg6eL6CdnDqQAqQ8JMOKh1E52VPG3NJzbVKWcgovUR5GBH8IWpCXQ7I8Q3wjgw==
+  /babel-plugin-transform-inline-consecutive-adds/0.4.3:
+    dev: false
+    resolution:
+      integrity: sha1-Mj1Ho+pjqDp6w8gRro5pQfrysNE=
+  /babel-plugin-transform-member-expression-literals/6.9.4:
+    dev: false
+    resolution:
+      integrity: sha1-NwOcmgwzE6OUlfqsL/OmtbnQOL8=
+  /babel-plugin-transform-merge-sibling-variables/6.9.4:
+    dev: false
+    resolution:
+      integrity: sha1-hbQi/DN3tEnJ0c3kQIcgNTJAHa4=
+  /babel-plugin-transform-minify-booleans/6.9.4:
+    dev: false
+    resolution:
+      integrity: sha1-rLs+VqNVXdI5KOS1gtKFFi3SsZg=
+  /babel-plugin-transform-property-literals/6.9.4:
+    dependencies:
+      esutils: 2.0.3
+    dev: false
+    resolution:
+      integrity: sha1-mMHSHiVXNlc/k+zlRFn2ziSYXTk=
   /babel-plugin-transform-react-pure-class-to-function/1.0.1:
     dependencies:
       babel-helper-is-react-class: 1.0.0
@@ -1947,6 +2062,60 @@ packages:
     dev: false
     resolution:
       integrity: sha512-eqj0hVcJUR57/Ug2zE1Yswsw4LhuqqHhD+8v120T1cl3kjg76QwtyBrdIk4WVwK+lAhBJVYCd/v+4nc4y+8JsA==
+  /babel-plugin-transform-regexp-constructors/0.4.3:
+    dev: false
+    resolution:
+      integrity: sha1-WLd3W2OvzzMyj66aX4j71PsLSWU=
+  /babel-plugin-transform-remove-console/6.9.4:
+    dev: false
+    resolution:
+      integrity: sha1-uYA2DAZzhOJLNXpYjYB9PINSd4A=
+  /babel-plugin-transform-remove-debugger/6.9.4:
+    dev: false
+    resolution:
+      integrity: sha1-QrcnYxyXl44estGZp67IShgznvI=
+  /babel-plugin-transform-remove-undefined/0.5.0:
+    dependencies:
+      babel-helper-evaluate-path: 0.5.0
+    dev: false
+    resolution:
+      integrity: sha512-+M7fJYFaEE/M9CXa0/IRkDbiV3wRELzA1kKQFCJ4ifhrzLKn/9VCCgj9OFmYWwBd8IB48YdgPkHYtbYq+4vtHQ==
+  /babel-plugin-transform-simplify-comparison-operators/6.9.4:
+    dev: false
+    resolution:
+      integrity: sha1-9ir+CWyrDh9ootdT/fKDiIRxzrk=
+  /babel-plugin-transform-undefined-to-void/6.9.4:
+    dev: false
+    resolution:
+      integrity: sha1-viQcqBQEAwZ4t0hxcyK4nQyP4oA=
+  /babel-preset-minify/0.5.0:
+    dependencies:
+      babel-plugin-minify-builtins: 0.5.0
+      babel-plugin-minify-constant-folding: 0.5.0
+      babel-plugin-minify-dead-code-elimination: 0.5.0
+      babel-plugin-minify-flip-comparisons: 0.4.3
+      babel-plugin-minify-guarded-expressions: 0.4.3
+      babel-plugin-minify-infinity: 0.4.3
+      babel-plugin-minify-mangle-names: 0.5.0
+      babel-plugin-minify-numeric-literals: 0.4.3
+      babel-plugin-minify-replace: 0.5.0
+      babel-plugin-minify-simplify: 0.5.0
+      babel-plugin-minify-type-constructors: 0.4.3
+      babel-plugin-transform-inline-consecutive-adds: 0.4.3
+      babel-plugin-transform-member-expression-literals: 6.9.4
+      babel-plugin-transform-merge-sibling-variables: 6.9.4
+      babel-plugin-transform-minify-booleans: 6.9.4
+      babel-plugin-transform-property-literals: 6.9.4
+      babel-plugin-transform-regexp-constructors: 0.4.3
+      babel-plugin-transform-remove-console: 6.9.4
+      babel-plugin-transform-remove-debugger: 6.9.4
+      babel-plugin-transform-remove-undefined: 0.5.0
+      babel-plugin-transform-simplify-comparison-operators: 6.9.4
+      babel-plugin-transform-undefined-to-void: 6.9.4
+      lodash.isplainobject: 4.0.6
+    dev: false
+    resolution:
+      integrity: sha512-xj1s9Mon+RFubH569vrGCayA9Fm2GMsCgDRm1Jb8SgctOB7KFcrVc2o8K3YHUyMz+SWP8aea75BoS8YfsXXuiA==
   /babel-register/6.26.0:
     dependencies:
       babel-core: 6.26.3
@@ -3726,6 +3895,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-Cr9PHKpbyx96nYrMbepPqqBLrJs=
+  /esutils/2.0.3:
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
   /etag/1.8.1:
     dev: false
     engines:
@@ -5784,6 +5959,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-PI+41bW/S/kK4G4U8qUwpO2TXh0=
+  /lodash.isplainobject/4.0.6:
+    dev: false
+    resolution:
+      integrity: sha1-fFJqUtibRcRcxpC4gWO+BJf1UMs=
   /lodash.memoize/4.1.2:
     dev: false
     resolution:
@@ -5792,6 +5971,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-jfoojcgaQJ/YwGMWKahsVcfxIfQ=
+  /lodash.some/4.6.0:
+    dev: false
+    resolution:
+      integrity: sha1-G7nzFO9ri63tE7VJFpsqlF62jk0=
   /lodash.sortby/4.7.0:
     dev: false
     resolution:
@@ -10026,6 +10209,7 @@ specifiers:
   babel-plugin-annotate-pure-calls: 0.4.0
   babel-plugin-closure-elimination: 1.3.0
   babel-plugin-console-groupify: 0.0.9
+  babel-plugin-minify-constant-folding: ^0.5.0
   babel-plugin-optimize-clsx: 2.3.0
   babel-plugin-optimize-react: 0.0.4
   babel-plugin-react-local: 0.5.0
@@ -10035,6 +10219,7 @@ specifiers:
   babel-plugin-transform-imports: 2.0.0
   babel-plugin-transform-react-pure-class-to-function: 1.0.1
   babel-plugin-transform-react-remove-prop-types: 0.4.24
+  babel-preset-minify: ^0.5.0
   bootstrap: 4.3.1
   browserslist: 4.6.6
   case-sensitive-paths-webpack-plugin: 2.2.0

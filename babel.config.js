@@ -27,6 +27,7 @@ module.exports = function(api) {
 						'transform-typeof-symbol',
 					],
 				},
+				//'babel-preset-minify',
 			],
 		],
 		plugins: isProduction
@@ -73,10 +74,7 @@ module.exports = function(api) {
 						},
 					],
 					'babel-plugin-transform-react-pure-class-to-function',
-					[
-						'@babel/plugin-transform-react-jsx',
-						{ pragma: 'createElement', useBuiltIns: true },
-					],
+					['@babel/plugin-transform-react-jsx', { pragma: 'createElement', useBuiltIns: true }],
 					'babel-plugin-optimize-react',
 					'babel-plugin-react-local',
 					'babel-plugin-optimize-clsx',
@@ -114,10 +112,7 @@ module.exports = function(api) {
 					'@babel/plugin-syntax-import-meta',
 					['@babel/plugin-proposal-class-properties', { loose: true }],
 					'@babel/plugin-proposal-json-strings',
-					[
-						'@babel/plugin-transform-react-jsx',
-						{ pragma: 'createElement', useBuiltIns: true },
-					],
+					['@babel/plugin-transform-react-jsx', { pragma: 'createElement', useBuiltIns: true }],
 					'@babel/plugin-transform-react-jsx-source',
 					'babel-plugin-transform-console-log-variable-names',
 					'babel-plugin-console-groupify',
