@@ -1,8 +1,8 @@
 import { Component, createElement } from 'nervjs'
 
 export default class Dots extends Component {
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.index !== this.props.index
+	shouldComponentUpdate(nextProperties, nextState) {
+		return nextProperties.index !== this.props.index
 	}
 
 	renderDot(i) {

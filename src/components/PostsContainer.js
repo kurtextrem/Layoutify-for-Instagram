@@ -44,12 +44,16 @@ export default class PostsContainer extends Component {
 
 		this.initial = 0
 		this.postCount = 0
+		this.preloadCounter = 0
 
 		this.populateData()
-		window.setTimeout(() => this.setTimeout(TIME_STATE.LOADING), TIME_STATE.LOADING)
+			.then(data => {
+				if (properties.preload > 0) this.preload()
+				return data
+			})
+			.catch(logAndReturn)
 
-		this.preloadCounter = 0
-		if (properties.preload > 0) this.preload()
+		window.setTimeout(() => this.setTimeout(TIME_STATE.LOADING), TIME_STATE.LOADING)
 	}
 
 	state = {
@@ -65,7 +69,7 @@ export default class PostsContainer extends Component {
 	@bind
 	preload() {
 		const { preload, id } = this.props
-		if (++this.preloadCounter > preload) return
+		if (++this.preloadCounter > preload || this.postCount / 20 /* 20 posts per page */ > 2 * preload) return
 
 		console.log('preloading')
 		Chrome.send('load', { which: id })
