@@ -17,8 +17,7 @@ class Storage {
 
 	promise(callback) {
 		return new Promise((resolve, reject) => {
-			if (chrome.storage[this.STORAGE] === undefined)
-				return reject(new Error('Chrome storage not available'))
+			if (chrome.storage[this.STORAGE] === undefined) return reject(new Error('Chrome storage not available'))
 
 			try {
 				return callback(resolve, reject)
@@ -30,34 +29,22 @@ class Storage {
 
 	set(key, value) {
 		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].set({ [key]: value }, data =>
-				Storage.check(data, resolve, reject)
-			)
+			chrome.storage[this.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
 		)
 	}
 
 	setObj(object) {
-		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].set(object, data =>
-				Storage.check(data, resolve, reject)
-			)
-		)
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].set(object, data => Storage.check(data, resolve, reject)))
 	}
 
 	get(key, defaultValue) {
 		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].get({ [key]: defaultValue }, data =>
-				Storage.check(data[key], resolve, reject)
-			)
+			chrome.storage[this.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
 		)
 	}
 
 	remove(key) {
-		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].remove(key, data =>
-				Storage.check(data, resolve, reject)
-			)
-		)
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
 	}
 
 	static check(data, resolve, reject) {
@@ -73,17 +60,16 @@ class Storage {
 window.IG_Storage = new Storage('local')
 window.IG_Storage_Sync = new Storage('sync')
 
+/**
+ *
+ */
 function fetchFromBackground(which, path, options) {
 	return new Promise((resolve, reject) => {
-		chrome.runtime.sendMessage(
-			{ action: 'fetch', which, path, options },
-			text => {
-				if (text === undefined && chrome.runtime.lastError)
-					return reject(chrome.runtime.lastError.message)
+		chrome.runtime.sendMessage({ action: 'fetch', which, path, options }, text => {
+			if (text === undefined && chrome.runtime.lastError) return reject(chrome.runtime.lastError.message)
 
-				return resolve(text)
-			}
-		)
+			return resolve(text)
+		})
 	})
 }
 
@@ -122,15 +108,9 @@ class InstagramAPI {
 	}
 
 	fetch() {
-		if (!this.firstRun && this.nextMaxId === '')
-			return Promise.resolve(this.items) // nothing more to fetch
+		if (!this.firstRun && this.nextMaxId === '') return Promise.resolve(this.items) // nothing more to fetch
 
-		return fetchFromBackground(
-			'private',
-			`feed/${this.endpoint}/?${
-				this.nextMaxId && !this.firstRun ? `max_id=${this.nextMaxId}&` : ''
-			}`
-		) // maxId means "show everything before X"
+		return fetchFromBackground('private', `feed/${this.endpoint}/?${this.nextMaxId && !this.firstRun ? `max_id=${this.nextMaxId}&` : ''}`) // maxId means "show everything before X"
 			.then(this.storeNext)
 			.then(this.normalize)
 			.then(this.setData)
@@ -140,8 +120,7 @@ class InstagramAPI {
 
 	storeNext(data) {
 		console.log(data)
-		if (!this.firstRun || this.nextMaxId === '')
-			this.nextMaxId = data.next_max_id ? `${data.next_max_id}` : ''
+		if (!this.firstRun || this.nextMaxId === '') this.nextMaxId = data.next_max_id ? `${data.next_max_id}` : ''
 
 		return data
 	}
@@ -151,12 +130,52 @@ class InstagramAPI {
 		if (!Array.isArray(items)) return new Error('No items')
 
 		const length_ = items.length
-		if (length_ !== 0 && items[0].media !== undefined) {
-			// we need to normalize "saved"
-			for (let i = 0; i < length_; ++i) {
-				data.items[i] = items[i].media
+
+		const isSaved = length_ !== 0 && items[0].media !== undefined
+		for (let i = 0; i < length_; ++i) {
+			if (isSaved) items[i] = items[i].media // we need to normalize "saved"
+
+			// @todo: Rewrite to whitelist instead of blacklist
+			const item = items[i]
+			item.preview_comments = undefined // we don't want to store too much
+			item.organic_tracking_token = undefined
+			item.max_num_visible_preview_comments = undefined
+			item.location = undefined // @todo
+			item.lng = undefined // @todo
+			item.lat = undefined // @todo
+			item.inline_composer_display_condition = undefined
+			item.has_viewer_saved = undefined
+			item.has_more_comments = undefined
+			item.filter_type = undefined
+			item.device_timestamp = undefined // @todo
+			item.client_cache_key = undefined // @todo
+			item.caption_is_edited = undefined // @todo
+			item.can_viewer_save = undefined
+			item.can_viewer_reshare = undefined
+			item.can_view_more_preview_comments = undefined
+			item.comment_count = undefined // @todo
+			item.comment_likes_enabled = undefined // @todo
+			item.comment_threading_enabled = undefined
+			item.photo_of_you = undefined // @todo
+			item.pk = undefined
+			item.original_height = undefined
+			item.original_width = undefined
+			item.user.friendship_status = undefined // @todo is_bestie
+			item.user.has_anonymous_profile_picture = undefined
+			item.user.is_favorite = undefined
+			item.user.is_private = undefined
+			item.user.is_unpublished = undefined
+			item.user.is_verified = undefined
+			item.user.pk = undefined
+			item.user.profile_pic_id = undefined
+			item.user.latest_reel_media = undefined
+
+			for (let x = 0; x < item.image_version2.candidates.length; ++x) {
+				const iv = item[i].image_version2.candidates[x]
+				iv.estimated_scans_sizes = undefined
 			}
 		}
+
 		return data
 	}
 
@@ -170,14 +189,14 @@ class InstagramAPI {
 	 *
 	 * This has one caveat: We can't replace older items and thus there might be deleted items still left. We can not delete them.
 	 *
-	 * @param {Object} items
+	 * @param {object} items
 	 * @return {Bool} True if a match has been found
 	 */
 	mergeItems(items) {
 		const length_ = items.length - 1
 		const oldItems = this.items,
-			oldLen = oldItems.length - 1,
-			optimizedLen = Math.min(length_, oldLen)
+			oldLength = oldItems.length - 1,
+			optimizedLen = Math.min(length_, oldLength)
 
 		let match = -1
 		outer: for (let i = optimizedLen; i >= 0; --i) {
