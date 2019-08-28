@@ -130,5 +130,15 @@
 				"example": "JacobGross_"
 			}
 		}
+	},
+	"watch_newPic": {
+		"message": "$user$ has a new profile picture",
+		"description": "Text of the Notification, when the watched User has a new profile picture.",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "JacobGross_"
+			}
+		}
 	}
 }

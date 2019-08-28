@@ -152,7 +152,9 @@ function logAndReject(e) {
  *
  */
 function fixMaxId(response) {
-	return response.replace(/"next_max_id": (\d+)/g, '"next_max_id": "$1"')
+	const response_ = response.replace(/"next_max_id": (\d+)/g, '"next_max_id": "$1"')
+	;/\s*/g.exec('') // clear regex cache to prevent memory leak
+	return response_
 }
 
 /**
@@ -402,28 +404,56 @@ const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null
  *
  */
 function handlePost(json, user, userObject, watchData, options) {
-	const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json),
-		id = node !== null ? node.shortcode : null
-	if (id !== null && id != userObject.post) {
-		console.log(user, 'new post', json.graphql.user)
-		watchData[user].post = id
-
-		options.type = 'image'
-		options.title = chrome.i18n.getMessage('watch_newPost', user)
-
-		Promise.all([getBlobUrl(json.graphql.user.profile_pic_url_hd), getBlobUrl(node.thumbnail_src)])
-			.then(values => {
-				options.iconUrl = values[0]
-				options.imageUrl = values[1]
-				return chrome.notifications.create(`post_${user}`, options, nId => {
-					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
-					URL.revokeObjectURL(values[0])
-					URL.revokeObjectURL(values[1])
-					// @todo: Maybe clear notification?
-				})
-			})
-			.catch(logAndReject)
+	const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json)
+	if (node === null) {
+		notifyError(user, options)
+		return
 	}
+
+	const id = node.shortcode,
+		pic = json.graphql.user.profile_pic_url_hd
+	if (id === null || id == userObject.post) {
+		// if no post exsits, or if String/Number id == userObject.post (String)
+		console.log(user, 'no new post', node)
+
+		if (watchData[user].pic === undefined) {
+			watchData[user].pic = pic
+		} else if (watchData[user].pic !== pic) {
+			options.type = 'basic'
+			options.title = chrome.i18n.getMessage('watch_newPic', user)
+
+			getBlobUrl(pic)
+				.then(url => {
+					options.iconUrl = url
+					return chrome.notifications.create(`pic_${user}`, options, nId => {
+						if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+						URL.revokeObjectURL(url)
+						// @todo: Maybe clear notification?
+					})
+				})
+				.catch(logAndReject)
+		}
+		return
+	}
+
+	console.log(user, 'new post', json.graphql.user)
+	watchData[user].post = id
+
+	options.type = 'image'
+	options.title = chrome.i18n.getMessage('watch_newPost', user)
+
+	Promise.all([getBlobUrl(pic), getBlobUrl(node.thumbnail_src)])
+		.then(values => {
+			options.iconUrl = values[0]
+			options.imageUrl = values[1]
+			return chrome.notifications.create(`post_${user}`, options, nId => {
+				if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+				URL.revokeObjectURL(values[0])
+				URL.revokeObjectURL(values[1])
+				// @todo: Maybe clear notification?
+			})
+		})
+		.catch(logAndReject)
 }
 
 /**
@@ -533,6 +563,7 @@ function createUserObject(user, watchData) {
 					id: json ? json.graphql.user.id : '',
 					post: '',
 					story: '',
+					pic: '',
 				})
 			return (watchData[user].id = json ? json.graphql.user.id : '')
 		})
