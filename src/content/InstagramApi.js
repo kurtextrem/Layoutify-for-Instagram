@@ -115,6 +115,10 @@ class InstagramAPI {
 			.then(this.normalize)
 			.then(this.setData)
 			.then(this.storeItems)
+			.catch(data => {
+				console.error(data)
+				return data
+			})
 			.catch(this.storeItems)
 	}
 
