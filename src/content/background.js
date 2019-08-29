@@ -290,27 +290,12 @@ function createUpdateAlarm() {
 chrome.runtime.onInstalled.addListener(details => {
 	if (details.reason !== 'update') return
 
-	// @TODO: Migration code. Remove for v3.0
-	chrome.storage.local.get({ options: null }, data => {
-		if (data.options === null) return
-
-		chrome.storage.sync.set({ options: data.options })
-		chrome.storage.local.remove('options')
-	})
-	chrome.storage.local.get({ watchData: null }, data => {
-		if (data.watchData === null) return
-
-		chrome.storage.sync.set({ watchData: data.watchData })
-		chrome.storage.local.remove('watchData')
-	})
-
 	createUpdateAlarm()
 
 	const currentVersion = chrome.runtime.getManifest().version,
 		splitNew = currentVersion.split('.'),
-		oldVersion = details.previousVersion,
-		splitOld = oldVersion.split('.')
-	if (splitNew[0] > splitOld[0] || splitNew[1] > splitOld[1])
+		splitOld = details.previousVersion.split('.')
+	if (+splitNew[0] > +splitOld[0] || +splitNew[1] > +splitOld[1])
 		// we only check major und minor, nothing else
 		chrome.tabs.create({
 			url: `${chrome.runtime.getURL('index.html')}#/changelog`,
@@ -325,9 +310,9 @@ chrome.alarms.onAlarm.addListener(getWatchlist)
 function openIG(id) {
 	chrome.tabs.create({
 		url: `https://www.instagram.com/${id
-			.replace('post_', '')
-			.replace('story_', '')
-			.replace('error_', '')}/`,
+			.split('_')
+			.splice(1)
+			.join('_')}/`,
 	})
 }
 chrome.notifications.onClicked.addListener(openIG)
@@ -403,6 +388,15 @@ const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null
 /**
  *
  */
+function getProfilePicId(url) {
+	const pic_id = url.split('/')
+
+	return pic_id[pic_id.length - 1].split('?')[0].split('.')[0]
+}
+
+/**
+ *
+ */
 function handlePost(json, user, userObject, watchData, options) {
 	const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json)
 	if (node === null) {
@@ -416,9 +410,11 @@ function handlePost(json, user, userObject, watchData, options) {
 		// if no post exsits, or if String/Number id == userObject.post (String)
 		console.log(user, 'no new post', node)
 
-		if (watchData[user].pic === undefined) {
-			watchData[user].pic = pic
-		} else if (watchData[user].pic !== pic) {
+		const user_pic = watchData[user].pic
+		if (user_pic === undefined) {
+			watchData[user].pic = getProfilePicId(pic)
+		} else if (getProfilePicId(user_pic) !== getProfilePicId(pic)) {
+			// @todo: Migration code getProfilePicId(user_pic)
 			options.type = 'basic'
 			options.title = chrome.i18n.getMessage('watch_newPic', user)
 
