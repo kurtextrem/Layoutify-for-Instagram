@@ -76,7 +76,7 @@ module.exports = function(api) {
 					'babel-plugin-transform-react-pure-class-to-function',
 					['@babel/plugin-transform-react-jsx', { pragma: 'createElement', useBuiltIns: true }],
 					'babel-plugin-optimize-react',
-					'babel-plugin-react-local',
+					//'babel-plugin-react-local', // @todo: Broken 29/08/2019
 					'babel-plugin-optimize-clsx',
 					//'@babel/plugin-transform-react-constant-elements', // see https://github.com/facebookincubator/create-react-app/issues/553#issuecomment-359196326
 					//['babel-plugin-transform-hoist-nested-functions', { methods: true }], // see ^^^

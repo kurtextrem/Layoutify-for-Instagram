@@ -170,8 +170,9 @@ class InstagramAPI {
 			item.user.profile_pic_id = undefined
 			item.user.latest_reel_media = undefined
 
-			for (let x = 0; x < item.image_version2.candidates.length; ++x) {
-				const iv = item[i].image_version2.candidates[x]
+			const candidates_length = item.image_versions2 !== undefined ? item.image_versions2.candidates.length : 0
+			for (let x = 0; x < candidates_length; ++x) {
+				const iv = item.image_versions2.candidates[x]
 				iv.estimated_scans_sizes = undefined
 			}
 		}

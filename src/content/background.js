@@ -410,10 +410,12 @@ function handlePost(json, user, userObject, watchData, options) {
 		// if no post exsits, or if String/Number id == userObject.post (String)
 		console.log(user, 'no new post', node)
 
-		const user_pic = watchData[user].pic
+		const user_pic = watchData[user].pic,
+			picId = getProfilePicId(pic)
 		if (user_pic === undefined) {
-			watchData[user].pic = getProfilePicId(pic)
-		} else if (getProfilePicId(user_pic) !== getProfilePicId(pic)) {
+			watchData[user].pic = picId
+		} else if (getProfilePicId(user_pic) !== picId) {
+			watchData[user].pic = picId
 			// @todo: Migration code getProfilePicId(user_pic)
 			options.type = 'basic'
 			options.title = chrome.i18n.getMessage('watch_newPic', user)
