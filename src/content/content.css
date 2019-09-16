@@ -511,13 +511,13 @@ video:not([loop])::-webkit-media-controls-overlay-play-button {
 div > div + a + div,
 div > div + [style][href],
 div > div + [style][href] ~ a,
-
 div[role='button'] ~ a,
 div[role='button'] ~ a ~ div,
 div[role='button'] > div[role='dialog'] > div + div > div + div > span,
 div[role='button'] > div[role='dialog'] > div + div > div + div + a,
 [class*='Sprite'],
-div[role='button'] > div[role='dialog'] + button /* Taged Users icon */ {
+div[role='button'] > div[role='dialog'] + button /* Taged Users icon */,
+a[role='button'] {
 	z-index: 3;
 }
 
