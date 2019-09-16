@@ -282,7 +282,7 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 function createUpdateAlarm() {
 	chrome.alarms.create('update', {
 		delayInMinutes: 1,
-		periodInMinutes: 4,
+		periodInMinutes: 20, // @todo temp. to see if it fixes profiles; normal is 4
 	})
 }
 
@@ -594,7 +594,9 @@ function checkForWatchedContent(users, type, watchData) {
 			window.setTimeout(function() {
 				createUserObject(user, watchData)
 					.then(function(e) {
-						notify(user, watchData[user], type, watchData, length_, i)
+						window.setTimeout(function() {
+							notify(user, watchData[user], type, watchData, length_, i)
+						})
 						return e
 					})
 					.catch(logAndReject)
