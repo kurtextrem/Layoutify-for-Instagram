@@ -23,7 +23,7 @@ body,
 section > nav > div > div,
 /* Main */
 section > main,
-section > main *:not(canvas):not([class*='Sprite']):not(video),
+section > main *:not(canvas):not([class*='Sprite']):not(video):not([role="button"]),
 /* Footer */
 section > footer,
 div[role='dialog'],
