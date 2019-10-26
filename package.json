@@ -1,6 +1,6 @@
 {
 	"name": "improved-layout-for-instagram",
-	"version": "2.10.3",
+	"version": "2.10.4",
 	"dependencies": {
 		"@babel/core": "7.6.2",
 		"@babel/plugin-proposal-class-properties": "7.5.5",
