@@ -517,7 +517,9 @@ div[role='button'] > div[role='dialog'] > div + div > div + div > span,
 div[role='button'] > div[role='dialog'] > div + div > div + div + a,
 [class*='Sprite'],
 div[role='button'] > div[role='dialog'] + button /* Taged Users icon */,
-a[role='button'] {
+a[role='button'],
+div[role='button'],
+button[tabindex="-1"] {
 	z-index: 3;
 }
 
@@ -537,7 +539,7 @@ div[role='button'] > div:first-child {
 
 div[role='button'] > div > div:not(:first-child):not(:last-child),
 div[role='button'] > div > button {
-	z-index: 1; /* so it doesn't overlap tagged users */
+	z-index: 3; /* so it doesn't overlap tagged users */
 }
 
 div[role='button'] > div > button {

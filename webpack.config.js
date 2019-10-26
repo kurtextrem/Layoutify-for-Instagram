@@ -211,7 +211,7 @@ if (isProduction) {
 } else {
 	const options = {
 		middleware: (app, builtins) =>
-			app.use(async(context, next) => {
+			app.use(async (context, next) => {
 				await next()
 				context.set('Access-Control-Allow-Origin', '*')
 				context.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
@@ -299,7 +299,7 @@ const first = {
 							},
 							toplevel: true,
 						},
-						parallel: true,
+						extractComments: false,
 					}),
 				],
 				splitChunks: {
