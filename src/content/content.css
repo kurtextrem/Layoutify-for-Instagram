@@ -822,12 +822,6 @@ body > div > div[role='dialog'] article > header + div {
 	margin-right: 320px !important;
 }
 
-/** dots in multiple posts */
-article > header + div > div > div > div > div + div + div:last-child {
-	margin-top: 12px;
-	margin-bottom: -3px;
-}
-
 /** 3 dots on every post */
 article > header + div + div + div {
 	z-index: 9;
