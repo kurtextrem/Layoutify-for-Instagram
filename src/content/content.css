@@ -71,11 +71,11 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div {
  * Stories in between posts
  */
 main
-> section
-> div:not(#rcr-anchor)
-> div:not([class])
-> div:first-child
-> div {
+	> section
+	> div:not(#rcr-anchor)
+	> div:not([class])
+	> div:first-child
+	> div {
 	width: calc(100% - 7.4vw);
 	margin-top: 30px;
 	margin-bottom: 30px;
@@ -225,23 +225,23 @@ time {
 }
 
 body
-> div
-> div[role='dialog']
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-> ul
-> ul
-> li,
+	> div
+	> div[role='dialog']
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li,
 #react-root:not(.stories)
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-> ul
-> ul
-> li {
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li {
 	padding: 0 16px;
 }
 
@@ -270,17 +270,17 @@ h3 + span + div {
 
 /** Grow comments */
 body
-> div
-> div[role='dialog']
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child),
+	> div
+	> div[role='dialog']
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child),
 #react-root:not(.stories)
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child) {
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	order: 2 !important;
 	margin: 0 !important;
@@ -291,19 +291,19 @@ header
 }
 
 body
-> div
-> div[role='dialog']
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-> ul,
+	> div
+	> div[role='dialog']
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul,
 #react-root:not(.stories)
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-> ul {
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul {
 	width: 100%;
 	height: 100%;
 	padding: 0;
@@ -312,21 +312,21 @@ header
 }
 
 body
-> div
-> div[role='dialog']
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-> ul
-> li,
+	> div
+	> div[role='dialog']
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul
+	> li,
 #react-root.post
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-> ul
-> li {
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul
+	> li {
 	margin-top: 0;
 	margin-left: 0;
 	padding: 2px;
@@ -334,27 +334,27 @@ header
 
 /** Comments comment profile pic */
 body
-> div
-> div[role='dialog']
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-ul
-> li
-> div
-> div
-> div,
+	> div
+	> div[role='dialog']
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	ul
+	> li
+	> div
+	> div
+	> div,
 #react-root:not(.stories)
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-ul
-> li
-> div
-> div
-> div {
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	ul
+	> li
+	> div
+	> div
+	> div {
 	align-self: flex-start;
 	margin-right: 7px;
 }
@@ -370,53 +370,53 @@ body > div > div[role='dialog'] h3 + span + div,
 
 /** Comments comments replies */
 body
-> div
-> div[role='dialog']
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-> ul
-> ul
-> li
-> ul,
+	> div
+	> div[role='dialog']
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li
+	> ul,
 #react-root:not(.stories)
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-> ul
-> ul
-> li
-> ul {
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li
+	> ul {
 	width: calc(100% - 18px);
 	margin: 4px 0 0 36px;
 }
 
 body
-> div
-> div[role='dialog']
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-> ul
-> ul
-> li
-> ul
-> li:first-child
-> div,
+	> div
+	> div[role='dialog']
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li
+	> ul
+	> li:first-child
+	> div,
 #react-root:not(.stories)
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child)
-> ul
-> ul
-> li
-> ul
-> li:first-child
-> div {
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li
+	> ul
+	> li:first-child
+	> div {
 	margin-bottom: 0;
 }
 
@@ -499,11 +499,11 @@ video::-webkit-media-controls {
 
 /** @TODO: Replace IG's play button with the native one once its been rolled out */
 body
-> div
-> div[role='dialog']
-video:not([loop])::-webkit-media-controls-overlay-play-button,
+	> div
+	> div[role='dialog']
+	video:not([loop])::-webkit-media-controls-overlay-play-button,
 #react-root:not(.stories)
-video:not([loop])::-webkit-media-controls-overlay-play-button {
+	video:not([loop])::-webkit-media-controls-overlay-play-button {
 	display: none;
 }
 
@@ -548,28 +548,28 @@ div[role='button'] > div > button {
 
 /** Multiple dots */
 .home
-article
-> div
-> div[role='button']
-> div
-> div
-> div
-+ div
-+ div:not(:last-child) {
+	article
+	> div
+	> div[role='button']
+	> div
+	> div
+	> div
+	+ div
+	+ div:not(:last-child) {
 	margin-top: 0;
 	margin-bottom: 0;
 }
 
 .home
-article
-> div
-> div[role='button']
-> div:not([role='dialog'])
-> div
-> div
-+ div
-+ div:not(:last-child)
-> div {
+	article
+	> div
+	> div[role='button']
+	> div:not([role='dialog'])
+	> div
+	> div
+	+ div
+	+ div:not(:last-child)
+	> div {
 	margin-top: 10px;
 	margin-bottom: -6px;
 }
@@ -579,48 +579,48 @@ article
 =============================================*/
 /** Outer div */
 .home
-div[role='button']
-> div[role='dialog']
-> div
-> div:first-child
-+ div:nth-child(2) {
+	div[role='button']
+	> div[role='dialog']
+	> div
+	> div:first-child
+	+ div:nth-child(2) {
 	contain: content;
 	z-index: 3;
 }
 
 /** Small play button */
 .home
-div[role='button']
-> div[role='dialog']
-> div
-> div:first-child
-+ div:nth-child(2)
-> div
-+ div {
+	div[role='button']
+	> div[role='dialog']
+	> div
+	> div:first-child
+	+ div:nth-child(2)
+	> div
+	+ div {
 	opacity: 1 !important;
 }
 
 .home
-div[role='button']
-> div[role='dialog']
-> div
-> div:first-child
-+ div:nth-child(2)
-> div
-+ div
-> span {
+	div[role='button']
+	> div[role='dialog']
+	> div
+	> div:first-child
+	+ div:nth-child(2)
+	> div
+	+ div
+	> span {
 	right: initial;
 	left: 0;
 }
 
 /** Hide "Click video for audio" */
 .home
-div[role='button']
-> div[role='dialog']
-> div
-> div:first-child
-+ div:nth-child(2)
-> div:first-child {
+	div[role='button']
+	> div[role='dialog']
+	> div
+	> div:first-child
+	+ div:nth-child(2)
+	> div:first-child {
 	display: none;
 }
 
@@ -703,56 +703,56 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
 }
 
 main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child:not(:hover)
-> div
-> div,
+	> section
+	> div:first-child:not(#rcr-anchor)
+	~ div:last-child:not(:hover)
+	> div
+	> div,
 main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child:not(:hover)
-> div
-> div
-> div
-> div
-> div
-> div {
+	> section
+	> div:first-child:not(#rcr-anchor)
+	~ div:last-child:not(:hover)
+	> div
+	> div
+	> div
+	> div
+	> div
+	> div {
 	padding-right: 0;
 	padding-left: 0;
 }
 
 main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child:not(:hover)
-> div
-> div
-> div {
+	> section
+	> div:first-child:not(#rcr-anchor)
+	~ div:last-child:not(:hover)
+	> div
+	> div
+	> div {
 	margin-right: 7px;
 	margin-left: 7px;
 }
 
 /* Only story box */
 main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> div:first-child
-+ div
-> div
-+ div
-> div
-> div {
+	> section
+	> div:first-child:not(#rcr-anchor)
+	~ div:last-child
+	> div:first-child
+	+ div
+	> div
+	+ div
+	> div
+	> div {
 	height: 43vh !important;
 }
 
 /* Copyright etc */
 main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child
-> div:last-child {
+	> section
+	> div:first-child:not(#rcr-anchor)
+	~ div:last-child
+	> div:last-child {
 	padding-right: 17px;
 	padding-bottom: 0;
 	padding-left: 17px;
@@ -769,10 +769,10 @@ main
 =============================================*/
 /** Profile spinner */
 .home
-main
-> section
-> div:not(#rcr-anchor):first-child
-> div:last-child:not(:first-child) {
+	main
+	> section
+	> div:not(#rcr-anchor):first-child
+	> div:last-child:not(:first-child) {
 	/* 	order: 3;
 	height: 60px;
 	margin: 10px 0;
@@ -781,11 +781,11 @@ main
 }
 
 .home
-main
-> section
-> div:not(#rcr-anchor):first-child
-> div:last-child:not(:first-child)
-> div {
+	main
+	> section
+	> div:not(#rcr-anchor):first-child
+	> div:last-child:not(:first-child)
+	> div {
 	/* 	top: 30%; */
 }
 
@@ -823,7 +823,7 @@ body > div > div[role='dialog'] article > header + div {
 }
 
 /** dots in multiple posts */
-article > header + div > div > div > div > div + div + div:last-child {
+article > header + div > div > div > div[style^='padding-bottom'] + div + div {
 	margin-top: 12px;
 	margin-bottom: -3px;
 }
@@ -956,18 +956,18 @@ footer > div > nav {
 }
 
 .ige_picturesOnly:not(.profile):not(.explore)
-article
-> header
-> div:last-child
-> div:last-child {
+	article
+	> header
+	> div:last-child
+	> div:last-child {
 	display: flex;
 }
 
 .ige_picturesOnly:not(.stories)
-header
-+ div
-+ div
-> div:first-of-type:not(:only-child) {
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child) {
 	height: 0;
 }
 
@@ -978,10 +978,10 @@ header
 
 /*----------  Hide Stories  ----------*/
 .ige_hideStories
-main
-> section
-> div:first-child:not(#rcr-anchor)
-~ div:last-child {
+	main
+	> section
+	> div:first-child:not(#rcr-anchor)
+	~ div:last-child {
 	display: none;
 }
 
@@ -998,10 +998,10 @@ main
 
 /* @TODO: Make this work for 2 row layout too */
 .ige_noSpaceBetweenPosts
-main
-> section
-div
-> article:not(:first-child):not(:nth-of-type(5n)) {
+	main
+	> section
+	div
+	> article:not(:first-child):not(:nth-of-type(5n)) {
 	border-left-width: 0 !important;
 }
 
@@ -1010,11 +1010,11 @@ div
 }
 
 .ige_noSpaceBetweenPosts
-main
-> section
-> div:not(#rcr-anchor)
-> div:not([class])
-> div {
+	main
+	> section
+	> div:not(#rcr-anchor)
+	> div:not([class])
+	> div {
 	justify-content: center;
 }
 
