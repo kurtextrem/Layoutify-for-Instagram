@@ -115,12 +115,14 @@ body > div > div[role='dialog'] article > header,
 	z-index: 8;
 }
 
-#react-root.post.post.post article > header {
+#react-root.post.post.post article > header,
+#react-root.tv.tv.tv article > header {
 	padding: 4px !important;
 }
 
 body > div > div[role='dialog'] article > header,
-#react-root.post article > header {
+#react-root.post article > header,
+#react-root.tv article > header {
 	right: 8px !important;
 	width: 305px !important;
 	border: 0 !important;
@@ -139,7 +141,8 @@ div > main:only-child {
 }
 
 body > div > div[role='dialog'] header + div + div,
-.post header + div + div {
+.post header + div + div,
+.tv header + div + div {
 	top: 55px !important;
 }
 
@@ -166,7 +169,8 @@ body > div > div[role='dialog'] header + div + div,
 }
 
 body > div > div[role='dialog'] header + div + div,
-#react-root.post.post.post header + div + div {
+#react-root.post.post.post header + div + div,
+#react-root.tv.tv.tv header + div + div {
 	height: auto !important;
 	padding: 0 8px 0 23px !important;
 
@@ -321,6 +325,13 @@ body
 	> ul
 	> li,
 #react-root.post
+	header
+	+ div
+	+ div
+	> div:first-of-type:not(:only-child)
+	> ul
+	> li,
+#react-root.tv
 	header
 	+ div
 	+ div
@@ -801,7 +812,8 @@ section > footer + div {
 =============================================*/
 /** Enlargen modal */
 body > div > div[role='dialog'] article,
-.post article {
+.post article,
+.tv article {
 	min-height: 50vh;
 	max-height: 90vh;
 	margin-bottom: 0;
@@ -841,12 +853,14 @@ body > div > div[role='dialog'] article,
 	max-height: 100%;
 }
 
-.post > section > main {
+.post > section > main,
+.tv > section > main {
 	justify-content: center;
 }
 
 /** Sometimes IG sets a max-width on elements */
-.post > section > main > div {
+.post > section > main > div,
+.tv > section > main > div {
 	flex-grow: 0;
 	max-width: 51vw !important;
 	padding-top: 10px;
@@ -855,13 +869,15 @@ body > div > div[role='dialog'] article,
 	padding-left: 0;
 }
 
-.post > section > main > div > div {
+.post > section > main > div > div,
+.tv > section > main > div > div {
 	flex-grow: 1;
 	flex-shrink: 1;
 }
 
 /** More image, less wasted space */
-.post header + div {
+.post header + div,
+.tv header + div {
 	margin-right: 322px !important;
 }
 
@@ -1043,7 +1059,8 @@ footer > div > nav {
 		justify-content: space-evenly;
 	}
 
-	.post > section > main > div {
+	.post > section > main > div,
+	.tv > section > main > div {
 		max-width: 75vw !important;
 	}
 }

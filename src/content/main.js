@@ -7,6 +7,9 @@ const documentElement = document.documentElement,
 /** Stores the current options */
 let OPTIONS
 
+/**
+ *
+ */
 function injectCSS(file) {
 	let style = document.createElement('link')
 
@@ -107,6 +110,9 @@ const handleNodeFns = {
 	},
 }
 
+/**
+ *
+ */
 function handleNode(node, mutation) {
 	const nodeName = node.nodeName
 
@@ -153,18 +159,24 @@ function decideClass() {
 	if (pathname === '/') return (currentClass = 'home')
 
 	// stories
-	if (pathname.indexOf('/stories/') !== -1) return (currentClass = 'stories')
+	if (pathname.indexOf('/stories/') === 0) return (currentClass = 'stories')
 
 	// single post
-	if (pathname.indexOf('/p/') !== -1) return (currentClass = 'post')
+	if (pathname.indexOf('/p/') === 0) return (currentClass = 'post')
 
 	// search results
-	if (pathname.indexOf('/explore/') !== -1) return (currentClass = 'explore')
+	if (pathname.indexOf('/explore/') === 0) return (currentClass = 'explore')
+
+	// insta TV
+	if (pathname.indexOf('/tv/') === 0) return (currentClass = 'tv')
 
 	// profile page
 	return (currentClass = 'profile')
 }
 
+/**
+ *
+ */
 function addClass() {
 	if (currentClass === '' || root.classList.contains(currentClass)) return
 
@@ -177,6 +189,9 @@ const Instagram = {
 	saved: new InstagramAPI('saved'),
 }
 
+/**
+ *
+ */
 function addExtendedButton() {
 	if ($('.extended--btn') !== null) return
 
@@ -244,6 +259,9 @@ const listenerActions = {
 	},
 }
 
+/**
+ *
+ */
 function addListener() {
 	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		if (
@@ -304,10 +322,16 @@ function addControls(element) {
 	if (fullSizeCondition) element.preload = 'auto'
 }
 
+/**
+ *
+ */
 function setBoxWidth(i) {
 	documentElement.style.setProperty('--boxWidth', `${i}vw`)
 }
 
+/**
+ *
+ */
 function toggleWatchlist(user) {
 	if (!OPTIONS.watchPosts) OPTIONS.watchPosts = [user]
 	else {
@@ -447,6 +471,9 @@ const OPTS = {
 	// indicateFollowing: true
 }
 
+/**
+ *
+ */
 function handleOptions(options) {
 	if (options === null) return options
 	OPTIONS = options
@@ -465,6 +492,9 @@ function handleOptions(options) {
 	return options
 }
 
+/**
+ *
+ */
 function updateStorage(changes, area) {
 	if (changes.options !== undefined) {
 		console.log('new options', changes)
@@ -472,6 +502,9 @@ function updateStorage(changes, area) {
 	}
 }
 
+/**
+ *
+ */
 function loadOptions() {
 	window.IG_Storage_Sync.get('options', null)
 		.then(handleOptions)
