@@ -410,7 +410,7 @@ const OPTS_MODE = {
 	//highlightOP(arg) {},
 	_boxWidth(i) {},
 	rows(i) {
-		if (i !== 4) setBoxWidth(Math.ceil(100 / (i + 1))
+		if (i !== 4) setBoxWidth(Math.ceil(100 / (i + 1)))
 	},
 	boxWidth(i) {
 		if (OPTIONS.rows === 2 && i > 25 && i !== 49) return setBoxWidth(i)
