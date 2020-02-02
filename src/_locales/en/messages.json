@@ -59,6 +59,10 @@
 		"message": "Posts per row",
 		"description": "setting"
 	},
+	"rows_help": {
+		"message": "1 reflects the default IG standard layout. Warning: Uneven numbers (1,3,5,7) and even numbers higher than 4 can break scrolling. Default is 4.",
+		"description": "setting"
+	},
 	"indicateFollowing": {
 		"message": "Following indicator",
 		"description": "setting"
@@ -72,7 +76,7 @@
 		"description": "setting"
 	},
 	"rowsFourBoxWidth_help": {
-		"message": "Only applies when the 'Posts per row' option is set to 4.",
+		"message": "Only applies when the 'Posts per row' option is set to 4. Default is 23.",
 		"description": "setting"
 	},
 	"rowsTwoBoxWidth": {
@@ -80,7 +84,7 @@
 		"description": "setting"
 	},
 	"rowsTwoBoxWidth_help": {
-		"message": "Only applies when the 'Posts per row' option is set to 2.",
+		"message": "Only applies when the 'Posts per row' option is set to 2. Default is 40.",
 		"description": "setting"
 	},
 	"watchPosts": {

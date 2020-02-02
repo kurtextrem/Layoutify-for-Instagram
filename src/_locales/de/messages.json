@@ -59,6 +59,10 @@
 		"message": "Posts pro Reihe",
 		"description": "setting"
 	},
+	"rows_help": {
+		"message": "1 stellt das reguläre IG Layout ein. Warnung: Ungerade Zahlen (1,3,5,7) könenn das scrollen kaputt machen. Standard ist 4.",
+		"description": "setting"
+	},
 	"indicateFollowing": {
 		"message": "Following indicator",
 		"description": "setting"
@@ -68,19 +72,19 @@
 		"description": "setting"
 	},
 	"rowsFourBoxWidth": {
-		"message": "4-Posts Reihen Breite",
+		"message": "4-Posts Breite",
 		"description": "setting"
 	},
 	"rowsFourBoxWidth_help": {
-		"message": "Tritt nur in Kraft, wenn 'Posts pro Reihe' auf 4 gesetzt ist.",
+		"message": "Tritt nur in Kraft, wenn 'Posts pro Reihe' auf 4 gesetzt ist. Standard ist 23.",
 		"description": "setting"
 	},
 	"rowsTwoBoxWidth": {
-		"message": "2-Posts Reihen Breite",
+		"message": "2-Posts Breite",
 		"description": "setting"
 	},
 	"rowsTwoBoxWidth_help": {
-		"message": "Tritt nur in Kraft, wenn 'Posts pro Reihe' auf 2 gesetzt ist.",
+		"message": "Tritt nur in Kraft, wenn 'Posts pro Reihe' auf 2 gesetzt ist. Standard ist 40.",
 		"description": "setting"
 	},
 	"watchPosts": {
