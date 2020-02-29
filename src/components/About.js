@@ -1,6 +1,6 @@
 import bind from 'autobind-decorator'
 import { Button } from 'reactstrap'
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 import { Storage } from './Utils'
 
 export default class About extends Component {
@@ -25,8 +25,7 @@ export default class About extends Component {
 					<a
 						href="https://github.com/kurtextrem/Improved-for-Instagram"
 						target="_blank"
-						rel="noopener"
-					>
+						rel="noopener">
 						GitHub
 					</a>
 					.
@@ -36,8 +35,7 @@ export default class About extends Component {
 					<a
 						href="https://github.com/kurtextrem/Improved-for-Instagram/issues"
 						target="_blank"
-						rel="noopener"
-					>
+						rel="noopener">
 						GitHub
 					</a>{' '}
 					or mail me:{' '}
@@ -52,8 +50,7 @@ export default class About extends Component {
 					<a
 						href="https://chrome.google.com/webstore/detail/improved-layout-for-insta/nekeeojpcbiehcignddhindbgacbghmi/reviews"
 						target="_blank"
-						rel="noopener"
-					>
+						rel="noopener">
 						Chrome Webstore
 					</a>
 					.
@@ -78,8 +75,7 @@ export default class About extends Component {
 					<a
 						href="https://medium.com/@mwender/how-to-post-to-instagram-from-your-desktop-65fa55c77556"
 						target="_blank"
-						rel="noopener"
-					>
+						rel="noopener">
 						this
 					</a>{' '}
 					tutorial.
@@ -123,8 +119,7 @@ export default class About extends Component {
 					<a
 						href="https://kurtextrem.de/chrome/PRIVACY.html"
 						target="_blank"
-						rel="noopener"
-					>
+						rel="noopener">
 						Privacy Policy
 					</a>{' '}
 					(Sensitive data is <b>only</b> collected and stored{' '}

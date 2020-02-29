@@ -1,4 +1,4 @@
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 
 // could use props.width and props.height
 export default class Loading extends Component {

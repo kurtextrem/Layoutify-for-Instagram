@@ -1,6 +1,6 @@
 import App from './components/App'
-//import Nerv, { createElement, hydrate, render } from 'nervjs'
-import { createElement, hydrate, render } from 'nervjs'
+//import Preact, { h, hydrate, render } from 'preact'
+import { h, hydrate, render } from 'preact'
 import { documentReady, logAndReturn } from './components/Utils'
 /* eslint-disable */
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -8,12 +8,12 @@ import './components/main.css'
 /* eslint-enable */
 
 if (module.hot) {
-	import('nerv-devtools')
+	import('preact-devtools')
 	const { registerObserver } = require('react-perf-devtool')
-	//const { whyDidYouUpdate } = require('why-did-you-update')
+	//const { whyDidYouRender } = require('@welldone-software/why-did-you-render')
 
 	registerObserver()
-	//whyDidYouUpdate(Nerv)
+	//whyDidYouRender(Preact)
 	// @todo: Add preact-perf-profiler
 
 	module.hot.accept('./components/App', () =>
@@ -24,9 +24,7 @@ if (module.hot) {
 
 	const Perfume = require('perfume.js').default
 	window.perf = new Perfume({
-		firstPaint: true,
-		firstContentfulPaint: true,
-		firstInputDelay: true,
+		resourceTiming: true,
 		logging: true,
 		logPrefix: '⚡️',
 	})
@@ -37,11 +35,14 @@ if (module.hot) {
 			window.perf.log(entry.name, entry.duration)
 		}
 	}).observe({
-		entryTypes: PerformanceObserver.supportedEntryTypes !== undefined ? PerformanceObserver.supportedEntryTypes : ['event', 'measure', 'mark', 'navigation', 'longtask', 'paint'],
+		entryTypes:
+			PerformanceObserver.supportedEntryTypes !== undefined
+				? PerformanceObserver.supportedEntryTypes
+				: ['event', 'measure', 'mark', 'navigation', 'longtask', 'paint'],
 	}) // resource, paint,
 }
 
-const init = (fn, app, container) => fn(createElement(app), container)
+const init = (fn, app, container) => fn(h(app), container)
 const ready = () =>
 	init(module.hot ? render : hydrate, App, document.body.children[2]) // @todo: https://css-tricks.com/render-caching-for-react/
 

@@ -1,5 +1,5 @@
 import bind from 'autobind-decorator'
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 import { getWorkerBlob, logAndReturn, shallowDiffers } from './Utils'
 
 /** Have we initiated the worker pool already? */
@@ -104,11 +104,15 @@ export default class ImgWorker extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		const { imgSrc } = this.state
-		if (imgSrc !== nextProps.src && imgSrc !== nextProps['data-src']) this.worker.postMessage(nextProps.src || nextProps['data-src'])
+		if (imgSrc !== nextProps.src && imgSrc !== nextProps['data-src'])
+			this.worker.postMessage(nextProps.src || nextProps['data-src'])
 	}
 
 	shouldComponentUpdate(props, state) {
-		return shallowDiffers(props, this.props) || state.isLoading !== this.state.isLoading
+		return (
+			shallowDiffers(props, this.props) ||
+			state.isLoading !== this.state.isLoading
+		)
 	}
 
 	componentWillUnmount() {
@@ -134,6 +138,10 @@ export default class ImgWorker extends Component {
 	render() {
 		const { src, placeholderAlt, placeholder, ...attributes } = this.props // eslint-disable-line no-unused-vars
 		const { isLoading } = this.state
-		return isLoading ? this.renderPlaceholder() : <img {...attributes} src={this.img.src} /> // props instead of this.props
+		return isLoading ? (
+			this.renderPlaceholder()
+		) : (
+			<img {...attributes} src={this.img.src} />
+		) // props instead of this.props
 	}
 }

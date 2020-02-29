@@ -6,7 +6,8 @@ const path = require('path')
 const webpack = require('webpack')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+	.BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -44,16 +45,19 @@ const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // 
 
 const ENV = process.env.NODE_ENV || 'development'
 const isProduction = ENV === 'production'
-const STATS = process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
+const STATS =
+	process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
 
 // by using min versions we speed up HMR
 /**
  *
  */
 function getMin(module) {
-	return path.resolve(__dirname, `node_modules/${module}/dist/${module.replace('js', '')}.min.js`)
+	return path.resolve(
+		__dirname,
+		`node_modules/${module}/dist/${module.replace('js', '')}.min.js`
+	)
 }
-const nerv = isProduction ? 'nervjs' : getMin('nervjs') // around 20 KB smaller bundle in prod
 
 const html = {
 	title: 'Improved Layout for Instagram',
@@ -80,7 +84,8 @@ const html = {
 
 const plugins = [
 	new ProgressBarPlugin({
-		messageTemplate: '[:bar] \u001B[32m\u001B[1m:percent\u001B[22m\u001B[39m (:elapseds) \u001B[2m:msg\u001B[22m',
+		messageTemplate:
+			'[:bar] \u001B[32m\u001B[1m:percent\u001B[22m\u001B[39m (:elapseds) \u001B[2m:msg\u001B[22m',
 		progressOptions: {
 			renderThrottle: 112,
 			clear: true,
@@ -214,8 +219,14 @@ if (isProduction) {
 			app.use(async (context, next) => {
 				await next()
 				context.set('Access-Control-Allow-Origin', '*')
-				context.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-				context.set('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization')
+				context.set(
+					'Access-Control-Allow-Methods',
+					'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+				)
+				context.set(
+					'Access-Control-Allow-Headers',
+					'X-Requested-With, content-type, Authorization'
+				)
 			}),
 		static: path.join(__dirname, 'dist'),
 		host: 'localhost',
@@ -255,7 +266,9 @@ const first = {
 
 	context: path.join(__dirname, 'src'),
 
-	entry: isProduction ? ['./index.js'] : ['./index.js', 'webpack-plugin-serve/client'],
+	entry: isProduction
+		? ['./index.js']
+		: ['./index.js', 'webpack-plugin-serve/client'],
 
 	watch: !isProduction,
 
@@ -309,7 +322,11 @@ const first = {
 							chunks: 'all',
 							enforce: true,
 							test: module => {
-								return module.nameForCondition && /\.cs{2}$/.test(module.nameForCondition()) && module.type.startsWith('javascript')
+								return (
+									module.nameForCondition &&
+									/\.cs{2}$/.test(module.nameForCondition()) &&
+									module.type.startsWith('javascript')
+								)
 							},
 						},
 					},
@@ -364,14 +381,18 @@ const first = {
 
 	resolve: {
 		alias: {
-			react: nerv,
-			'react-dom': nerv,
-			'create-react-class': 'nerv-create-class',
+			react: 'preact/compat',
+			'react-dom/test-utils': 'preact/test-utils',
+			'react-dom': 'preact/compat',
+			'create-react-class': 'preact-compat/lib/create-react-class',
+			'react-dom-factories': 'preact-compat/lib/react-dom-factories',
 			'prop-types$': 'proptypes/disabled',
 		},
 	},
 
-	devtool: isProduction ? false /*'source-map'*/ /* 'cheap-module-source-map'*/ : 'inline-module-source-map', //'nosources-source-map',
+	devtool: isProduction
+		? false /* 'cheap-module-source-map'*/ /*'source-map'*/
+		: 'inline-module-source-map', //'nosources-source-map',
 
 	plugins,
 

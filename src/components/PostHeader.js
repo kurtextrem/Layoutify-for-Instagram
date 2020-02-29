@@ -1,7 +1,7 @@
 //import ImgWorker from './ImgWorker'
 import PropTypes from 'prop-types'
 import TimeAgo from 'react-timeago'
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 import { Media } from 'reactstrap'
 import { updateCDN } from './Utils'
 
@@ -30,8 +30,7 @@ export default class PostHeader extends Component {
 				<a
 					href={`https://www.instagram.com/${user.username}`}
 					target="_blank"
-					rel="noopener"
-				>
+					rel="noopener">
 					<img
 						src={updateCDN(user.profile_pic_url)}
 						className="img-fluid profile-pic rounded mr-2"
@@ -43,8 +42,7 @@ export default class PostHeader extends Component {
 					<a
 						href={`https://instagram.com/${user.username}`}
 						target="_blank"
-						rel="noopener"
-					>
+						rel="noopener">
 						{user.full_name || user.username}
 					</a>
 				</Media>
@@ -52,8 +50,7 @@ export default class PostHeader extends Component {
 				<a
 					href={`https://www.instagram.com/p/${code}`}
 					target="_blank"
-					rel="noopener"
-				>
+					rel="noopener">
 					{date !== null ? (
 						<TimeAgo className="text-muted" date={date} />
 					) : (

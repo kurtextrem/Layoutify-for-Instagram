@@ -1,4 +1,4 @@
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 import { Container, Nav as NavI, NavItem, NavLink, Navbar } from 'reactstrap'
 
 function getActive(location, key) {
@@ -13,7 +13,11 @@ export default class Nav extends Component {
 	render() {
 		const { location } = this.props
 		return (
-			<Navbar color="faded" light toggleable className="mb-2 navbar-expand bg-light">
+			<Navbar
+				color="faded"
+				light
+				toggleable
+				className="mb-2 navbar-expand bg-light">
 				<Container>
 					<a href="/index.html">
 						<img
@@ -27,7 +31,13 @@ export default class Nav extends Component {
 
 					<NavI navbar className="grow-1">
 						<NavItem>
-							<NavLink className={getActive(location, 'liked') || location === '' ? 'active' : ''} href="#/">
+							<NavLink
+								className={
+									getActive(location, 'liked') || location === ''
+										? 'active'
+										: ''
+								}
+								href="#/">
 								Liked <i className="material-icons">favorite</i>
 							</NavLink>
 						</NavItem>
@@ -38,7 +48,9 @@ export default class Nav extends Component {
 						</NavItem>
 
 						<NavItem className="ml-auto">
-							<NavLink className={getActive(location, 'options')} href="#/options">
+							<NavLink
+								className={getActive(location, 'options')}
+								href="#/options">
 								Options <i className="material-icons">build</i>
 							</NavLink>
 						</NavItem>

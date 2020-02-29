@@ -14,7 +14,13 @@ function prerender(outputDirectory, params) {
 			createElement() {
 				return {}
 			},
-			location: { href: url, pathname: url, replace() {}, hash: '#' + url, search: '' },
+			location: {
+				href: url,
+				pathname: url,
+				replace() {},
+				hash: '#' + url,
+				search: '',
+			},
 		},
 		history: {},
 		navigator: { userAgent: '' },
@@ -43,14 +49,16 @@ function prerender(outputDirectory, params) {
 
 	const app = (m && m.default) || m
 	if (typeof app !== 'function') {
-		console.warn('Entry does not export a Component function/class, aborting prerendering.')
+		console.warn(
+			'Entry does not export a Component function/class, aborting prerendering.'
+		)
 		return ''
 	}
 
-	const nerv = require('nervjs'),
-		dom = require('nerv-server')
+	const preact = require('preact/dist/preact.umd')
+	const renderToString = require(`preact-render-to-string/dist/index`)
 
-	return dom.renderToString(nerv.createElement(app))
+	return renderToString(preact.h(app))
 }
 module.exports = prerender
 

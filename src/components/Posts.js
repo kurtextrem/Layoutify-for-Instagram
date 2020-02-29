@@ -1,4 +1,4 @@
-import { createElement } from 'nervjs'
+import { h } from 'preact'
 
 // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
 // https://alligator.io/react/react-infinite-scroll/

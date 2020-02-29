@@ -1,4 +1,4 @@
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 
 export default class Dots extends Component {
 	shouldComponentUpdate(nextProperties, nextState) {
@@ -6,7 +6,12 @@ export default class Dots extends Component {
 	}
 
 	renderDot(i) {
-		return <span key={`${i}`} className={`dots--dot m-1${i === this.props.index ? ' active' : ''}`} />
+		return (
+			<span
+				key={`${i}`}
+				className={`dots--dot m-1${i === this.props.index ? ' active' : ''}`}
+			/>
+		)
 	}
 
 	render() {

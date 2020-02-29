@@ -74,7 +74,10 @@ module.exports = function(api) {
 						},
 					],
 					'babel-plugin-transform-react-pure-class-to-function',
-					['@babel/plugin-transform-react-jsx', { pragma: 'createElement', useBuiltIns: true }],
+					[
+						'@babel/plugin-transform-react-jsx',
+						{ pragma: 'h', pragmaFrag: 'Fragment', useBuiltIns: true },
+					],
 					'babel-plugin-optimize-react',
 					//'babel-plugin-react-local', // @todo: Broken 29/08/2019
 					'babel-plugin-optimize-clsx',
@@ -112,7 +115,10 @@ module.exports = function(api) {
 					'@babel/plugin-syntax-import-meta',
 					['@babel/plugin-proposal-class-properties', { loose: true }],
 					'@babel/plugin-proposal-json-strings',
-					['@babel/plugin-transform-react-jsx', { pragma: 'createElement', useBuiltIns: true }],
+					[
+						'@babel/plugin-transform-react-jsx',
+						{ pragma: 'h', pragmaFrag: 'Fragment', useBuiltIns: true },
+					],
 					'@babel/plugin-transform-react-jsx-source',
 					'babel-plugin-transform-console-log-variable-names',
 					'babel-plugin-console-groupify',

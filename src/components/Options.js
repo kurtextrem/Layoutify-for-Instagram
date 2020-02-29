@@ -9,7 +9,7 @@ import {
 	Input,
 	Label,
 } from 'reactstrap'
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 import { StorageSync, i18n, logAndReturn, throttle } from './Utils'
 
 /**

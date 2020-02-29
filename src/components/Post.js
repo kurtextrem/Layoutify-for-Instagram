@@ -3,9 +3,15 @@ import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import PostMedia from './PostMedia'
 import { CardBody, CardText } from 'reactstrap'
-import { Chrome, Storage, getWorkerBlob, logAndReturn, updateCDN } from './Utils'
+import {
+	Chrome,
+	Storage,
+	getWorkerBlob,
+	logAndReturn,
+	updateCDN,
+} from './Utils'
 import { EventComponent } from './EventComponent'
-import { createElement } from 'nervjs'
+import { h } from 'preact'
 
 let initiated = false,
 	worker
@@ -39,7 +45,9 @@ export default class Post extends EventComponent {
 
 		this.id = properties.data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
 		this.isCarousel = properties.data.media_type === 8
-		this.carouselLen = this.isCarousel ? properties.data.carousel_media.length : 0
+		this.carouselLen = this.isCarousel
+			? properties.data.carousel_media.length
+			: 0
 		this.preloaded = false
 		this.timeout = 0
 
@@ -76,8 +84,16 @@ export default class Post extends EventComponent {
 
 	preload(index) {
 		if (worker !== undefined) {
-			console.log('preloading', this.props.data.carousel_media[index].image_versions2.candidates[0].url)
-			worker.postMessage(updateCDN(this.props.data.carousel_media[index].image_versions2.candidates[0].url))
+			console.log(
+				'preloading',
+				this.props.data.carousel_media[index].image_versions2.candidates[0].url
+			)
+			worker.postMessage(
+				updateCDN(
+					this.props.data.carousel_media[index].image_versions2.candidates[0]
+						.url
+				)
+			)
 		}
 	}
 
@@ -101,13 +117,27 @@ export default class Post extends EventComponent {
 		const text = (caption && caption.text) || ''
 
 		return (
-			<article className={`card${active ? '' : ' fadeOut'}`} id={`post_${this.id}`} onMouseEnter={isCarousel ? this : undefined}>
+			<article
+				className={`card${active ? '' : ' fadeOut'}`}
+				id={`post_${this.id}`}
+				onMouseEnter={isCarousel ? this : undefined}>
 				<PostHeader user={user} code={data.code} taken_at={data.taken_at} />
-				<PostMedia isCarousel={isCarousel} carouselLen={carouselLength} initial={initial} data={data} />
+				<PostMedia
+					isCarousel={isCarousel}
+					carouselLen={carouselLength}
+					initial={initial}
+					data={data}
+				/>
 				<CardBody className="overflow-auto p-3 card-body">
 					<CardText>{text}</CardText>
 				</CardBody>
-				<PostFooter active={active} btnClick={this} defaultClass={defaultClass} toggleClass={toggleClass} parent={parent} />
+				<PostFooter
+					active={active}
+					btnClick={this}
+					defaultClass={defaultClass}
+					toggleClass={toggleClass}
+					parent={parent}
+				/>
 			</article>
 		)
 	}

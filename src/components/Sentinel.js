@@ -1,5 +1,5 @@
 import bind from 'autobind-decorator'
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 
 export default class Sentinel extends Component {
 	constructor(props) {

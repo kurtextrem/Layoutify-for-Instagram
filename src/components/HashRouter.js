@@ -3,7 +3,7 @@
  */
 
 import PropTypes from 'prop-types'
-import { Children, createElement } from 'nervjs'
+import { h, toChildArray } from 'preact'
 import { EventComponent } from './EventComponent'
 
 export class HashRouter extends EventComponent {
@@ -100,7 +100,7 @@ export class HashRouter extends EventComponent {
 	}
 
 	calcChildren(props) {
-		Children.forEach(props.children, child => {
+		toChildArray(props.children).forEach(child => {
 			const childArray = child.props.hash.split('/')
 			if (childArray.length !== 0) childArray.shift()
 

@@ -1,4 +1,4 @@
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 import { logAndReturn } from './Utils'
 
 export default class Changelog extends Component {

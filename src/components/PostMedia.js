@@ -1,7 +1,7 @@
 import Dots from './Dots'
 import bind from 'autobind-decorator'
 import { Button } from 'reactstrap'
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 import { updateCDN } from './Utils'
 
 let observer
@@ -18,7 +18,10 @@ function onChange(changes) {
 			observer.unobserve(target)
 
 			target.src = target.dataset.src // not in a rIC because of https://github.com/necolas/react-native-web/issues/759
-			if (isModern) target.addEventListener('load', e => window.requestAnimationFrame(switchClass.bind(undefined, e.target)))
+			if (isModern)
+				target.addEventListener('load', e =>
+					window.requestAnimationFrame(switchClass.bind(undefined, e.target))
+				)
 		}
 	}
 }
@@ -122,7 +125,9 @@ export default class PostMedia extends Component {
 					type="video/mp4"
 					preload="metadata"
 					className="img-fluid"
-					intrinsicsize={isModern ? `${candidate.width}x${candidate.height}` : undefined}
+					intrinsicsize={
+						isModern ? `${candidate.width}x${candidate.height}` : undefined
+					}
 					controls
 				/>
 			)
@@ -138,17 +143,25 @@ export default class PostMedia extends Component {
 					alt="If you see this, the post has probably been deleted"
 					className="img-fluid"
 					decoding="async"
-					intrinsicsize={isModern ? `${candidate.width}x${candidate.height}` : undefined}
+					intrinsicsize={
+						isModern ? `${candidate.width}x${candidate.height}` : undefined
+					}
 				/>
 			)
 		}
 
-		if (!isModern) this.style['padding-bottom'] = `${(candidate.height / candidate.width) * 100}%`
+		if (!isModern)
+			this.style['padding-bottom'] = `${(candidate.height / candidate.width) *
+				100}%`
 
 		return (
-			<div className={`position-relative${isCarousel ? ' post--carousel' : ''}`}>
+			<div
+				className={`position-relative${isCarousel ? ' post--carousel' : ''}`}>
 				{isCarousel ? (
-					<Button className="arrow arrow--left" color="link" onClick={this.handleArrowClick}>
+					<Button
+						className="arrow arrow--left"
+						color="link"
+						onClick={this.handleArrowClick}>
 						<i className="material-icons">keyboard_arrow_left</i>
 					</Button>
 				) : null}
@@ -156,12 +169,17 @@ export default class PostMedia extends Component {
 					href={`https://www.instagram.com/p/${data.code}`}
 					target="_blank"
 					rel="noopener"
-					className={`img--wrapper ${isModern ? 'img--loaded' : 'img--placeholder'}`}
+					className={`img--wrapper ${
+						isModern ? 'img--loaded' : 'img--placeholder'
+					}`}
 					style={this.style}>
 					{mediaElement}
 				</a>
 				{isCarousel ? (
-					<Button className="arrow arrow--right" color="link" onClick={this.handleArrowClick}>
+					<Button
+						className="arrow arrow--right"
+						color="link"
+						onClick={this.handleArrowClick}>
 						<i className="material-icons">keyboard_arrow_right</i>
 					</Button>
 				) : null}

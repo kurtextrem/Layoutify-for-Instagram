@@ -20,8 +20,9 @@
 		// Import non-ES modules as default imports.
 		"esModuleInterop": true,
 		"paths": {
-			"**/*": ["**/*"]
-		}
+			"*/*": ["*/*"]
+		},
+		"module": "esnext"
 	},
 	"exclude": ["dist", "node_modules"]
 }

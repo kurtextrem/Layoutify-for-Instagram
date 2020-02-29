@@ -7,7 +7,7 @@ import Sentinel from './Sentinel'
 import bind from 'autobind-decorator'
 import { CardDeck } from 'reactstrap'
 import { Chrome, Storage, logAndReturn } from './Utils'
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 
 const TIME_STATE = {
 	LOADING: 900,
@@ -15,7 +15,7 @@ const TIME_STATE = {
 }
 
 export default class PostsContainer extends Component {
-	static loading = <Loading />
+	static loading = (<Loading />)
 
 	static error = (
 		<div>
@@ -53,7 +53,10 @@ export default class PostsContainer extends Component {
 			})
 			.catch(logAndReturn)
 
-		window.setTimeout(() => this.setTimeout(TIME_STATE.LOADING), TIME_STATE.LOADING)
+		window.setTimeout(
+			() => this.setTimeout(TIME_STATE.LOADING),
+			TIME_STATE.LOADING
+		)
 	}
 
 	state = {
@@ -63,13 +66,21 @@ export default class PostsContainer extends Component {
 
 	setTimeout(timeout) {
 		this.setState((previousState, properties) => ({ timeout }))
-		if (timeout !== TIME_STATE.ERROR) window.setTimeout(() => this.setTimeout(TIME_STATE.ERROR), TIME_STATE.ERROR)
+		if (timeout !== TIME_STATE.ERROR)
+			window.setTimeout(
+				() => this.setTimeout(TIME_STATE.ERROR),
+				TIME_STATE.ERROR
+			)
 	}
 
 	@bind
 	preload() {
 		const { preload, id } = this.props
-		if (++this.preloadCounter > preload || this.postCount / 20 /* 20 posts per page */ > 2 * preload) return
+		if (
+			++this.preloadCounter > preload ||
+			this.postCount / 20 /* 20 posts per page */ > 2 * preload
+		)
+			return
 
 		console.log('preloading')
 		Chrome.send('load', { which: id })
@@ -141,9 +152,12 @@ export default class PostsContainer extends Component {
 
 		return (
 			nextProperties.id !== this.props.id ||
-			(nextState.timeout !== timeout && (nextItems === null || nextItems.length === 0)) ||
+			(nextState.timeout !== timeout &&
+				(nextItems === null || nextItems.length === 0)) ||
 			(items === null && nextItems !== null) || // first items
-			(items !== null && nextItems !== null && nextItems.length !== items.length)
+			(items !== null &&
+				nextItems !== null &&
+				nextItems.length !== items.length)
 		)
 	}
 
@@ -178,7 +192,9 @@ export default class PostsContainer extends Component {
 		if (items !== null && items.length !== 0)
 			return (
 				<div className="position-relative">
-					<CardDeck className="justify-content-center">{Posts(items, this.renderPost, hasCategories)}</CardDeck>
+					<CardDeck className="justify-content-center">
+						{Posts(items, this.renderPost, hasCategories)}
+					</CardDeck>
 					<Sentinel onVisible={this.handleScroll} />
 				</div>
 			)

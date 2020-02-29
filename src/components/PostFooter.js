@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { Button, CardFooter } from 'reactstrap'
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 
 export default class PostFooter extends Component {
 	shouldComponentUpdate(nextProps) {
@@ -11,8 +11,13 @@ export default class PostFooter extends Component {
 		const { active, btnClick, defaultClass, toggleClass, parent } = this.props
 		return (
 			<CardFooter className={parent}>
-				<Button className={`action--btn ${active ? 'active' : 'inactive'}`} color="link" onClick={btnClick}>
-					<i className="material-icons">{active ? defaultClass : toggleClass}</i>
+				<Button
+					className={`action--btn ${active ? 'active' : 'inactive'}`}
+					color="link"
+					onClick={btnClick}>
+					<i className="material-icons">
+						{active ? defaultClass : toggleClass}
+					</i>
 				</Button>
 			</CardFooter>
 		)

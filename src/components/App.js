@@ -5,7 +5,7 @@ import Nav from './Nav'
 import Options from './Options'
 import Saved from './Saved'
 import bind from 'autobind-decorator'
-import { Component, createElement } from 'nervjs'
+import { Component, h } from 'preact'
 import { HashRouter, Route } from './HashRouter'
 // @todo: Lazy-load router and routes for faster TTI
 
