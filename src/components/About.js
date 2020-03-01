@@ -105,7 +105,7 @@ export default class About extends Component {
 
 				<h3>
 					<a href="#/changelog">
-						Changelog <i className="material-icons">description</i>
+						Changelog <i class="material-icons">description</i>
 					</a>
 				</h3>
 

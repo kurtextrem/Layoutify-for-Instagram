@@ -1,4 +1,4 @@
-import { Component, h } from 'preact'
+import { Component } from 'preact'
 
 export class EventComponent extends Component {
 	handleEvent(e) {

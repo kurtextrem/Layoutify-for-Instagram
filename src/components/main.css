@@ -73,17 +73,6 @@ nav,
 	overflow: auto;
 }
 
-.sentinel {
-	position: absolute;
-	bottom: var(--boxHeight);
-	width: 1px;
-	height: 1px;
-	transform: translateY(calc(var(--boxHeight) * -2));
-
-	contain: strict;
-	z-index: 2;
-}
-
 .liked {
 	color: #d9534f;
 }

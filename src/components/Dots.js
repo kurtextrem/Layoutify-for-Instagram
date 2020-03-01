@@ -9,7 +9,7 @@ export default class Dots extends Component {
 		return (
 			<span
 				key={`${i}`}
-				className={`dots--dot m-1${i === this.props.index ? ' active' : ''}`}
+				class={`dots--dot m-1${i === this.props.index ? ' active' : ''}`}
 			/>
 		)
 	}
@@ -24,6 +24,6 @@ export default class Dots extends Component {
 			dots[i] = this.renderDot(i)
 		}
 
-		return <div className="dots d-flex justify-content-center">{dots}</div>
+		return <div class="dots d-flex justify-content-center">{dots}</div>
 	}
 }

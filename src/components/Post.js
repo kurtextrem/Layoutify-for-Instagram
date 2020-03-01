@@ -118,9 +118,9 @@ export default class Post extends EventComponent {
 
 		return (
 			<article
-				className={`card${active ? '' : ' fadeOut'}`}
+				class={`card${active ? '' : ' fadeOut'}`}
 				id={`post_${this.id}`}
-				onMouseEnter={isCarousel ? this : undefined}>
+				onMouseEnter={isCarousel ? this.handleEvent : undefined}>
 				<PostHeader user={user} code={data.code} taken_at={data.taken_at} />
 				<PostMedia
 					isCarousel={isCarousel}
@@ -128,12 +128,12 @@ export default class Post extends EventComponent {
 					initial={initial}
 					data={data}
 				/>
-				<CardBody className="overflow-auto p-3 card-body">
+				<CardBody class="overflow-auto p-3 card-body">
 					<CardText>{text}</CardText>
 				</CardBody>
 				<PostFooter
 					active={active}
-					btnClick={this}
+					btnClick={this.handleEvent}
 					defaultClass={defaultClass}
 					toggleClass={toggleClass}
 					parent={parent}

@@ -48,17 +48,6 @@ const isProduction = ENV === 'production'
 const STATS =
 	process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
 
-// by using min versions we speed up HMR
-/**
- *
- */
-function getMin(module) {
-	return path.resolve(
-		__dirname,
-		`node_modules/${module}/dist/${module.replace('js', '')}.min.js`
-	)
-}
-
 const html = {
 	title: 'Improved Layout for Instagram',
 	template: 'index.ejs',
@@ -94,6 +83,7 @@ const plugins = [
 		},
 	}),
 	new HtmlWebpackPlugin(html),
+	new MiniCssExtractPlugin('main.css'),
 	new CopyWebpackPlugin([
 		{ from: '*.html' },
 		{
@@ -146,7 +136,6 @@ if (isProduction) {
 			verbose: false,
 		}),*/
 		// new webpack.IgnorePlugin(/prop-types$/),
-		new MiniCssExtractPlugin('main.css'),
 		// new Critters(),
 		// strip out babel-helper invariant checks
 		/*new ReplacePlugin({
@@ -400,7 +389,7 @@ const first = {
 		hints: isProduction ? 'warning' : false,
 	},
 
-	node: false,
+	node: isProduction ? false : undefined,
 
 	stats:
 		isProduction && STATS

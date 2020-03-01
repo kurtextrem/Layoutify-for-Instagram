@@ -8,7 +8,7 @@ import './components/main.css'
 /* eslint-enable */
 
 if (module.hot) {
-	import('preact-devtools')
+	import('preact/debug')
 	const { registerObserver } = require('react-perf-devtool')
 	//const { whyDidYouRender } = require('@welldone-software/why-did-you-render')
 

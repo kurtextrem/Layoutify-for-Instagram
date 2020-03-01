@@ -64,13 +64,13 @@ dependencies:
   parallel-webpack: 3.0.0-alpha.2_webpack@4.41.6
   perfume.js: 4.8.1
   preact: 10.3.2
-  preact-devtools: 0.0.1
   preact-perf-profiler: 1.0.3
   preact-render-to-string: 5.1.4_preact@10.3.2
   prepack: 0.2.54
   prepack-webpack-plugin: 1.1.2_webpack@4.41.6
   prop-types: 15.7.2
   proptypes: 1.1.0
+  punycode: 2.1.1
   purgecss-webpack-plugin: 2.1.0
   react-perf-devtool: 3.1.8
   react-timeago: 4.4.0
@@ -7858,10 +7858,6 @@ packages:
       node: '>=6.0.0'
     resolution:
       integrity: sha512-WuQETPMcW9Uf1/22HWUWP9lgsIC+KEHg2kozMflKjbeUtw9ujvFX6QmIfozaErDkmLWS9WEnEdEe6Uo9/BNTdQ==
-  /preact-devtools/0.0.1:
-    dev: false
-    resolution:
-      integrity: sha512-qa2nzmnFrGjRT+SoanriwykEC+KMkvnj/3D18mwPuruPZ95lh1JPtceEmCU9qoz340lTlwTz3kJpiJs+3CZlbQ==
   /preact-perf-profiler/1.0.3:
     dev: false
     resolution:
@@ -10586,13 +10582,13 @@ specifiers:
   parallel-webpack: 3.0.0-alpha.2
   perfume.js: 4.8.1
   preact: ^10.3.2
-  preact-devtools: ^0.0.1
   preact-perf-profiler: 1.0.3
   preact-render-to-string: ^5.1.4
   prepack: 0.2.54
   prepack-webpack-plugin: 1.1.2
   prop-types: 15.7.2
   proptypes: 1.1.0
+  punycode: ^2.1.1
   purgecss-webpack-plugin: 2.1.0
   react-perf-devtool: 3.1.8
   react-timeago: 4.4.0

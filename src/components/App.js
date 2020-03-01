@@ -29,7 +29,7 @@ class App extends Component {
 			<div id="app">
 				<Nav location={this.state.location} />
 
-				<main className="d-flex justify-content-center">
+				<main class="d-flex justify-content-center">
 					<HashRouter onLocationChanged={this.handleLocationChanged}>
 						<Route key="liked" hash="#/">
 							{Liked}
@@ -49,7 +49,7 @@ class App extends Component {
 					</HashRouter>
 				</main>
 				<a href="#" id="backToTop">
-					<i className="material-icons">keyboard_arrow_up</i>
+					<i class="material-icons">keyboard_arrow_up</i>
 				</a>
 			</div>
 		)

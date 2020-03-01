@@ -20,9 +20,13 @@
 		// Import non-ES modules as default imports.
 		"esModuleInterop": true,
 		"paths": {
-			"*/*": ["*/*"]
+			"*/*": ["*/*"],
+			"React": ["node_modules/preact"]
 		},
-		"module": "esnext"
+		"module": "esnext",
+		//"allowUmdGlobalAccess": true,
+		"alwaysStrict": true,
+		"jsxFactory": "h"
 	},
 	"exclude": ["dist", "node_modules"]
 }

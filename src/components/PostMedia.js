@@ -124,7 +124,7 @@ export default class PostMedia extends Component {
 					poster={media.image_versions2.candidates[0].url}
 					type="video/mp4"
 					preload="metadata"
-					className="img-fluid"
+					class="img-fluid"
 					intrinsicsize={
 						isModern ? `${candidate.width}x${candidate.height}` : undefined
 					}
@@ -141,7 +141,7 @@ export default class PostMedia extends Component {
 					src={isCarousel || initial ? url : ''}
 					data-src={url}
 					alt="If you see this, the post has probably been deleted"
-					className="img-fluid"
+					class="img-fluid"
 					decoding="async"
 					intrinsicsize={
 						isModern ? `${candidate.width}x${candidate.height}` : undefined
@@ -155,21 +155,20 @@ export default class PostMedia extends Component {
 				100}%`
 
 		return (
-			<div
-				className={`position-relative${isCarousel ? ' post--carousel' : ''}`}>
+			<div class={`position-relative${isCarousel ? ' post--carousel' : ''}`}>
 				{isCarousel ? (
 					<Button
-						className="arrow arrow--left"
+						class="arrow arrow--left"
 						color="link"
 						onClick={this.handleArrowClick}>
-						<i className="material-icons">keyboard_arrow_left</i>
+						<i class="material-icons">keyboard_arrow_left</i>
 					</Button>
 				) : null}
 				<a
 					href={`https://www.instagram.com/p/${data.code}`}
 					target="_blank"
 					rel="noopener"
-					className={`img--wrapper ${
+					class={`img--wrapper ${
 						isModern ? 'img--loaded' : 'img--placeholder'
 					}`}
 					style={this.style}>
@@ -177,10 +176,10 @@ export default class PostMedia extends Component {
 				</a>
 				{isCarousel ? (
 					<Button
-						className="arrow arrow--right"
+						class="arrow arrow--right"
 						color="link"
 						onClick={this.handleArrowClick}>
-						<i className="material-icons">keyboard_arrow_right</i>
+						<i class="material-icons">keyboard_arrow_right</i>
 					</Button>
 				) : null}
 				{isCarousel ? <Dots index={carouselIndex} len={carouselLen} /> : null}

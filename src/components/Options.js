@@ -9,122 +9,123 @@ import {
 	Input,
 	Label,
 } from 'reactstrap'
-import { Component, h } from 'preact'
+import { Component, h, Fragment } from 'preact'
 import { StorageSync, i18n, logAndReturn, throttle } from './Utils'
 
-/**
- * Options object.
- * If you add something here, you need to add it to src/content/main.js as well
- *
- * Supports:
- * - boolean toggle
- * - array
- * - number
- */
-const OPTS = {
-	watchPosts: [],
-	watchStories: [],
-	watchInBackground: true,
+export default class Options extends Component {
+	/**
+	 * Options object.
+	 * If you add something here, you need to add it to src/content/main.js as well
+	 *
+	 * Supports:
+	 * - boolean toggle
+	 * - array
+	 * - number
+	 */
+	static OPTS = {
+		watchPosts: [],
+		watchStories: [],
+		watchInBackground: true,
 
-	night: true,
-	nightModeStart: 23,
-	nightModeEnd: 6,
+		night: true,
+		nightModeStart: 23,
+		nightModeEnd: 6,
 
-	picturesOnly: false,
-	hideStories: false,
-	noSpaceBetweenPosts: false,
-	only3Dot: false,
-	rows: window.innerWidth < 1367 ? 2 : 4,
-	rowsFourBoxWidth: 23,
-	rowsTwoBoxWidth: 40,
+		picturesOnly: false,
+		hideStories: false,
+		noSpaceBetweenPosts: false,
+		only3Dot: false,
+		rows: window.innerWidth < 1367 ? 2 : 4,
+		rowsFourBoxWidth: 23,
+		rowsTwoBoxWidth: 40,
 
-	// hideRecommended: false, // @TODO: Implement (easy)
-	// highlightOP: true, // @TODO: Implement (easy)
-	// indicateFollowing: true // @TODO: Implement (fairly easy)
-	// blockUnseen: false, // @TODO: Block URL "https://www.instagram.com/stories/reel/seen", however the chance that they remove this ability is fairly high
-}
-
-/**
- * Additional settings for options.
- * For options that are an integer it is required to set `min`, `step` and `max`.
- *
- * help: Whether to render a help text below the settings, using the i18n key `optionname_help`.
- * onChange: Handler that is triggered when the option is toggled.
- */
-const OPTS_ADDITIONAL = {
-	rows: {
-		min: 1,
-		step: 1,
-		max: 8,
-		help: true,
-		onChange: undefined,
-	},
-	rowsFourBoxWidth: {
-		min: 20,
-		step: 1,
-		max: 24,
-		help: true,
-		onChange: undefined,
-	},
-	rowsTwoBoxWidth: {
-		min: 34,
-		step: 1,
-		max: 49,
-		help: true,
-		onChange: undefined,
-	},
-	nightModeStart: {
-		min: 0,
-		step: 1,
-		max: 23,
-		help: true,
-		onChange: undefined,
-	},
-	nightModeEnd: {
-		min: 0,
-		step: 1,
-		max: 23,
-		help: true,
-		onChange: undefined,
-	},
+		// hideRecommended: false, // @TODO: Implement (easy)
+		// highlightOP: true, // @TODO: Implement (easy)
+		// indicateFollowing: true // @TODO: Implement (fairly easy)
+		// blockUnseen: false, // @TODO: Block URL "https://www.instagram.com/stories/reel/seen", however the chance that they remove this ability is fairly high
+	}
 
 	/**
-	 * watchData type
-	 * name: { // username
-	 * 	id: String, // user_id
-	 * 	post: String, // short_code
-	 * 	story: String, // latest_reel_media id
-	 * }
+	 * Additional settings for options.
+	 * For options that are an integer it is required to set `min`, `step` and `max`.
+	 *
+	 * help: Whether to render a help text below the settings, using the i18n key `optionname_help`.
+	 * onChange: Handler that is triggered when the option is toggled.
 	 */
-	watchStories: {
-		help: true,
-		onChange: undefined,
-	},
-	watchPosts: {
-		help: true,
-		onChange: undefined,
-	},
-	watchInBackground: {
-		help: true,
-		onChange(e) {
-			if (e.target.checked === true)
-				chrome.runtime.sendMessage(null, { action: 'watchInBackground' })
-			else chrome.runtime.sendMessage(null, { action: 'stopWatchInBackground' })
+	static OPTS_ADDITIONAL = {
+		rows: {
+			min: 1,
+			step: 1,
+			max: 8,
+			help: true,
+			onChange: undefined,
 		},
-	},
-}
+		rowsFourBoxWidth: {
+			min: 20,
+			step: 1,
+			max: 24,
+			help: true,
+			onChange: undefined,
+		},
+		rowsTwoBoxWidth: {
+			min: 34,
+			step: 1,
+			max: 49,
+			help: true,
+			onChange: undefined,
+		},
+		nightModeStart: {
+			min: 0,
+			step: 1,
+			max: 23,
+			help: true,
+			onChange: undefined,
+		},
+		nightModeEnd: {
+			min: 0,
+			step: 1,
+			max: 23,
+			help: true,
+			onChange: undefined,
+		},
 
-function AllOptions(items = {}, render) {
-	const array = []
-	for (const opt in OPTS) array.push(render(opt))
-	return array
-}
+		/**
+		 * watchData type
+		 * name: { // username
+		 * 	id: String, // user_id
+		 * 	post: String, // short_code
+		 * 	story: String, // latest_reel_media id
+		 * }
+		 */
+		watchStories: {
+			help: true,
+			onChange: undefined,
+		},
+		watchPosts: {
+			help: true,
+			onChange: undefined,
+		},
+		watchInBackground: {
+			help: true,
+			onChange(e) {
+				if (e.target.checked === true)
+					chrome.runtime.sendMessage(null, { action: 'watchInBackground' })
+				else
+					chrome.runtime.sendMessage(null, { action: 'stopWatchInBackground' })
+			},
+		},
+	}
 
-export default class Options extends Component {
+	static AllOptions(items = {}, render) {
+		const array = []
+		for (const opt in Options.OPTS) array.push(render(opt))
+		return array
+	}
+
 	constructor(properties) {
 		super(properties)
 
-		StorageSync.get('options', OPTS)
+		StorageSync.get('options', Options.OPTS)
 			.then(data => {
 				this.setState((previousState, properties) => ({ options: data }))
 				return data
@@ -136,7 +137,7 @@ export default class Options extends Component {
 	}
 
 	state = {
-		options: OPTS,
+		options: Options.OPTS,
 	}
 
 	@bind
@@ -179,7 +180,7 @@ export default class Options extends Component {
 		input.value = ''
 		if (!value || (opt !== null && opt.indexOf(value) !== -1)) return
 
-		const additional = OPTS_ADDITIONAL[name]
+		const additional = Options.OPTS_ADDITIONAL[name]
 		if (additional !== undefined && additional.onChange !== undefined)
 			additional.onChange(value)
 
@@ -232,7 +233,8 @@ export default class Options extends Component {
 	}
 
 	static renderLabel(id) {
-		if (OPTS[id] === undefined) return console.warn('outdated option', id) // @todo: Remove from dataset
+		if (Options.OPTS[id] === undefined)
+			return console.warn('outdated option', id) // @todo: Remove from dataset
 
 		return (
 			<Label for={id} sm={3}>
@@ -268,7 +270,7 @@ export default class Options extends Component {
 							.then(additional.onChange)
 							.catch(logAndReturn)
 
-		const type = OPTS[id]
+		const type = Options.OPTS[id]
 		if (type === undefined) return console.warn('outdated option', id, value)
 
 		if (typeof type === 'boolean')
@@ -283,9 +285,8 @@ export default class Options extends Component {
 			)
 		if (Array.isArray(type)) {
 			if (!Array.isArray(value)) value = [value] // fixes a bug from prev versions, needed for compat
-			// @TODO: Fragments
 			return (
-				<div>
+				<>
 					<Input name={id} type="select" multiple>
 						{value.map(this.renderOption)}
 					</Input>
@@ -298,7 +299,7 @@ export default class Options extends Component {
 					<Button type="button" onClick={this.add}>
 						Add
 					</Button>
-				</div>
+				</>
 			)
 		}
 		if (Number.isInteger(type)) {
@@ -339,7 +340,7 @@ export default class Options extends Component {
 
 	@bind
 	renderOptions(id) {
-		const additional = OPTS_ADDITIONAL[id]
+		const additional = Options.OPTS_ADDITIONAL[id]
 
 		return (
 			<FormGroup key={id} row>
@@ -358,7 +359,7 @@ export default class Options extends Component {
 		const { options } = this.state
 		return (
 			<Container ref={this.setRef}>
-				<Form>{AllOptions(options, this.renderOptions)}</Form>
+				<Form>{Options.AllOptions(options, this.renderOptions)}</Form>
 			</Container>
 		)
 	}

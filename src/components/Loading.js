@@ -8,7 +8,7 @@ export default class Loading extends Component {
 
 	render() {
 		return (
-			<div className="ball-pulse-sync">
+			<div class="ball-pulse-sync">
 				<div />
 				<div />
 				<div />

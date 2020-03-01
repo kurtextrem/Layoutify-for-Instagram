@@ -3,18 +3,17 @@ import Post from './Post'
 import PostDummy from './PostDummy'
 import Posts from './Posts'
 import PropTypes from 'prop-types'
-import Sentinel from './Sentinel'
 import bind from 'autobind-decorator'
-import { CardDeck } from 'reactstrap'
+import { CardDeck, Button } from 'reactstrap'
 import { Chrome, Storage, logAndReturn } from './Utils'
 import { Component, h } from 'preact'
 
-const TIME_STATE = {
-	LOADING: 900,
-	ERROR: 2000,
-}
-
 export default class PostsContainer extends Component {
+	static TIME_STATE = {
+		LOADING: 900,
+		ERROR: 2000,
+	}
+
 	static loading = (<Loading />)
 
 	static error = (
@@ -28,8 +27,8 @@ export default class PostsContainer extends Component {
 	)
 
 	static dummy = (
-		<div className="position-relative">
-			<CardDeck className="justify-content-center">
+		<div class="position-relative">
+			<CardDeck class="justify-content-center">
 				<PostDummy />
 				<PostDummy />
 				<PostDummy />
@@ -54,8 +53,8 @@ export default class PostsContainer extends Component {
 			.catch(logAndReturn)
 
 		window.setTimeout(
-			() => this.setTimeout(TIME_STATE.LOADING),
-			TIME_STATE.LOADING
+			() => this.setTimeout(PostsContainer.TIME_STATE.LOADING),
+			PostsContainer.TIME_STATE.LOADING
 		)
 	}
 
@@ -66,10 +65,10 @@ export default class PostsContainer extends Component {
 
 	setTimeout(timeout) {
 		this.setState((previousState, properties) => ({ timeout }))
-		if (timeout !== TIME_STATE.ERROR)
+		if (timeout !== PostsContainer.TIME_STATE.ERROR)
 			window.setTimeout(
-				() => this.setTimeout(TIME_STATE.ERROR),
-				TIME_STATE.ERROR
+				() => this.setTimeout(PostsContainer.TIME_STATE.ERROR),
+				PostsContainer.TIME_STATE.ERROR
 			)
 	}
 
@@ -82,7 +81,7 @@ export default class PostsContainer extends Component {
 		)
 			return
 
-		console.log('preloading')
+		console.log('preloading', id)
 		Chrome.send('load', { which: id })
 		window.setTimeout(this.preload, this.preloadCounter * 1000)
 	}
@@ -123,7 +122,8 @@ export default class PostsContainer extends Component {
 	}
 
 	@bind
-	handleScroll() {
+	handleBtnClick(event) {
+		event.target.disabled = true
 		this.loadData()
 	}
 
@@ -191,16 +191,19 @@ export default class PostsContainer extends Component {
 
 		if (items !== null && items.length !== 0)
 			return (
-				<div className="position-relative">
-					<CardDeck className="justify-content-center">
+				<div class="position-relative">
+					<CardDeck class="justify-content-center">
 						{Posts(items, this.renderPost, hasCategories)}
 					</CardDeck>
-					<Sentinel onVisible={this.handleScroll} />
+					<div class="text-center">
+						<Button onClick={this.handleBtnClick}>Load more</Button>
+					</div>
 				</div>
 			)
 
-		if (timeout === TIME_STATE.LOADING) return PostsContainer.loading
-		if (timeout === TIME_STATE.ERROR) return PostsContainer.error
+		if (timeout === PostsContainer.TIME_STATE.LOADING)
+			return PostsContainer.loading
+		if (timeout === PostsContainer.TIME_STATE.ERROR) return PostsContainer.error
 
 		return PostsContainer.dummy // first paint & items === null
 	}

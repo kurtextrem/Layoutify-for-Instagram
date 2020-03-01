@@ -26,14 +26,14 @@ export default class PostHeader extends Component {
 		const { date } = this.state
 
 		return (
-			<header className="media align-items-center card-block grow-0 pl-2 pr-2">
+			<header class="media align-items-center card-block grow-0 pl-2 pr-2">
 				<a
 					href={`https://www.instagram.com/${user.username}`}
 					target="_blank"
 					rel="noopener">
 					<img
 						src={updateCDN(user.profile_pic_url)}
-						className="img-fluid profile-pic rounded mr-2"
+						class="img-fluid profile-pic rounded mr-2"
 						alt="❌"
 						decoding="async"
 					/>
@@ -46,15 +46,15 @@ export default class PostHeader extends Component {
 						{user.full_name || user.username}
 					</a>
 				</Media>
-				<span className="text-muted">posted&nbsp;</span>
+				<span class="text-muted">posted&nbsp;</span>
 				<a
 					href={`https://www.instagram.com/p/${code}`}
 					target="_blank"
 					rel="noopener">
 					{date !== null ? (
-						<TimeAgo className="text-muted" date={date} />
+						<TimeAgo class="text-muted" date={date} />
 					) : (
-						<time className="text-muted" />
+						<time class="text-muted" />
 					)}
 				</a>
 			</header>
