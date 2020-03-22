@@ -12,6 +12,7 @@ import {
 } from './Utils'
 import { EventComponent } from './EventComponent'
 import { h } from 'preact'
+import bind from 'autobind-decorator' // @todo: when handleEvent works again, remove this
 
 let initiated = false,
 	worker
@@ -58,6 +59,7 @@ export default class Post extends EventComponent {
 		active: true,
 	}
 
+	@bind
 	mouseenter() {
 		if (this.preloaded) return
 
@@ -67,6 +69,7 @@ export default class Post extends EventComponent {
 		}
 	}
 
+	@bind
 	click(e) {
 		e.stopPropagation()
 		e.preventDefault()
@@ -120,7 +123,7 @@ export default class Post extends EventComponent {
 			<article
 				class={`card${active ? '' : ' fadeOut'}`}
 				id={`post_${this.id}`}
-				onMouseEnter={isCarousel ? this.handleEvent : undefined}>
+				onMouseEnter={isCarousel ? this.mouseenter : undefined}>
 				<PostHeader user={user} code={data.code} taken_at={data.taken_at} />
 				<PostMedia
 					isCarousel={isCarousel}
@@ -133,7 +136,7 @@ export default class Post extends EventComponent {
 				</CardBody>
 				<PostFooter
 					active={active}
-					btnClick={this.handleEvent}
+					btnClick={this.click}
 					defaultClass={defaultClass}
 					toggleClass={toggleClass}
 					parent={parent}

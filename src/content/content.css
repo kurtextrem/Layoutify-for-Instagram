@@ -530,7 +530,8 @@ div[role='button'] > div[role='dialog'] > div + div > div + div + a,
 div[role='button'] > div[role='dialog'] + button /* Taged Users icon */,
 a[role='button'],
 div[role='button'],
-button[tabindex="-1"] {
+button[tabindex="-1"],
+div[role='button'] + button /* tagged users icon on videos */ {
 	z-index: 3;
 }
 
@@ -544,7 +545,7 @@ div[role='button'] > div {
 
 /** Moves the img over the "prevent right click copy"-element */
 div[role='button'] > div:first-child {
-	contain: layout style;
+	/*	contain: layout style; */
 	z-index: 1;
 }
 
@@ -893,12 +894,32 @@ body > div > div[role='dialog'] article,
 	margin-bottom: 20px;
 }
 
+.profile main > div {
+	max-width: calc(100vw - 40%);
+}
+
 /*=============================================
 									Explore
 =============================================*/
 /** Liked amount */
 .explore article > div > div > div > div:hover > a > div:last-child {
 	z-index: 1;
+}
+
+.explore main > div {
+	max-width: unset !important;
+}
+
+.explore main > div > h2 + div > div > div {
+	flex-direction: row;
+	justify-content: center !important;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.explore main > div > h2 + div > div > div > div {
+	width: 25%;
+	display: inline-block;
 }
 
 /*=============================================
