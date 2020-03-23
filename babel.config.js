@@ -22,6 +22,7 @@ module.exports = function(api) {
 					loose: true,
 					useBuiltIns: false,
 					shippedProposals: true,
+					bugfixes: true,
 					exclude: [
 						'transform-regenerator', // for fast-async
 						'transform-typeof-symbol',
