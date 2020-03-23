@@ -42,6 +42,7 @@ const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // 
 // Profiling
 // const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
 // const smp = new SpeedMeasurePlugin({ granularLoaderData: false })
+// const CpuProfilerWebpackPlugin = require('cpuprofile-webpack-plugin');
 
 const ENV = process.env.NODE_ENV || 'development'
 const isProduction = ENV === 'production'
@@ -49,26 +50,26 @@ const STATS =
 	process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
 
 const html = {
-	title: 'Improved Layout for Instagram',
-	template: 'index.ejs',
 	alwaysWriteToDisk: true,
 	cache: true,
 	inject: isProduction ? false : 'head',
 	minify: isProduction
 		? {
-				removeComments: false,
 				collapseWhitespace: true,
-				removeRedundantAttributes: false,
-				useShortDoctype: false,
+				removeComments: false,
 				removeEmptyAttributes: false,
-				removeStyleLinkTypeAttributes: true,
+				removeRedundantAttributes: false,
 				removeScriptTypeAttributes: true,
+				removeStyleLinkTypeAttributes: true,
+				useShortDoctype: false,
 		  }
 		: false,
-	// hash: true,
-	ssr: params => {
+	ssr: (params) => {
 		return isProduction ? prerender('dist', params) : ''
-	}, // @TODO: Replace with https://github.com/GoogleChromeLabs/prerender-loader
+	},
+	template: 'index.ejs',
+	// hash: true,
+	title: 'Improved Layout for Instagram', // @TODO: Replace with https://github.com/GoogleChromeLabs/prerender-loader
 }
 
 const plugins = [
@@ -76,10 +77,10 @@ const plugins = [
 		messageTemplate:
 			'[:bar] \u001B[32m\u001B[1m:percent\u001B[22m\u001B[39m (:elapseds) \u001B[2m:msg\u001B[22m',
 		progressOptions: {
-			renderThrottle: 112,
 			clear: true,
 			complete: '=',
 			incomplete: ' ',
+			renderThrottle: 112,
 		},
 	}),
 	new HtmlWebpackPlugin(html),
@@ -172,8 +173,8 @@ if (isProduction) {
 		}),
 		new PurgecssPlugin({
 			paths: glob.sync([`src/**`, `dist/**`], {
-				onlyFiles: true,
 				ignore: ['content/*'],
+				onlyFiles: true,
 			}),
 			whitelistPatterns: [/col-/, /btn-warning/, /btn-secondary/],
 		}),
@@ -197,13 +198,14 @@ if (isProduction) {
 			},
 		}),*/
 		new ZipPlugin({
+			exclude: 'ssr-bundle.js',
 			filename: 'dist.zip',
 			path: '../',
-			exclude: 'ssr-bundle.js',
 		})
 	)
 } else {
 	const options = {
+		host: 'localhost',
 		middleware: (app, builtins) =>
 			app.use(async (context, next) => {
 				await next()
@@ -217,9 +219,8 @@ if (isProduction) {
 					'X-Requested-With, content-type, Authorization'
 				)
 			}),
-		static: path.join(__dirname, 'dist'),
-		host: 'localhost',
 		port: 8080,
+		static: path.join(__dirname, 'dist'),
 	}
 
 	plugins.push(
@@ -238,8 +239,8 @@ if (isProduction) {
 			},
 		}),*/
 		new WriteFilePlugin({
-			test: /(content\/|manifest.json)/,
 			log: false,
+			test: /(content\/|manifest.json)/,
 		})
 	)
 }
@@ -251,49 +252,75 @@ if (isProduction) {
 )*/
 
 const first = {
-	mode: isProduction ? 'production' : 'development',
-
 	context: path.join(__dirname, 'src'),
+
+	devtool: isProduction
+		? false /*'source-map'*/ /* 'cheap-module-source-map'*/
+		: 'inline-module-source-map',
 
 	entry: isProduction
 		? ['./index.js']
 		: ['./index.js', 'webpack-plugin-serve/client'],
 
-	watch: !isProduction,
+	mode: isProduction ? 'production' : 'development',
 
-	output: {
-		path: path.join(__dirname, 'dist'),
-		publicPath: isProduction ? '' : 'http://localhost:8080/',
-		filename: 'bundle.js',
-		pathinfo: false, // @todo: check if false does impact development
-		//devtoolModuleFilenameTemplate: info => (isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`),
+	module: {
+		noParse: isProduction
+			? undefined
+			: [
+					// faster HMR
+					//new RegExp(nerv),
+					new RegExp('proptypes/disabled'),
+			  ],
+		rules: [
+			{
+				exclude: /node_modules/,
+				loader: 'babel-loader?cacheDirectory',
+				test: /\.jsx?$/i,
+			},
+			{
+				test: /\.cs{2}$/, // .css
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader,
+						options: {
+							hmr: !isProduction,
+						},
+					},
+					'css-loader',
+				],
+			},
+		],
 	},
 
-	recordsPath: path.resolve(__dirname, './records.json'),
+	devServer: undefined,
+
+	node: isProduction ? false : undefined,
 
 	optimization: isProduction
 		? {
 				minimizer: [
 					new TerserPlugin({
 						cache: true,
+						extractComments: false,
 						sourceMap: !isProduction,
 						terserOptions: {
-							ecma: 8,
 							compress: {
-								pure_funcs: pureFuncs,
 								hoist_funs: true,
-								keep_infinity: true,
+								arguments: true,
+								pure_funcs: pureFuncs,
 
-								arguments: true, // test
+								keep_infinity: true, // test
 								unsafe: true, // test
 								unsafe_arrows: true, // @fixme: Breaks report.html
-								unsafe_methods: true,
 								unsafe_Function: true,
+								unsafe_methods: true,
 								unsafe_proto: true,
+								negate_iife: false,
 								unsafe_regexp: true,
 								unsafe_undefined: true,
-								negate_iife: false,
 							},
+							ecma: 8,
 							output: {
 								comments: false,
 								semicolons: false, // size before gzip could be smaller; size after gzip insignificantly larger
@@ -301,16 +328,15 @@ const first = {
 							},
 							toplevel: true,
 						},
-						extractComments: false,
 					}),
 				],
 				splitChunks: {
 					cacheGroups: {
 						styles: {
-							name: 'main',
 							chunks: 'all',
 							enforce: true,
-							test: module => {
+							name: 'main',
+							test: (module) => {
 								return (
 									module.nameForCondition &&
 									/\.cs{2}$/.test(module.nameForCondition()) &&
@@ -329,67 +355,42 @@ const first = {
 							minChunks: 2,
 						},
 						vendor: {
-							test: /node_modules/,
 							chunks: 'initial',
+							enforce: true,
 							name: 'vendor',
 							priority: 10,
-							enforce: true,
+							test: /node_modules/,
 						},
 					},
 				},
 		  },
 
-	module: {
-		rules: [
-			{
-				test: /\.jsx?$/i,
-				exclude: /node_modules/,
-				loader: 'babel-loader?cacheDirectory',
-			},
-			{
-				test: /\.cs{2}$/, // .css
-				use: [
-					{
-						loader: MiniCssExtractPlugin.loader,
-						options: {
-							hmr: !isProduction,
-						},
-					},
-					'css-loader',
-				],
-			},
-		],
-		noParse: isProduction
-			? undefined
-			: [
-					// faster HMR
-					//new RegExp(nerv),
-					new RegExp('proptypes/disabled'),
-			  ],
+	output: {
+		filename: 'bundle.js',
+		path: path.join(__dirname, 'dist'),
+		pathinfo: false,
+		publicPath: isProduction ? '' : 'http://localhost:8080/', // @todo: check if false does impact development
+		//devtoolModuleFilenameTemplate: info => (isProd ? path.relative('/', info.absoluteResourcePath) : `webpack:///${info.resourcePath}`),
 	},
-
-	resolve: {
-		alias: {
-			react: 'preact/compat',
-			'react-dom/test-utils': 'preact/test-utils',
-			'react-dom': 'preact/compat',
-			'create-react-class': 'preact-compat/lib/create-react-class',
-			'react-dom-factories': 'preact-compat/lib/react-dom-factories',
-			'prop-types$': 'proptypes/disabled',
-		},
-	},
-
-	devtool: isProduction
-		? false /* 'cheap-module-source-map'*/ /*'source-map'*/
-		: 'inline-module-source-map', //'nosources-source-map',
-
-	plugins,
 
 	performance: {
 		hints: isProduction ? 'warning' : false,
-	},
+	}, //'nosources-source-map',
 
-	node: isProduction ? false : undefined,
+	plugins,
+
+	recordsPath: path.resolve(__dirname, './records.json'),
+
+	resolve: {
+		alias: {
+			'create-react-class': 'preact-compat/lib/create-react-class',
+			'prop-types$': 'proptypes/disabled',
+			react: 'preact/compat',
+			'react-dom': 'preact/compat',
+			'react-dom/test-utils': 'preact/test-utils',
+			'react-dom-factories': 'preact-compat/lib/react-dom-factories',
+		},
+	},
 
 	stats:
 		isProduction && STATS
@@ -398,27 +399,27 @@ const first = {
 			  }
 			: {}, // can't be 'none' as per parallel-webpack
 
-	devServer: undefined,
+	watch: !isProduction,
 }
 
 const second = {
-	mode: 'development',
-
-	target: 'node',
+	context: first.context,
 
 	entry: ['./components/App'],
 
-	recordsPath: path.resolve(__dirname, './records_html.json'),
+	mode: 'development',
+
+	module: first.module,
 
 	output: {
-		path: path.join(__dirname, 'dist'),
 		filename: 'ssr-bundle.js',
 		libraryTarget: 'commonjs2',
+		path: path.join(__dirname, 'dist'),
 	},
 
-	context: first.context,
-	module: first.module,
+	recordsPath: path.resolve(__dirname, './records_html.json'),
 	resolve: first.resolve,
+	target: 'node',
 }
 
 // @TODO: https://blog.box.com/blog/how-we-improved-webpack-build-performance-95/

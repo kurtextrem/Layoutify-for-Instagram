@@ -45,6 +45,7 @@ dependencies:
   browserslist: 4.11.0
   case-sensitive-paths-webpack-plugin: 2.3.0
   copy-webpack-plugin: 5.1.1_webpack@4.42.0
+  cpuprofile-webpack-plugin: 1.10.3_webpack@4.42.0
   critters-webpack-plugin: 2.5.0
   cross-env: 7.0.2
   css-loader: 3.4.2_webpack@4.42.0
@@ -2232,6 +2233,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-Un7MIEDdUC5gNpcGDV97op1Ywk748MpHcFTHoYs6qnj1Z3j7I53VG3nwZhKzoBZmbdRNnb6WRdFlwl7tSDuZGw==
+  /bindings/1.2.1:
+    dev: false
+    resolution:
+      integrity: sha1-FK1hE4EtLTfXLme0ystLtyZQXxE=
   /bindings/1.5.0:
     dependencies:
       file-uri-to-path: 1.0.0
@@ -3038,6 +3043,15 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-H65gsXo1SKjf8zmrJ67eJk8aIRKV5ff2D4uKZIBZShbhGSpEmsQOPW/SKMKYhSTrqR7ufy6RP69rPogdaPh/kA==
+  /cpuprofile-webpack-plugin/1.10.3_webpack@4.42.0:
+    dependencies:
+      sync-cpuprofiler: 1.1.3
+      webpack: 4.42.0_webpack@4.42.0
+    dev: false
+    peerDependencies:
+      webpack: '>=4.28.3'
+    resolution:
+      integrity: sha512-S6uV+Q3XBq+KSs13/W/LCRJzXJmpHp0IxJ3qdneeR4ObPuOsiC+TX2TkekiOsAatnqTp0fIsrRLJqDeXqCxMmg==
   /create-ecdh/4.0.3:
     dependencies:
       bn.js: 4.11.8
@@ -3400,6 +3414,16 @@ packages:
     dev: false
     resolution:
       integrity: sha512-327vOlwspi9i1T3Kc9yZhRUR8qDdgMQ4HmXsFDDCQ/HTc3sNe7gnF5b0UrsnaOJ0rvmG7yBZpK0NoOux9rKYKw==
+  /deasync/0.1.14:
+    dependencies:
+      bindings: 1.2.1
+      node-addon-api: 1.7.1
+    dev: false
+    engines:
+      node: '>=0.11.0'
+    requiresBuild: true
+    resolution:
+      integrity: sha512-wN8sIuEqIwyQh72AG7oY6YQODCxIp1eXzEZlZznBuwDF8Q03Tdy9QNp1BNZXeadXoklNrw+Ip1fch+KXo/+ASw==
   /debug/2.6.9:
     dependencies:
       ms: 2.0.0
@@ -6753,6 +6777,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ehY/mVQCf9BL0gKfsJBvFJen+1V//U+0HQMPrWct40ixE4jnv0bfvxDbWtAHL9EcaPEOJHVVYKoQn1TlZUB8Tw==
+  /node-addon-api/1.7.1:
+    dev: false
+    resolution:
+      integrity: sha512-2+DuKodWvwRTrCfKOeR24KIc5unKjOh8mz17NCzVnHWfjAdDqbfbjqh7gUT+BkXBRQM52+xCHciKWonJ3CbJMQ==
   /node-environment-flags/1.0.6:
     dependencies:
       object.getownpropertydescriptors: 2.1.0
@@ -9561,6 +9589,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
+  /sync-cpuprofiler/1.1.3:
+    dependencies:
+      deasync: 0.1.14
+    dev: false
+    resolution:
+      integrity: sha512-aH0pHYfSgGw7mWe2DnAL/8+7DwQNUynaa92Kl9P3Z0+z4M8lpMsUTilG0uegBNGQEIUAX54iImcFS67ZXLaU8A==
   /tapable/1.1.3:
     dev: false
     engines:
@@ -10801,6 +10835,7 @@ specifiers:
   browserslist: 4.11.0
   case-sensitive-paths-webpack-plugin: 2.3.0
   copy-webpack-plugin: 5.1.1
+  cpuprofile-webpack-plugin: ^1.10.3
   critters-webpack-plugin: 2.5.0
   cross-env: 7.0.2
   css-loader: 3.4.2

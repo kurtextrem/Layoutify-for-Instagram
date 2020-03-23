@@ -1,5 +1,7 @@
+/* global InstagramAPI, udomdiff */
+
 const documentElement = document.documentElement,
-	$ = e => {
+	$ = (e) => {
 		return document.querySelector(e)
 	},
 	WIDTH = window.innerWidth
@@ -24,7 +26,7 @@ injectCSS('content') // inject as early as possible
 // block middle mouse button
 window.addEventListener(
 	'click',
-	e => {
+	(e) => {
 		return e.button > 0 ? e.stopPropagation() : undefined
 	},
 	true
@@ -33,14 +35,14 @@ window.addEventListener(
 // prevent vid restart
 window.addEventListener(
 	'blur',
-	e => {
+	(e) => {
 		return e.stopPropagation()
 	},
 	true
 )
 window.addEventListener(
 	'visibilitychange',
-	e => {
+	(e) => {
 		return e.stopPropagation()
 	},
 	true
@@ -60,11 +62,11 @@ function observe(element, fn, options) {
 	if (element) observer.observe(element, options)
 
 	return {
-		observe(element) {
-			observer.observe(element, options) // MutationObservers have no unobserve, so we just return an observe function.
-		},
 		disconnect() {
 			observer.disconnect()
+		},
+		observe(element) {
+			observer.observe(element, options) // MutationObservers have no unobserve, so we just return an observe function.
 		},
 	}
 }
@@ -76,7 +78,7 @@ const root = document.getElementById('react-root')
 
 observe(
 	document.body,
-	mutations => {
+	(mutations) => {
 		for (const i in mutations) {
 			const mutation = mutations[i],
 				added = mutation.addedNodes
@@ -94,20 +96,20 @@ observe(
 )
 
 const handleNodeFns = {
+	ARTICLE(node) {
+		handleNodeFns.DIV(node)
+	},
 	DIV(node) {
 		node.querySelectorAll('img').forEach(fullPhoto)
 		node.querySelectorAll('video').forEach(addControls)
 	},
-	ARTICLE(node) {
+
+	IMG: fullPhoto,
+	SECTION(node) {
 		handleNodeFns.DIV(node)
 	},
 
 	VIDEO: addControls,
-	IMG: fullPhoto,
-
-	SECTION(node) {
-		handleNodeFns.DIV(node)
-	},
 }
 
 /**
@@ -220,7 +222,7 @@ function addExtendedButton() {
 	a.nodeValue = '' // clear content
 	a.textContent = '⋯'
 	a.title = 'Improved Layout for Instagram'
-	a.addEventListener('click', function(e) {
+	a.addEventListener('click', function (e) {
 		e.preventDefault()
 
 		Instagram.liked
@@ -239,10 +241,6 @@ function addExtendedButton() {
 }
 
 const listenerActions = {
-	load(request) {
-		return Instagram[request.which].fetch()
-	},
-
 	_action(request) {
 		return (
 			Instagram[request.which][request.action] !== undefined &&
@@ -254,6 +252,10 @@ const listenerActions = {
 		return this._action(request)
 	},
 
+	load(request) {
+		return Instagram[request.which].fetch()
+	},
+
 	remove(request) {
 		return this._action(request)
 	},
@@ -262,8 +264,12 @@ const listenerActions = {
 /**
  *
  */
-function addListener() {
-	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+function addChromeListener() {
+	chrome.runtime.onMessage.addListener(function (
+		request,
+		sender,
+		sendResponse
+	) {
 		if (
 			listenerActions[request.action] !== undefined &&
 			Instagram[request.which] !== undefined
@@ -278,14 +284,14 @@ const connection = navigator.connection.type,
 	fullSizeCondition = connection === 'wifi' && speed > 1.9,
 	fullsizeObserver = observe(
 		undefined,
-		mutations => {
+		(mutations) => {
 			for (const i in mutations) {
 				const mutation = mutations[i].target
 
 				if (mutation.sizes !== '1080px') mutation.sizes = '1080px'
 			}
 		},
-		{ attributes: true, attributeFilter: ['sizes'] }
+		{ attributeFilter: ['sizes'], attributes: true }
 	)
 
 /**
@@ -385,7 +391,7 @@ function addWatched() {
 
 	$node.addEventListener(
 		'click',
-		e => {
+		(e) => {
 			const target = e.target
 
 			if (target.nodeName !== 'SECTION') return
@@ -409,22 +415,19 @@ function addWatched() {
 const OPTS_MODE = {
 	//highlightOP(arg) {},
 	_boxWidth(i) {},
-	rows(i) {
-		if (i !== 4) setBoxWidth(Math.ceil(100 / (i + 1)))
-	},
 	boxWidth(i) {
 		if (OPTIONS.rows === 2 && i > 25 && i !== 49) return setBoxWidth(i)
 		if (OPTIONS.rows === 4 && i < 25 && i !== 23) return setBoxWidth(i)
 		if (OPTIONS.rows === 1) {
 			const style = document.getElementById('ige_style')
-			if (style !== null) style.parentElement.removeChild(style)
+			if (style !== null) style.remove()
 		}
 	},
-
-	// boolean toggles
 	klass(cls) {
 		if (!root.classList.contains(cls)) root.classList.add(cls)
 	},
+
+	// boolean toggles
 	night(argument) {
 		const hour = new Date().getHours()
 
@@ -434,9 +437,6 @@ const OPTS_MODE = {
 			OPTIONS.nightModeStart === OPTIONS.nightModeEnd
 		)
 			injectCSS('night')
-	},
-	only3Dot(argument) {
-		$('#ige_style').remove()
 	},
 	notify(argument) {
 		const now = Date.now(),
@@ -450,28 +450,34 @@ const OPTS_MODE = {
 			chrome.runtime.sendMessage(null, { action: 'watchNow' })
 		}
 	},
+	only3Dot(argument) {
+		$('#ige_style').remove()
+	},
+	rows(i) {
+		if (i !== 4) setBoxWidth(Math.ceil(100 / (i + 1)))
+	},
 }
 
 /**
  * Options mapper.
  */
 const OPTS = {
-	night: OPTS_MODE.night,
-	nightModeStart: undefined,
-	nightModeEnd: undefined,
-	picturesOnly: OPTS_MODE.klass,
-	hideStories: OPTS_MODE.klass,
-	noSpaceBetweenPosts: OPTS_MODE.klass,
 	hideRecommended: OPTS_MODE.klass,
+	hideStories: OPTS_MODE.klass,
 	highlightOP: OPTS_MODE.highlightOP,
+	night: OPTS_MODE.night,
+	nightModeEnd: undefined,
+	nightModeStart: undefined,
+	noSpaceBetweenPosts: OPTS_MODE.klass,
 	only3Dot: OPTS_MODE.only3Dot,
+	picturesOnly: OPTS_MODE.klass,
 	rows: OPTS_MODE.rows,
 	rowsFourBoxWidth: OPTS_MODE.boxWidth,
 	rowsTwoBoxWidth: OPTS_MODE.boxWidth,
 
+	watchInBackground: OPTS_MODE.notify,
 	watchPosts: undefined,
-	watchStories: undefined,
-	watchInBackground: OPTS_MODE.notify, // Check for updates when opening IG
+	watchStories: undefined, // Check for updates when opening IG
 	// indicateFollowing: true
 }
 
@@ -532,6 +538,7 @@ function onChange() {
 function onNavigate() {
 	disconnectObservers()
 	decideClass()
+
 	window.requestIdleCallback(() => {
 		return window.requestAnimationFrame(() => {
 			window.requestAnimationFrame(() => {
@@ -539,6 +546,8 @@ function onNavigate() {
 
 				document.body.querySelectorAll('video').forEach(addControls)
 				document.body.querySelectorAll('img').forEach(fullPhoto)
+
+				scrollFix()
 
 				if (currentClass === 'profile') addWatched()
 
@@ -555,9 +564,169 @@ function onReady() {
 	loadOptions()
 	onNavigate()
 
-	addListener()
+	addChromeListener()
 }
 
 if (document.readyState === 'interactive' || document.readyState === 'complete')
 	onReady()
 else document.addEventListener('DOMContentLoaded', onReady)
+
+/**
+ *
+ */
+
+/**
+ *
+ */
+function createDummyNode(tagName, height) {
+	const tag = document.createElement('span')
+	tag.className = 'ige_dummyNode'
+	tag.style.setProperty('--virtual-height', height + 'px')
+	return tag
+}
+
+/**
+ *
+ */
+function clickListener(e) {
+	console.log(e)
+
+	const target = e.target
+
+	// VIDEO
+	if (target.role === 'button') {
+		const videoContainer = target.parentElement.children[0]
+		const video = videoContainer.children[0].children[0].children[0]
+		video.setAttribute('loop', '')
+		video.play()
+	}
+	if (target.nodeName === 'VIDEO') {
+		target.pause()
+		target.removeAttribute('loop')
+	}
+
+	// TAGGED USERS
+	if (
+		target.nodeName === 'BUTTON' &&
+		target.previousSibling?.nodeName === 'DIV' &&
+		target.previousSibling?.getAttribute('style') !== ''
+	) {
+		const prevSib = target.previousSibling
+		if (prevSib.style.transform !== '')
+			prevSib.style.opacity = +prevSib.style.opacity ^ 1 // flip between 0 | 1
+	}
+
+	// MORE
+	if (
+		target.nodeName === 'BUTTON' &&
+		target.previousSibling?.nodeValue === '... '
+	) {
+		// PROXY
+	}
+
+	// ARROW
+	if (
+		target.nodeName === 'BUTTON' &&
+		target.getAttribute('tabindex') === '-1'
+	) {
+		// arrow
+	}
+}
+
+/**
+ *
+ */
+function scrollFix() {
+	if (currentClass !== 'home') return
+
+	document.body.classList.add('ige_hideOverflow')
+	const $vlist = $('main > section > div > div > div')
+
+	const vclone_container = document.createElement('div')
+	vclone_container.id = 'ige_virtualClone'
+	vclone_container.addEventListener('click', clickListener)
+
+	const vclone = $vlist.cloneNode(true)
+	vclone.style = ''
+	vclone_container.appendChild(vclone)
+	$('main > section').after(vclone_container)
+
+	$vlist.children[3]?.scrollIntoView(true)
+
+	const getNode = (o) => o
+
+	// @TODO: Proxy clicks (e.g. nth-of-child -> nth-of-child click); observe every child for changes?
+	// or implement:
+	// -> like (proxy)
+	// -> save (proxy)
+	// -> "more" button (proxy!)
+	// -> comment (proxy)
+	// -> arrow clicks (own code/proxy?)
+
+	// -> video start (own code) 							DONE
+	// -> tagged users icon	(own code)				DONE
+
+	observe(
+		$vlist,
+		(mutations) => {
+			for (const i in mutations) {
+				const mutation = mutations[i]
+				console.log(mutation)
+
+				const added = mutation.addedNodes
+				if (mutation.target.className === '' && added.length !== 0) {
+					const div = vclone_container.children[0]
+					for (const element of added) {
+						if (element.className === 'ige_dummyNode') continue
+
+						if (element.nodeName === 'ARTICLE') {
+							console.log(
+								'imgs',
+								element.querySelectorAll('img') === undefined
+									? element
+									: element.querySelectorAll('img')
+							)
+							//const clone = element.cloneNode(true)
+							//div.appendChild(clone)
+
+							const height = element.offsetHeight
+							const dummy = createDummyNode(element.nodeName, height)
+							if (mutation.nextSibling !== null)
+								dummy.insertBefore(mutation.target, mutation.nextSibling)
+							else mutation.previousSibling.after(dummy)
+
+							// stories
+							div.appendChild(element)
+						}
+
+						if (element.nodeName === 'DIV') {
+							const height = element.offsetHeight
+							const dummy = createDummyNode(element.nodeName, height)
+
+							if (mutation.nextSibling !== null)
+								dummy.insertBefore(mutation.target, mutation.nextSibling)
+							else mutation.previousSibling.after(dummy)
+							// stories
+							div.appendChild(element)
+						}
+					}
+				}
+			}
+			//vclone_container.removeChild(vclone_container.children[0])
+			//const clone = $vlist.cloneNode(true)
+			//clone.style = ''
+			//vclone_container.appendChild(clone)
+			/*udomdiff(
+				vclone,
+				[...vclone.childNodes], // Array of current items/nodes
+				[...$vlist.childNodes], // Array of future items/nodes (returned)
+				getNode // a callback to retrieve the node
+				//before                // the anchored node to insertBefore
+			)*/
+		},
+		{
+			childList: true,
+			subtree: true,
+		}
+	)
+}

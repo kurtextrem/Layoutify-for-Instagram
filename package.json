@@ -48,6 +48,7 @@
 		"browserslist": "4.11.0",
 		"case-sensitive-paths-webpack-plugin": "2.3.0",
 		"copy-webpack-plugin": "5.1.1",
+		"cpuprofile-webpack-plugin": "^1.10.3",
 		"critters-webpack-plugin": "2.5.0",
 		"cross-env": "7.0.2",
 		"css-loader": "3.4.2",
