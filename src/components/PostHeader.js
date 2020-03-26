@@ -63,11 +63,11 @@ export default class PostHeader extends Component {
 }
 
 PostHeader.propTypes = {
-	user: PropTypes.shape({
-		username: PropTypes.string.isRequired,
-		profile_pic_url: PropTypes.string.isRequired,
-		full_name: PropTypes.string,
-	}).isRequired,
+	code: PropTypes.string.isRequired,
 	taken_at: PropTypes.number.isRequired,
-	code: PropTypes.func.isRequired,
+	user: PropTypes.shape({
+		full_name: PropTypes.string,
+		profile_pic_url: PropTypes.string.isRequired,
+		username: PropTypes.string.isRequired,
+	}).isRequired,
 }

@@ -3,8 +3,8 @@
  */
 
 import PropTypes from 'prop-types'
-import { h, toChildArray } from 'preact'
 import { EventComponent } from './EventComponent'
+import { h, toChildArray } from 'preact'
 
 export class HashRouter extends EventComponent {
 	static defaultProps = {
@@ -100,7 +100,7 @@ export class HashRouter extends EventComponent {
 	}
 
 	calcChildren(props) {
-		toChildArray(props.children).forEach(child => {
+		toChildArray(props.children).forEach((child) => {
 			const childArray = child.props.hash.split('/')
 			if (childArray.length !== 0) childArray.shift()
 
@@ -156,9 +156,8 @@ HashRouter.propTypes = {
 	onLocationChanged: PropTypes.func,
 }
 
-export const Route = props => props.children
+export const Route = (props) => props.children
 
 Route.propTypes = {
-	key: PropTypes.string.isRequired,
 	hash: PropTypes.string.isRequired,
 }

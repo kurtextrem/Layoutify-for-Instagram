@@ -25,7 +25,7 @@ export default class Nav extends Component {
 							alt="Improved for IG"
 							decoding="async"
 							id="logo"
-							onLoad={module.hot ? performance.mark('logo') : undefined}
+							onLoad={module.hot ? () => performance.mark('logo') : undefined}
 						/>
 					</a>
 

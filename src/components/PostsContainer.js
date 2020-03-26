@@ -4,14 +4,14 @@ import PostDummy from './PostDummy'
 import Posts from './Posts'
 import PropTypes from 'prop-types'
 import bind from 'autobind-decorator'
-import { CardDeck, Button } from 'reactstrap'
+import { Button, CardDeck } from 'reactstrap'
 import { Chrome, Storage, logAndReturn } from './Utils'
 import { Component, h } from 'preact'
 
 export default class PostsContainer extends Component {
 	static TIME_STATE = {
-		LOADING: 900,
 		ERROR: 2000,
+		LOADING: 900,
 	}
 
 	static loading = (<Loading />)
@@ -34,7 +34,6 @@ export default class PostsContainer extends Component {
 				<PostDummy />
 				<PostDummy />
 			</CardDeck>
-			{''}
 		</div>
 	)
 
@@ -46,7 +45,7 @@ export default class PostsContainer extends Component {
 		this.preloadCounter = 0
 
 		this.populateData()
-			.then(data => {
+			.then((data) => {
 				if (properties.preload > 0) this.preload()
 				return data
 			})
@@ -210,9 +209,9 @@ export default class PostsContainer extends Component {
 }
 
 PostsContainer.propTypes = {
-	id: PropTypes.string.isRequired,
 	defaultClass: PropTypes.string.isRequired,
-	toggleClass: PropTypes.string.isRequired,
 	hasCategories: PropTypes.bool.isRequired,
-	preload: PropTypes.bool.isRequired,
+	id: PropTypes.string.isRequired,
+	preload: PropTypes.number.isRequired,
+	toggleClass: PropTypes.string.isRequired,
 }

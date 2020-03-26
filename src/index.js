@@ -1,10 +1,10 @@
 import App from './components/App'
 //import Preact, { h, hydrate, render } from 'preact'
-import { h, hydrate, render } from 'preact'
 import { documentReady, logAndReturn } from './components/Utils'
+import { h, hydrate, render } from 'preact'
 /* eslint-disable */
-import 'bootstrap/dist/css/bootstrap.min.css'
 import './components/main.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 /* eslint-enable */
 
 if (module.hot) {
@@ -23,22 +23,34 @@ if (module.hot) {
 	)
 
 	const Perfume = require('perfume.js').default
-	window.perf = new Perfume({
-		resourceTiming: true,
+	new Perfume({
 		logging: true,
 		logPrefix: '⚡️',
+		resourceTiming: false,
 	})
 
 	new PerformanceObserver((list, observer) => {
 		for (const entry of list.getEntries()) {
-			// const time = Math.round(entry.startTime + entry.duration)
-			window.perf.log(entry.name, entry.duration)
+			const time = Math.round(entry.startTime + entry.duration)
+			console.info(
+				'⚡',
+				entry.name !== '' ? entry.name : entry.entryType,
+				time,
+				entry
+			)
 		}
 	}).observe({
-		entryTypes:
-			PerformanceObserver.supportedEntryTypes !== undefined
-				? PerformanceObserver.supportedEntryTypes
-				: ['event', 'measure', 'mark', 'navigation', 'longtask', 'paint'],
+		entryTypes: [
+			'element',
+			'first-input',
+			'largest-contentful-paint',
+			'layout-shift',
+			'longtask',
+			'mark',
+			'measure',
+			'navigation',
+			'paint',
+		], // PerformanceObserver.supportedEntryTypes
 	}) // resource, paint,
 }
 
@@ -46,6 +58,4 @@ const init = (fn, app, container) => fn(h(app), container)
 const ready = () =>
 	init(module.hot ? render : hydrate, App, document.body.children[2]) // @todo: https://css-tricks.com/render-caching-for-react/
 
-documentReady()
-	.then(ready)
-	.catch(logAndReturn)
+documentReady().then(ready).catch(logAndReturn)

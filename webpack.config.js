@@ -254,6 +254,8 @@ if (isProduction) {
 const first = {
 	context: path.join(__dirname, 'src'),
 
+	devServer: undefined,
+
 	devtool: isProduction
 		? false /*'source-map'*/ /* 'cheap-module-source-map'*/
 		: 'inline-module-source-map',
@@ -293,8 +295,6 @@ const first = {
 		],
 	},
 
-	devServer: undefined,
-
 	node: isProduction ? false : undefined,
 
 	optimization: isProduction
@@ -306,17 +306,17 @@ const first = {
 						sourceMap: !isProduction,
 						terserOptions: {
 							compress: {
-								hoist_funs: true,
 								arguments: true,
-								pure_funcs: pureFuncs,
+								hoist_funs: true,
+								keep_infinity: true,
 
-								keep_infinity: true, // test
-								unsafe: true, // test
-								unsafe_arrows: true, // @fixme: Breaks report.html
+								negate_iife: false, // test
+								pure_funcs: pureFuncs, // test
+								unsafe: true, // @fixme: Breaks report.html
+								unsafe_arrows: true,
 								unsafe_Function: true,
 								unsafe_methods: true,
 								unsafe_proto: true,
-								negate_iife: false,
 								unsafe_regexp: true,
 								unsafe_undefined: true,
 							},
@@ -382,14 +382,22 @@ const first = {
 	recordsPath: path.resolve(__dirname, './records.json'),
 
 	resolve: {
-		alias: {
-			'create-react-class': 'preact-compat/lib/create-react-class',
-			'prop-types$': 'proptypes/disabled',
-			react: 'preact/compat',
-			'react-dom': 'preact/compat',
-			'react-dom/test-utils': 'preact/test-utils',
-			'react-dom-factories': 'preact-compat/lib/react-dom-factories',
-		},
+		alias: isProduction
+			? {
+					'create-react-class': 'preact-compat/lib/create-react-class',
+					'prop-types$': 'proptypes/disabled',
+					react: 'preact/compat',
+					'react-dom': 'preact/compat',
+					'react-dom/test-utils': 'preact/test-utils',
+					'react-dom-factories': 'preact-compat/lib/react-dom-factories',
+			  }
+			: {
+					'create-react-class': 'preact-compat/lib/create-react-class',
+					react: 'preact/compat',
+					'react-dom': 'preact/compat',
+					'react-dom/test-utils': 'preact/test-utils',
+					'react-dom-factories': 'preact-compat/lib/react-dom-factories',
+			  },
 	},
 
 	stats:

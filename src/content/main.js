@@ -225,6 +225,7 @@ function addExtendedButton() {
 	a.addEventListener('click', function (e) {
 		e.preventDefault()
 
+		// @TODO Remove this and fetch entirely on 3-dot page, as we fetch from bg already anyway
 		Instagram.liked
 			.start()
 			.then(Instagram.liked.fetch)
@@ -633,6 +634,9 @@ function clickListener(e) {
 	}
 }
 
+var NODE_ASSIGNMENT = new Map() // prevent garbage collection of those nodes @TODO clear memory here and then
+var NODE_COUNTER = 0
+
 /**
  *
  */
@@ -642,18 +646,37 @@ function scrollFix() {
 	document.body.classList.add('ige_hideOverflow')
 	const $vlist = $('main > section > div > div > div')
 
+	const sentry = document.createElement('span')
+	sentry.id = 'ige_virtualSentry'
+
 	const vclone_container = document.createElement('div')
 	vclone_container.id = 'ige_virtualClone'
 	vclone_container.addEventListener('click', clickListener)
 
+	const children = $vlist.children
+	for (const element of children) {
+		NODE_ASSIGNMENT.set('ige_clone' + ++NODE_COUNTER, element)
+	}
+
 	const vclone = $vlist.cloneNode(true)
-	vclone.style = ''
+	vclone.setAttribute('style', '')
+
+	vclone.appendChild(sentry)
 	vclone_container.appendChild(vclone)
-	$('main > section').after(vclone_container)
+	$('#react-root ').after(vclone_container)
 
-	$vlist.children[3]?.scrollIntoView(true)
+	NODE_ASSIGNMENT.get('ige_clone' + NODE_COUNTER).scrollIntoView(true)
 
-	const getNode = (o) => o
+	const iObserver = new IntersectionObserver(function (e) {
+		if (e[0].isIntersecting) {
+			const children = $vlist.children
+
+			console.log('intersect', children)
+
+			NODE_ASSIGNMENT.get('ige_clone' + NODE_COUNTER).scrollIntoView(true)
+		}
+	})
+	iObserver.observe(sentry)
 
 	// @TODO: Proxy clicks (e.g. nth-of-child -> nth-of-child click); observe every child for changes?
 	// or implement:
@@ -666,11 +689,16 @@ function scrollFix() {
 	// -> video start (own code) 							DONE
 	// -> tagged users icon	(own code)				DONE
 
+	// -> SCROLL
+
 	observe(
-		$vlist,
+		$('#react-root'),
 		(mutations) => {
 			for (const i in mutations) {
 				const mutation = mutations[i]
+
+				if (mutation.target !== $vlist) continue
+
 				console.log(mutation)
 
 				const added = mutation.addedNodes
@@ -680,49 +708,26 @@ function scrollFix() {
 						if (element.className === 'ige_dummyNode') continue
 
 						if (element.nodeName === 'ARTICLE') {
-							console.log(
-								'imgs',
-								element.querySelectorAll('img') === undefined
-									? element
-									: element.querySelectorAll('img')
-							)
-							//const clone = element.cloneNode(true)
-							//div.appendChild(clone)
+							window.requestAnimationFrame(() => {
+								const clone = element.cloneNode(true)
+								if (clone.querySelectorAll('img[srcset]').length === 0)
+									console.warn('no img', clone, element)
 
-							const height = element.offsetHeight
-							const dummy = createDummyNode(element.nodeName, height)
-							if (mutation.nextSibling !== null)
-								dummy.insertBefore(mutation.target, mutation.nextSibling)
-							else mutation.previousSibling.after(dummy)
+								const id = 'ige_clone' + ++NODE_COUNTER
+								NODE_ASSIGNMENT.set(id, element)
+								clone.id = id
 
-							// stories
-							div.appendChild(element)
+								div.appendChild(clone)
+							})
 						}
 
 						if (element.nodeName === 'DIV') {
-							const height = element.offsetHeight
-							const dummy = createDummyNode(element.nodeName, height)
-
-							if (mutation.nextSibling !== null)
-								dummy.insertBefore(mutation.target, mutation.nextSibling)
-							else mutation.previousSibling.after(dummy)
 							// stories
-							div.appendChild(element)
+							//div.appendChild(element)
 						}
 					}
 				}
 			}
-			//vclone_container.removeChild(vclone_container.children[0])
-			//const clone = $vlist.cloneNode(true)
-			//clone.style = ''
-			//vclone_container.appendChild(clone)
-			/*udomdiff(
-				vclone,
-				[...vclone.childNodes], // Array of current items/nodes
-				[...$vlist.childNodes], // Array of future items/nodes (returned)
-				getNode // a callback to retrieve the node
-				//before                // the anchored node to insertBefore
-			)*/
 		},
 		{
 			childList: true,
