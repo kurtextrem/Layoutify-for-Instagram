@@ -1007,6 +1007,16 @@ footer > div > nav {
 	display: none;
 }
 
+.ige_hideStories
+	main
+	> section
+	> div:not(#rcr-anchor)
+	> div:not([class])
+	> div
+	> div {
+	display: none;
+}
+
 /*----------  NoSpaceBetweenPosts  ----------*/
 .ige_noSpaceBetweenPosts main > section div > article {
 	margin: 0 !important;
