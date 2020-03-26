@@ -260,9 +260,12 @@ const first = {
 		? false /*'source-map'*/ /* 'cheap-module-source-map'*/
 		: 'inline-module-source-map',
 
-	entry: isProduction
-		? ['./index.js']
-		: ['./index.js', 'webpack-plugin-serve/client'],
+	entry: {
+		app: isProduction
+			? './index.js'
+			: ['./index.js', 'webpack-plugin-serve/client'],
+		feed: './feed.js',
+	},
 
 	mode: isProduction ? 'production' : 'development',
 
@@ -348,25 +351,26 @@ const first = {
 				},
 		  }
 		: {
+				runtimeChunk: 'single',
+				sideEffects: false,
 				splitChunks: {
 					cacheGroups: {
 						commons: {
 							chunks: 'initial',
 							minChunks: 2,
+							name: 'commons',
 						},
 						vendor: {
-							chunks: 'initial',
-							enforce: true,
-							name: 'vendor',
-							priority: 10,
-							test: /node_modules/,
+							chunks: 'all',
+							name: 'vendors',
+							test: /[/\\]node_modules[/\\]/,
 						},
 					},
 				},
 		  },
 
 	output: {
-		filename: 'bundle.js',
+		filename: '[name].bundle.js',
 		path: path.join(__dirname, 'dist'),
 		pathinfo: false,
 		publicPath: isProduction ? '' : 'http://localhost:8080/', // @todo: check if false does impact development

@@ -15,7 +15,7 @@
 	"content_scripts": [
 		{
 			"matches": ["*://*.instagram.com/*", "*://instagram.com/*"],
-			"js": ["content/InstagramAPI.js", "content/main.js"],
+			"js": ["content/InstagramAPI.js", "content/start.js", "content/main.js"],
 			"run_at": "document_idle",
 			"all_frames": false
 		}
@@ -40,5 +40,13 @@
 	"incognito": "split",
 	"content_security_policy": "script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
 
-	"web_accessible_resources": ["content/night.css", "content/content.css"]
+	"web_accessible_resources": [
+		"content/night.css",
+		"content/content.css",
+		"content/InstagramFeed.js",
+		"commons.bundle.js",
+		"runtime.bundle.js",
+		"vendors.bundle.js",
+		"feed.bundle.js"
+	]
 }

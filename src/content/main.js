@@ -222,7 +222,7 @@ function addExtendedButton() {
 	a.nodeValue = '' // clear content
 	a.textContent = '⋯'
 	a.title = 'Improved Layout for Instagram'
-	a.addEventListener('click', function (e) {
+	a.addEventListener('click', function(e) {
 		e.preventDefault()
 
 		// @TODO Remove this and fetch entirely on 3-dot page, as we fetch from bg already anyway
@@ -238,7 +238,8 @@ function addExtendedButton() {
 		chrome.runtime.sendMessage(null, { action: 'click' })
 		if (!clickedExtendedButton) window.localStorage.clickedExtendedBtn = true
 	})
-	$anchor.after(element)
+
+	$anchor.parentNode.appendChild(element)
 }
 
 const listenerActions = {
@@ -266,7 +267,7 @@ const listenerActions = {
  *
  */
 function addChromeListener() {
-	chrome.runtime.onMessage.addListener(function (
+	chrome.runtime.onMessage.addListener(function(
 		request,
 		sender,
 		sendResponse
@@ -548,8 +549,6 @@ function onNavigate() {
 				document.body.querySelectorAll('video').forEach(addControls)
 				document.body.querySelectorAll('img').forEach(fullPhoto)
 
-				scrollFix()
-
 				if (currentClass === 'profile') addWatched()
 
 				addExtendedButton()
@@ -559,11 +558,23 @@ function onNavigate() {
 }
 
 /**
+ *
+ */
+function addFeedDiv() {
+	const div = document.createElement('div')
+	div.id = 'ige_feed'
+
+	document.getElementById('react-root').after(div)
+}
+
+/**
  * Callback when DOM is ready.
  */
 function onReady() {
 	loadOptions()
 	onNavigate()
+
+	addFeedDiv()
 
 	addChromeListener()
 }
@@ -572,166 +583,3 @@ if (document.readyState === 'interactive' || document.readyState === 'complete')
 	onReady()
 else document.addEventListener('DOMContentLoaded', onReady)
 
-/**
- *
- */
-
-/**
- *
- */
-function createDummyNode(tagName, height) {
-	const tag = document.createElement('span')
-	tag.className = 'ige_dummyNode'
-	tag.style.setProperty('--virtual-height', height + 'px')
-	return tag
-}
-
-/**
- *
- */
-function clickListener(e) {
-	console.log(e)
-
-	const target = e.target
-
-	// VIDEO
-	if (target.role === 'button') {
-		const videoContainer = target.parentElement.children[0]
-		const video = videoContainer.children[0].children[0].children[0]
-		video.setAttribute('loop', '')
-		video.play()
-	}
-	if (target.nodeName === 'VIDEO') {
-		target.pause()
-		target.removeAttribute('loop')
-	}
-
-	// TAGGED USERS
-	if (
-		target.nodeName === 'BUTTON' &&
-		target.previousSibling?.nodeName === 'DIV' &&
-		target.previousSibling?.getAttribute('style') !== ''
-	) {
-		const prevSib = target.previousSibling
-		if (prevSib.style.transform !== '')
-			prevSib.style.opacity = +prevSib.style.opacity ^ 1 // flip between 0 | 1
-	}
-
-	// MORE
-	if (
-		target.nodeName === 'BUTTON' &&
-		target.previousSibling?.nodeValue === '... '
-	) {
-		// PROXY
-	}
-
-	// ARROW
-	if (
-		target.nodeName === 'BUTTON' &&
-		target.getAttribute('tabindex') === '-1'
-	) {
-		// arrow
-	}
-}
-
-var NODE_ASSIGNMENT = new Map() // prevent garbage collection of those nodes @TODO clear memory here and then
-var NODE_COUNTER = 0
-
-/**
- *
- */
-function scrollFix() {
-	if (currentClass !== 'home') return
-
-	document.body.classList.add('ige_hideOverflow')
-	const $vlist = $('main > section > div > div > div')
-
-	const sentry = document.createElement('span')
-	sentry.id = 'ige_virtualSentry'
-
-	const vclone_container = document.createElement('div')
-	vclone_container.id = 'ige_virtualClone'
-	vclone_container.addEventListener('click', clickListener)
-
-	const children = $vlist.children
-	for (const element of children) {
-		NODE_ASSIGNMENT.set('ige_clone' + ++NODE_COUNTER, element)
-	}
-
-	const vclone = $vlist.cloneNode(true)
-	vclone.setAttribute('style', '')
-
-	vclone.appendChild(sentry)
-	vclone_container.appendChild(vclone)
-	$('#react-root ').after(vclone_container)
-
-	NODE_ASSIGNMENT.get('ige_clone' + NODE_COUNTER).scrollIntoView(true)
-
-	const iObserver = new IntersectionObserver(function (e) {
-		if (e[0].isIntersecting) {
-			const children = $vlist.children
-
-			console.log('intersect', children)
-
-			NODE_ASSIGNMENT.get('ige_clone' + NODE_COUNTER).scrollIntoView(true)
-		}
-	})
-	iObserver.observe(sentry)
-
-	// @TODO: Proxy clicks (e.g. nth-of-child -> nth-of-child click); observe every child for changes?
-	// or implement:
-	// -> like (proxy)
-	// -> save (proxy)
-	// -> "more" button (proxy!)
-	// -> comment (proxy)
-	// -> arrow clicks (own code/proxy?)
-
-	// -> video start (own code) 							DONE
-	// -> tagged users icon	(own code)				DONE
-
-	// -> SCROLL
-
-	observe(
-		$('#react-root'),
-		(mutations) => {
-			for (const i in mutations) {
-				const mutation = mutations[i]
-
-				if (mutation.target !== $vlist) continue
-
-				console.log(mutation)
-
-				const added = mutation.addedNodes
-				if (mutation.target.className === '' && added.length !== 0) {
-					const div = vclone_container.children[0]
-					for (const element of added) {
-						if (element.className === 'ige_dummyNode') continue
-
-						if (element.nodeName === 'ARTICLE') {
-							window.requestAnimationFrame(() => {
-								const clone = element.cloneNode(true)
-								if (clone.querySelectorAll('img[srcset]').length === 0)
-									console.warn('no img', clone, element)
-
-								const id = 'ige_clone' + ++NODE_COUNTER
-								NODE_ASSIGNMENT.set(id, element)
-								clone.id = id
-
-								div.appendChild(clone)
-							})
-						}
-
-						if (element.nodeName === 'DIV') {
-							// stories
-							//div.appendChild(element)
-						}
-					}
-				}
-			}
-		},
-		{
-			childList: true,
-			subtree: true,
-		}
-	)
-}

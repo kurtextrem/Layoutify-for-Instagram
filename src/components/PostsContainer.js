@@ -45,16 +45,13 @@ export default class PostsContainer extends Component {
 		this.preloadCounter = 0
 
 		this.populateData()
-			.then((data) => {
+			.then(data => {
 				if (properties.preload > 0) this.preload()
 				return data
 			})
 			.catch(logAndReturn)
 
-		window.setTimeout(
-			() => this.setTimeout(PostsContainer.TIME_STATE.LOADING),
-			PostsContainer.TIME_STATE.LOADING
-		)
+		window.setTimeout(() => this.setTimeout(PostsContainer.TIME_STATE.LOADING), PostsContainer.TIME_STATE.LOADING)
 	}
 
 	state = {
@@ -65,20 +62,13 @@ export default class PostsContainer extends Component {
 	setTimeout(timeout) {
 		this.setState((previousState, properties) => ({ timeout }))
 		if (timeout !== PostsContainer.TIME_STATE.ERROR)
-			window.setTimeout(
-				() => this.setTimeout(PostsContainer.TIME_STATE.ERROR),
-				PostsContainer.TIME_STATE.ERROR
-			)
+			window.setTimeout(() => this.setTimeout(PostsContainer.TIME_STATE.ERROR), PostsContainer.TIME_STATE.ERROR)
 	}
 
 	@bind
 	preload() {
 		const { preload, id } = this.props
-		if (
-			++this.preloadCounter > preload ||
-			this.postCount / 20 /* 20 posts per page */ > 2 * preload
-		)
-			return
+		if (++this.preloadCounter > preload || this.postCount / 20 /* 20 posts per page */ > 2 * preload) return
 
 		console.log('preloading', id)
 		Chrome.send('load', { which: id })
@@ -98,9 +88,7 @@ export default class PostsContainer extends Component {
 	populateData() {
 		console.log('populating data')
 
-		return Storage.get(this.props.id, null)
-			.then(this.handleData)
-			.catch(logAndReturn)
+		return Storage.get(this.props.id, null).then(this.handleData).catch(logAndReturn)
 	}
 
 	@bind
@@ -151,12 +139,9 @@ export default class PostsContainer extends Component {
 
 		return (
 			nextProperties.id !== this.props.id ||
-			(nextState.timeout !== timeout &&
-				(nextItems === null || nextItems.length === 0)) ||
+			(nextState.timeout !== timeout && (nextItems === null || nextItems.length === 0)) ||
 			(items === null && nextItems !== null) || // first items
-			(items !== null &&
-				nextItems !== null &&
-				nextItems.length !== items.length)
+			(items !== null && nextItems !== null && nextItems.length !== items.length)
 		)
 	}
 
@@ -179,6 +164,7 @@ export default class PostsContainer extends Component {
 				defaultClass={defaultClass}
 				toggleClass={toggleClass}
 				initial={this.initial === 1 && this.postCount < 12}
+				isCarousel={post.media_type === 8}
 			/>
 		)
 	}
@@ -191,17 +177,14 @@ export default class PostsContainer extends Component {
 		if (items !== null && items.length !== 0)
 			return (
 				<div class="position-relative">
-					<CardDeck class="justify-content-center">
-						{Posts(items, this.renderPost, hasCategories)}
-					</CardDeck>
+					<CardDeck class="justify-content-center">{Posts(items, this.renderPost, hasCategories)}</CardDeck>
 					<div class="text-center">
 						<Button onClick={this.handleBtnClick}>Load more</Button>
 					</div>
 				</div>
 			)
 
-		if (timeout === PostsContainer.TIME_STATE.LOADING)
-			return PostsContainer.loading
+		if (timeout === PostsContainer.TIME_STATE.LOADING) return PostsContainer.loading
 		if (timeout === PostsContainer.TIME_STATE.ERROR) return PostsContainer.error
 
 		return PostsContainer.dummy // first paint & items === null

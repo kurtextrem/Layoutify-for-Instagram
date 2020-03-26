@@ -20,7 +20,10 @@ function createTab(id, force) {
 			() => chrome.runtime.lastError && createTab(id, true) // only create new tab when there was an error
 		)
 	} else {
-		chrome.tabs.create({ url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` }, newTab => (tabId = newTab.id))
+		chrome.tabs.create(
+			{ url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` },
+			(newTab) => (tabId = newTab.id)
+		)
 	}
 }
 
@@ -31,8 +34,8 @@ function getCookie(name) {
 	return new Promise((resolve, reject) => {
 		chrome.cookies.get(
 			{
-				url: 'https://www.instagram.com/',
 				name,
+				url: 'https://www.instagram.com/',
 			},
 			function cookies(cookie) {
 				if (cookie !== null) resolve(cookie.value)
@@ -48,7 +51,7 @@ let sessionid = ''
  */
 function getSessionId() {
 	getCookie('sessionid')
-		.then(value => (sessionid = value))
+		.then((value) => (sessionid = value))
 		.catch(logAndReject)
 }
 
@@ -67,7 +70,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 			if (header.name === 'User-Agent') {
 				// credit https://github.com/mgp25/Instagram-API/master/src/Constants.php
 				header.value =
-					'Instagram 42.0.0.19.95 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 104766893)'
+					'Instagram 107.0.0.27.121 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 104766893)'
 			} else if (header.name === 'Cookie') {
 				// add auth cookies to authenticate API requests
 				header.value = `${header.value}; sessionid=${sessionid}`
@@ -77,8 +80,8 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 		return { requestHeaders: headers }
 	},
 	{
-		urls: ['https://i.instagram.com/*'],
 		types: ['xmlhttprequest'],
+		urls: ['https://i.instagram.com/*'],
 	},
 	['blocking', 'requestHeaders', 'extraHeaders']
 )
@@ -86,8 +89,8 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 chrome.webRequest.onHeadersReceived.addListener(
 	modifyCspHeaders,
 	{
-		urls: ['https://i.instagram.com/*'],
 		types: ['xmlhttprequest'],
+		urls: ['https://i.instagram.com/*'],
 	},
 	['blocking', 'responseHeaders', 'extraHeaders']
 )
@@ -102,7 +105,10 @@ function modifyCspHeaders(details) {
 		const header = headers[i]
 
 		if (header.name.toLowerCase() === 'content-security-policy') {
-			header.value.replace("connect-src 'self'", `connect-src 'self' https://i.instagram.com`)
+			header.value.replace(
+				"connect-src 'self'",
+				`connect-src 'self' https://i.instagram.com`
+			)
 		}
 	}
 
@@ -152,7 +158,10 @@ function logAndReject(e) {
  *
  */
 function fixMaxId(response) {
-	const response_ = response.replace(/"next_max_id": (\d+)/g, '"next_max_id": "$1"')
+	const response_ = response.replace(
+		/"next_max_id": (\d+)/g,
+		'"next_max_id": "$1"'
+	)
 	;/\s*/g.exec('') // clear regex cache to prevent memory leak
 	return response_
 }
@@ -170,32 +179,42 @@ const API_URL = {
 }
 
 const PRIVATE_API_OPTS = {
-	referrerPolicy: 'no-referrer',
-
-	// credits to https://github.com/mgp25/Instagram-API/blob/master/src/Request.php#L377
 	headers: new Headers({
+		Accept: '*/*',
+		'Accept-Language': 'en-US',
+		Connection: 'keep-alive',
+		'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+		'X-FB-HTTP-Engine': 'Liger',
 		'X-IG-App-ID': '567067343352427',
-		'X-IG-Capabilities': '3brTBw==',
-		'X-IG-Connection-Type': 'WIFI',
-		'X-IG-Connection-Speed': '3700kbps',
 		'X-IG-Bandwidth-Speed-KBPS': '-1.000',
 		'X-IG-Bandwidth-TotalBytes-B': '0',
 		'X-IG-Bandwidth-TotalTime-MS': '0',
-		'X-FB-HTTP-Engine': 'Liger',
-		Accept: '*/*',
-		'Accept-Language': 'en-US',
-		'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-		Connection: 'keep-alive',
+		'X-IG-Capabilities': '3brTvw==',
+		'X-IG-Connection-Speed': '3700kbps',
+		'X-IG-Connection-Type': 'WIFI',
 	}),
+
+	// credits to https://github.com/mgp25/Instagram-API/blob/master/src/Request.php#L377
+	referrerPolicy: 'no-referrer',
 }
 
 const PUBLIC_API_OPTS = {
-	method: 'POST',
 	headers: new Headers({
 		'x-csrftoken': '',
 		'x-instagram-ajax': '1',
 		'x-requested-with': 'XMLHttpRequest',
 	}),
+	method: 'POST',
+}
+
+const GRAPHQL_API_OPTS = {
+	headers: new Headers({
+		'x-csrftoken': '',
+		'X-IG-App-ID': '936619743392459',
+		'X-IG-WWW-Claim': '',
+		'x-requested-with': 'XMLHttpRequest',
+	}),
+	method: 'GET',
 }
 
 /**
@@ -204,7 +223,7 @@ const PUBLIC_API_OPTS = {
 function fetchFromBackground(which, path, sendResponse) {
 	if (which === 'PUBLIC') {
 		getCookie('csrftoken')
-			.then(value => {
+			.then((value) => {
 				PUBLIC_API_OPTS.headers.set('x-csrftoken', value)
 				fetchAux(API_URL[which] + path, PUBLIC_API_OPTS)
 
@@ -235,9 +254,7 @@ function fetchAux(url, options) {
 	let options_ = fetchOptions
 	if (options !== undefined) options_ = { ...options_, ...options }
 
-	return fetch(url, options_)
-		.then(checkStatus)
-		.catch(logAndReject)
+	return fetch(url, options_).then(checkStatus).catch(logAndReject)
 }
 
 /**
@@ -247,7 +264,11 @@ function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-chrome.runtime.onMessage.addListener(function listener(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function listener(
+	request,
+	sender,
+	sendResponse
+) {
 	switch (request.action) {
 		case 'click':
 			createTab(sender.tab.id, false)
@@ -266,7 +287,11 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 			break
 
 		case 'fetch':
-			fetchFromBackground(request.which.toUpperCase(), request.path, sendResponse)
+			fetchFromBackground(
+				request.which.toUpperCase(),
+				request.path,
+				sendResponse
+			)
 			return true
 
 		default:
@@ -287,7 +312,7 @@ function createUpdateAlarm() {
 }
 
 /** Open Changelog when updating to a new major/minor version. */
-chrome.runtime.onInstalled.addListener(details => {
+chrome.runtime.onInstalled.addListener((details) => {
 	if (details.reason !== 'update') return
 
 	createUpdateAlarm()
@@ -309,10 +334,7 @@ chrome.alarms.onAlarm.addListener(getWatchlist)
  */
 function openIG(id) {
 	chrome.tabs.create({
-		url: `https://www.instagram.com/${id
-			.split('_')
-			.splice(1)
-			.join('_')}/`,
+		url: `https://www.instagram.com/${id.split('_').splice(1).join('_')}/`,
 	})
 }
 chrome.notifications.onClicked.addListener(openIG)
@@ -326,7 +348,7 @@ chrome.notifications.onButtonClicked.addListener((id, buttonIndex) => {
  *
  */
 function getWatchlist(e) {
-	chrome.storage.sync.get({ options: null, watchData: null }, data => {
+	chrome.storage.sync.get({ options: null, watchData: null }, (data) => {
 		const options = data.options
 		if (chrome.runtime.lastError) {
 			console.error(chrome.runtime.lastError.message)
@@ -341,8 +363,10 @@ function getWatchlist(e) {
 			data.watchData = {}
 		}
 
-		if (options.watchPosts) checkForWatchedContent(options.watchPosts, 0, data.watchData)
-		if (options.watchStories) checkForWatchedContent(options.watchStories, 1, data.watchData)
+		if (options.watchPosts)
+			checkForWatchedContent(options.watchPosts, 0, data.watchData)
+		if (options.watchStories)
+			checkForWatchedContent(options.watchStories, 1, data.watchData)
 	})
 }
 
@@ -354,9 +378,9 @@ function getBlobUrl(url) {
 		window
 			.fetch(url)
 			.then(checkStatus)
-			.then(response => response.blob())
-			.then(blob => resolve(URL.createObjectURL(blob)))
-			.catch(e => {
+			.then((response) => response.blob())
+			.then((blob) => resolve(URL.createObjectURL(blob)))
+			.catch((e) => {
 				console.error(e)
 				reject(e)
 				return e
@@ -365,25 +389,26 @@ function getBlobUrl(url) {
 }
 
 const notificationOptions = {
-	type: '',
-	title: '',
-	message: chrome.i18n.getMessage('watch_openProfile'),
-	iconUrl: '', // profile pic
+	iconUrl: '',
 	imageUrl: '',
+	message: chrome.i18n.getMessage('watch_openProfile'),
+	title: '', // profile pic
+	type: '',
 }
 
 const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
 	storiesParams = {
-		user_id: '',
 		include_chaining: false,
+		include_highlight_reels: false,
+		include_logged_out_extras: false,
 		include_reel: true,
 		include_suggested_users: false,
-		include_logged_out_extras: false,
-		include_highlight_reels: false,
+		user_id: '',
 	}
 //orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
 
-const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
+const get = (path, object) =>
+	path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
 
 /**
  *
@@ -398,7 +423,10 @@ function getProfilePicId(url) {
  *
  */
 function handlePost(json, user, userObject, watchData, options) {
-	const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json)
+	const node = get(
+		['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'],
+		json
+	)
 	if (node === null) {
 		notifyError(user, options)
 		return
@@ -421,10 +449,11 @@ function handlePost(json, user, userObject, watchData, options) {
 			options.title = chrome.i18n.getMessage('watch_newPic', user)
 
 			getBlobUrl(pic)
-				.then(url => {
+				.then((url) => {
 					options.iconUrl = url
-					return chrome.notifications.create(`pic_${user}`, options, nId => {
-						if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+					return chrome.notifications.create(`pic_${user}`, options, (nId) => {
+						if (chrome.runtime.lastError)
+							console.error(chrome.runtime.lastError.message)
 						URL.revokeObjectURL(url)
 						// @todo: Maybe clear notification?
 					})
@@ -441,11 +470,12 @@ function handlePost(json, user, userObject, watchData, options) {
 	options.title = chrome.i18n.getMessage('watch_newPost', user)
 
 	Promise.all([getBlobUrl(pic), getBlobUrl(node.thumbnail_src)])
-		.then(values => {
+		.then((values) => {
 			options.iconUrl = values[0]
 			options.imageUrl = values[1]
-			return chrome.notifications.create(`post_${user}`, options, nId => {
-				if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+			return chrome.notifications.create(`post_${user}`, options, (nId) => {
+				if (chrome.runtime.lastError)
+					console.error(chrome.runtime.lastError.message)
 				URL.revokeObjectURL(values[0])
 				URL.revokeObjectURL(values[1])
 				// @todo: Maybe clear notification?
@@ -477,10 +507,11 @@ function handleStory(json, user, userObject, watchData, options) {
 		options.title = chrome.i18n.getMessage('watch_newStory', user)
 
 		getBlobUrl(reel.owner.profile_pic_url)
-			.then(url => {
+			.then((url) => {
 				options.iconUrl = url
-				return chrome.notifications.create(`story_${user}`, options, nId => {
-					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+				return chrome.notifications.create(`story_${user}`, options, (nId) => {
+					if (chrome.runtime.lastError)
+						console.error(chrome.runtime.lastError.message)
 					URL.revokeObjectURL(url)
 					// @todo: Maybe clear notification?
 				})
@@ -515,7 +546,8 @@ function notify(user, userObject, type, watchData, length_, i) {
 
 	if (type === 0) {
 		url = `https://www.instagram.com/${user.replace('$$ANON$$', '')}/?__a=1`
-		if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
+		if (user.indexOf('$$ANON$$') === 0)
+			fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
 	} /*if (type === 1)*/ else {
 		const params = { ...storiesParams }
 		params.user_id = userObject.id
@@ -528,7 +560,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 	const options = { ...notificationOptions }
 	fetchAux(url, fetchOptions_)
 		.then(toJSON)
-		.then(json => {
+		.then((json) => {
 			if (type === 0) {
 				handlePost(json, user, userObject, watchData, options)
 			} else if (type === 1) {
@@ -538,7 +570,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 			if (i === length_) chrome.storage.sync.set({ watchData })
 			return json
 		})
-		.catch(e => {
+		.catch((e) => {
 			console.warn(e)
 			if (e.status === 404) notifyError(user, options)
 			if (i === length_) chrome.storage.sync.set({ watchData })
@@ -551,21 +583,25 @@ function notify(user, userObject, type, watchData, length_, i) {
  */
 function createUserObject(user, watchData) {
 	let fetchOptions_ = WEB_OPTS
-	if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
+	if (user.indexOf('$$ANON$$') === 0)
+		fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
 
-	return fetchAux(`https://www.instagram.com/${user.replace('$$ANON$$', '')}/?__a=1`, fetchOptions_)
+	return fetchAux(
+		`https://www.instagram.com/${user.replace('$$ANON$$', '')}/?__a=1`,
+		fetchOptions_
+	)
 		.then(toJSON)
-		.then(json => {
+		.then((json) => {
 			if (watchData[user] === undefined)
 				return (watchData[user] = {
 					id: json ? json.graphql.user.id : '',
+					pic: '',
 					post: '',
 					story: '',
-					pic: '',
 				})
 			return (watchData[user].id = json ? json.graphql.user.id : '')
 		})
-		.catch(e => {
+		.catch((e) => {
 			console.warn(e)
 			if (e.status === 404) {
 				const options = { ...notificationOptions }
@@ -591,10 +627,10 @@ function checkForWatchedContent(users, type, watchData) {
 			userObject = watchData[user]
 
 		if (userObject === undefined || userObject.id === '') {
-			window.setTimeout(function() {
+			window.setTimeout(function () {
 				createUserObject(user, watchData)
-					.then(function(e) {
-						window.setTimeout(function() {
+					.then(function (e) {
+						window.setTimeout(function () {
 							notify(user, watchData[user], type, watchData, length_, i)
 						})
 						return e
@@ -602,7 +638,19 @@ function checkForWatchedContent(users, type, watchData) {
 					.catch(logAndReject)
 			}, timeout)
 			// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
-		} else window.setTimeout(notify.bind(undefined, user, watchData[user], type, watchData, length_, i), timeout)
+		} else
+			window.setTimeout(
+				notify.bind(
+					undefined,
+					user,
+					watchData[user],
+					type,
+					watchData,
+					length_,
+					i
+				),
+				timeout
+			)
 
 		timeout += getRandom(1000, 15000)
 	}
