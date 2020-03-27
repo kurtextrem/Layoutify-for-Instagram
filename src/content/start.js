@@ -8,17 +8,24 @@
 ;(function inject(document) {
 	'use strict'
 
-	const scripts = [
-		'content/InstagramFeed.js',
-		'runtime.bundle.js',
-		'vendors.bundle.js',
-		'commons.bundle.js',
-		'feed.bundle.js',
-	]
+	const scripts = ['content/InstagramFeed.js', 'runtime.bundle.js', 'vendors.bundle.js', 'commons.bundle.js', 'feed.bundle.js']
 
-	scripts.forEach((v) => {
+	/**
+	 *
+	 */
+	function onload(e) {
+		e.target.remove()
+	}
+
+	scripts.forEach(v => {
 		const s = document.createElement('script')
 		s.src = chrome.extension.getURL(v)
 		document.documentElement.appendChild(s)
+		s.addEventListener('load', onload, { once: true })
 	})
+
+	const c = document.createElement('link')
+	c.href = chrome.extension.getURL('feed.css')
+	c.rel = 'stylesheet'
+	document.documentElement.appendChild(c)
 })(window.document)

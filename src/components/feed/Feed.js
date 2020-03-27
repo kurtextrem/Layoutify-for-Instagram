@@ -1,8 +1,12 @@
-import Post from './feed/Post'
+import Post from './Post'
 import bind from 'autobind-decorator'
 import { Component, Fragment, h } from 'preact'
 
 class Feed extends Component {
+	state = {
+		data: window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges,
+	}
+
 	constructor() {
 		super()
 
@@ -27,7 +31,7 @@ class Feed extends Component {
 			fetch_comment_count: 4,
 			fetch_like: 3,
 			fetch_media_item_count: 12,
-			fetch_media_item_cursor: window.__additionalData.feed.data.user.edge_web_feed_timeline.page_info.end_cursor,
+			fetch_media_item_cursor: window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor,
 			has_stories: false, // @todo nice feature?
 			has_threaded_comments: true,
 		}
@@ -42,16 +46,21 @@ class Feed extends Component {
 
 		console.log(response)
 
-		this.obj.fetch_media_item_cursor = response.data.user.edge_web_feed_timeline.page_info.end_cursor
+		this.obj.fetch_media_item_cursor = response?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor
 
-		response.data.user.edge_web_feed_timeline.edges // [0].node => data
+		this.setState((prevState, props) => ({
+			data: prevState.data.concat(response.data.user.edge_web_feed_timeline.edges), // [0].node => data)
+		}))
 	}
 
 	render() {
+		// @TODO Clone stories node & put in here; stories appear after 8th post usually, tag type div
 		return (
-			<>
-				<div>test</div>
-			</>
+			<div>
+				{this.state.data.map(v => (
+					<Post data={v.node} key={v.node.shortcode} />
+				))}
+			</div>
 		)
 	}
 }

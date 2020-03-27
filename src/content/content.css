@@ -70,13 +70,13 @@ main > section {
 	opacity: 0.1;
 }
 
-#ige_virtualClone {
+#ige_feed {
 	position: fixed;
 	top: 6vh;
 	bottom: 0;
 	right: 3vw;
 	left: 9px;
-	left: 30vw;
+	left: 1vw;
 	max-width: 100%;
 
 	padding-bottom: 10vh;
@@ -84,7 +84,7 @@ main > section {
 }
 
 /** Make the flex box layout row instead of column */
-#ige_virtualClone > div {
+#ige_feed > div {
 	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -95,7 +95,7 @@ main > section {
 	position: relative;
 }
 
-#ige_virtualClone > div > div /* stories */ {
+#ige_feed > div > div /* stories */ {
 	overflow-x: scroll;
 	max-width: 100%;
 }
@@ -106,7 +106,7 @@ main > section {
 	max-height: var(--virtual-height);
 }
 
-#ige_virtualClone div[style*='transform'][class] + button[class] > div {
+#ige_feed div[style*='transform'][class] + button[class] > div {
 	pointer-events: none;
 }
 
@@ -124,12 +124,7 @@ main > section {
 /**
  * Stories in between posts
  */
-main
-	> section
-	> div:not(#rcr-anchor)
-	> div:not([class])
-	> div:first-child
-	> div {
+main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
 	width: calc(100% - 7.4vw);
 	margin-top: 30px;
 	margin-bottom: 30px;
@@ -137,7 +132,7 @@ main
 }
 
 /** Make boxes equal in height and width */
-#ige_virtualClone article {
+#ige_feed article {
 	width: var(--boxWidth) !important;
 	min-width: var(--boxWidth) !important;
 	max-width: var(--boxWidth) !important;
@@ -282,24 +277,8 @@ time {
 	text-transform: none;
 }
 
-body
-	> div
-	> div[role='dialog']
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li,
-#react-root:not(.stories)
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li {
+body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul > ul > li,
+#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) > ul > ul > li {
 	padding: 0 16px;
 }
 
@@ -327,18 +306,8 @@ h3 + span + div {
 }
 
 /** Grow comments */
-body
-	> div
-	> div[role='dialog']
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child),
-#react-root:not(.stories)
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child) {
+body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child),
+#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	order: 2 !important;
 	margin: 0 !important;
@@ -348,20 +317,8 @@ body
 	grid-area: c;
 }
 
-body
-	> div
-	> div[role='dialog']
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul,
-#react-root:not(.stories)
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul {
+body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul,
+#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) > ul {
 	width: 100%;
 	height: 100%;
 	padding: 0;
@@ -369,57 +326,17 @@ body
 	overflow-x: hidden;
 }
 
-body
-	> div
-	> div[role='dialog']
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul
-	> li,
-#react-root.post
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul
-	> li,
-#react-root.tv
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul
-	> li {
+body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul > li,
+#react-root.post header + div + div > div:first-of-type:not(:only-child) > ul > li,
+#react-root.tv header + div + div > div:first-of-type:not(:only-child) > ul > li {
 	margin-top: 0;
 	margin-left: 0;
 	padding: 2px;
 }
 
 /** Comments comment profile pic */
-body
-	> div
-	> div[role='dialog']
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	ul
-	> li
-	> div
-	> div
-	> div,
-#react-root:not(.stories)
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	ul
-	> li
-	> div
-	> div
-	> div {
+body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) ul > li > div > div > div,
+#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) ul > li > div > div > div {
 	align-self: flex-start;
 	margin-right: 7px;
 }
@@ -434,54 +351,14 @@ body > div > div[role='dialog'] h3 + span + div,
 }
 
 /** Comments comments replies */
-body
-	> div
-	> div[role='dialog']
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li
-	> ul,
-#react-root:not(.stories)
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li
-	> ul {
+body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul,
+#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul {
 	width: calc(100% - 18px);
 	margin: 4px 0 0 36px;
 }
 
-body
-	> div
-	> div[role='dialog']
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li
-	> ul
-	> li:first-child
-	> div,
-#react-root:not(.stories)
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li
-	> ul
-	> li:first-child
-	> div {
+body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul > li:first-child > div,
+#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul > li:first-child > div {
 	margin-bottom: 0;
 }
 
@@ -563,12 +440,8 @@ video::-webkit-media-controls {
 }
 
 /** @TODO: Replace IG's play button with the native one once its been rolled out */
-body
-	> div
-	> div[role='dialog']
-	video:not([loop])::-webkit-media-controls-overlay-play-button,
-#react-root:not(.stories)
-	video:not([loop])::-webkit-media-controls-overlay-play-button {
+body > div > div[role='dialog'] video:not([loop])::-webkit-media-controls-overlay-play-button,
+#react-root:not(.stories) video:not([loop])::-webkit-media-controls-overlay-play-button {
 	display: none;
 }
 
@@ -613,29 +486,12 @@ div[role='button'] > div > button {
 }
 
 /** Multiple dots */
-.home
-	article
-	> div
-	> div[role='button']
-	> div
-	> div
-	> div
-	+ div
-	+ div:not(:last-child) {
+.home article > div > div[role='button'] > div > div > div + div + div:not(:last-child) {
 	margin-top: 0;
 	margin-bottom: 0;
 }
 
-.home
-	article
-	> div
-	> div[role='button']
-	> div:not([role='dialog'])
-	> div
-	> div
-	+ div
-	+ div:not(:last-child)
-	> div {
+.home article > div > div[role='button'] > div:not([role='dialog']) > div > div + div + div:not(:last-child) > div {
 	margin-top: 10px;
 	margin-bottom: -6px;
 }
@@ -720,57 +576,24 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
 	border-radius: 0;
 }
 
-main
-	> section
-	> div:first-child:not(#rcr-anchor)
-	~ div:last-child:not(:hover)
-	> div
-	> div,
-main
-	> section
-	> div:first-child:not(#rcr-anchor)
-	~ div:last-child:not(:hover)
-	> div
-	> div
-	> div
-	> div
-	> div
-	> div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div,
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div > div > div > div > div {
 	padding-right: 0;
 	padding-left: 0;
 }
 
-main
-	> section
-	> div:first-child:not(#rcr-anchor)
-	~ div:last-child:not(:hover)
-	> div
-	> div
-	> div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div > div {
 	margin-right: 7px;
 	margin-left: 7px;
 }
 
 /* Only story box */
-main
-	> section
-	> div:first-child:not(#rcr-anchor)
-	~ div:last-child
-	> div:first-child
-	+ div
-	> div
-	+ div
-	> div
-	> div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div > div + div > div > div {
 	height: 43vh !important;
 }
 
 /* Copyright etc */
-main
-	> section
-	> div:first-child:not(#rcr-anchor)
-	~ div:last-child
-	> div:last-child {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-child {
 	padding-right: 17px;
 	padding-bottom: 0;
 	padding-left: 17px;
@@ -786,11 +609,7 @@ main
 										Spinner
 =============================================*/
 /** Profile spinner */
-.home
-	main
-	> section
-	> div:not(#rcr-anchor):first-child
-	> div:last-child:not(:first-child) {
+.home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) {
 	/* 	order: 3;
 	height: 60px;
 	margin: 10px 0;
@@ -798,12 +617,7 @@ main
 	z-index: 2; */
 }
 
-.home
-	main
-	> section
-	> div:not(#rcr-anchor):first-child
-	> div:last-child:not(:first-child)
-	> div {
+.home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) > div {
 	/* 	top: 30%; */
 }
 
@@ -998,19 +812,11 @@ footer > div > nav {
 	height: 40px !important;
 }
 
-.ige_picturesOnly:not(.profile):not(.explore)
-	article
-	> header
-	> div:last-child
-	> div:last-child {
+.ige_picturesOnly:not(.profile):not(.explore) article > header > div:last-child > div:last-child {
 	display: flex;
 }
 
-.ige_picturesOnly:not(.stories)
-	header
-	+ div
-	+ div
-	> div:first-of-type:not(:only-child) {
+.ige_picturesOnly:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
 	height: 0;
 }
 
@@ -1020,21 +826,11 @@ footer > div > nav {
 }
 
 /*----------  Hide Stories  ----------*/
-.ige_hideStories
-	main
-	> section
-	> div:first-child:not(#rcr-anchor)
-	~ div:last-child {
+.ige_hideStories main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	display: none;
 }
 
-.ige_hideStories
-	main
-	> section
-	> div:not(#rcr-anchor)
-	> div:not([class])
-	> div
-	> div {
+.ige_hideStories main > section > div:not(#rcr-anchor) > div:not([class]) > div > div {
 	display: none;
 }
 
@@ -1050,11 +846,7 @@ footer > div > nav {
 }
 
 /* @TODO: Make this work for 2 row layout too */
-.ige_noSpaceBetweenPosts
-	main
-	> section
-	div
-	> article:not(:first-child):not(:nth-of-type(5n)) {
+.ige_noSpaceBetweenPosts main > section div > article:not(:first-child):not(:nth-of-type(5n)) {
 	border-left-width: 0 !important;
 }
 
@@ -1062,12 +854,7 @@ footer > div > nav {
 	border-left-width: 1px;
 }
 
-.ige_noSpaceBetweenPosts
-	main
-	> section
-	> div:not(#rcr-anchor)
-	> div:not([class])
-	> div {
+.ige_noSpaceBetweenPosts main > section > div:not(#rcr-anchor) > div:not([class]) > div {
 	justify-content: center;
 }
 
