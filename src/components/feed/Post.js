@@ -36,6 +36,8 @@ export default class Post extends EventComponent {
 				comments_disabled = true,
 				edge_media_preview_like = null,
 				edge_media_preview_comment = null,
+				viewer_has_liked: false,
+				viewer_has_saved: false
 			},
 			data,
 		} = this.props
@@ -45,16 +47,16 @@ export default class Post extends EventComponent {
 			<article class="ige_post" id={`post_${id}`}>
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
 				<PostMedia data={data} />
-				<div class="d-flex f-row a-center">
+				<div class="d-flex f-row a-center px-16">
 					<button type="button" class="ige_button">
-						<Heart width={32} height={32} />
+						<Heart width={24} height={24} fill="#262626" active={viewer_has_liked} />
 					</button>
 					<button type="button" class="ige_button">
-						<Save width={24} height={24} />
+						<Save width={24} height={24} active={viewer_has_saved} />
 					</button>
 					<div class="ml-auto">♥ {edge_media_preview_like?.count}</div>
 				</div>
-				<div class="ige_post-content">
+				<div class="ige_post-content px-16">
 					<div class="ige_post-text">
 						<span>{text}</span>
 					</div>

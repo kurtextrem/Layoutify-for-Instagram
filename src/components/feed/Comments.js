@@ -13,7 +13,7 @@ const Comments = props => (
 					</a>
 					<span>{v.node.text}</span>
 					<button type="button" class="ige_button ml-auto">
-						<Heart width={12} height={12} />
+						<Heart width={12} height={12} fill="#8e8e8e" active={v.node.viewer_has_liked} />
 					</button>
 				</div>
 			)
