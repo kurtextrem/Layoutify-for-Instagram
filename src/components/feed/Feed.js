@@ -53,13 +53,17 @@ class Feed extends Component {
 		}))
 	}
 
+	steal() {
+		// we need to scroll on load once to get the item & steal it after
+	}
+
 	render() {
 		// @TODO Clone stories node & put in here; stories appear after 8th post usually, tag type div
 		return (
 			<div>
-				{this.state.data.map(v => (
-					<Post data={v.node} key={v.node.shortcode} />
-				))}
+				{this.state.data.map(v =>
+					v.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={v.node} key={v.node.shortcode} />
+				)}
 			</div>
 		)
 	}

@@ -90,6 +90,36 @@
 	display: flex;
 }
 
+.f-row {
+	flex-direction: row;
+}
+
 .a-center {
 	align-items: center;
+}
+
+.ml-auto {
+	margin-left: auto;
+}
+
+.ige_post-content {
+	flex: 1;
+
+	display: grid;
+	grid-template:
+		'post' auto
+		'comments' 1fr
+		'comment' 56px;
+}
+
+.ige_post-text {
+	grid-area: post;
+}
+
+.ige_post-comments {
+	grid-area: comments;
+}
+
+.ige_footer {
+	grid-area: comment;
 }

@@ -84,6 +84,7 @@ main > section {
 }
 
 /** Make the flex box layout row instead of column */
+main > section > div:not(#rcr-anchor) > div:not([class]) > div,
 #ige_feed > div {
 	flex-direction: row !important;
 	flex-wrap: wrap;
@@ -98,16 +99,6 @@ main > section {
 #ige_feed > div > div /* stories */ {
 	overflow-x: scroll;
 	max-width: 100%;
-}
-
-.ige_dummyNode {
-	height: var(--virtual-height);
-	min-height: var(--virtual-height);
-	max-height: var(--virtual-height);
-}
-
-#ige_feed div[style*='transform'][class] + button[class] > div {
-	pointer-events: none;
 }
 
 #ige_virtualSentry {
@@ -132,6 +123,7 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div
 }
 
 /** Make boxes equal in height and width */
+.home article,
 #ige_feed article {
 	width: var(--boxWidth) !important;
 	min-width: var(--boxWidth) !important;
@@ -530,6 +522,8 @@ nav input + span + div + div > div:first-of-type {
 =============================================*/
 /* Fix main feed */
 main > section > div:first-child:not(#rcr-anchor) {
+	max-width: none;
+	margin-right: 0;
 	float: none;
 	contain: layout style;
 }
