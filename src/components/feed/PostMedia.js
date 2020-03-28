@@ -103,6 +103,10 @@ export default class PostMedia extends Component {
 		)
 	}
 
+	handleDblClick() {
+		// like
+	}
+
 	render() {
 		const { data } = this.props
 		const { carouselIndex, carouselLen, isCarousel } = this.state
@@ -126,7 +130,7 @@ export default class PostMedia extends Component {
 		}
 
 		return (
-			<div class="p-relative">
+			<div class="p-relative" onDblClick={this.handleDblClick}>
 				<div class="img--wrapper">{mediaElement}</div>
 				{isCarousel && carouselIndex !== 0 ? (
 					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick}>

@@ -1,10 +1,15 @@
+import Loading from '../Loading'
 import Post from './Post'
 import bind from 'autobind-decorator'
+import withIntersectionObserver from './withIntersectionObserver'
 import { Component, Fragment, h } from 'preact'
 
 class Feed extends Component {
 	state = {
+		cursor: '',
 		data: window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges,
+		hasNextPage: false,
+		isNextPageLoading: false,
 	}
 
 	constructor() {
@@ -26,30 +31,53 @@ class Feed extends Component {
 			}),
 		}
 
-		this.obj = {
+		const nextPage = window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor
+		if (nextPage !== undefined) {
+			this.state.hasNextPage = true
+			this.state.cursor = nextPage
+		}
+
+		this.fetchObj = {
 			cached_feed_item_ids: [],
 			fetch_comment_count: 4,
 			fetch_like: 3,
 			fetch_media_item_count: 12,
-			fetch_media_item_cursor: window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor,
+			fetch_media_item_cursor: '',
 			has_stories: false, // @todo nice feature?
 			has_threaded_comments: true,
 		}
+
+		this.LoadingWithObserver = withIntersectionObserver(Loading, {
+			//root: document.getElementById('ige_feed'),
+			//rootMargin: '400px 0px 0px 0px',
+		})
+	}
+
+	@bind
+	loadNextPage() {
+		if (this.state.isNextPageLoading) return
+
+		this.setState({ isNextPageLoading: true }, () => {
+			this.fetch()
+		})
 	}
 
 	async fetch() {
-		const query = await fetch(
-			'/graphql/query/?query_hash=' + this.queryID + '&variables=' + JSON.stringify(this.obj),
-			this.GRAPHQL_API_OPTS
-		)
+		const obj = { ...this.fetchObj }
+		obj.fetch_media_item_cursor = this.state.cursor
+
+		const query = await fetch('/graphql/query/?query_hash=' + this.queryID + '&variables=' + JSON.stringify(obj), this.GRAPHQL_API_OPTS)
 		const response = await query.json()
 
 		console.log(response)
 
-		this.obj.fetch_media_item_cursor = response?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor
+		const nextCursor = response?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor
 
 		this.setState((prevState, props) => ({
-			data: prevState.data.concat(response.data.user.edge_web_feed_timeline.edges), // [0].node => data)
+			cursor: nextCursor,
+			data: prevState.data.concat(response.data.user.edge_web_feed_timeline.edges),
+			hasNextPage: nextCursor !== undefined,
+			isNextPageLoading: false,
 		}))
 	}
 
@@ -58,9 +86,20 @@ class Feed extends Component {
 	}
 
 	render() {
+		const { hasNextPage, isNextPageLoading, data } = this.state
+
+		// Only load 1 page of items at a time.
+		// Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
+		const loadMoreItems = isNextPageLoading ? () => {} : this.loadNextPage
+
+		const LoadingWithObserver = this.LoadingWithObserver
+
 		// @TODO Clone stories node & put in here; stories appear after 8th post usually, tag type div
-		return this.state.data.map(v =>
-			v.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={v.node} key={v.node.shortcode} />
+		return (
+			<>
+				{data.map(v => (v.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={v.node} key={v.node.shortcode} />))}
+				<LoadingWithObserver onVisible={loadMoreItems} />
+			</>
 		)
 	}
 }
