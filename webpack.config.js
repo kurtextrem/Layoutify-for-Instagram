@@ -6,8 +6,7 @@ const path = require('path')
 const webpack = require('webpack')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-	.BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -46,8 +45,7 @@ const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // 
 
 const ENV = process.env.NODE_ENV || 'development'
 const isProduction = ENV === 'production'
-const STATS =
-	process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
+const STATS = process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABLE : false // @TODO: Enable for stats
 
 const html = {
 	alwaysWriteToDisk: true,
@@ -64,7 +62,7 @@ const html = {
 				useShortDoctype: false,
 		  }
 		: false,
-	ssr: (params) => {
+	ssr: params => {
 		return isProduction ? prerender('dist', params) : ''
 	},
 	template: 'index.ejs',
@@ -74,8 +72,7 @@ const html = {
 
 const plugins = [
 	new ProgressBarPlugin({
-		messageTemplate:
-			'[:bar] \u001B[32m\u001B[1m:percent\u001B[22m\u001B[39m (:elapseds) \u001B[2m:msg\u001B[22m',
+		messageTemplate: '[:bar] \u001B[32m\u001B[1m:percent\u001B[22m\u001B[39m (:elapseds) \u001B[2m:msg\u001B[22m',
 		progressOptions: {
 			clear: true,
 			complete: '=',
@@ -210,14 +207,8 @@ if (isProduction) {
 			app.use(async (context, next) => {
 				await next()
 				context.set('Access-Control-Allow-Origin', '*')
-				context.set(
-					'Access-Control-Allow-Methods',
-					'GET, POST, PUT, DELETE, PATCH, OPTIONS'
-				)
-				context.set(
-					'Access-Control-Allow-Headers',
-					'X-Requested-With, content-type, Authorization'
-				)
+				context.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+				context.set('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization')
 			}),
 		port: 8080,
 		static: path.join(__dirname, 'dist'),
@@ -256,27 +247,23 @@ const first = {
 
 	devServer: undefined,
 
-	devtool: isProduction
-		? false /*'source-map'*/ /* 'cheap-module-source-map'*/
-		: 'inline-module-source-map',
+	devtool: isProduction ? false /* 'cheap-module-source-map'*/ /*'source-map'*/ : 'inline-module-source-map',
 
 	entry: {
-		app: isProduction
-			? './index.js'
-			: ['./index.js', 'webpack-plugin-serve/client'],
+		app: isProduction ? './index.js' : ['./index.js', 'webpack-plugin-serve/client'],
 		feed: './feed.js',
 	},
 
 	mode: isProduction ? 'production' : 'development',
 
 	module: {
-		noParse: isProduction
+		/*noParse: isProduction
 			? undefined
 			: [
 					// faster HMR
 					//new RegExp(nerv),
-					new RegExp('proptypes/disabled'),
-			  ],
+					//new RegExp('.min.js'),
+			  ],*/
 		rules: [
 			{
 				exclude: /node_modules/,
@@ -339,12 +326,8 @@ const first = {
 							chunks: 'all',
 							enforce: true,
 							name: 'main',
-							test: (module) => {
-								return (
-									module.nameForCondition &&
-									/\.cs{2}$/.test(module.nameForCondition()) &&
-									module.type.startsWith('javascript')
-								)
+							test: module => {
+								return module.nameForCondition && /\.cs{2}$/.test(module.nameForCondition()) && module.type.startsWith('javascript')
 							},
 						},
 					},

@@ -70,22 +70,8 @@ main > section {
 	opacity: 0.1;
 }
 
-#ige_feed {
-	position: fixed;
-	top: 6vh;
-	bottom: 0;
-	right: 3vw;
-	left: 9px;
-	left: 1vw;
-	max-width: 100%;
-
-	padding-bottom: 10vh;
-	overflow-y: scroll;
-}
-
 /** Make the flex box layout row instead of column */
-main > section > div:not(#rcr-anchor) > div:not([class]) > div,
-#ige_feed > div {
+main > section > div:not(#rcr-anchor) > div:not([class]) > div {
 	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -94,22 +80,6 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div,
 	margin-top: 10px !important;
 	contain: layout style;
 	position: relative;
-}
-
-#ige_feed > div > div /* stories */ {
-	overflow-x: scroll;
-	max-width: 100%;
-}
-
-#ige_virtualSentry {
-	position: absolute;
-	bottom: var(--boxHeight);
-	width: 1px;
-	height: 1px;
-	--boxHeight: 400px;
-
-	contain: strict;
-	z-index: 2;
 }
 
 /**
@@ -123,8 +93,7 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div
 }
 
 /** Make boxes equal in height and width */
-.home article,
-#ige_feed article {
+.home article {
 	width: var(--boxWidth) !important;
 	min-width: var(--boxWidth) !important;
 	max-width: var(--boxWidth) !important;

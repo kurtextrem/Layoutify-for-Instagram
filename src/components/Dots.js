@@ -6,12 +6,7 @@ export default class Dots extends Component {
 	}
 
 	renderDot(i) {
-		return (
-			<span
-				key={`${i}`}
-				class={`dots--dot m-1${i === this.props.index ? ' active' : ''}`}
-			/>
-		)
+		return <span key={`${i}`} class={`ige_dots--dot ${i === this.props.index ? ' active' : ''}`} />
 	}
 
 	render() {
@@ -24,6 +19,6 @@ export default class Dots extends Component {
 			dots[i] = this.renderDot(i)
 		}
 
-		return <div class="dots d-flex justify-content-center">{dots}</div>
+		return <div class="ige_dots d-flex justify-content-center">{dots}</div>
 	}
 }

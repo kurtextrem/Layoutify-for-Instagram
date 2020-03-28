@@ -9,7 +9,7 @@ export default class PostFooter extends Component {
 	render() {
 		// const { active, btnClick, defaultClass, toggleClass, parent } = this.props
 		return (
-			<footer class="ige_footer">
+			<footer class="ige_footer px-12 mt-4">
 				<form class="X7cDz" method="POST">
 					<textarea class="ige_textarea" aria-label="Kommentar hinzufügen ..." placeholder="Kommentar hinzufügen ..." autoComplete="off" />
 					<button disabled type="submit">

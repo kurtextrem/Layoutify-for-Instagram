@@ -1,9 +1,12 @@
+import Arrow from './Arrow'
 import Dots from '../Dots'
 import bind from 'autobind-decorator'
 import { Button } from 'reactstrap'
 import { Component, h } from 'preact'
 
 export default class PostMedia extends Component {
+	static volume = 1
+
 	state = {
 		carouselIndex: 0,
 		carouselLen: 0,
@@ -27,11 +30,11 @@ export default class PostMedia extends Component {
 
 		this.setState((previousState, properties) => {
 			let newIndex = previousState.carouselIndex
-			if (e.currentTarget.classList.contains('arrow--left')) --newIndex
+			if (e.currentTarget.classList.contains('ige_carousel-btn--left')) --newIndex
 			else ++newIndex
 
-			if (newIndex < 0) newIndex = properties.carouselLen - 1
-			else if (newIndex >= properties.carouselLen) newIndex = 0
+			if (newIndex < 0) newIndex = previousState.carouselLen - 1
+			else if (newIndex >= previousState.carouselLen) newIndex = 0
 
 			return { carouselIndex: newIndex }
 		})
@@ -42,17 +45,14 @@ export default class PostMedia extends Component {
 		return false
 	}
 
-	render() {
-		const { data } = this.props
-		const { carouselIndex, carouselLen, isCarousel } = this.state
-		const media = isCarousel ? data.edge_sidecar_to_children.edges[carouselIndex] : data
+	setVolume(e) {
+		PostMedia.volume = e.target.volume
+	}
 
-		console.log(media)
-
-		let mediaElement
+	getMedia(media) {
 		if (media.is_video) {
 			// video
-			mediaElement = (
+			return (
 				<video
 					src={media.video_url}
 					poster={media.display_url}
@@ -61,34 +61,51 @@ export default class PostMedia extends Component {
 					class="img-fluid"
 					intrinsicsize={media.dimensions !== undefined ? `${media.dimensions.width}x${media.dimensions.height}` : undefined}
 					controls
-				/>
-			)
-		} else {
-			mediaElement = (
-				<img
-					src={media.display_url}
-					alt={media.accessibility_caption}
-					class="img-fluid"
-					decoding="async"
-					intrinsicsize={media.dimensions !== undefined ? `${media.dimensions.width}x${media.dimensions.height}` : undefined}
+					onVolumeChange={this.setVolume}
 				/>
 			)
 		}
 
 		return (
-			<div class={`position-relative${isCarousel ? ' post--carousel' : ''}`}>
-				{isCarousel ? (
-					<Button class="arrow arrow--left" color="link" onClick={this.handleArrowClick}>
-						<i class="material-icons">keyboard_arrow_left</i>
-					</Button>
+			<img
+				src={media.display_url}
+				alt={media.accessibility_caption}
+				class="img-fluid"
+				decoding="async"
+				intrinsicsize={media.dimensions !== undefined ? `${media.dimensions.width}x${media.dimensions.height}` : undefined}
+			/>
+		)
+	}
+
+	render() {
+		const { data } = this.props
+		const { carouselIndex, carouselLen, isCarousel } = this.state
+
+		let mediaElement
+
+		if (isCarousel) {
+			mediaElement = data.edge_sidecar_to_children.edges.map((v, i) => (
+				<div key={v.id} class={i === carouselIndex ? 'active' : ''}>
+					{this.getMedia(v.node)}
+				</div>
+			))
+		} else {
+			const media = isCarousel ? data.edge_sidecar_to_children.edges[carouselIndex].node : data
+			mediaElement = this.getMedia(media)
+		}
+
+		return (
+			<div class="p-relative">
+				<div class="img--wrapper">{mediaElement}</div>
+				{isCarousel && carouselIndex !== 0 ? (
+					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick}>
+						<Arrow direction="left" size="30" fill="gray" />
+					</button>
 				) : null}
-				<a href={`https://www.instagram.com/p/${data.shortcode}`} target="_blank" rel="noopener" class="img--wrapper">
-					{mediaElement}
-				</a>
 				{isCarousel ? (
-					<Button class="arrow arrow--right" color="link" onClick={this.handleArrowClick}>
-						<i class="material-icons">keyboard_arrow_right</i>
-					</Button>
+					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.handleArrowClick}>
+						<Arrow direction="right" size="30" fill="gray" />
+					</button>
 				) : null}
 				{isCarousel ? <Dots index={carouselIndex} len={carouselLen} /> : null}
 			</div>
@@ -98,5 +115,4 @@ export default class PostMedia extends Component {
 
 // @TODO
 // Tagged users
-// Video
 // Carousel "sidecar"

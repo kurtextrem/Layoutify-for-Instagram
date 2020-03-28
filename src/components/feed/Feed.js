@@ -12,7 +12,7 @@ class Feed extends Component {
 
 		this.claim = sessionStorage['www-claim-v2'] || localStorage['www-claim-v2'] // X-IG-WWW-Claim
 		const cookies = document.cookie.split('; ')
-		this.csrf = cookies.find(v => v.indexOf('csrftoken=') === 0)?.split('=')[1] ?? window._sharedData.config.csrf_token // x-csrftoken
+		this.csrf = cookies.find(v => v.indexOf('csrftoken=') === 0)?.split('=')[1] ?? window._sharedData?.config?.csrf_token // x-csrftoken
 		// this.appID = '936619743392459' // X-IG-App-ID  | .instagramWebDesktopFBAppId
 		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id
 		// x-requested-with: XMLHttpRequest

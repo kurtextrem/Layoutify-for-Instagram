@@ -17,15 +17,15 @@
 		e.target.remove()
 	}
 
-	scripts.forEach(v => {
-		const s = document.createElement('script')
-		s.src = chrome.extension.getURL(v)
-		document.documentElement.appendChild(s)
-		s.addEventListener('load', onload, { once: true })
-	})
-
 	const c = document.createElement('link')
 	c.href = chrome.extension.getURL('feed.css')
 	c.rel = 'stylesheet'
-	document.documentElement.appendChild(c)
+	document.body.appendChild(c)
+
+	scripts.forEach(v => {
+		const s = document.createElement('script')
+		s.src = chrome.extension.getURL(v)
+		document.body.appendChild(s)
+		s.addEventListener('load', onload, { once: true })
+	})
 })(window.document)

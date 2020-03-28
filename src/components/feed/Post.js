@@ -1,13 +1,13 @@
-//import ImgWorker from './ImgWorker'
 import Comments from './Comments'
 import Heart from './Heart'
+import PlayButton from './PlayButton'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import PostMedia from './PostMedia'
-import Save from './Save'
-import bind from 'autobind-decorator' // @todo: when handleEvent works again, remove this
+import Save from './Save' // @todo: when handleEvent works again, remove this
+import bind from 'autobind-decorator'
 import { EventComponent } from '../EventComponent'
-import { h } from 'preact'
+import { Fragment, h } from 'preact'
 
 export default class Post extends EventComponent {
 	constructor(props) {
@@ -24,6 +24,27 @@ export default class Post extends EventComponent {
 		//return false
 	}
 
+	returnLiked(edge_media_preview_like) {
+		return (
+			<>
+				♥ Gefällt{' '}
+				{edge_media_preview_like?.edges?.map(v => {
+					const username = v.node.username
+					return (
+						<>
+							<a class="" title={username} href={'/' + username + '/'}>
+								<img class="ige_picture_container ige_picture_container-small va-text-top" src={v.node.profile_pic_url} decoding="async" />{' '}
+								{username}
+							</a>
+							,{' '}
+						</>
+					)
+				})}
+				{edge_media_preview_like?.count?.toLocaleString()}
+			</>
+		)
+	}
+
 	render() {
 		const {
 			data: {
@@ -36,8 +57,10 @@ export default class Post extends EventComponent {
 				comments_disabled = true,
 				edge_media_preview_like = null,
 				edge_media_preview_comment = null,
-				viewer_has_liked: false,
-				viewer_has_saved: false
+				viewer_has_liked = false,
+				viewer_has_saved = false,
+				is_video = false,
+				video_view_count = 0,
 			},
 			data,
 		} = this.props
@@ -47,19 +70,32 @@ export default class Post extends EventComponent {
 			<article class="ige_post" id={`post_${id}`}>
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
 				<PostMedia data={data} />
-				<div class="d-flex f-row a-center px-16">
+				<div class="d-flex f-row a-center px-12 ige_actions_container">
 					<button type="button" class="ige_button">
 						<Heart width={24} height={24} fill="#262626" active={viewer_has_liked} />
 					</button>
 					<button type="button" class="ige_button">
 						<Save width={24} height={24} active={viewer_has_saved} />
 					</button>
-					<div class="ml-auto">♥ {edge_media_preview_like?.count}</div>
-				</div>
-				<div class="ige_post-content px-16">
-					<div class="ige_post-text">
-						<span>{text}</span>
+					<div class="ml-auto d-block">
+						{is_video ? (
+							<>
+								<PlayButton fill="black" /> {video_view_count.toLocaleString()}
+							</>
+						) : (
+							this.returnLiked(edge_media_preview_like)
+						)}
 					</div>
+				</div>
+				<div class="ige_post-content px-12">
+					{text !== undefined ? (
+						<div class="ige_post-text d-block">
+							<a class="" title={owner.username} href={'/' + owner.username + '/'}>
+								{owner.username}
+							</a>
+							<span class="pl-2 ige_text">{text}</span>
+						</div>
+					) : null}
 					<Comments data={edge_media_preview_comment} />
 					<PostFooter comments_disabled={comments_disabled} />
 				</div>
