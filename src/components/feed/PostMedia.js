@@ -1,8 +1,8 @@
 import Arrow from './Arrow'
 import Dots from '../Dots'
+import User from './User'
 import bind from 'autobind-decorator'
-import { Button } from 'reactstrap'
-import { Component, h } from 'preact'
+import { Component, Fragment, h } from 'preact'
 
 export default class PostMedia extends Component {
 	static volume = 1
@@ -77,6 +77,32 @@ export default class PostMedia extends Component {
 		)
 	}
 
+	toggleTaggedUsers(e) {
+		e.currentTarget.parentElement.classList.toggle('ige_show_tagged')
+	}
+
+	getTaggedUsers(edges) {
+		if (edges?.length === 0) return null
+
+		return (
+			<>
+				{edges.map(v => {
+					const node = v.node,
+						username = node.user.username
+
+					return (
+						<div class="ige_taggedUser" style={{ left: node.x * 100 + '%', top: node.y * 100 + '%' }}>
+							<a href={'/' + username + '/'}>{node.user.full_name || username}</a>
+						</div>
+					)
+				})}
+				<button type="button" class="ige_button ige_post_userIcon" onClick={this.toggleTaggedUsers}>
+					<User size="24" fill="white" />
+				</button>
+			</>
+		)
+	}
+
 	render() {
 		const { data } = this.props
 		const { carouselIndex, carouselLen, isCarousel } = this.state
@@ -87,11 +113,16 @@ export default class PostMedia extends Component {
 			mediaElement = data.edge_sidecar_to_children.edges.map((v, i) => (
 				<div key={v.id} class={i === carouselIndex ? 'active' : ''}>
 					{this.getMedia(v.node)}
+					{this.getTaggedUsers(v.node.edge_media_to_tagged_user?.edges)}
 				</div>
 			))
 		} else {
-			const media = isCarousel ? data.edge_sidecar_to_children.edges[carouselIndex].node : data
-			mediaElement = this.getMedia(media)
+			mediaElement = (
+				<div class="active">
+					{this.getMedia(data)}
+					{this.getTaggedUsers(data.edge_media_to_tagged_user?.edges)}
+				</div>
+			)
 		}
 
 		return (
@@ -112,7 +143,3 @@ export default class PostMedia extends Component {
 		)
 	}
 }
-
-// @TODO
-// Tagged users
-// Carousel "sidecar"

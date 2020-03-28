@@ -335,3 +335,60 @@
 	position: relative;
 	top: -2px;
 }
+
+.ige_userIcon {
+}
+
+.ige_taggedUser {
+	opacity: 0;
+
+	background-color: rgb(0, 0, 0);
+	border-radius: 4px;
+	position: absolute;
+	transform: translate(-50%, 0%);
+	font-size: 14px;
+	line-height: 36px;
+	padding: 0 12px;
+	margin-top: 6px;
+
+	translate: opacity 200ms ease-out;
+}
+
+.ige_show_tagged > .ige_taggedUser {
+	opacity: 1;
+}
+
+.ige_taggedUser::before {
+	content: '';
+	display: block;
+
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+
+	border-bottom: 5px solid black;
+
+	position: absolute;
+	top: -5px;
+	left: calc(50% - 5px);
+}
+
+.ige_taggedUser > a {
+	color: white;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.ige_post_userIcon {
+	background-color: black;
+	border-radius: 50%;
+	opacity: 0.85;
+	padding: 3px;
+	width: 25px;
+	height: 25px;
+	margin: 8px 5px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}

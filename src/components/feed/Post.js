@@ -103,3 +103,5 @@ export default class Post extends EventComponent {
 		)
 	}
 }
+
+// @TODO For comments & here: verified status
