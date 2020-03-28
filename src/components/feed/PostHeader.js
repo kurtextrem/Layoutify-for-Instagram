@@ -47,7 +47,7 @@ export default class PostHeader extends Component {
 						</a>
 					) : null}
 				</div>
-				<div class="ml-auto">
+				<div class="f-1-auto text-right">
 					<a href={'/p/' + shortcode + '/'}>
 						{date !== null ? <TimeAgo date={date} minPeriod={60} title={date.toLocaleString()} /> : null}
 					</a>

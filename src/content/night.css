@@ -5,6 +5,7 @@
 :root {
 	--blue: #78909c;
 	--primary: #212121;
+	--primary-rgb: 0, 0, 0;
 	--text: #bdbdbd;
 	--light: #484848;
 	--dark: #000;
@@ -123,19 +124,7 @@ body > div > div > div > div > ul > li > button {
 	background-color: var(--primary);
 }
 
-#react-root
-> section
-> main
-> article
-> div
-> div
-> div
-> div
-> div
-> ul
-> li
-> div
-> div {
+#react-root > section > main > article > div > div > div > div > div > ul > li > div > div {
 	border: none;
 	background: var(--light);
 }
@@ -213,18 +202,7 @@ body > div > div > div > div > article > div > section {
 }
 
 /* Comments: tagged users */
-#react-root
-> section
-> main
-> div
-> div
-> article
-> div
-> div
-> ul
-> li
-> span
-> a {
+#react-root > section > main > div > div > article > div > div > ul > li > span > a {
 	color: var(--blue) !important;
 }
 

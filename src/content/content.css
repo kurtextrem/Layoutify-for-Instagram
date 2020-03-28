@@ -2,6 +2,7 @@
 	--boxWidth: 23vw;
 	--boxMarginRight: 10px;
 	--primary: white;
+	--primary-rgb: 255, 255, 255;
 }
 
 /*html,
@@ -67,7 +68,7 @@ main > section {
 }
 
 .home main > section > div:not(#rcr-anchor) > div:not([class]) > div {
-	opacity: 0.1;
+	display: none;
 }
 
 /** Make the flex box layout row instead of column */
@@ -509,11 +510,14 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	transition: transform 300ms ease-out, opacity 300ms ease-out;
 	border-top-left-radius: 4px;
 	border-bottom-left-radius: 4px;
-	background-color: var(--primary);
+	background-color: rgba(var(--primary-rgb), 0.8);
 	box-shadow: 0 0 8px 0 #bdbdbd;
-	opacity: 0.8;
 	contain: content;
 	z-index: 10;
+}
+
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
+	background-color: rgba(var(--primary-rgb), 0.8);
 }
 
 canvas {
@@ -522,7 +526,11 @@ canvas {
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover {
 	transform: translateX(0%);
-	opacity: 1;
+	background-color: var(--primary);
+}
+
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover > div {
+	background-color: var(--primary);
 }
 
 /* Remove the layer of the empty div */
@@ -578,6 +586,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-ch
 	margin: 10px 0;
 	contain: strict;
 	z-index: 2; */
+	display: none;
 }
 
 .home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) > div {

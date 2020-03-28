@@ -7,12 +7,12 @@ const Comments = props => (
 		{props.data?.edges?.map(v => {
 			const username = v.node.owner.username
 			return (
-				<div class="d-block">
+				<div class="d-block p-relative">
 					<a class="" title={username} href={'/' + username + '/'}>
 						{username}
 					</a>
 					<span class="pl-2 ige_text">{v.node.text}</span>
-					<button type="button" class="ige_button ml-auto as-center">
+					<button type="button" class="ige_button">
 						<Heart width={12} height={12} fill="#8e8e8e" active={v.node.viewer_has_liked} />
 					</button>
 				</div>

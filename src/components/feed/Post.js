@@ -27,7 +27,7 @@ export default class Post extends EventComponent {
 	returnLiked(edge_media_preview_like) {
 		return (
 			<>
-				♥ Gefällt{' '}
+				♥{' '}
 				{edge_media_preview_like?.edges?.map(v => {
 					const username = v.node.username
 					return (
@@ -46,6 +46,27 @@ export default class Post extends EventComponent {
 	}
 
 	render() {
+		/**
+		 * Unused keys:
+		 * follow_hashtag_info // 1
+		 * user.is_verified // !
+		 * attribution // !
+		 * edge_media_preview_comment.has_next_page, end_cursor // !
+		 * "gating_info": null, // !
+      "fact_check_overall_rating": null, // !
+			"fact_check_information": null, // !
+			edge_media_to_sponsor_user // !
+			viewer_has_saved_to_collection // !
+			viewer_in_photo_of_you
+			user:
+				followed_by_viewer // !
+				is_private				// !
+		 
+				requested_by_viewer
+				blocked_by_viewer
+				has_blocked_viewer
+				restricted_by_viewer
+		 */
 		const {
 			data: {
 				owner = {},
@@ -67,7 +88,7 @@ export default class Post extends EventComponent {
 		const text = edge_media_to_caption?.edges[0]?.node?.text
 
 		return (
-			<article class="ige_post" id={`post_${id}`}>
+			<article class={`ige_post ${is_video ? 'ige_post_video' : ''}`} id={`post_${id}`}>
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
 				<PostMedia data={data} />
 				<div class="d-flex f-row a-center px-12 ige_actions_container">
@@ -103,5 +124,3 @@ export default class Post extends EventComponent {
 		)
 	}
 }
-
-// @TODO For comments & here: verified status

@@ -6,7 +6,7 @@
 
 #ige_feed {
 	position: fixed;
-	top: 6vh;
+	top: 7vh;
 	bottom: 0;
 	right: 3vw;
 	left: 9px;
@@ -15,17 +15,11 @@
 
 	padding-bottom: 10vh;
 	overflow-y: scroll;
-}
 
-#ige_feed > div {
-	flex-direction: row !important;
+	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
-	width: 100%;
-	max-width: 100%;
-	margin-top: 10px !important;
 	contain: layout style;
-	position: relative;
 	display: flex;
 }
 
@@ -45,14 +39,14 @@
 	z-index: 2;
 }
 
-#ige_feed article {
-	width: var(--boxWidth) !important;
-	min-width: var(--boxWidth) !important;
-	max-width: var(--boxWidth) !important;
+.ige_post {
+	width: var(--boxWidth);
+	min-width: var(--boxWidth);
+	max-width: var(--boxWidth);
 	height: auto;
 	max-height: 70rem;
-	margin-right: var(--boxMarginRight) !important;
-	margin-bottom: 10px !important;
+	margin-right: var(--boxMarginRight);
+	margin-bottom: 10px;
 	contain: layout style;
 	z-index: 0;
 }
@@ -93,6 +87,10 @@
 	position: relative;
 }
 
+.ige_post_video {
+	z-index: 1; /* so posts around videos don't get accelerated */
+}
+
 .ige_noSpaceBetweenPosts + #ige_feed > .ige_post {
 	margin: 0;
 	border-bottom: 0;
@@ -104,11 +102,9 @@
 }
 
 .ige_header {
-	width: 100%;
 	height: 53px;
 	padding: 16px;
 	contain: strict;
-	z-index: 8;
 	border-bottom: 1px solid rgba(var(--post-in-border, 239, 239, 239), 1);
 
 	display: flex;
@@ -179,6 +175,14 @@
 	margin-left: auto;
 }
 
+.f-1-auto {
+	flex: 1 0 auto;
+}
+
+.text-right {
+	text-align: right;
+}
+
 .ige_post-content {
 	flex: 1;
 
@@ -196,6 +200,10 @@
 
 .ige_post-text {
 	grid-area: post;
+
+	overflow-wrap: break-word;
+	max-width: 100%;
+	overflow: hidden;
 }
 
 .ige_post-comments {
@@ -224,6 +232,7 @@
 	align-items: flex-start;
 	display: flex;
 	margin-left: 7px;
+	overflow: hidden;
 }
 
 .ige_username {
@@ -356,6 +365,12 @@
 
 .ige_show_tagged > .ige_taggedUser {
 	opacity: 1;
+}
+
+.ige_post-comments .ige_button {
+	position: absolute;
+	right: 0;
+	top: calc(50% - 6px);
 }
 
 .ige_taggedUser::before {
