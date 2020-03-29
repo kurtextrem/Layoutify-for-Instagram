@@ -1,4 +1,4 @@
-import { h, Fragment } from 'preact'
+import { Fragment, h } from 'preact'
 
 // @TODO: Implement paging system to prevent 1000+ posts getting rendered on page load
 // https://alligator.io/react/react-infinite-scroll/
@@ -35,7 +35,7 @@ export default function Posts(items, renderPost, categories) {
 					<a key={id} href={`#${id}`}>
 						<span class="badge badge-secondary">{c}</span>
 					</a>
-					<i class="material-icons">edit</i>
+					{/*<i class="material-icons">edit</i>*/}
 				</>
 			)
 			posts.push(

@@ -3,14 +3,30 @@ import Loading from '../Loading'
 import Post from './Post'
 import bind from 'autobind-decorator'
 import withIntersectionObserver from './withIntersectionObserver'
-import { Fragment, h } from 'preact'
+import { Fragment, createRef, h } from 'preact'
+import { shallowDiffers } from '../Utils'
+import { virtualScrollDriver } from './DynamicVirtualScroll'
 
 class Feed extends FetchComponent {
+	itemRefs = new Map()
+
+	itemSize = new Map()
+
+	itemWidth = 0
+
+	viewport = createRef()
+
+	viewportHeight = 0
+
+	viewportWidth = 0
+
+	virtualState = {}
+
 	state = {
 		cursor: '',
-		data: window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges,
 		hasNextPage: false,
 		isNextPageLoading: false,
+		items: window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges || [],
 	}
 
 	static fetchObj = {
@@ -40,6 +56,36 @@ class Feed extends FetchComponent {
 		})
 	}
 
+	componentDidUpdate() {
+		this.driver()
+	}
+
+	componentDidMount() {
+		this.viewportHeight = this.viewport.current.clientHeight
+		this.viewportWidth = this.viewport.current.clientWidth
+		this.componentDidUpdate()
+	}
+
+	@bind
+	getRenderedItemHeight(index) {
+		if (this.itemSize.has(index)) return this.itemSize.get(index)
+
+		if (this.itemRefs.has(index)) {
+			const height = this.itemRefs.get(index)?.base.getBoundingClientRect().height
+			this.itemSize.set(index, height)
+			return height
+		}
+
+		return 0
+	}
+
+	getRenderedItemWidth() {
+		if (this.itemWidth === 0) {
+			this.itemWidth = this.itemRefs.get(0)?.base.getBoundingClientRect().width
+		}
+		return this.itemWidth
+	}
+
 	@bind
 	loadNextPage() {
 		if (this.state.isNextPageLoading) return
@@ -66,18 +112,45 @@ class Feed extends FetchComponent {
 
 		this.setState((prevState, props) => ({
 			cursor: nextCursor,
-			data: prevState.data.concat(response.data.user.edge_web_feed_timeline.edges),
 			hasNextPage: nextCursor !== undefined,
 			isNextPageLoading: false,
+			items: prevState.items.concat(response.data.user.edge_web_feed_timeline.edges),
 		}))
 	}
 
 	steal() {
 		// we need to scroll on load once to get the item & steal it after
+		return null
+	}
+
+	@bind
+	renderItem(i) {
+		const current = this.state.items[i]
+		return current.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={current.node} key={current.node.shortcode} />
+	}
+
+	renderItems(start, count) {
+		const items = this.state.items,
+			arr = [],
+			len = Math.min(start + count, items.length)
+		for (let i = start; i < len; ++i) {
+			const current = items[i]
+			arr.push(
+				current.node.__typename === 'GraphStoriesInFeedItem' ? (
+					this.steal()
+				) : (
+					<Post data={current.node} key={current.node.shortcode} ref={e => void this.itemRefs.set(i, e)} />
+				)
+			)
+		}
+
+		return arr
 	}
 
 	render() {
-		const { hasNextPage, isNextPageLoading, data } = this.state
+		const { hasNextPage, isNextPageLoading, items } = this.state
+
+		console.log(this.virtualState)
 
 		// Only load 1 page of items at a time.
 		// Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
@@ -85,13 +158,70 @@ class Feed extends FetchComponent {
 
 		const LoadingWithObserver = this.LoadingWithObserver
 
+		//return <DynamicVirtualScrollExample />
+
+		//return <VirtualScrollList totalItems={data.length} renderItem={this.renderItem} minRowHeight={500} />
+
 		// @TODO Clone stories node & put in here; stories appear after 8th post usually, tag type div
-		return (
-			<>
-				{data.map(v => (v.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={v.node} key={v.node.shortcode} />))}
+		// style={{ height: this.state.targetHeight + 'px' }}
+		// @TODO Split this up in more elements which take props -> unchanged props = unneeded to render
+
+		/*return (
+			<div class="ige_virtual">
+				{items.map(v => (v.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={v.node} key={v.node.shortcode} />))}
 				{!hasNextPage && !isNextPageLoading ? <div>End of feed</div> : <LoadingWithObserver onVisible={loadMoreItems} />}
-			</>
+			</div>
+		)*/
+
+		const { topPlaceholderHeight, middleItemCount, firstMiddleItem, bottomPlaceholderHeight, targetHeight } = this.virtualState
+
+		return (
+			<div
+				ref={this.viewport}
+				onScroll={this.driver}
+				class="ige_virtual"
+				style={{ paddingBottom: bottomPlaceholderHeight + 'px', paddingTop: topPlaceholderHeight + 'px' }}>
+				<div class="ige_virtual_container" style={{ height: targetHeight + 'px' }}>
+					{middleItemCount ? this.renderItems(firstMiddleItem, middleItemCount) : this.renderItems(0, 12)}
+					{!hasNextPage && !isNextPageLoading ? <div>End of feed</div> : <LoadingWithObserver onVisible={loadMoreItems} />}
+				</div>
+			</div>
 		)
+	}
+
+	@bind
+	driver() {
+		const newState = virtualScrollDriver(
+			{
+				minItemWidth: 443,
+				minRowHeight: 500, // 500
+				scrollTop: this.viewport.current.scrollTop,
+				totalItems: this.state.items.length,
+				viewportHeight: this.viewportHeight,
+				viewportWidth: this.viewportWidth,
+			},
+			this.virtualState,
+			this.getRenderedItemHeight
+		)
+		this.setStateIfDiffers(newState)
+	}
+
+	setStateIfDiffers(state) {
+		const list = [
+			'topPlaceholderHeight',
+			'middleItemCount',
+			'firstMiddleItem',
+			'middleItemCount',
+			'bottomPlaceholderHeight',
+			'lastItemCount',
+			'targetHeight',
+		]
+		for (const key in state) {
+			if (list.indexOf(key) !== -1 && this.virtualState[key] != state[key]) {
+				this.virtualState = state
+				return this.forceUpdate()
+			}
+		}
 	}
 }
 

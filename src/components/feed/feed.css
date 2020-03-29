@@ -15,17 +15,21 @@
 }
 
 .ige_virtual {
+	/*contain: layout style;
+	padding-bottom: 7vh;*/
+	overflow-y: auto;
+	max-height: 100%;
+	height: 100%;
+	overflow-anchor: none;
+}
+
+.ige_virtual_container {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
 
 	display: flex;
-
-	contain: layout style;
-	overflow-y: auto;
-	max-height: 100%;
-
-	padding-bottom: 7vh;
+	height: 100%;
 }
 
 #ige_feed > div > div /* stories */ {

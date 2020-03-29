@@ -14,7 +14,7 @@
 
 	"content_scripts": [
 		{
-			"matches": ["*://*.instagram.com/*", "*://instagram.com/*"],
+			"matches": ["*://*.instagram.com/*"],
 			"js": ["content/InstagramAPI.js", "content/start.js", "content/main.js"],
 			"run_at": "document_idle",
 			"all_frames": false
@@ -27,16 +27,7 @@
 	"options_page": "index.html",
 	"minimum_chrome_version": "72",
 
-	"permissions": [
-		"*://*.instagram.com/*",
-		"*://instagram.com/*",
-		"storage",
-		"webRequest",
-		"webRequestBlocking",
-		"cookies",
-		"notifications",
-		"alarms"
-	],
+	"permissions": ["*://*.instagram.com/*", "storage", "webRequest", "webRequestBlocking", "cookies", "notifications", "alarms"],
 	"incognito": "split",
 	"content_security_policy": "script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
 
