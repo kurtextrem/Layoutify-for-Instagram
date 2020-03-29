@@ -810,14 +810,14 @@ footer > div > nav {
 
 /*----------  NoSpaceBetweenPosts  ----------*/
 .ige_noSpaceBetweenPosts main > section div > article,
-.ige_noSpaceBetweenPosts + div > .ige_post {
+.ige_noSpaceBetweenPosts + div .ige_post {
 	margin: 0 !important;
 	border-bottom: transparent !important;
 	border-radius: 0 !important;
 }
 
 .ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n)),
-.ige_noSpaceBetweenPosts + div > .ige_post:not(:nth-of-type(4n)) {
+.ige_noSpaceBetweenPosts + div .ige_post:not(:nth-of-type(4n)) {
 	border-right-color: transparent !important;
 }
 

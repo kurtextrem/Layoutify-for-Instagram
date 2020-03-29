@@ -250,7 +250,7 @@ const first = {
 
 	entry: {
 		app: isProduction ? './index.js' : ['./index.js', 'webpack-plugin-serve/client'],
-		feed: './feed.js',
+		feed: isProduction ? './feed.js' : ['./feed.js', 'webpack-plugin-serve/client'],
 	},
 
 	mode: isProduction ? 'production' : 'development',

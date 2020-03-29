@@ -218,7 +218,7 @@ function addExtendedButton() {
 	a.nodeValue = '' // clear content
 	a.textContent = '⋯'
 	a.title = 'Improved Layout for Instagram'
-	a.addEventListener('click', function(e) {
+	a.addEventListener('click', function (e) {
 		e.preventDefault()
 
 		// @TODO Remove this and fetch entirely on 3-dot page, as we fetch from bg already anyway
@@ -254,7 +254,7 @@ const listenerActions = {
  *
  */
 function addChromeListener() {
-	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 		if (listenerActions[request.action] !== undefined && Instagram[request.which] !== undefined) {
 			listenerActions[request.action](request)
 		}
@@ -536,8 +536,7 @@ function onNavigate() {
 function addFeedDiv() {
 	const div = document.createElement('div')
 	div.id = 'ige_feed'
-
-	document.getElementById('react-root').after(div)
+	root.after(div)
 }
 
 /**

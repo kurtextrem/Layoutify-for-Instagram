@@ -12,6 +12,15 @@
 	--secondary: #757575;
 	--secondary-light: #a4a4a4;
 	--secondary-text: #c5c5c5;
+
+	--post-border: var(--primary);
+	--post-bg: var(--primary);
+	--textarea: var(--primary);
+	--post-in-border: var(--primary);
+	--pic-bg: var(--primary);
+	--anchor-color: var(--primary);
+	--footer-color: var(--primary);
+	--submit-button-color: var(--primary);
 }
 
 /*=============================================

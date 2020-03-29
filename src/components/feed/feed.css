@@ -12,13 +12,16 @@
 	left: 9px;
 	left: 1vw;
 	max-width: 100%;
+}
 
+.ige_virtual {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
-	contain: layout style;
+
 	display: flex;
 
+	contain: layout style;
 	overflow-y: auto;
 	max-height: 100%;
 
@@ -26,15 +29,14 @@
 }
 
 #ige_feed > div > div /* stories */ {
-	overflow-x: scroll;
-	max-width: 100%;
+	/*overflow-x: scroll;
+	max-width: 100%;*/
 }
 
 .ige_post {
 	width: var(--boxWidth);
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
-	height: auto;
 	max-height: 70rem;
 	margin-right: var(--boxMarginRight);
 	margin-bottom: 10px;
@@ -51,6 +53,7 @@
 	display: grid;
 	grid-template-rows: 53px auto 40px 1fr 45px;
 
+	min-height: 500px;
 	height: 100%;
 }
 
@@ -354,6 +357,8 @@
 	margin-top: 6px;
 
 	translate: opacity 200ms ease-out;
+
+	z-index: 2;
 }
 
 .ige_show_tagged > .ige_taggedUser {
@@ -399,6 +404,8 @@
 	position: absolute;
 	bottom: 0;
 	left: 0;
+
+	z-index: 2;
 }
 
 .ball-pulse-sync > div:nth-child(1) {
