@@ -1,12 +1,20 @@
 # Changelog
 
-## Soon
+## CURRENT: 3.0.0 - 2020-03-29
 
-- Maybe: Merge watched posts and watched stories to one setting
+_Again, it has been quite some time since the latest bigger release (this excludes bug-fixes etc.)._
+
+This version brings a long-term **fix for the scrolling issue** many people had in the past (including myself). To explain: Instagram changed the way the feed works and broke my method of having multiple posts per row.
+
+The new feed is entirely written by me and even improves performance compared to Instagram. As a plus, compared to Instagrams feed, it **does not log user actions**, which is a nice **privacy bonus**!
+
+It is still beta, however. If you find any issues, or missing features, let me know (email is on 3-dot page -> About)
+
+**Thank you for all your continued support, even though I sometimes don't have much time to update the extension as I'm a full-time student. I also wish you, your family and your loved ones the best during the Corona crisis. ♥**
 
 ## [2.10.0] - 2019-08-28
 
-The latest bigger release was in December, but don't worry, in the time between I have done a lot of bug fixes. E-Mail me feedback to "kurtextrem at gmail.com" :)
+The latest bigger release was in December, but don't worry, in the time between I have done a lot of bug fixes. Feedback welcome (email is on 3-dot page -> About) :)
 
 Enjoy your summer!
 
