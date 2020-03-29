@@ -35,7 +35,7 @@ class Feed extends FetchComponent {
 		}
 
 		this.LoadingWithObserver = withIntersectionObserver(Loading, {
-			//root: document.getElementById('ige_feed'),
+			root: document.getElementById('ige_feed'),
 			rootMargin: '0px 0px 1400px 0px',
 		})
 	}

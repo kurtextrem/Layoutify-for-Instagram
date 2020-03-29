@@ -1,15 +1,17 @@
+import Comments from './Comments'
 import FetchComponent from './FetchComponent'
 import Heart from './Heart'
 import PlayButton from './PlayButton'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
-import PostMedia from './PostMedia'
-import Save from './Save' // @todo: when handleEvent works again, remove this
+import PostMedia from './PostMedia' // @todo: when handleEvent works again, remove this
+import Save from './Save'
 import bind from 'autobind-decorator'
 import { Fragment, h } from 'preact'
 
 export default class Post extends FetchComponent {
 	state = {
+		additionalComments: [],
 		hasLiked: false,
 		hasSaved: false,
 	}
@@ -83,7 +85,25 @@ export default class Post extends FetchComponent {
 		)
 	}
 
-	handleAddComment() {}
+	@bind
+	handleAddComment(response) {
+		this.setState((prevState, props) => ({
+			additionalComments: prevState.additionalComments.push({
+				node: {
+					created_at: response.created_time,
+					did_report_as_spam: false,
+					id: response.id,
+					owner: {
+						id: response.from.id,
+						profile_pic_url: response.from.profile_picture,
+						username: response.from.username,
+					},
+					text: response.text,
+					viewer_has_liked: false,
+				},
+			}),
+		}))
+	}
 
 	render() {
 		/**
@@ -125,7 +145,9 @@ export default class Post extends FetchComponent {
 		} = this.props
 		const text = edge_media_to_caption?.edges[0]?.node?.text
 
-		const { hasLiked, hasSaved } = this.state
+		const { hasLiked, hasSaved, additionalComments } = this.state
+
+		const comments = edge_media_preview_comment.edges?.concat(additionalComments)
 
 		return (
 			<article class={`ige_post ${is_video ? 'ige_post_video' : ''}`} id={`post_${id}`}>
@@ -157,8 +179,9 @@ export default class Post extends FetchComponent {
 							<span class="pl-2 ige_text">{text}</span>
 						</div>
 					) : null}
-					<PostFooter id={id} canComment={!comments_disabled} onComment={this.handleAddComment} comments={edge_media_preview_comment} />
+					<Comments data={comments} />
 				</div>
+				<PostFooter id={id} canComment={!comments_disabled} onComment={this.handleAddComment} />
 			</article>
 		)
 	}
