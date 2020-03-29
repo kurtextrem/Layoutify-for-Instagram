@@ -24,8 +24,14 @@ body,
 	overflow-y: hidden !important;
 }
 
+/** Hide regular feed */
+.home main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+	display: none;
+}
+
 body {
 	/** font-size: 15px !important; we're on desktop, okay? */
+	overflow-y: auto !important;
 }
 
 /*----------  Performance  ----------*/
@@ -65,11 +71,6 @@ main > section {
 	max-width: none !important;
 	margin: 0 !important;
 	padding: 0 !important;
-}
-
-/** Hide regular feed */
-.ige_hideOverflow .home main > section > div:not(#rcr-anchor) > div:not([class]) > div {
-	display: none;
 }
 
 /** Make the flex box layout row instead of column */
@@ -808,23 +809,16 @@ footer > div > nav {
 }
 
 /*----------  NoSpaceBetweenPosts  ----------*/
-.ige_noSpaceBetweenPosts main > section div > article {
+.ige_noSpaceBetweenPosts main > section div > article,
+.ige_noSpaceBetweenPosts + div > .ige_post {
 	margin: 0 !important;
-	border-bottom: 0 !important;
+	border-bottom: transparent !important;
 	border-radius: 0 !important;
 }
 
-.ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n)) {
-	border-right: 0 !important;
-}
-
-/* @TODO: Make this work for 2 row layout too */
-.ige_noSpaceBetweenPosts main > section div > article:not(:first-child):not(:nth-of-type(5n)) {
-	border-left-width: 0 !important;
-}
-
-.ige_noSpaceBetweenPosts main > section div > div + article {
-	border-left-width: 1px;
+.ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n)),
+.ige_noSpaceBetweenPosts + div > .ige_post:not(:nth-of-type(4n)) {
+	border-right-color: transparent !important;
 }
 
 .ige_noSpaceBetweenPosts main > section > div:not(#rcr-anchor) > div:not([class]) > div {

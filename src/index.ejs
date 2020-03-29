@@ -2,16 +2,8 @@
 <html>
 	<head>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link
-			rel="preconnect"
-			href="https://fonts.gstatic.com/"
-			crossorigin="anonymous"
-		/>
-		<link
-			rel="preload"
-			as="style"
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-		/>
+		<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="anonymous" />
+		<link rel="preload" as="style" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 		<link rel="preload" as="style" href="main.css" />
 
 		<meta charset="utf-8" />
@@ -20,14 +12,9 @@
 			<%= htmlWebpackPlugin.options.title %>
 		</title>
 		<link rel="shortcut icon" type="image/png" href="img/icon-128.png" />
-		<link rel="preload" href="app.bundle.js" as="script" />
-		<script src="app.bundle.js" async></script>
 	</head>
 	<body>
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-		/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 		<link rel="stylesheet" href="main.css" />
 		<div id="react-root">
 			<%= htmlWebpackPlugin.options.ssr({ url: '/' }) %>

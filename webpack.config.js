@@ -50,7 +50,7 @@ const STATS = process.env.STATS_ENABLE !== undefined ? !!process.env.STATS_ENABL
 const html = {
 	alwaysWriteToDisk: true,
 	cache: true,
-	inject: isProduction ? false : 'head',
+	inject: 'head',
 	minify: isProduction
 		? {
 				collapseWhitespace: true,
@@ -99,7 +99,6 @@ const plugins = [
 		{ from: 'img/*.png' },
 		{ from: 'content/*' },
 		{ from: '_locales/**' },
-		{ from: '../CHANGELOG.md' },
 	]),
 ]
 
@@ -320,16 +319,26 @@ const first = {
 						},
 					}),
 				],
+				runtimeChunk: 'single',
 				splitChunks: {
 					cacheGroups: {
+						commons: {
+							chunks: 'initial',
+							minChunks: 2,
+							name: 'commons',
+						},
 						styles: {
 							chunks: 'all',
-							enforce: true,
 							name: 'main',
 							test: module => {
 								return module.nameForCondition && /\.cs{2}$/.test(module.nameForCondition()) && module.type.startsWith('javascript')
 							},
 						},
+						/*vendor: {
+							chunks: 'all',
+							name: 'vendors',
+							test: /[/\\]node_modules[/\\]/,
+						},*/
 					},
 				},
 		  }

@@ -1,7 +1,7 @@
 /* global InstagramAPI, udomdiff */
 
 const documentElement = document.documentElement,
-	$ = (e) => {
+	$ = e => {
 		return document.querySelector(e)
 	},
 	WIDTH = window.innerWidth
@@ -26,7 +26,7 @@ injectCSS('content') // inject as early as possible
 // block middle mouse button
 window.addEventListener(
 	'click',
-	(e) => {
+	e => {
 		return e.button > 0 ? e.stopPropagation() : undefined
 	},
 	true
@@ -35,14 +35,14 @@ window.addEventListener(
 // prevent vid restart
 window.addEventListener(
 	'blur',
-	(e) => {
+	e => {
 		return e.stopPropagation()
 	},
 	true
 )
 window.addEventListener(
 	'visibilitychange',
-	(e) => {
+	e => {
 		return e.stopPropagation()
 	},
 	true
@@ -78,7 +78,7 @@ const root = document.getElementById('react-root')
 
 observe(
 	document.body,
-	(mutations) => {
+	mutations => {
 		for (const i in mutations) {
 			const mutation = mutations[i],
 				added = mutation.addedNodes
@@ -86,9 +86,7 @@ observe(
 			for (const x in added) {
 				const element = added[x]
 
-				Promise.resolve()
-					.then(handleNode.bind(undefined, element, mutation))
-					.catch(window.logAndReject)
+				Promise.resolve().then(handleNode.bind(undefined, element, mutation)).catch(window.logAndReject)
 			}
 		}
 	},
@@ -150,9 +148,7 @@ function decideClass() {
 	const pathname = location.pathname
 
 	if (
-		(hasNavigated &&
-			(location.search.indexOf('tagged') !== -1 ||
-				location.search.indexOf('taken-by=') !== -1)) ||
+		(hasNavigated && (location.search.indexOf('tagged') !== -1 || location.search.indexOf('taken-by=') !== -1)) ||
 		$('body > div > div[role="dialog"]') !== null
 	)
 		return (currentClass = '')
@@ -226,14 +222,8 @@ function addExtendedButton() {
 		e.preventDefault()
 
 		// @TODO Remove this and fetch entirely on 3-dot page, as we fetch from bg already anyway
-		Instagram.liked
-			.start()
-			.then(Instagram.liked.fetch)
-			.catch(window.logAndReject)
-		Instagram.saved
-			.start()
-			.then(Instagram.saved.fetch)
-			.catch(window.logAndReject)
+		Instagram.liked.start().then(Instagram.liked.fetch).catch(window.logAndReject)
+		Instagram.saved.start().then(Instagram.saved.fetch).catch(window.logAndReject)
 
 		chrome.runtime.sendMessage(null, { action: 'click' })
 		if (!clickedExtendedButton) window.localStorage.clickedExtendedBtn = true
@@ -244,10 +234,7 @@ function addExtendedButton() {
 
 const listenerActions = {
 	_action(request) {
-		return (
-			Instagram[request.which][request.action] !== undefined &&
-			Instagram[request.which][request.action](request.id)
-		)
+		return Instagram[request.which][request.action] !== undefined && Instagram[request.which][request.action](request.id)
 	},
 
 	add(request) {
@@ -267,15 +254,8 @@ const listenerActions = {
  *
  */
 function addChromeListener() {
-	chrome.runtime.onMessage.addListener(function(
-		request,
-		sender,
-		sendResponse
-	) {
-		if (
-			listenerActions[request.action] !== undefined &&
-			Instagram[request.which] !== undefined
-		) {
+	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+		if (listenerActions[request.action] !== undefined && Instagram[request.which] !== undefined) {
 			listenerActions[request.action](request)
 		}
 	})
@@ -286,7 +266,7 @@ const connection = navigator.connection.type,
 	fullSizeCondition = connection === 'wifi' && speed > 1.9,
 	fullsizeObserver = observe(
 		undefined,
-		(mutations) => {
+		mutations => {
 			for (const i in mutations) {
 				const mutation = mutations[i].target
 
@@ -327,7 +307,7 @@ function addControls(element) {
 	if (!element) return
 
 	element.controls = 'true'
-	if (fullSizeCondition) element.preload = 'auto'
+	if (fullSizeCondition && element.getAttribute('preload') === null) element.preload = 'auto'
 }
 
 /**
@@ -351,9 +331,7 @@ function toggleWatchlist(user) {
 	else {
 		const i = OPTIONS.watchStories.indexOf(user)
 
-		i === -1
-			? OPTIONS.watchStories.push(user)
-			: OPTIONS.watchStories.splice(i, 1)
+		i === -1 ? OPTIONS.watchStories.push(user) : OPTIONS.watchStories.splice(i, 1)
 	}
 
 	window.IG_Storage_Sync.set('options', OPTIONS).catch(window.logAndReject)
@@ -365,7 +343,7 @@ function toggleWatchlist(user) {
 function addWatched() {
 	const user = location.pathname.split('/')[1]
 
-	let $node = $('header div h1')
+	let $node = $('header div h2')
 
 	if ($node === null || $node.textContent !== user) {
 		console.warn('User Selector outdated')
@@ -393,7 +371,7 @@ function addWatched() {
 
 	$node.addEventListener(
 		'click',
-		(e) => {
+		e => {
 			const target = e.target
 
 			if (target.nodeName !== 'SECTION') return
@@ -442,10 +420,7 @@ const OPTS_MODE = {
 	},
 	notify(argument) {
 		const now = Date.now(),
-			last =
-				window.sessionStorage.ige_lastFetch !== undefined
-					? +window.sessionStorage.ige_lastFetch
-					: 0
+			last = window.sessionStorage.ige_lastFetch !== undefined ? +window.sessionStorage.ige_lastFetch : 0
 
 		if (now - last > 60000) {
 			window.sessionStorage.ige_lastFetch = now
@@ -518,9 +493,7 @@ function updateStorage(changes, area) {
  *
  */
 function loadOptions() {
-	window.IG_Storage_Sync.get('options', null)
-		.then(handleOptions)
-		.catch(window.logAndReject)
+	window.IG_Storage_Sync.get('options', null).then(handleOptions).catch(window.logAndReject)
 
 	chrome.storage.onChanged.addListener(updateStorage)
 }
@@ -579,7 +552,5 @@ function onReady() {
 	addChromeListener()
 }
 
-if (document.readyState === 'interactive' || document.readyState === 'complete')
-	onReady()
+if (document.readyState === 'interactive' || document.readyState === 'complete') onReady()
 else document.addEventListener('DOMContentLoaded', onReady)
-

@@ -307,7 +307,7 @@ chrome.runtime.onInstalled.addListener(details => {
 	if (+splitNew[0] > +splitOld[0] || +splitNew[1] > +splitOld[1])
 		// we only check major und minor, nothing else
 		chrome.tabs.create({
-			url: `${chrome.runtime.getURL('index.html')}#/changelog`,
+			url: 'https://github.com/kurtextrem/Improved-for-Instagram/blob/master/CHANGELOG.md#changelog',
 		})
 })
 

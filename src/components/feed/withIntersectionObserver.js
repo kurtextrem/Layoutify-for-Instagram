@@ -25,7 +25,7 @@ export default function withIntersectionObserver(WrappedComponent, options) {
 
 		@bind
 		onUpdate(entries) {
-			console.log(entries)
+			if (module.hot) console.log(entries)
 
 			const entry = entries[0]
 			if (entry.isIntersecting) this.onVisible()

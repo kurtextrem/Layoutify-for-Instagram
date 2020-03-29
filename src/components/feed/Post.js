@@ -152,7 +152,7 @@ export default class Post extends FetchComponent {
 		return (
 			<article class={`ige_post ${is_video ? 'ige_post_video' : ''}`} id={`post_${id}`}>
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
-				<PostMedia data={data} />
+				<PostMedia data={data} onLike={this.handleLike} />
 				<div class="d-flex f-row a-center px-12 ige_actions_container">
 					<button type="button" class="ige_button" onClick={this.handleLike}>
 						<Heart width={24} height={24} fill="#262626" active={hasLiked} />

@@ -42,7 +42,7 @@ nav,
 }
 
 .card {
-	min-width: var(--boxWidth);
+	min-width: var(--boxWidth) !important;
 	max-width: var(--boxWidth);
 	max-height: var(--maxBoxHeight);
 	margin-right: var(--boxMarginRight) !important;

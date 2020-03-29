@@ -2,10 +2,12 @@ import Arrow from './Arrow'
 import Dots from '../Dots'
 import User from './User'
 import bind from 'autobind-decorator'
-import { Component, Fragment, h } from 'preact'
+import { Component, Fragment, createRef, h } from 'preact'
 
 export default class PostMedia extends Component {
 	static volume = 1
+
+	videoRef = createRef()
 
 	state = {
 		carouselIndex: 0,
@@ -40,6 +42,10 @@ export default class PostMedia extends Component {
 		})
 	}
 
+	componentDidMount() {
+		if (this.videoRef.current !== undefined) this.videoRef.current.volume = PostMedia.volume
+	}
+
 	shouldComponentUpdate(nextProperties, nextState) {
 		if (this.state.carouselIndex !== nextState.carouselIndex) return true
 		return false
@@ -47,6 +53,10 @@ export default class PostMedia extends Component {
 
 	setVolume(e) {
 		PostMedia.volume = e.target.volume
+	}
+
+	setPreload() {
+		if (this.videoRef.current !== undefined) this.videoRef.current.preload = 'metadata'
 	}
 
 	getMedia(media) {
@@ -57,11 +67,11 @@ export default class PostMedia extends Component {
 					src={media.video_url}
 					poster={media.display_url}
 					type="video/mp4"
-					preload="metadata"
 					class="img-fluid"
 					intrinsicsize={media.dimensions !== undefined ? `${media.dimensions.width}x${media.dimensions.height}` : undefined}
 					controls
 					onVolumeChange={this.setVolume}
+					ref={this.videoRef}
 				/>
 			)
 		}
@@ -103,8 +113,14 @@ export default class PostMedia extends Component {
 		)
 	}
 
+	@bind
 	handleDblClick() {
-		// like
+		this.props.onLike()
+	}
+
+	@bind
+	handleHover() {
+		this.setPreload()
 	}
 
 	render() {
@@ -130,7 +146,7 @@ export default class PostMedia extends Component {
 		}
 
 		return (
-			<div class="p-relative" onDblClick={this.handleDblClick}>
+			<div class="p-relative" onDblClick={this.handleDblClick} onMouseEnter={this.handleHover}>
 				<div class="img--wrapper">{mediaElement}</div>
 				{isCarousel && carouselIndex !== 0 ? (
 					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick}>
