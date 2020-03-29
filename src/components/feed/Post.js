@@ -1,4 +1,4 @@
-import Comments from './Comments'
+import FetchComponent from './FetchComponent'
 import Heart from './Heart'
 import PlayButton from './PlayButton'
 import PostFooter from './PostFooter'
@@ -6,22 +6,60 @@ import PostHeader from './PostHeader'
 import PostMedia from './PostMedia'
 import Save from './Save' // @todo: when handleEvent works again, remove this
 import bind from 'autobind-decorator'
-import { EventComponent } from '../EventComponent'
 import { Fragment, h } from 'preact'
 
-export default class Post extends EventComponent {
+export default class Post extends FetchComponent {
+	state = {
+		hasLiked: false,
+		hasSaved: false,
+	}
+
 	constructor(props) {
 		super(props)
 
-		this.carouselLen = props.data.edge_sidecar_to_children?.edges?.length ?? 0
-		this.preloaded = false
-		this.timeout = 0
+		const {
+			data: { id = null, viewer_has_liked = false, viewer_has_saved = false },
+		} = this.props
+
+		this.state.hasLiked = viewer_has_liked
+		this.state.hasSaved = viewer_has_saved
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
 		return true
 		//if (this.state.active !== nextState.active) return true
 		//return false
+	}
+
+	@bind
+	handleSave() {
+		this.setState(
+			prevState => ({ hasSaved: !prevState.hasSaved }),
+			async () => {
+				const result = await this.post(this.state.hasSaved ? 'unsave' : 'save')
+				if (result.status !== 'ok') this.setState({ hasSaved: false })
+			}
+		)
+	}
+
+	@bind
+	handleLike() {
+		this.setState(
+			prevState => ({ hasLiked: !prevState.hasLiked }),
+			async () => {
+				const result = await this.post(this.state.hasLiked ? 'unlike' : 'like')
+				if (result.status !== 'ok') this.setState({ hasLiked: false })
+			}
+		)
+	}
+
+	post(action) {
+		const path = action.indexOf('like') !== -1 ? 'likes' : action.replace('un', '') // like -> likes; unsave -> save; ...
+
+		return this.fetch(`/web/${path}/${this.props.data.id}/${action}/`, {
+			headers: this.getHeaders(true),
+			method: 'POST',
+		})
 	}
 
 	returnLiked(edge_media_preview_like) {
@@ -44,6 +82,8 @@ export default class Post extends EventComponent {
 			</>
 		)
 	}
+
+	handleAddComment() {}
 
 	render() {
 		/**
@@ -73,13 +113,11 @@ export default class Post extends EventComponent {
 				taken_at_timestamp = 0,
 				location = null,
 				edge_media_to_caption = null,
-				id = 0,
+				id = null,
 				shortcode = '',
 				comments_disabled = true,
 				edge_media_preview_like = null,
 				edge_media_preview_comment = null,
-				viewer_has_liked = false,
-				viewer_has_saved = false,
 				is_video = false,
 				video_view_count = 0,
 			},
@@ -87,16 +125,18 @@ export default class Post extends EventComponent {
 		} = this.props
 		const text = edge_media_to_caption?.edges[0]?.node?.text
 
+		const { hasLiked, hasSaved } = this.state
+
 		return (
 			<article class={`ige_post ${is_video ? 'ige_post_video' : ''}`} id={`post_${id}`}>
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
 				<PostMedia data={data} />
 				<div class="d-flex f-row a-center px-12 ige_actions_container">
-					<button type="button" class="ige_button">
-						<Heart width={24} height={24} fill="#262626" active={viewer_has_liked} />
+					<button type="button" class="ige_button" onClick={this.handleLike}>
+						<Heart width={24} height={24} fill="#262626" active={hasLiked} />
 					</button>
-					<button type="button" class="ige_button">
-						<Save width={24} height={24} active={viewer_has_saved} />
+					<button type="button" class="ige_button" onClick={this.handleSave}>
+						<Save width={24} height={24} active={hasSaved} />
 					</button>
 					<div class="ml-auto d-block">
 						{is_video ? (
@@ -117,8 +157,7 @@ export default class Post extends EventComponent {
 							<span class="pl-2 ige_text">{text}</span>
 						</div>
 					) : null}
-					<Comments data={edge_media_preview_comment} />
-					<PostFooter comments_disabled={comments_disabled} />
+					<PostFooter id={id} canComment={!comments_disabled} onComment={this.handleAddComment} comments={edge_media_preview_comment} />
 				</div>
 			</article>
 		)

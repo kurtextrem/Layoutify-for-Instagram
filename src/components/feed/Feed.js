@@ -1,10 +1,11 @@
+import FetchComponent from './FetchComponent'
 import Loading from '../Loading'
 import Post from './Post'
 import bind from 'autobind-decorator'
 import withIntersectionObserver from './withIntersectionObserver'
-import { Component, Fragment, h } from 'preact'
+import { Fragment, h } from 'preact'
 
-class Feed extends Component {
+class Feed extends FetchComponent {
 	state = {
 		cursor: '',
 		data: window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges,
@@ -12,24 +13,20 @@ class Feed extends Component {
 		isNextPageLoading: false,
 	}
 
+	static fetchObj = {
+		cached_feed_item_ids: [],
+		fetch_comment_count: 4,
+		fetch_like: 3,
+		fetch_media_item_count: 12,
+		fetch_media_item_cursor: '',
+		has_stories: false, // @todo nice feature?
+		has_threaded_comments: true,
+	}
+
 	constructor() {
 		super()
 
-		this.claim = sessionStorage['www-claim-v2'] || localStorage['www-claim-v2'] // X-IG-WWW-Claim
-		const cookies = document.cookie.split('; ')
-		this.csrf = cookies.find(v => v.indexOf('csrftoken=') === 0)?.split('=')[1] ?? window._sharedData?.config?.csrf_token // x-csrftoken
-		// this.appID = '936619743392459' // X-IG-App-ID  | .instagramWebDesktopFBAppId
 		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id
-		// x-requested-with: XMLHttpRequest
-
-		this.GRAPHQL_API_OPTS = {
-			headers: new Headers({
-				'x-csrftoken': this.csrf,
-				'X-IG-App-ID': '936619743392459',
-				'X-IG-WWW-Claim': this.claim,
-				'x-requested-with': 'XMLHttpRequest',
-			}),
-		}
 
 		const nextPage = window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor
 		if (nextPage !== undefined) {
@@ -37,19 +34,9 @@ class Feed extends Component {
 			this.state.cursor = nextPage
 		}
 
-		this.fetchObj = {
-			cached_feed_item_ids: [],
-			fetch_comment_count: 4,
-			fetch_like: 3,
-			fetch_media_item_count: 12,
-			fetch_media_item_cursor: '',
-			has_stories: false, // @todo nice feature?
-			has_threaded_comments: true,
-		}
-
 		this.LoadingWithObserver = withIntersectionObserver(Loading, {
 			//root: document.getElementById('ige_feed'),
-			//rootMargin: '400px 0px 0px 0px',
+			rootMargin: '0px 0px 1400px 0px',
 		})
 	}
 
@@ -58,18 +45,22 @@ class Feed extends Component {
 		if (this.state.isNextPageLoading) return
 
 		this.setState({ isNextPageLoading: true }, () => {
-			this.fetch()
+			this.fetchNext()
 		})
 	}
 
-	async fetch() {
-		const obj = { ...this.fetchObj }
+	async fetchNext() {
+		const obj = { ...Feed.fetchObj }
 		obj.fetch_media_item_cursor = this.state.cursor
 
-		const query = await fetch('/graphql/query/?query_hash=' + this.queryID + '&variables=' + JSON.stringify(obj), this.GRAPHQL_API_OPTS)
-		const response = await query.json()
+		const response = await this.fetch('/graphql/query/?query_hash=' + this.queryID + '&variables=' + JSON.stringify(obj), {
+			headers: this.getHeaders(false),
+		})
 
-		console.log(response)
+		if (response.status !== 'ok') {
+			this.setState({ hasNextPage: false, isNextPageLoading: false })
+			return
+		}
 
 		const nextCursor = response?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor
 
@@ -98,7 +89,7 @@ class Feed extends Component {
 		return (
 			<>
 				{data.map(v => (v.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={v.node} key={v.node.shortcode} />))}
-				<LoadingWithObserver onVisible={loadMoreItems} />
+				{!hasNextPage && !isNextPageLoading ? <div>End of feed</div> : <LoadingWithObserver onVisible={loadMoreItems} />}
 			</>
 		)
 	}

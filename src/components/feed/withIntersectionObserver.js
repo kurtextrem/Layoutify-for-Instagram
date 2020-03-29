@@ -1,11 +1,13 @@
 import bind from 'autobind-decorator'
-import { Component, h } from 'preact'
+import { Component, createRef, h } from 'preact'
 
 /**
  *
  */
 export default function withIntersectionObserver(WrappedComponent, options) {
 	return class extends Component {
+		ref = createRef()
+
 		constructor(props) {
 			super(props)
 
@@ -19,12 +21,6 @@ export default function withIntersectionObserver(WrappedComponent, options) {
 			}
 
 			this.io = null
-			this.ref = null
-		}
-
-		@bind
-		setRef(ref) {
-			this.ref = ref.base // @FIXME this is a preact only hack
 		}
 
 		@bind
@@ -38,7 +34,7 @@ export default function withIntersectionObserver(WrappedComponent, options) {
 
 		componentDidMount() {
 			this.io = new IntersectionObserver(this.onUpdate, options)
-			this.io.observe(this.ref)
+			this.io.observe(this.ref.current.base) // @FIXME I think .base is a Preact only hack to access the DOM node
 		}
 
 		shouldComponentUpdate() {
@@ -51,7 +47,7 @@ export default function withIntersectionObserver(WrappedComponent, options) {
 
 		render() {
 			// eslint-disable-next-line react/jsx-props-no-spreading
-			return <WrappedComponent ref={this.setRef} {...this.props} />
+			return <WrappedComponent ref={this.ref} {...this.props} />
 		}
 	}
 }

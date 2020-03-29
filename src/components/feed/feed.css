@@ -67,6 +67,10 @@
 	padding: 8px;
 }
 
+.ige_button:disabled {
+	opacity: 0.3;
+}
+
 .ige_post {
 	border-radius: 3px;
 	border: 1px solid #dbdbdb;
@@ -175,13 +179,8 @@
 }
 
 .ige_post-content {
-	flex: 1;
-
-	display: grid;
-	grid-template:
-		'post' auto
-		'comments' 1fr
-		'comment' 56px;
+	display: flex;
+	flex-grow: 1;
 }
 
 .ige_post-content a {
@@ -190,20 +189,15 @@
 }
 
 .ige_post-text {
-	grid-area: post;
-
 	overflow-wrap: break-word;
 	max-width: 100%;
 	overflow: hidden;
 }
 
 .ige_post-comments {
-	grid-area: comments;
 }
 
 .ige_footer {
-	grid-area: comment;
-
 	border-top: 1px solid rgba(var(--post-in-border, 239, 239, 239), 1);
 	color: rgba(var(--f52, 142, 142, 142), 1);
 	font-size: 14px;
@@ -211,6 +205,9 @@
 
 	margin-left: -12px;
 	margin-right: -12px;
+
+	margin-top: auto;
+	height: 45px;
 }
 
 .px-12 {
@@ -263,12 +260,12 @@
 	padding: 0;
 }
 
-.mb-4 {
-	margin-bottom: 4px;
+.mb-8 {
+	margin-bottom: 8px;
 }
 
-.mt-4 {
-	margin-top: 4px;
+.mr-1em {
+	margin-right: 1em;
 }
 
 .d-block {
@@ -442,4 +439,14 @@
 	100% {
 		transform: translateY(0);
 	}
+}
+
+.ige_add_comment {
+	display: flex;
+	flex-grow: 1;
+	align-items: center;
+}
+
+.ige_add_comment .ige_button {
+	color: rgb(var(--submit-button-color, 0, 149, 246));
 }

@@ -67,7 +67,8 @@ main > section {
 	padding: 0 !important;
 }
 
-.home main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+/** Hide regular feed */
+.ige_hideOverflow .home main > section > div:not(#rcr-anchor) > div:not([class]) > div {
 	display: none;
 }
 
