@@ -14,6 +14,8 @@ class Feed extends FetchComponent {
 
 	itemWidth = 0
 
+	raf = null
+
 	viewport = createRef()
 
 	viewportHeight = 0
@@ -71,12 +73,16 @@ class Feed extends FetchComponent {
 		if (this.itemSize.has(index)) return this.itemSize.get(index)
 
 		if (this.itemRefs.has(index)) {
-			const height = this.itemRefs.get(index)?.base.getBoundingClientRect().height
+			const item = this.itemRefs.get(index)
+			let height
+			if (item.getBoundingClientRect !== undefined) height = item.getBoundingClientRect().height
+			else height = item?.base.getBoundingClientRect().height
+
 			this.itemSize.set(index, height)
 			return height
 		}
 
-		return 0
+		return null
 	}
 
 	getRenderedItemWidth() {
@@ -118,15 +124,17 @@ class Feed extends FetchComponent {
 		}))
 	}
 
-	steal() {
+	@bind
+	steal(index) {
 		// we need to scroll on load once to get the item & steal it after
-		return null
+		// FIXME: Remove this empty box once virtual list supports flex
+		return <div class="ige_post ige_stories_after" key={'i' + index} data-index={index} ref={e => void this.itemRefs.set(index, e)} />
 	}
 
 	@bind
 	renderItem(i) {
 		const current = this.state.items[i]
-		return current.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={current.node} key={current.node.shortcode} />
+		return current.node.__typename === 'GraphStoriesInFeedItem' ? this.steal(i) : <Post data={current.node} key={current.node.shortcode} />
 	}
 
 	renderItems(start, count) {
@@ -137,9 +145,9 @@ class Feed extends FetchComponent {
 			const current = items[i]
 			arr.push(
 				current.node.__typename === 'GraphStoriesInFeedItem' ? (
-					this.steal()
+					this.steal(i)
 				) : (
-					<Post data={current.node} key={current.node.shortcode} ref={e => void this.itemRefs.set(i, e)} />
+					<Post data={current.node} key={current.node.shortcode} ref={e => void this.itemRefs.set(i, e)} index={i} />
 				)
 			)
 		}
@@ -149,8 +157,6 @@ class Feed extends FetchComponent {
 
 	render() {
 		const { hasNextPage, isNextPageLoading, items } = this.state
-
-		console.log(this.virtualState)
 
 		// Only load 1 page of items at a time.
 		// Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
@@ -173,20 +179,43 @@ class Feed extends FetchComponent {
 			</div>
 		)*/
 
-		const { topPlaceholderHeight, middleItemCount, firstMiddleItem, bottomPlaceholderHeight, targetHeight } = this.virtualState
+		const {
+			topPlaceholderHeight,
+			itemBottomCount,
+			firstBottomItem,
+			bottomPlaceholderHeight,
+			containerHeight,
+			itemMainCount,
+			firstMainItem,
+			firstOverscanTopItem,
+			overscanTopCount,
+			firstOverscanBottomItem,
+			overscanBottomCount,
+		} = this.virtualState
 
+		// @todo use padding style={{ paddingBottom: bottomPlaceholderHeight + 'px', paddingTop: topPlaceholderHeight + 'px' }}
 		return (
-			<div
-				ref={this.viewport}
-				onScroll={this.driver}
-				class="ige_virtual"
-				style={{ paddingBottom: bottomPlaceholderHeight + 'px', paddingTop: topPlaceholderHeight + 'px' }}>
-				<div class="ige_virtual_container" style={{ height: targetHeight + 'px' }}>
-					{middleItemCount ? this.renderItems(firstMiddleItem, middleItemCount) : this.renderItems(0, 12)}
+			<div ref={this.viewport} onScroll={this.handleScroll} class="ige_virtual">
+				<div class="ige_virtual_container" data-style={`height: ${containerHeight} + 'px'`}>
+					<div style={{ contain: 'strict', height: topPlaceholderHeight, width: '100%' }} />
+					{overscanTopCount ? this.renderItems(firstOverscanTopItem, overscanTopCount) : null}
+					<div />
+					{itemMainCount ? this.renderItems(firstMainItem, itemMainCount) : this.renderItems(0, 8)}
+					<div />
+					{overscanBottomCount ? this.renderItems(firstOverscanBottomItem, overscanBottomCount) : this.renderItems(8, 4)}
+					<div style={{ contain: 'strict', height: bottomPlaceholderHeight, width: '100%' }} />
+					{itemBottomCount ? this.renderItems(firstBottomItem, itemBottomCount) : this.renderItems(items.length - 4, 4)}
 					{!hasNextPage && !isNextPageLoading ? <div>End of feed</div> : <LoadingWithObserver onVisible={loadMoreItems} />}
 				</div>
 			</div>
 		)
+	}
+
+	@bind
+	handleScroll() {
+		if (this.raf !== null) cancelAnimationFrame(this.raf)
+
+		this.raf = requestAnimationFrame(this.driver)
 	}
 
 	@bind
@@ -195,6 +224,8 @@ class Feed extends FetchComponent {
 			{
 				minItemWidth: 443,
 				minRowHeight: 500, // 500
+				overscanBottom: 1,
+				overscanTop: 1,
 				scrollTop: this.viewport.current.scrollTop,
 				totalItems: this.state.items.length,
 				viewportHeight: this.viewportHeight,
@@ -207,15 +238,7 @@ class Feed extends FetchComponent {
 	}
 
 	setStateIfDiffers(state) {
-		const list = [
-			'topPlaceholderHeight',
-			'middleItemCount',
-			'firstMiddleItem',
-			'middleItemCount',
-			'bottomPlaceholderHeight',
-			'lastItemCount',
-			'targetHeight',
-		]
+		const list = ['topPlaceholderHeight', 'MainItemCount', 'firstMainItem', 'MainItemCount', 'bottomPlaceholderHeight', 'targetHeight']
 		for (const key in state) {
 			if (list.indexOf(key) !== -1 && this.virtualState[key] != state[key]) {
 				this.virtualState = state

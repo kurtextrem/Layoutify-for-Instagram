@@ -19,6 +19,8 @@ export default class Post extends FetchComponent {
 	constructor(props) {
 		super(props)
 
+		console.log('construct', props)
+
 		const {
 			data: { id = null, viewer_has_liked = false, viewer_has_saved = false },
 		} = this.props
@@ -142,6 +144,7 @@ export default class Post extends FetchComponent {
 				video_view_count = 0,
 			},
 			data,
+			index,
 		} = this.props
 		const text = edge_media_to_caption?.edges[0]?.node?.text
 
@@ -150,7 +153,7 @@ export default class Post extends FetchComponent {
 		const comments = edge_media_preview_comment.edges?.concat(additionalComments)
 
 		return (
-			<article class={`ige_post ${is_video ? 'ige_post_video' : ''}`} id={`post_${id}`}>
+			<article class={`ige_post ${is_video ? 'ige_post_video' : ''}`} id={`post_${id}`} data-index={index}>
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
 				<PostMedia data={data} onLike={this.handleLike} />
 				<div class="d-flex f-row a-center px-12 ige_actions_container">
