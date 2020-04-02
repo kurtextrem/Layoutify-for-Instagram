@@ -34,10 +34,10 @@ export function virtualScrollDriver(props, oldState, getRenderedItemHeight, getR
 		bottomItemsTotalHeight: oldState.bottomItemsTotalHeight || 0,
 		bottomPlaceholderHeight: 0,
 		containerHeight: 0,
+		firstBottomItem: 0,
 		firstMainItem: 0,
-		firstOverscanBottomItem: 0,
-		firstOverscanTopItem: 0, // @idea: if we reach very high numbers, the first items might not be relevant anymore; so thoose more relevant numbers such as N/2 as start
-		firstTopItem: 0,
+		firstOverscanBottomItem: 0, // @idea: if we reach very high numbers, the first items might not be relevant anymore; so thoose more relevant numbers such as N/2 as start
+		firstOverscanTopItem: 0,
 		itemBottomCount: oldState.itemBottomCount || 0,
 		itemMainCount: 0,
 		overscanBottomCount: 0,
@@ -63,31 +63,32 @@ export function virtualScrollDriver(props, oldState, getRenderedItemHeight, getR
 	bottomCalc: {
 		if (bottomVisibleItems !== 0) break bottomCalc // Skip this calculation after initial rendering; we just keep initial values
 
-		let topItemSize
+		let bottomItemSize
 		while (bottomItemsHeight < viewportHeight) {
-			topItemSize = getRenderedItemHeight(totalItems - 1 - bottomVisibleItems)
-			if (topItemSize === null) {
-				console.error('No size found for the first item row, which is required.')
-				topItemSize = 0
+			bottomItemSize = getRenderedItemHeight(totalItems - 1 - bottomVisibleItems)
+			if (bottomItemSize === null) {
+				console.error('No size found for the last item row, which is required.')
+				bottomItemSize = 0
 			}
 
-			bottomItemsHeight += topItemSize < props.minRowHeight ? props.minRowHeight : topItemSize
+			bottomItemsHeight += bottomItemSize < props.minRowHeight ? props.minRowHeight : bottomItemSize
 			bottomVisibleItems += viewportMinItemXCount // put the cursor to the next row, as all items in a row are assumed to have the same height | @TODO don't do this; check if one item has height 0 and don't count it, but continue
 		}
 
-		newState.scrollHeightInItems = bottomVisibleItems / viewportMinItemXCount + (bottomItemsHeight - viewportHeight) / (topItemSize || 1)
+		newState.scrollHeightInItems = bottomVisibleItems / viewportMinItemXCount + (bottomItemsHeight - viewportHeight) / (bottomItemSize || 1)
 
 		// Calculate heights of the rest of items that fit
 		while (bottomVisibleItems / viewportMinItemXCount < viewportMinItemYCount) {
-			topItemSize = getRenderedItemHeight(totalItems - 1 - bottomVisibleItems)
-			if (topItemSize === null) topItemSize = 0
+			bottomItemSize = getRenderedItemHeight(totalItems - 1 - bottomVisibleItems)
+			if (bottomItemSize === null) bottomItemSize = 0
 
-			bottomItemsHeight += topItemSize
+			bottomItemsHeight += bottomItemSize
 			bottomVisibleItems += viewportMinItemXCount // put the cursor to the next row, as all items in a row are assumed to have the same height
 		}
 	}
 
 	newState.itemBottomCount = bottomVisibleItems
+	newState.firstBottomItem = totalItems - bottomVisibleItems
 	newState.bottomItemsTotalHeight = bottomItemsHeight
 
 	const avgRowHeight = bottomItemsHeight / (bottomVisibleItems / viewportMinItemXCount)
@@ -226,7 +227,7 @@ export function virtualScrollDriver(props, oldState, getRenderedItemHeight, getR
 		newState.firstMainItem = firstVisibleItem
 		newState.itemMainCount = bottomVisibleItems
 
-		console.log({
+		/*console.log({
 			bottomVisibleItems,
 			firstMainItem: newState.firstMainItem,
 			firstVisibleItem,
@@ -237,7 +238,7 @@ export function virtualScrollDriver(props, oldState, getRenderedItemHeight, getR
 			scrollTop,
 			viewportMinItemXCount,
 			viewportMinItemYCount,
-		})
+		})*/
 
 		let sum = 0
 		for (let i = newState.firstMainItem; i < bottomVisibleItems; ++i) {
