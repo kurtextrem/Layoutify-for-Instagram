@@ -38,7 +38,7 @@ export default class Post extends FetchComponent {
 		this.setState(
 			prevState => ({ hasSaved: !prevState.hasSaved }),
 			async () => {
-				const result = await this.post(this.state.hasSaved ? 'unsave' : 'save')
+				const result = await this.post(this.state.hasSaved ? 'save' : 'unsave')
 				if (result.status !== 'ok') this.setState({ hasSaved: false })
 			}
 		)
@@ -49,7 +49,7 @@ export default class Post extends FetchComponent {
 		this.setState(
 			prevState => ({ hasLiked: !prevState.hasLiked }),
 			async () => {
-				const result = await this.post(this.state.hasLiked ? 'unlike' : 'like')
+				const result = await this.post(this.state.hasLiked ? 'like' : 'unlike')
 				if (result.status !== 'ok') this.setState({ hasLiked: false })
 			}
 		)
