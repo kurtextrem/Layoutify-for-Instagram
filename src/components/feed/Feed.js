@@ -38,7 +38,7 @@ class Feed extends FetchComponent {
 
 		this.LoadingWithObserver = withIntersectionObserver(Loading, {
 			root: document.getElementById('ige_virtual'),
-			rootMargin: '0px 0px 1400px 0px',
+			rootMargin: '0px 0px 800px 0px',
 		})
 	}
 
@@ -83,7 +83,8 @@ class Feed extends FetchComponent {
 	steal(index) {
 		// we need to scroll on load once to get the item & steal it after
 		// FIXME: Remove this empty box once virtual list supports flex
-		return <div className="ige_post ige_stories_after" key={'i' + index} data-index={index} />
+		//return <div className="ige_post ige_stories_after" key={'i' + index} data-index={index} />
+		return null
 	}
 
 	@bind
@@ -110,7 +111,7 @@ class Feed extends FetchComponent {
 
 		// Only load 1 page of items at a time.
 		// Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
-		const loadMoreItems = isNextPageLoading ? () => {} : this.loadNextPage
+		const loadMoreItems = isNextPageLoading ? () => {} : () => this.loadNextPage(true)
 		const LoadingWithObserver = this.LoadingWithObserver
 
 		// @TODO Clone stories node & put in here; stories appear after 8th post usually, tag type div
