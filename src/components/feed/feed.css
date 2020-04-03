@@ -12,15 +12,17 @@
 	left: 9px;
 	left: 1vw;
 	max-width: 100%;
+
+	contain: strict;
 }
 
 .ige_virtual {
-	/*contain: layout style;
-	padding-bottom: 7vh;*/
-	overflow-y: auto;
+	overflow-y: scroll;
 	max-height: 100%;
 	height: 100%;
 	overflow-anchor: none;
+
+	contain: strict;
 }
 
 .ige_virtual_container {
@@ -29,7 +31,29 @@
 	justify-content: center;
 
 	display: flex;
-	height: 100%;
+	/*height: 100%;*/
+
+	/*contain: size style;*/
+	contain: style;
+}
+
+.sentinel-top,
+.sentinel-bottom {
+	width: 100%; /* 1px */
+	height: 1px;
+	contain: strict;
+	display: block;
+	position: absolute;
+	left: 0;
+	background-color: red;
+}
+
+.sentinel-top {
+	top: 0;
+}
+
+.sentinel-bottom {
+	bottom: 0;
 }
 
 #ige_feed > div > div /* stories */ {
@@ -57,8 +81,7 @@
 	display: grid;
 	grid-template-rows: 53px auto 40px 1fr 45px;
 
-	min-height: 500px;
-	height: 100%;
+	height: auto; /* 100% */
 }
 
 .ige_textarea {
@@ -465,4 +488,44 @@
 
 .ige_add_comment .ige_button {
 	color: rgb(var(--submit-button-color, 0, 149, 246));
+}
+
+/*=============================================
+								Mac OS Scrollbar
+=============================================*/
+::-webkit-scrollbar {
+	width: 9px;
+	border-radius: 100px;
+	background-color: rgba(0, 0, 0, 0);
+	contain: strict;
+	/*transition: background-color 1s linear;*/
+}
+
+::-webkit-scrollbar:horizontal {
+	height: 9px;
+}
+
+/* hover effect for both scrollbar area, and scrollbar 'thumb' */
+::-webkit-scrollbar:hover {
+	background-color: rgba(0, 0, 0, 0.07);
+}
+
+/* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+::-webkit-scrollbar-thumb {
+	/*transition: background-color 1s linear;*/
+}
+
+::-webkit-scrollbar-thumb:vertical,
+::-webkit-scrollbar-thumb:horizontal {
+	min-height: 30px;
+	border: 2px solid rgba(0, 0, 0, 0);
+	border-radius: 100px;
+	background-color: #afafaf;
+	background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:vertical:active,
+::-webkit-scrollbar-thumb:horizontal:active {
+	border-radius: 100px;
+	background-color: #727272; /* Some darker color when you click it */
 }

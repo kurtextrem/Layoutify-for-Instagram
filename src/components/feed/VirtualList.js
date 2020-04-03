@@ -12,7 +12,6 @@ const useIntersect = ({ root = null, rootMargin = '', threshold = 0 } = {}) => {
 			if (root.current === null) return // desired root isn't there yet
 			if (observer.current !== null) observer.current.disconnect()
 
-			console.log(root)
 			observer.current = new IntersectionObserver(
 				e => {
 					console.log(e)
@@ -51,6 +50,8 @@ const useIntersect = ({ root = null, rootMargin = '', threshold = 0 } = {}) => {
 function useRefCallback(cb) {
 	const ref = useRef(null)
 	const setRef = useCallback(node => {
+		if (node === null) return
+
 		if (ref.current) {
 			// @TODO Make sure to cleanup any events/references added to the last instance
 		}
@@ -70,11 +71,11 @@ function useRefCallback(cb) {
  */
 const VirtualScroll = ({ itemCount, className, renderItems }) => {
 	const scrollRef = useRef()
-	const [entries, observeNode] = useIntersect({ root: scrollRef })
+	const [entries, observeNode] = useIntersect({ root: scrollRef, rootMargin: '0px 0px 400px 0px' })
 	//const y1TopValues = useRef(new Map())
-	const offsetY1 = useState(0)
-	const offsetY2 = useState(0)
-	const offsetY3 = useState(0)
+	const offsetY1 = useRef(0)
+	const offsetY2 = useRef(0)
+	const offsetY3 = useRef(0)
 	const scrollCount1 = useRef(0)
 	const scrollCount2 = useRef(0)
 	const scrollCount3 = useRef(0)
@@ -112,6 +113,7 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 		},
 	})
 
+	const scrollTop = scrollRef.current ? scrollRef.current.scrollTop : 0
 	const sentinelState = sentinelStateRef.current
 	useMemo(() => {
 		for (const nodeName in sentinelState) {
@@ -120,23 +122,22 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 				if (entry.target === node.ref.current) node.entry = entry
 			}
 		}
-	}, entries)
+	}, [entries])
 
 	const sentinelTop1Entry = sentinelState.sentinelTop1.entry
 	const sentinelTop2Entry = sentinelState.sentinelTop2.entry
 	const sentinelTop3Entry = sentinelState.sentinelTop3.entry
-	const sentinelBottom1Entry = sentinelState.sentinelBottom2.entry
+	const sentinelBottom1Entry = sentinelState.sentinelBottom1.entry
 	const sentinelBottom2Entry = sentinelState.sentinelBottom2.entry
 	const sentinelBottom3Entry = sentinelState.sentinelBottom3.entry
 
-	const initial = useRef(1)
-
+	// scroll down
 	useMemo(() => {
-		if (sentinelBottom1Entry.isIntersecting && initial.current === 0) {
+		if (sentinelBottom1Entry.isIntersecting) {
 			console.log('Append 2 to 1', sentinelState)
 
-			offsetY2.current = sentinelBottom1Entry.boundingClientRect.bottom - sentinelBottom1Entry.boundingClientRect.top
-			++scrollCount2.current
+			offsetY2.current = sentinelBottom1Entry.boundingClientRect.bottom - sentinelBottom1Entry.rootBounds.top + scrollTop
+			scrollCount2.current = scrollCount1.current + 1
 		}
 	}, [sentinelBottom1Entry.isIntersecting])
 
@@ -144,8 +145,8 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 		if (sentinelBottom2Entry.isIntersecting) {
 			console.log('Append 3 to 2', sentinelState)
 
-			offsetY3.current = sentinelBottom2Entry.boundingClientRect.bottom - sentinelBottom2Entry.rootBounds.top
-			++scrollCount3.current
+			offsetY3.current = sentinelBottom2Entry.boundingClientRect.bottom - sentinelBottom2Entry.rootBounds.top + scrollTop
+			scrollCount3.current = scrollCount2.current + 1
 		}
 	}, [sentinelBottom2Entry.isIntersecting])
 
@@ -153,18 +154,19 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 		if (sentinelBottom3Entry.isIntersecting) {
 			console.log('Append 1 to 3', sentinelState)
 
-			offsetY1.current = sentinelBottom3Entry.boundingClientRect.bottom - sentinelBottom3Entry.rootBounds.top
-			++scrollCount1.current
+			offsetY1.current = sentinelBottom3Entry.boundingClientRect.bottom - sentinelBottom3Entry.rootBounds.top + scrollTop
+			scrollCount1.current = scrollCount3.current + 1
 		}
 	}, [sentinelBottom3Entry.isIntersecting])
 
+	// scroll up
 	useMemo(() => {
 		if (sentinelTop1Entry.isIntersecting) {
 			console.log('Pre block 3 to 1', sentinelState)
 
 			--scrollCount3.current
 			if (scrollCount3.current < 0) scrollCount3.current = 0
-			offsetY3.current = sentinelTop1Entry.boundingClientRect.top - sentinelTop1Entry.boundingClientRect.top
+			offsetY3.current = offsetY1 + sentinelTop1Entry.boundingClientRect.top - sentinelTop1Entry.rootBounds.top
 		}
 	}, [sentinelTop1Entry.isIntersecting])
 
@@ -174,7 +176,7 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 
 			--scrollCount1.current
 			if (scrollCount1.current < 0) scrollCount1.current = 0
-			offsetY1.current = sentinelTop2Entry.boundingClientRect.top - sentinelTop2Entry.boundingClientRect.top
+			offsetY1.current = sentinelTop2Entry.boundingClientRect.top - sentinelTop2Entry.rootBounds.top
 		}
 	}, [sentinelTop2Entry.isIntersecting])
 
@@ -184,7 +186,7 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 
 			--scrollCount2.current
 			if (scrollCount2.current < 0) scrollCount2.current = 0
-			offsetY2.current = sentinelTop3Entry.boundingClientRect.top - sentinelTop3Entry.boundingClientRect.top
+			offsetY2.current = sentinelTop3Entry.boundingClientRect.top - sentinelTop3Entry.rootBounds.top
 		}
 	}, [sentinelTop3Entry.isIntersecting])
 
@@ -195,20 +197,20 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 	const visibleChildren2 = useMemo(() => renderItems(currentScroll2Count, 1), [currentScroll2Count])
 	const visibleChildren3 = useMemo(() => (offsetY3.current > 0 ? renderItems(currentScroll3Count, 1) : null), [currentScroll3Count])
 
-	//const totalHeight = Sentinel top y + Sentinel bottom y / segments;
-	const totalHeight = useMemo(() => {
-		const block1Height =
-			(sentinelState.sentinelBottom1.entry.boundingClientRect?.top || 0) - (sentinelState.sentinelTop1.entry.boundingClientRect?.top || 0)
-		const block2Height =
-			(sentinelState.sentinelBottom2.entry.boundingClientRect?.top || 0) - (sentinelState.sentinelTop2.entry.boundingClientRect?.top || 0)
-		const block3Height =
-			offsetY3.current > 0
-				? (sentinelBottom3Entry.boundingClientRect?.top || 0) - (sentinelState.sentinelTop3.entry.boundingClientRect?.top || 0)
-				: 0
-		const totalBlockHeight = block1Height + block2Height + block3Height
+	// @TODO When over item count, stop scrolling
 
-		return (totalBlockHeight / (offsetY3.current > 0 ? 3 : 2)) * itemCount + totalBlockHeight
-	}, [itemCount, sentinelTop1Entry.isIntersecting !== undefined])
+	//const totalHeight = Sentinel top y + Sentinel bottom y / segments;
+	const block1Height =
+		offsetY1.current > 0 ? (sentinelBottom1Entry.boundingClientRect?.top || 0) - (sentinelTop1Entry.boundingClientRect?.top || 0) : 0
+	const block2Height = (sentinelBottom2Entry.boundingClientRect?.top || 0) - (sentinelTop2Entry.boundingClientRect?.top || 0)
+	const block3Height =
+		offsetY1.current > 0 ? (sentinelBottom3Entry.boundingClientRect?.top || 0) - (sentinelTop3Entry.boundingClientRect?.top || 0) : 0
+	const totalBlockHeight = block1Height + block2Height + block3Height
+
+	const totalHeight =
+		(totalBlockHeight / (offsetY3.current > 0 ? 3 : offsetY1.current > 0 ? 2 : 1)) *
+			(itemCount - (block1Height > 0 ? 1 : 0) - 1 - (block3Height > 0 ? 1 : 0)) +
+		totalBlockHeight
 
 	//only change this every x ms, or only when it gets higher; or use dummy element + contain strict; test later
 
@@ -219,13 +221,13 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 
 	// @TODO: Render 1st block after 3rd block on initial render
 	return (
-		<div style={{ overflowY: 'scroll', willChange: 'scroll-position' }} className={className}>
+		<div style={{ overflowY: 'scroll', willChange: 'scroll-position' }} className={className} ref={scrollRef}>
 			<div
-				ref={scrollRef}
 				style={{
-					height: totalHeight > 0 ? totalHeight + 'px' : '10000px', // immer 100% und padding-bottom?
-					position: 'relative',
-					willChange: 'contents' /* unneeded? */,
+					height: '100%', // immer 100% und padding-bottom?
+					paddingBottom: totalHeight + 'px',
+					position: 'relative' /* unneeded? */,
+					willChange: 'contents',
 				}}>
 				{offsetY1.current > 0 ? (
 					<div

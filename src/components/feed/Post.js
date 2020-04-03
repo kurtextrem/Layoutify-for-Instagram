@@ -19,8 +19,6 @@ export default class Post extends FetchComponent {
 	constructor(props) {
 		super(props)
 
-		console.log('construct', props)
-
 		const {
 			data: { id = null, viewer_has_liked = false, viewer_has_saved = false },
 		} = this.props

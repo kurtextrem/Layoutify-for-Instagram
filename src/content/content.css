@@ -17,7 +17,7 @@ body,
 }
 
 #react-root:not(.home) {
-	z-index: 2;
+	z-index: 1;
 }
 
 .ige_hideOverflow {
@@ -352,7 +352,7 @@ article > div > section > span:first-child + span {
 }
 
 /** Hide useless share icon */
-article > div > section > span:first-child + span + span:not(:last-child) {
+article > div > section > span:first-child + span + button:not(:last-child) {
 	display: none;
 }
 

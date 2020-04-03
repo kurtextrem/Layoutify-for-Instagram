@@ -1,78 +1,134 @@
 import { h } from 'preact'
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
+import { memo, useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'preact/compat'
 
-// Generic hook for detecting scroll:
-const useScrollAware = () => {
-	const [scrollTop, setScrollTop] = useState(0)
-	const ref = useRef()
-	const animationFrame = useRef()
-
-	const onScroll = useCallback(e => {
-		if (animationFrame.current) {
-			cancelAnimationFrame(animationFrame.current)
-		}
-		animationFrame.current = requestAnimationFrame(() => {
-			setScrollTop(e.target.scrollTop)
-		})
+const Sentinel = ({ observer }) => {
+	const ref = useRef(null)
+	const setRef = useCallback(node => {
+		ref.current = node
 	}, [])
 
 	useEffect(() => {
-		const scrollContainer = ref.current
+		if (observer !== null && ref !== null) {
+			observer.observe(ref)
 
-		setScrollTop(scrollContainer.scrollTop)
-		scrollContainer.addEventListener('scroll', onScroll)
-		return () => scrollContainer.removeEventListener('scroll', onScroll)
-	}, [])
+			return () => observer.unobserve(ref)
+		}
+	}, [observer, ref])
 
-	return [scrollTop, ref]
+	// index === 0 -> disabled = lastChunk < 3
+
+	return <div className="sentinel-start" ref={setRef} />
+}
+
+const useIntersect = ({ root = null, rootMargin = '', threshold = 0 } = {}) => {
+	const [entries, updateEntries] = useState([])
+	const observer = useRef(null)
+	const [node, observeNode] = useReducer((prevNode, node) => {
+		if (observer.current !== null && prevNode !== null) requestIdleCallback(() => observer.current.unobserve(prevNode))
+		return node
+	}, null)
+
+	useEffect(
+		function createObserver() {
+			if (root.current === null) return // desired root isn't there yet
+			if (observer.current !== null) observer.current.disconnect()
+
+			observer.current = new IntersectionObserver(updateEntries, {
+				delay: 100,
+				root: root.current,
+				rootMargin,
+				threshold,
+				trackVisibility: false,
+			}) // updateEntries
+
+			return () => observer.current.disconnect()
+		},
+		[root, rootMargin, threshold]
+	)
+
+	useEffect(
+		function observe() {
+			const currentObserver = observer.current
+			if (currentObserver === null || node === null) return
+
+			currentObserver.observe(node)
+		},
+		[node]
+	)
+
+	return [entries, observeNode]
 }
 
 // VirtualScroll component
-const VirtualScroll = ({
-	itemCount,
-	height,
-	getChildHeight,
-	getChildWidth,
-	renderAheadAbove = 4,
-	minItemHeight,
-	minItemWidth,
-	renderAheadBelow = 4,
-	className,
-	renderItem,
-}) => {
-	const childPositions = useMemo(() => {
-		const results = [0]
-		for (let i = 1; i < itemCount; i++) {
-			results.push(results[i - 1] + getChildHeight(i - 1))
+const VirtualScroll = ({ itemCount, className, renderItems }) => {
+	const endObserver = new IntersectionObserver(endCallback, options) // just two observers
+	const endTarget = document.querySelector('.sentinel')
+	endObserver.observe(endTarget)
+
+	const startObserver = useIntersect(startCallback, options)
+	const startTarget = document.querySelector('.sentinel-start')
+	startObserver.observe(startTarget)
+
+	const chunks = useRef([
+		{
+			items: [],
+			offset: 0,
+		},
+	])
+
+	const offsets = useRef({ 1: 0 })
+	const lastChunk = useRef(1)
+	const startFlag = useRef(false)
+
+	let endCallback = function (entries, observer) {
+		if (entries[0].intersectionRatio > 0) {
+			let newChunks = { ...chunks }
+			newChunks = Object.keys(newChunks).map(function (key) {
+				return newChunks[key]
+			})
+			newChunks.push({
+				items: data.slice(lastChunk * 15, (lastChunk + 1) * 15),
+				offset: offsets[lastChunk] + document.querySelector('.sentinel').offsetTop + 1000,
+			})
+			offsets[lastChunk + 1] = offsets[lastChunk] + document.querySelector('.sentinel').offsetTop + 1000
+			if (newChunks.length > 2) {
+				newChunks.shift()
+			}
+			chunks = newChunks
+			lastChunk++
+			setTimeout(function () {
+				startObserver.observe(document.querySelector('.sentinel-start'))
+				endObserver.observe(document.querySelector('.sentinel'))
+			}, 100)
 		}
-		return results
-	}, [getChildHeight, itemCount])
+	}
 
-	const [scrollTop, ref] = useScrollAware()
-	const totalHeight = childPositions[itemCount - 1] + getChildHeight(itemCount - 1)
-
-	const firstVisibleNode = useMemo(() => findStartNode(scrollTop, childPositions, itemCount), [scrollTop, childPositions, itemCount])
-
-	const startNode = Math.max(0, firstVisibleNode - renderAheadAbove)
-
-	const lastVisibleNode = useMemo(() => findEndNode(childPositions, firstVisibleNode, itemCount, height), [
-		childPositions,
-		firstVisibleNode,
-		itemCount,
-		height,
-	])
-	const endNode = Math.min(itemCount - 1, lastVisibleNode + renderAheadBelow)
-	const visibleNodeCount = endNode - startNode + 1
-	const offsetY = childPositions[startNode]
-	// console.log(height, scrollTop, startNode, endNode);
-	const visibleChildren = useMemo(() => new Array(visibleNodeCount).fill(null).map((_, index) => renderItem(index + startNode)), [
-		startNode,
-		visibleNodeCount,
-		renderItem,
-	])
+	let startCallback = function (entries, observer) {
+		if (entries[0].intersectionRatio > 0) {
+			startFlag = true
+			let newChunks = { ...chunks }
+			newChunks = Object.keys(newChunks).map(function (key) {
+				return newChunks[key]
+			})
+			newChunks.unshift({
+				items: data.slice((lastChunk - 2 - 1) * 15, (lastChunk - 2) * 15),
+				offset: offsets['' + (lastChunk - 2)],
+			})
+			if (newChunks.length >= 2) {
+				newChunks.pop()
+				lastChunk--
+			}
+			chunks = newChunks
+			setTimeout(function () {
+				startFlag = false
+				startObserver.observe(document.querySelector('.sentinel-start'))
+				endObserver.observe(document.querySelector('.sentinel'))
+			}, 100)
+		}
+	}
 
 	return (
-		<div style={{ height, overflowY: 'scroll' }} ref={ref} class={className}>
+		<div style={{ height, overflowY: 'scroll' }} ref={ref} className={className}>
 			<div
 				style={{
 					height: totalHeight /* 100% */,
@@ -81,7 +137,7 @@ const VirtualScroll = ({
 					willChange: 'transform' /* unneeded? */,
 				}}>
 				<div
-					class={className + 'container'}
+					className={className + 'container'}
 					style={{
 						transform: `translateY(${offsetY}px)`,
 						willChange: 'transform',
@@ -91,49 +147,6 @@ const VirtualScroll = ({
 			</div>
 		</div>
 	)
-}
-
-/**
- *
- */
-function findStartNode(scrollTop, nodePositions, itemCount) {
-	let startRange = 0
-	let endRange = itemCount - 1
-	while (endRange !== startRange) {
-		// console.log(startRange, endRange);
-		const middle = Math.floor((endRange - startRange) / 2 + startRange)
-
-		if (nodePositions[middle] <= scrollTop && nodePositions[middle + 1] > scrollTop) {
-			// console.log("middle", middle);
-			return middle
-		}
-
-		if (middle === startRange) {
-			// edge case - start and end range are consecutive
-			// console.log("endRange", endRange);
-			return endRange
-		} else if (nodePositions[middle] <= scrollTop) {
-			startRange = middle
-		} else {
-			endRange = middle
-		}
-	}
-	return itemCount
-}
-
-/**
- *
- */
-function findEndNode(nodePositions, startNode, itemCount, height) {
-	let endNode
-	for (endNode = startNode; endNode < itemCount; endNode++) {
-		// console.log(nodePositions[endNode], nodePositions[startNode]);
-		if (nodePositions[endNode] > nodePositions[startNode] + height) {
-			// console.log(endNode);
-			return endNode
-		}
-	}
-	return endNode
 }
 
 export default memo(VirtualScroll)
