@@ -56,18 +56,19 @@ export default class PostMedia extends Component {
 	}
 
 	setPreload() {
-		if (this.videoRef.current !== undefined) this.videoRef.current.preload = 'metadata'
+		if (this.videoRef.current !== undefined) this.videoRef.current.preload = 'auto'
 	}
 
 	getMedia(media) {
 		if (media.is_video) {
-			// video
+			// video | @todo Once we use virtual list, use preload="metadata"
 			return (
 				<video
 					src={media.video_url}
 					poster={media.display_url}
 					type="video/mp4"
 					class="img-fluid"
+					preload="none"
 					intrinsicsize={media.dimensions !== undefined ? `${media.dimensions.width}x${media.dimensions.height}` : undefined}
 					controls
 					onVolumeChange={this.setVolume}
