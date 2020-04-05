@@ -37,6 +37,12 @@ export default class PostsContainer extends Component {
 		</div>
 	)
 
+	state = {
+		canLoadMore: true,
+		items: null,
+		timeout: 0,
+	}
+
 	constructor(properties) {
 		super(properties)
 
@@ -54,11 +60,6 @@ export default class PostsContainer extends Component {
 		window.setTimeout(() => this.setTimeout(PostsContainer.TIME_STATE.LOADING), PostsContainer.TIME_STATE.LOADING)
 	}
 
-	state = {
-		items: null,
-		timeout: 0,
-	}
-
 	setTimeout(timeout) {
 		this.setState((previousState, properties) => ({ timeout }))
 		if (timeout !== PostsContainer.TIME_STATE.ERROR)
@@ -72,7 +73,6 @@ export default class PostsContainer extends Component {
 
 		console.log('preloading', id)
 		Chrome.send('load', { which: id })
-		window.setTimeout(this.preload, this.preloadCounter * 1000)
 	}
 
 	@bind
@@ -94,12 +94,18 @@ export default class PostsContainer extends Component {
 	@bind
 	handleData(data) {
 		++this.initial
-		if (data !== null)
-			this.setState((previousState, properties) => ({
-				items: data.items,
-				//nextMaxId: data.nextMaxId,
-				timeout: previousState.timeout,
-			}))
+		if (data !== null) {
+			this.setState(
+				(previousState, properties) => ({
+					canLoadMore: data.nextMaxId !== '',
+					items: data.items,
+					timeout: previousState.timeout,
+				}),
+				() => {
+					window.setTimeout(this.preload, this.preloadCounter * 1000)
+				}
+			)
+		}
 
 		return data
 	}
@@ -175,14 +181,14 @@ export default class PostsContainer extends Component {
 
 	render() {
 		const { hasCategories } = this.props
-		const { items, timeout } = this.state
+		const { items, timeout, canLoadMore } = this.state
 
 		if (items !== null && items.length !== 0)
 			return (
 				<div class="position-relative">
 					<CardDeck class="justify-content-center">{Posts(items, this.renderPost, hasCategories)}</CardDeck>
 					<div class="text-center">
-						<Button onClick={this.handleBtnClick} disabled={false}>
+						<Button onClick={this.handleBtnClick} disabled={!canLoadMore}>
 							Load more
 						</Button>
 					</div>
