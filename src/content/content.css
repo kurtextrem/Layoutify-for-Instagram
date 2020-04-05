@@ -96,7 +96,7 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div
 }
 
 /** Make boxes equal in height and width */
-.home article {
+.home main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > article {
 	width: var(--boxWidth) !important;
 	min-width: var(--boxWidth) !important;
 	max-width: var(--boxWidth) !important;

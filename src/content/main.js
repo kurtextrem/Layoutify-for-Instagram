@@ -500,10 +500,23 @@ function loadOptions() {
 
 OPTS_MODE.rows(WIDTH < 1367 ? 2 : 4)
 
+let FEED
+/**
+ *
+ */
+function addFeedDiv() {
+	FEED = document.createElement('div')
+	FEED.id = 'ige_feed'
+	root.after(FEED)
+
+	if (document.cookie.indexOf('sessionid') === -1) div.style.display = 'none'
+}
+
 /**
  * Callback when nodes are removed/inserted.
  */
 function onChange() {
+	if (FEED && FEED.style.display === 'none' && document.cookie.indexOf('sessionid') !== -1) FEED.style.display = 'flex'
 	checkURL()
 }
 
@@ -528,15 +541,6 @@ function onNavigate() {
 			})
 		})
 	}) // double-rAF
-}
-
-/**
- *
- */
-function addFeedDiv() {
-	const div = document.createElement('div')
-	div.id = 'ige_feed'
-	root.after(div)
 }
 
 /**
