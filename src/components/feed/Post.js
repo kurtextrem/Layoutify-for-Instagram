@@ -8,6 +8,7 @@ import PostMedia from './PostMedia' // @todo: when handleEvent works again, remo
 import Save from './Save'
 import bind from 'autobind-decorator'
 import { Fragment, h } from 'preact'
+import { markAtsAndHashtags } from '../Utils'
 
 export default class Post extends FetchComponent {
 	state = {
@@ -174,10 +175,10 @@ export default class Post extends FetchComponent {
 				<div class="ige_post-content px-12">
 					{text !== undefined ? (
 						<div class="ige_post-text d-block">
-							<a class="" title={owner.username} href={'/' + owner.username + '/'}>
+							<a class="ige_username" title={owner.username} href={'/' + owner.username + '/'}>
 								{owner.username}
 							</a>
-							<span class="pl-2 ige_text">{text}</span>
+							<span class="pl-2 ige_text">{markAtsAndHashtags(text)}</span>
 						</div>
 					) : null}
 					<Comments data={comments} />

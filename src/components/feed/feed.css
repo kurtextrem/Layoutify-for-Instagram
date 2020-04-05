@@ -2,11 +2,12 @@
 	--boxWidth: 23vw;
 	--boxMarginRight: 10px;
 	--primary: white;
+	--navHeight: 54px;
 }
 
 #ige_feed {
 	position: fixed;
-	top: 7vh;
+	top: var(--navHeight);
 	bottom: 0;
 	right: 3vw;
 	left: 9px;
@@ -17,6 +18,8 @@
 }
 
 .ige_virtual {
+	padding-top: 10px;
+
 	overflow-y: scroll;
 	max-height: 100%;
 	height: 100%;
@@ -48,6 +51,29 @@
 	background-color: red;
 }
 
+.sentinel {
+	position: absolute;
+	pointer-events: none;
+	height: 1000px;
+	width: 100%;
+	visibility: hidden;
+	bottom: 0;
+	z-index: 9999;
+}
+.sentinel-start {
+	position: absolute;
+	pointer-events: none;
+	height: 1000px;
+	width: 100%;
+	visibility: hidden;
+	top: 0;
+	z-index: 9999;
+}
+.sentinel-start.disabled,
+.sentinel.disabled {
+	display: none;
+}
+
 .sentinel-top {
 	top: 0;
 }
@@ -65,7 +91,7 @@
 	width: var(--boxWidth);
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
-	max-height: 70rem;
+	max-height: calc(70vh - var(--navHeight));
 	margin-right: var(--boxMarginRight);
 	margin-bottom: 10px;
 	contain: layout style;
@@ -81,7 +107,7 @@
 	display: grid;
 	grid-template-rows: 53px auto 40px 1fr 45px;
 
-	height: auto; /* 100% */
+	height: auto;
 }
 
 .ige_textarea {
@@ -215,11 +241,6 @@
 	overflow-y: auto;
 }
 
-.ige_post-content a {
-	color: rgba(var(--anchor-color, 38, 38, 38), 1);
-	font-weight: 600;
-}
-
 .ige_post-text {
 	overflow-wrap: break-word;
 	max-width: 100%;
@@ -252,7 +273,7 @@
 }
 
 .ige_username {
-	color: rgba(var(--anchor-color, 38, 38, 38), 1);
+	color: rgba(var(--anchor-color, 38, 38, 38), 1) !important;
 	font-weight: 600;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -260,7 +281,7 @@
 }
 
 .ige_location {
-	color: rgba(var(--anchor-color, 38, 38, 38), 1);
+	color: rgba(var(--anchor-color, 38, 38, 38), 1) !important;
 	line-height: 15px;
 	font-size: 12px;
 	overflow: hidden;
@@ -477,6 +498,12 @@
 
 	100% {
 		transform: translateY(0);
+	}
+}
+
+@keyframes fadeIn {
+	100% {
+		opacity: 1;
 	}
 }
 
