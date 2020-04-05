@@ -16,8 +16,8 @@ body,
 	z-index: unset !important;
 }
 
-#react-root:not(.home) {
-	z-index: 1;
+#react-root:not(.home) + #ige_feed {
+	display: none;
 }
 
 .ige_hideOverflow {
@@ -690,6 +690,13 @@ body > div > div[role='dialog'] article,
 
 .profile main > div {
 	max-width: calc(100vw - 40%);
+}
+
+/*=============================================
+									Login
+=============================================*/
+.home main > article:only-child {
+	z-index: 1; /* put over feed */
 }
 
 /*=============================================
