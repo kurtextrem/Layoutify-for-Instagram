@@ -215,12 +215,7 @@ export function debounce(fn, delay) {
 export function markAtsAndHashtags(text, replacer) {
 	const arr = ['']
 	let prevOffset = 0
-	text.replace(/^([#@])([0-9\p{L}-]+)$/u, (match, tag, name, offset, string) => {
-		arr.push(replacer(tag, name))
-
-		return match
-	}) // edge-case: when the text is a single-line tag/hashtag
-	text.replace(/(\s)([#@])([0-9\p{L}-]+)/gu, (match, whitespace, tag, name, offset, string) => {
+	text.replace(/(^|\s)([#@])([-_\d\p{L}]+)/gu, (match, whitespace, tag, name, offset, string) => {
 		arr.push(text.slice(prevOffset, offset), whitespace, replacer(tag, name))
 		prevOffset = offset + match.length
 

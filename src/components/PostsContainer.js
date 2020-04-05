@@ -117,6 +117,7 @@ export default class PostsContainer extends Component {
 	@bind
 	handleBtnClick(event) {
 		event.target.disabled = true
+		this.preloadCounter = this.preloadCounter - 2 // so we load another page
 		this.loadData()
 
 		window.setTimeout(() => {

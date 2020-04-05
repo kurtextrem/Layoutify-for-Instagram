@@ -91,7 +91,7 @@
 	width: var(--boxWidth);
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
-	max-height: calc(70vh - var(--navHeight));
+	max-height: calc(100vh - var(--navHeight));
 	margin-right: var(--boxMarginRight);
 	margin-bottom: 10px;
 	contain: layout style;
@@ -248,6 +248,10 @@
 }
 
 .ige_post-comments {
+}
+
+.color-inherit {
+	color: inherit !important;
 }
 
 .ige_footer {

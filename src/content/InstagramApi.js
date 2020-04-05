@@ -65,7 +65,7 @@ window.IG_Storage_Sync = new Storage('sync')
  */
 function fetchFromBackground(which, path, options) {
 	return new Promise((resolve, reject) => {
-		chrome.runtime.sendMessage({ action: 'fetch', which, path, options }, text => {
+		chrome.runtime.sendMessage({ action: 'fetch', options, path, which }, text => {
 			if (text === undefined && chrome.runtime.lastError) return reject(chrome.runtime.lastError.message)
 
 			return resolve(text)
@@ -90,6 +90,7 @@ class InstagramAPI {
 		this.storeNext = this.storeNext.bind(this)
 		this.normalize = this.normalize.bind(this)
 		this.setData = this.setData.bind(this)
+		this.mergeItems = this.mergeItems.bind(this)
 		this.storeItems = this.storeItems.bind(this)
 	}
 

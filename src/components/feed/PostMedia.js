@@ -95,6 +95,8 @@ export default class PostMedia extends Component {
 	getTaggedUsers(edges) {
 		if (edges?.length === 0) return null
 
+		// FIXME translate -50% needs to be calculated: distance from left side.
+		// FIXME translate -100% needs to be calculatd: distance from bottom.
 		return (
 			<>
 				{edges.map(v => {
@@ -102,7 +104,7 @@ export default class PostMedia extends Component {
 						username = node.user.username
 
 					return (
-						<div class="ige_taggedUser" style={{ left: node.x * 100 + '%', top: node.y * 100 + '%' }}>
+						<div key={node.x + '' + node.y} class="ige_taggedUser" style={{ left: node.x * 100 + '%', top: node.y * 100 + '%', transform: `translate(${node.y > 0.15 ? '-50%' : '0'}, ${node.y > 0.85 ? '-100%' : '0'}` }}>
 							<a href={'/' + username + '/'}>{node.user.full_name || username}</a>
 						</div>
 					)
