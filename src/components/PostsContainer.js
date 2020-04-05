@@ -112,6 +112,10 @@ export default class PostsContainer extends Component {
 	handleBtnClick(event) {
 		event.target.disabled = true
 		this.loadData()
+
+		window.setTimeout(() => {
+			event.target.disabled = false
+		}, 15000) // let user retry if nothing has happened after 15 sec
 	}
 
 	addStorageListener() {
@@ -169,7 +173,6 @@ export default class PostsContainer extends Component {
 		)
 	}
 
-	// @TODO: Implement https://github.com/valdrinkoshi/virtual-list
 	render() {
 		const { hasCategories } = this.props
 		const { items, timeout } = this.state
@@ -179,7 +182,9 @@ export default class PostsContainer extends Component {
 				<div class="position-relative">
 					<CardDeck class="justify-content-center">{Posts(items, this.renderPost, hasCategories)}</CardDeck>
 					<div class="text-center">
-						<Button onClick={this.handleBtnClick}>Load more</Button>
+						<Button onClick={this.handleBtnClick} disabled={false}>
+							Load more
+						</Button>
 					</div>
 				</div>
 			)
