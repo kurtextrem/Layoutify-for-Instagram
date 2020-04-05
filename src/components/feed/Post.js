@@ -6,9 +6,11 @@ import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import PostMedia from './PostMedia' // @todo: when handleEvent works again, remove this
 import Save from './Save'
+import Text from './Text'
+import Username from './Username'
 import bind from 'autobind-decorator'
 import { Fragment, h } from 'preact'
-import { markAtsAndHashtags } from '../Utils'
+import { markAtsAndHashtags, shallowDiffers } from '../Utils'
 
 export default class Post extends FetchComponent {
 	state = {
@@ -29,9 +31,7 @@ export default class Post extends FetchComponent {
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
-		return true
-		//if (this.state.active !== nextState.active) return true
-		//return false
+		return shallowDiffers(this.props, nextProperties) || shallowDiffers(this.state, nextState)
 	}
 
 	@bind
@@ -163,22 +163,22 @@ export default class Post extends FetchComponent {
 						<Save width={24} height={24} active={hasSaved} />
 					</button>
 					<div class="ml-auto d-block">
-						{is_video ? (
-							<>
-								<PlayButton fill="black" /> {video_view_count.toLocaleString()}
-							</>
-						) : (
-							this.returnLiked(edge_media_preview_like)
-						)}
+						<a href={'/' + owner.username + '/'} class="color-inherit">
+							{is_video ? (
+								<>
+									<PlayButton fill="black" /> {video_view_count.toLocaleString()}
+								</>
+							) : (
+								this.returnLiked(edge_media_preview_like)
+							)}
+						</a>
 					</div>
 				</div>
 				<div class="ige_post-content px-12">
 					{text !== undefined ? (
 						<div class="ige_post-text d-block">
-							<a class="ige_username" title={owner.username} href={'/' + owner.username + '/'}>
-								{owner.username}
-							</a>
-							<span class="pl-2 ige_text">{markAtsAndHashtags(text)}</span>
+							<Username username={owner.username} />
+							<Text text={text} />
 						</div>
 					) : null}
 					<Comments data={comments} />

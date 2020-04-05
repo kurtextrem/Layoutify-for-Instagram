@@ -212,7 +212,22 @@ export function debounce(fn, delay) {
 /**
  *
  */
-export function markAtsAndHashtags(text) {
-	const ats = text.replace(/(\s)@([\w-]+)/g, '$1<a href="/$2/">@$2</a>')
-	return ats.replace(/(\s)#([\w-]+)/g, '$1<a href="/explore/tags/$2/">@$2</a>')
+export function markAtsAndHashtags(text, replacer) {
+	const arr = ['']
+	let prevOffset = 0
+	text.replace(/^([#@])([0-9\p{L}-]+)$/u, (match, tag, name, offset, string) => {
+		arr.push(replacer(tag, name))
+
+		return match
+	}) // edge-case: when the text is a single-line tag/hashtag
+	text.replace(/(\s)([#@])([0-9\p{L}-]+)/gu, (match, whitespace, tag, name, offset, string) => {
+		arr.push(text.slice(prevOffset, offset), whitespace, replacer(tag, name))
+		prevOffset = offset + match.length
+
+		return match
+	})
+
+	if (arr.length === 1) arr.push(text) // no matches
+
+	return arr
 }

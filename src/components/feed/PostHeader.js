@@ -1,6 +1,7 @@
 //import ImgWorker from './ImgWorker'
 import PropTypes from 'prop-types'
 import TimeAgo from 'react-timeago'
+import Username from './Username'
 import { Component, h } from 'preact'
 import { Media } from 'reactstrap'
 
@@ -38,9 +39,7 @@ export default class PostHeader extends Component {
 					</a>
 				</div>
 				<div class="ige_username_container">
-					<a class="ige_username" href={userHref} title={username}>
-						{full_name || username}
-					</a>
+					<Username username={username} name={full_name} />
 					{location !== null && location.has_public_page ? (
 						<a class="ige_location" href={'/explore/locations/' + location.id + '/' + location.slug + '/'}>
 							{location.name}

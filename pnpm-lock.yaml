@@ -14,6 +14,7 @@ dependencies:
   '@babel/plugin-proposal-optional-chaining': 7.9.0_@babel+core@7.9.0
   '@babel/plugin-proposal-pipeline-operator': 7.8.3_@babel+core@7.9.0
   '@babel/plugin-proposal-throw-expressions': 7.8.3_@babel+core@7.9.0
+  '@babel/plugin-proposal-unicode-property-regex': 7.8.8_@babel+core@7.9.0
   '@babel/plugin-syntax-dynamic-import': 7.8.3_@babel+core@7.9.0
   '@babel/plugin-syntax-import-meta': 7.8.3_@babel+core@7.9.0
   '@babel/plugin-transform-react-jsx': 7.9.4_@babel+core@7.9.0
@@ -252,6 +253,17 @@ packages:
       '@babel/core': ^7.0.0
     resolution:
       integrity: sha512-bPyujWfsHhV/ztUkwGHz/RPV1T1TDEsSZDsN42JPehndA+p1KKTh3npvTadux0ZhCrytx9tvjpWNowKby3tM6A==
+  /@babel/helper-create-regexp-features-plugin/7.8.8_@babel+core@7.9.0:
+    dependencies:
+      '@babel/core': 7.9.0
+      '@babel/helper-annotate-as-pure': 7.8.3
+      '@babel/helper-regex': 7.8.3
+      regexpu-core: 4.7.0
+    dev: false
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    resolution:
+      integrity: sha512-LYVPdwkrQEiX9+1R29Ld/wTrmQu1SSKYnuOk3g0CkcZMA1p0gsNxJFj/3gBdaJ7Cg0Fnek5z0DsMULePP7Lrqg==
   /@babel/helper-define-map/7.8.3:
     dependencies:
       '@babel/helper-function-name': 7.8.3
@@ -622,6 +634,18 @@ packages:
       '@babel/core': ^7.0.0-0
     resolution:
       integrity: sha512-1/1/rEZv2XGweRwwSkLpY+s60za9OZ1hJs4YDqFHCw0kYWYwL5IFljVY1MYBL+weT1l9pokDO2uhSTLVxzoHkQ==
+  /@babel/plugin-proposal-unicode-property-regex/7.8.8_@babel+core@7.9.0:
+    dependencies:
+      '@babel/core': 7.9.0
+      '@babel/helper-create-regexp-features-plugin': 7.8.8_@babel+core@7.9.0
+      '@babel/helper-plugin-utils': 7.8.3
+    dev: false
+    engines:
+      node: '>=4'
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    resolution:
+      integrity: sha512-EVhjVsMpbhLw9ZfHWSx2iy13Q8Z/eg8e8ccVWt23sWQK5l1UdkoLJPN5w69UA4uITGBnEZD2JOe4QOHycYKv8A==
   /@babel/plugin-syntax-async-generators/7.8.4_@babel+core@7.9.0:
     dependencies:
       '@babel/core': 7.9.0
@@ -8867,6 +8891,14 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-LGZzkgtLY79GeXLm8Dp0BVLdQlWICzBnJz/ipWUgo59qBaZ+BHtq51P2q1uVZlppMuUAT37SDk39qUbjTWB7bA==
+  /regenerate-unicode-properties/8.2.0:
+    dependencies:
+      regenerate: 1.4.0
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-F9DjY1vKLo/tPePDycuH3dn9H1OTPIkVD9Kz4LODu+F2C75mgjAJ7x/gwy6ZcSNRAAkhNlJSOHRe8k3p+K9WhA==
   /regenerate/1.4.0:
     dev: false
     resolution:
@@ -8921,6 +8953,19 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-YlVaefl8P5BnFYOITTNzDvan1ulLOiXJzCNZxduTIosN17b87h3bvG9yHMoHaRuo88H4mQ06Aodj5VtYGGGiTg==
+  /regexpu-core/4.7.0:
+    dependencies:
+      regenerate: 1.4.0
+      regenerate-unicode-properties: 8.2.0
+      regjsgen: 0.5.1
+      regjsparser: 0.6.4
+      unicode-match-property-ecmascript: 1.0.4
+      unicode-match-property-value-ecmascript: 1.2.0
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-TQ4KXRnIn6tz6tjnrXEkD/sshygKH/j5KzK86X8MkeHyZ8qst/LZ89j3X4/8HEIfHANTFIP/AbXakeRhWIl5YQ==
   /registry-auth-token/3.4.0:
     dependencies:
       rc: 1.2.8
@@ -8947,6 +8992,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-8uZvYbnfAtEm9Ab8NTb3hdLwL4g/LQzEYP7Xs27T96abJCCE2d6r3cPZPQEsLKy0vRSGVNG+/zVGtLr86HQduA==
+  /regjsparser/0.6.4:
+    dependencies:
+      jsesc: 0.5.0
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-64O87/dPDgfk8/RQqC4gkZoGyyWFIEUTTh80CU6CWuK5vkCGyekIx+oKcEIYtP/RAxSQltCZHCNu/mdd7fqlJw==
   /relateurl/0.2.7:
     dev: false
     engines:
@@ -10248,7 +10300,7 @@ packages:
   /unicode-match-property-ecmascript/1.0.4:
     dependencies:
       unicode-canonical-property-names-ecmascript: 1.0.4
-      unicode-property-aliases-ecmascript: 1.0.5
+      unicode-property-aliases-ecmascript: 1.1.0
     dev: false
     engines:
       node: '>=4'
@@ -10260,12 +10312,18 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-hDTHvaBk3RmFzvSl0UVrUmC3PuW9wKVnpoUDYH0JDkSIovzw+J5viQmeYHxVSBptubnr7PbH2e0fnpDRQnQl5g==
-  /unicode-property-aliases-ecmascript/1.0.5:
+  /unicode-match-property-value-ecmascript/1.2.0:
     dev: false
     engines:
       node: '>=4'
     resolution:
-      integrity: sha512-L5RAqCfXqAwR3RriF8pM0lU0w4Ryf/GgzONwi6KnL1taJQa7x1TCxdJnILX59WIGOwR57IVxn7Nej0fz1Ny6fw==
+      integrity: sha512-wjuQHGQVofmSJv1uVISKLE5zO2rNGzM/KCYZch/QQvez7C1hUhBIuZ701fYXExuufJFMPhv2SyL8CyoIfMLbIQ==
+  /unicode-property-aliases-ecmascript/1.1.0:
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-PqSoPh/pWetQ2phoj5RLiaqIk4kCNwoV3CI+LfGmWLKI3rE3kl1h59XpX2BjgDrmbxD9ARtQobPGU1SguCYuQg==
   /union-value/1.0.1:
     dependencies:
       arr-union: 3.1.0
@@ -11109,6 +11167,7 @@ specifiers:
   '@babel/plugin-proposal-optional-chaining': 7.9.0
   '@babel/plugin-proposal-pipeline-operator': 7.8.3
   '@babel/plugin-proposal-throw-expressions': 7.8.3
+  '@babel/plugin-proposal-unicode-property-regex': ^7.8.8
   '@babel/plugin-syntax-dynamic-import': 7.8.3
   '@babel/plugin-syntax-import-meta': 7.8.3
   '@babel/plugin-transform-react-jsx': 7.9.4

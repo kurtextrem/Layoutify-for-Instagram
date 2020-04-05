@@ -29,6 +29,7 @@ module.exports = function (api) {
 					'@babel/plugin-proposal-export-namespace-from',
 					//'@babel/plugin-proposal-numeric-separator',
 					'@babel/plugin-proposal-throw-expressions',
+					'@babel/plugin-proposal-unicode-property-regex',
 
 					// Stage 3
 					'@babel/plugin-syntax-dynamic-import',
@@ -85,6 +86,7 @@ module.exports = function (api) {
 					'@babel/plugin-proposal-export-namespace-from',
 					//'@babel/plugin-proposal-numeric-separator',
 					'@babel/plugin-proposal-throw-expressions',
+					'@babel/plugin-proposal-unicode-property-regex',
 
 					// Stage 3
 					'@babel/plugin-syntax-dynamic-import',
