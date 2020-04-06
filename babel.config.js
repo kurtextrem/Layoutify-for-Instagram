@@ -11,7 +11,14 @@ module.exports = function (api) {
 		comments: !isProduction,
 		plugins: isProduction
 			? [
-					['@babel/plugin-transform-runtime', { regenerator: false }],
+					[
+						'@babel/plugin-transform-runtime',
+						{
+							absoluteRuntime: false,
+							useESModules: true,
+							version: '^7.9.0',
+						},
+					],
 					// Stage 0
 					//require('@babel/plugin-proposal-function-bind',
 
@@ -66,6 +73,7 @@ module.exports = function (api) {
 					'babel-plugin-annotate-pure-calls',
 					'./pure-plugin.js',
 					['@babel/plugin-transform-strict-mode', { strict: true }],
+					'babel-plugin-loop-optimizer',
 					// 'emotion/babel'
 			  ]
 			: [
@@ -93,8 +101,9 @@ module.exports = function (api) {
 					'@babel/plugin-syntax-import-meta',
 					['@babel/plugin-proposal-class-properties', { loose: true }],
 					'@babel/plugin-proposal-json-strings',
+
 					['@babel/plugin-transform-react-jsx', { pragma: 'h', pragmaFrag: 'Fragment', useBuiltIns: true }],
-					'@babel/plugin-transform-react-jsx-source',
+					// '@babel/plugin-transform-react-jsx-source', not useful for preact 06/04/2020
 					'babel-plugin-transform-console-log-variable-names',
 					'babel-plugin-console-groupify',
 					['@babel/plugin-transform-strict-mode', { strict: true }],
@@ -105,19 +114,16 @@ module.exports = function (api) {
 			[
 				'@babel/preset-env',
 				{
-					bugfixes: true, // options.modules
-					exclude: [
-						'transform-regenerator', // for fast-async
-						'transform-typeof-symbol',
-					],
+					bugfixes: true,
+					exclude: ['transform-typeof-symbol'],
 					loose: true,
-					modules: false,
+					modules: 'auto',
 					shippedProposals: true,
-					targets: !isProduction
-						? {
+					targets: isProduction
+						? undefined // -> reads .browserlistrc
+						: {
 								browsers: 'unreleased Chrome versions',
-						  }
-						: undefined,
+						  },
 					useBuiltIns: false,
 				},
 				//'babel-preset-minify',

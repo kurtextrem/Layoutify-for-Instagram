@@ -33,6 +33,7 @@ dependencies:
   babel-plugin-annotate-pure-calls: 0.4.0_@babel+core@7.9.0
   babel-plugin-closure-elimination: 1.3.0
   babel-plugin-console-groupify: 0.0.9
+  babel-plugin-loop-optimizer: 1.4.1
   babel-plugin-optimize-clsx: 2.6.0_@babel+core@7.9.0
   babel-plugin-optimize-react: 0.0.4_@babel+core@7.9.0
   babel-plugin-react-local: 0.6.3
@@ -2319,6 +2320,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-o6qFkpeQEBxcqt0XYlWzAVxNCSCZdUgcR8IRlhD/8DylxjjO4foPcvTW0GGKa/cVt3rvxZ7o5ippJ+/0nvLhlQ==
+  /babel-plugin-loop-optimizer/1.4.1:
+    dev: false
+    resolution:
+      integrity: sha512-oI0NNU0MpzyRSluA7MCQ3nAj9gga8NIotQAPOt1P92mYnIRkkfczXGrolKaW6TDw0l0Glu9JF+AYlnTdLzTo2A==
   /babel-plugin-optimize-clsx/2.6.0_@babel+core@7.9.0:
     dependencies:
       '@babel/core': 7.9.0
@@ -11186,6 +11191,7 @@ specifiers:
   babel-plugin-annotate-pure-calls: 0.4.0
   babel-plugin-closure-elimination: 1.3.0
   babel-plugin-console-groupify: 0.0.9
+  babel-plugin-loop-optimizer: ^1.4.1
   babel-plugin-optimize-clsx: 2.6.0
   babel-plugin-optimize-react: 0.0.4
   babel-plugin-react-local: 0.6.3
