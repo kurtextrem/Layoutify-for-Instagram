@@ -113,6 +113,11 @@ canvas + span:focus {
 	outline: none;
 }
 
+/** IG notifications #67 */
+.home main > section > div:not(#rcr-anchor) > div[class]:first-child {
+	display: none;
+}
+
 /*=============================================
 						Slimmer Post Header
 =============================================*/
