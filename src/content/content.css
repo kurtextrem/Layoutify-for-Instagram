@@ -114,7 +114,7 @@ canvas + span:focus {
 }
 
 /** IG notifications #67 */
-.home main > section > div:not(#rcr-anchor) > div[class]:first-child {
+.home main > section > div:first-child[class]:not(#rcr-anchor) {
 	display: none;
 }
 

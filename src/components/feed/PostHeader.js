@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import TimeAgo from 'react-timeago'
 import Username from './Username'
 import { Component, h } from 'preact'
-import { Media } from 'reactstrap'
 
 export default class PostHeader extends Component {
 	constructor(properties) {
@@ -14,16 +13,14 @@ export default class PostHeader extends Component {
 		}
 	}
 
-	shouldComponentUpdate() {
-		return false // carousel?
+	shouldComponentUpdate(nextProperties, nextState) {
+		return false
 	}
 
 	render() {
 		const {
 			user: { username = '', full_name = '', profile_pic_url = '' },
-			user,
 			shortcode,
-			taken_at,
 			location,
 		} = this.props
 		const { date } = this.state
@@ -32,12 +29,10 @@ export default class PostHeader extends Component {
 
 		return (
 			<header class="ige_header px-12">
-				<div class="a-center" role="button" tabIndex="0">
+				<a class="ige_picture_container d-block" href={userHref} role="button" tabIndex={0}>
 					{/*<canvas class="CfWVH" height="42" width="42" style="position: absolute; top: -5px; left: -5px; width: 42px; height: 42px;" /> @TODO stories */}
-					<a class="ige_picture_container d-block" href={userHref}>
-						<img class="full-img" alt={username + ' Profilbild'} src={profile_pic_url} decoding="async" />
-					</a>
-				</div>
+					<img alt={username + ' Profilbild'} src={profile_pic_url} decoding="async" intrinsicsize="150x150" width="32" height="32" />
+				</a>
 				<div class="ige_username_container">
 					<Username username={username} name={full_name} />
 					{location !== null && location.has_public_page ? (

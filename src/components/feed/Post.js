@@ -10,7 +10,7 @@ import Text from './Text'
 import Username from './Username'
 import bind from 'autobind-decorator'
 import { Fragment, h } from 'preact'
-import { markAtsAndHashtags, shallowDiffers } from '../Utils'
+import { shallowDiffers } from '../Utils'
 
 export default class Post extends FetchComponent {
 	state = {
@@ -65,24 +65,18 @@ export default class Post extends FetchComponent {
 		})
 	}
 
-	returnLiked(edge_media_preview_like) {
+	returnLiked(value, index) {
 		return (
-			<>
-				♥{' '}
-				{edge_media_preview_like?.edges?.map(v => {
-					const username = v.node.username
-					return (
-						<>
-							<a class="" title={username} href={'/' + username + '/'}>
-								<img class="ige_picture_container ige_picture_container-small va-text-top" src={v.node.profile_pic_url} decoding="async" />{' '}
-								{username}
-							</a>
-							,{' '}
-						</>
-					)
-				})}
-				{edge_media_preview_like?.count?.toLocaleString()}
-			</>
+			<Username username={value.node.username} className="ige_comma" key={value.node.id}>
+				<img
+					class="ige_picture_container ige_picture_container-small va-text-top"
+					src={value.node.profile_pic_url}
+					decoding="async"
+					intrinsicsize="150x150"
+					width="20"
+					height="20"
+				/>
+			</Username>
 		)
 	}
 
@@ -145,11 +139,11 @@ export default class Post extends FetchComponent {
 			data,
 			index,
 		} = this.props
-		const text = edge_media_to_caption?.edges[0]?.node?.text
-
 		const { hasLiked, hasSaved, additionalComments } = this.state
 
+		const text = edge_media_to_caption?.edges[0]?.node?.text
 		const comments = edge_media_preview_comment.edges?.concat(additionalComments)
+		const count = is_video ? video_view_count : edge_media_preview_like?.count
 
 		return (
 			<article class={`ige_post ${is_video ? 'ige_post_video' : ''}`} id={`post_${id}`} data-index={index}>
@@ -163,14 +157,12 @@ export default class Post extends FetchComponent {
 						<Save width={24} height={24} active={hasSaved} />
 					</button>
 					<div class="ml-auto d-block">
-						<a href={'/' + owner.username + '/'} class="color-inherit">
-							{is_video ? (
-								<>
-									<PlayButton fill="black" /> {video_view_count.toLocaleString()}
-								</>
-							) : (
-								this.returnLiked(edge_media_preview_like)
-							)}
+						<a href={'/p/' + shortcode + '/'} class="color-inherit">
+							<>
+								{is_video ? '' : '♥ '}
+								{is_video ? <PlayButton fill="black" /> : edge_media_preview_like?.edges?.map(this.returnLiked)}
+								{' ' + count?.toLocaleString()}
+							</>
 						</a>
 					</div>
 				</div>

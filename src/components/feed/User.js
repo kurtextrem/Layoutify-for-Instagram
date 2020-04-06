@@ -1,4 +1,5 @@
 import { h } from 'preact'
+import { memo } from 'preact/compat'
 
 const User = props => (
 	<svg class="ige_userIcon" viewBox="0 0 20 20" width={props.size} height={props.size} stroke={props.fill}>
@@ -6,4 +7,4 @@ const User = props => (
 	</svg>
 )
 
-export default User
+export default memo(User)

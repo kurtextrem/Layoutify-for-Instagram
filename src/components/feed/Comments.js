@@ -2,15 +2,15 @@ import Heart from './Heart'
 import PropTypes from 'prop-types'
 import Text from './Text'
 import Username from './Username'
-import { Component, h } from 'preact'
-import { markAtsAndHashtags } from '../Utils'
+import { h } from 'preact'
+import { memo } from 'preact/compat'
 
 const Comments = props => (
 	<div class="ige_post-comments mb-8">
 		{props.data?.map(v => {
 			const username = v.node.owner.username
 			return (
-				<div class="d-block p-relative">
+				<div class="d-block p-relative" key={v.node.id}>
 					<div class="d-block mr-1em">
 						<Username username={username} />
 						<Text text={v.node.text} />
@@ -26,4 +26,4 @@ const Comments = props => (
 
 Comments.propTypes = {}
 
-export default Comments
+export default memo(Comments)

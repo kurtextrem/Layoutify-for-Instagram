@@ -1,4 +1,5 @@
 import { h } from 'preact'
+import { memo } from 'preact/compat'
 
 const Heart = props =>
 	props.active ? (
@@ -21,4 +22,4 @@ const Heart = props =>
 
 Heart.propTypes = {}
 
-export default Heart
+export default memo(Heart)

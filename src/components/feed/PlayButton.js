@@ -1,4 +1,5 @@
 import { h } from 'preact'
+import { memo } from 'preact/compat'
 
 const PlayButton = props => (
 	<svg class="ige_playButton" viewBox="0 0 20 20" width={props.size} height={props.size} fill={props.fill}>
@@ -8,4 +9,4 @@ const PlayButton = props => (
 
 PlayButton.propTypes = {}
 
-export default PlayButton
+export default memo(PlayButton)

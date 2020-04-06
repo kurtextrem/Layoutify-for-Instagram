@@ -47,8 +47,7 @@ export default class PostMedia extends Component {
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
-		if (this.state.carouselIndex !== nextState.carouselIndex) return true
-		return false
+		return this.state.carouselIndex !== nextState.carouselIndex
 	}
 
 	setVolume(e) {
@@ -104,7 +103,14 @@ export default class PostMedia extends Component {
 						username = node.user.username
 
 					return (
-						<div key={node.x + '' + node.y} class="ige_taggedUser" style={{ left: node.x * 100 + '%', top: node.y * 100 + '%', transform: `translate(${node.y > 0.15 ? '-50%' : '0'}, ${node.y > 0.85 ? '-100%' : '0'}` }}>
+						<div
+							key={node.x + '' + node.y}
+							class="ige_taggedUser"
+							style={{
+								left: node.x * 100 + '%',
+								top: node.y * 100 + '%',
+								transform: `translate(${node.y > 0.15 ? '-50%' : '0'}, ${node.y > 0.85 ? '-100%' : '0'}`,
+							}}>
 							<a href={'/' + username + '/'}>{node.user.full_name || username}</a>
 						</div>
 					)

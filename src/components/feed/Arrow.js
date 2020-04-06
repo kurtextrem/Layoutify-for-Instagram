@@ -1,4 +1,5 @@
 import { h } from 'preact'
+import { memo } from 'preact/compat'
 
 // Creedits http://svgicons.sparkk.fr/
 const Arrow = props =>
@@ -14,4 +15,4 @@ const Arrow = props =>
 
 Arrow.propTypes = {}
 
-export default Arrow
+export default memo(Arrow)
