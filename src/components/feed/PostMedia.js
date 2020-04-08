@@ -107,7 +107,7 @@ export default class PostMedia extends Component {
 
 					return (
 						<div
-							key={node.x + '' + node.y}
+							key={node.x + '' + node.y + '' + node.user.id}
 							class="ige_taggedUser"
 							style={{
 								left: node.x * 100 + '%',
@@ -132,7 +132,7 @@ export default class PostMedia extends Component {
 
 	@bind
 	handleHover() {
-		this.timeout = window.setTimeout(this.setPreload, 40)
+		this.timeout = window.setTimeout(this.setPreload, 75)
 	}
 
 	@bind

@@ -3,6 +3,11 @@ body {
 }
 
 /** Hide regular feed */
-#react-root:not([class]) main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+#react-root:not(.profile):not(.tv):not(.stories):not(.explore):not(.post):not(.twoFA)
+	main
+	> section
+	> div:not(#rcr-anchor)
+	> div:not([class])
+	> div {
 	display: none;
 }

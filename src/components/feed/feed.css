@@ -31,6 +31,8 @@
 	height: 100%;
 	overflow-anchor: none;
 
+	backface-visibility: hidden; /** FIXME Scroll performance traded with GPU memory -> better scroll perf */
+
 	contain: strict;
 }
 
@@ -484,6 +486,7 @@
 	border-radius: 100%;
 	background-color: #bdbdbd;
 	animation-fill-mode: both;
+	contain: strict;
 }
 
 .ball-pulse-sync {
@@ -492,6 +495,8 @@
 	width: 100%;
 	flex-direction: row;
 	justify-content: center;
+	height: 45px;
+	contain: strict;
 }
 
 /** Loading animation */

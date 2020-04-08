@@ -5,6 +5,7 @@ import Post from './Post'
 import bind from 'autobind-decorator'
 import withIntersectionObserver from './withIntersectionObserver'
 import { Fragment, h } from 'preact'
+import { shallowDiffers } from '../Utils'
 //import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
 
 class Feed extends FetchComponent {
@@ -36,6 +37,10 @@ class Feed extends FetchComponent {
 			rootMargin: '0px 0px 500px 0px',
 			trackVisibility: false,
 		})
+	}
+
+	shouldComponentUpdate(nextProperties, nextState) {
+		return shallowDiffers(this.state, nextState)
 	}
 
 	@bind
