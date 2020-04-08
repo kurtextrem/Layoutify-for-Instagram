@@ -26,7 +26,7 @@ else if (location.href.indexOf('instagram.com') !== -1) {
 		const observer = new MutationObserver(function (mutations) {
 			for (const i in mutations) {
 				const mutation = mutations[i]
-				if (mutation.target.classList.contains('home')) {
+				if (mutation.target.classList.contains('home') && window._sharedData.config.viewer !== null) {
 					ready()
 					return
 				}

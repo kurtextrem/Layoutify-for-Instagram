@@ -168,7 +168,7 @@ function decideClass() {
 	if (pathname.indexOf('/tv/') === 0) return (currentClass = 'tv')
 
 	// login -> 2FA screen
-	if (pathname.indexOf('/2FA/') === 0) return (currentClass = 'twoFA')
+	if (pathname.indexOf('/accounts/login/two_factor') === 0) return (currentClass = 'twoFA')
 
 	// profile page
 	return (currentClass = 'profile')
@@ -432,7 +432,8 @@ const OPTS_MODE = {
 	},
 	only3Dot(argument) {
 		$('#ige_style').remove()
-		$('#ige_root').style.display = 'none'
+		$('#ige_feed').style.display = 'none'
+		$('#react-root main > section > div:not(#rcr-anchor) > div:not([class]) > div').style.display = 'flex'
 		$('#ige_feedCSS').remove()
 	},
 	rows(i) {
