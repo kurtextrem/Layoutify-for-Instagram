@@ -13,13 +13,12 @@ let OPTIONS
  *
  */
 function injectCSS(file) {
-	let style = document.createElement('link')
+	const style = document.createElement('link')
 
 	style.id = 'ige_style'
 	style.rel = 'stylesheet'
 	style.href = chrome.extension.getURL(`content/${file}.css`)
 	document.head.appendChild(style) // inserted css is always non-blocking
-	style = null
 }
 injectCSS('content') // inject as early as possible
 
@@ -403,8 +402,8 @@ const OPTS_MODE = {
 		if (OPTIONS.rows === 2 && i > 25 && i !== 49) return setBoxWidth(i)
 		if (OPTIONS.rows === 4 && i < 25 && i !== 23) return setBoxWidth(i)
 		if (OPTIONS.rows === 1) {
-			const style = document.getElementById('ige_style')
-			if (style !== null) style.remove()
+			const $style = $('#ige_style')
+			if ($style !== null) $style.remove()
 		}
 	},
 	klass(cls) {
@@ -433,6 +432,8 @@ const OPTS_MODE = {
 	},
 	only3Dot(argument) {
 		$('#ige_style').remove()
+		$('#ige_root').style.display = 'none'
+		$('#ige_feedCSS').remove()
 	},
 	rows(i) {
 		if (i !== 4) setBoxWidth(Math.ceil(100 / (i + 1)))

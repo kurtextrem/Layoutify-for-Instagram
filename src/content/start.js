@@ -20,6 +20,7 @@
 	const c = document.createElement('link')
 	c.href = chrome.extension.getURL('feed.css')
 	c.rel = 'stylesheet'
+	c.id = 'ige_feedCSS'
 	document.body.appendChild(c)
 
 	scripts.forEach(v => {
