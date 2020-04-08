@@ -15,6 +15,8 @@ export default class PostMedia extends Component {
 		isCarousel: false,
 	}
 
+	timeout = 0
+
 	constructor(props) {
 		super(props)
 
@@ -54,6 +56,7 @@ export default class PostMedia extends Component {
 		PostMedia.volume = e.target.volume
 	}
 
+	@bind
 	setPreload() {
 		if (this.videoRef.current !== undefined) this.videoRef.current.preload = 'auto'
 	}
@@ -129,7 +132,15 @@ export default class PostMedia extends Component {
 
 	@bind
 	handleHover() {
-		this.setPreload()
+		this.timeout = window.setTimeout(this.setPreload, 40)
+	}
+
+	@bind
+	handleMouseOut() {
+		if (this.timeout) {
+			window.clearTimeout(this.timeout)
+			this.timeout = 0
+		}
 	}
 
 	render() {
@@ -155,7 +166,7 @@ export default class PostMedia extends Component {
 		}
 
 		return (
-			<div class="p-relative" onDblClick={this.handleDblClick} onMouseEnter={this.handleHover}>
+			<div class="p-relative" onDblClick={this.handleDblClick} onMouseEnter={this.handleHover} onMouseOut={this.handleMouseOut}>
 				<div class="img--wrapper">{mediaElement}</div>
 				{isCarousel && carouselIndex !== 0 ? (
 					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick}>

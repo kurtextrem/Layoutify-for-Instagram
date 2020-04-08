@@ -14,7 +14,13 @@
 	left: 1vw;
 	max-width: 100%;
 
+	display: none;
+
 	contain: strict;
+}
+
+.home + #ige_feed {
+	display: block;
 }
 
 .ige_virtual {
@@ -91,7 +97,7 @@
 	width: var(--boxWidth);
 	min-width: var(--boxWidth);
 	max-width: var(--boxWidth);
-	max-height: calc(100vh - var(--navHeight));
+	max-height: calc(100vh + var(--navHeight) * 2);
 	margin-right: var(--boxMarginRight);
 	margin-bottom: 10px;
 	contain: layout style;
@@ -99,13 +105,10 @@
 
 	border-radius: 3px;
 	border: 1px solid #dbdbdb;
-	border: 1px solid rgba(var(--post-border, 219, 219, 219), 1);
-	background-color: rgba(var(--post-bg, 255, 255, 255), 1);
+	border: 1px solid rgb(var(--post-border, 219, 219, 219));
+	background-color: rgb(var(--post-bg, 255, 255, 255));
 
 	position: relative;
-
-	display: grid;
-	grid-template-rows: 53px auto 40px 1fr 45px;
 
 	height: auto;
 }
@@ -113,8 +116,7 @@
 .ige_textarea {
 	background: 0 0;
 	border: 0;
-	color: #262626;
-	color: rgba(var(--textarea, 38, 38, 38), 1);
+	color: rgb(var(--textarea, 38, 38, 38));
 	display: flex;
 	flex-grow: 1;
 	font-size: inherit;
@@ -154,10 +156,9 @@
 }
 
 .ige_header {
-	height: 53px;
-	padding: 16px;
+	height: 51px;
 	contain: strict;
-	border-bottom: 1px solid rgba(var(--post-in-border, 239, 239, 239), 1);
+	border-bottom: 1px solid rgb(var(--post-in-border, 239, 239, 239));
 
 	display: flex;
 	flex-direction: row;
@@ -166,10 +167,11 @@
 }
 
 .ige_picture_container {
-	width: 32px;
-	height: 32px;
-	background-color: rgba(var(--pic-bg, 250, 250, 250), 1);
+	width: 33px;
+	height: 33px;
+	background-color: rgb(var(--pic-bg, 250, 250, 250));
 	border-radius: 50%;
+	margin-right: 7px;
 
 	overflow: hidden;
 	position: relative;
@@ -178,6 +180,11 @@
 .ige_picture_container-small {
 	width: 20px;
 	height: 20px;
+	margin-right: 3px;
+}
+
+.ige_comma::after {
+	content: ', ';
 }
 
 .full-img {
@@ -237,7 +244,7 @@
 
 .ige_post-content {
 	display: flex;
-	flex-grow: 1;
+	flex: 1 1 auto;
 	overflow-y: auto;
 }
 
@@ -255,7 +262,7 @@
 }
 
 .ige_footer {
-	border-top: 1px solid rgba(var(--post-in-border, 239, 239, 239), 1);
+	border-top: 1px solid rgb(var(--post-in-border, 239, 239, 239));
 	color: rgb(var(--footer-color, 142, 142, 142));
 	font-size: 14px;
 	line-height: 18px;
@@ -269,15 +276,11 @@
 }
 
 .ige_username_container {
-	margin-left: 7px;
-	align-items: flex-start;
-	display: flex;
-	margin-left: 7px;
 	overflow: hidden;
 }
 
 .ige_username {
-	color: rgba(var(--anchor-color, 38, 38, 38), 1) !important;
+	color: rgb(var(--anchor-color, 38, 38, 38)) !important;
 	font-weight: 600;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -285,7 +288,7 @@
 }
 
 .ige_location {
-	color: rgba(var(--anchor-color, 38, 38, 38), 1) !important;
+	color: rgb(var(--anchor-color, 38, 38, 38)) !important;
 	line-height: 15px;
 	font-size: 12px;
 	overflow: hidden;
@@ -294,6 +297,7 @@
 }
 
 .ige_actions_container {
+	z-index: 2;
 	contain: strict;
 	height: 40px;
 }
@@ -370,12 +374,12 @@
 	width: 6px;
 	height: 6px;
 	transition: all 0.2s ease-in-out;
-	background: rgba(var(--dots-color, 168, 168, 168), 1);
+	background: rgb(var(--dots-color, 168, 168, 168));
 	border-radius: 50%;
 }
 
 .ige_dots--dot.active {
-	background: rgba(var(--dots-color-active, 0, 149, 246), 1);
+	background: rgb(var(--dots-color-active, 0, 149, 246));
 }
 
 .ige_dots--dot:not(:last-child) {

@@ -10,7 +10,7 @@ import { Fragment, h } from 'preact'
 class Feed extends FetchComponent {
 	state = {
 		cursor: '',
-		hasNextPage: false,
+		hasNextPage: true,
 		isNextPageLoading: false,
 		items: window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges || [],
 	}
@@ -29,16 +29,12 @@ class Feed extends FetchComponent {
 		super()
 
 		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id
-
-		const nextPage = window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor
-		if (nextPage !== undefined) {
-			this.state.hasNextPage = true
-			this.state.cursor = nextPage
-		}
-
+		this.state.cursor = window.__additionalData.feed?.data?.user?.edge_web_feed_timeline?.page_info?.end_cursor || ''
 		this.LoadingWithObserver = withIntersectionObserver(Loading, {
+			delay: 16,
 			root: document.getElementById('ige_virtual'),
-			rootMargin: '0px 0px 800px 0px',
+			rootMargin: '0px 0px 500px 0px',
+			trackVisibility: false,
 		})
 	}
 
@@ -77,6 +73,14 @@ class Feed extends FetchComponent {
 			}),
 			cb
 		)
+	}
+
+	componentDidUpdate() {
+		;/\s*/g.exec('') // free regexp memory
+	}
+
+	componentDidMount() {
+		this.componentDidUpdate()
 	}
 
 	@bind
@@ -118,13 +122,15 @@ class Feed extends FetchComponent {
 		// @TODO Unload out of viewport imgs/videos
 
 		return (
-			<div className="ige_virtual ige_virtual_container">
-				{items.map(v => (v.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={v.node} key={v.node.shortcode} />))}
-				{!hasNextPage && !isNextPageLoading ? (
-					<div>End of feed, try reloading the page.</div>
-				) : (
-					<LoadingWithObserver onVisible={loadMoreItems} />
-				)}
+			<div class="ige_virtual">
+				<div class="ige_virtual_container">
+					{items.map(v => (v.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={v.node} key={v.node.shortcode} />))}
+					{!hasNextPage && !isNextPageLoading ? (
+						<div>End of feed, try reloading the page.</div>
+					) : (
+						<LoadingWithObserver onVisible={loadMoreItems} />
+					)}
+				</div>
 			</div>
 		)
 

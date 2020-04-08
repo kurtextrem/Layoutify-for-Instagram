@@ -66,11 +66,15 @@ export default class Post extends FetchComponent {
 	}
 
 	returnLiked(value, index) {
+		const node = value.node,
+			username = node.username
+
 		return (
-			<Username username={value.node.username} className="ige_comma" key={value.node.id}>
+			<Username username={username} className="ige_comma" key={node.id}>
 				<img
 					class="ige_picture_container ige_picture_container-small va-text-top"
-					src={value.node.profile_pic_url}
+					src={node.profile_pic_url}
+					alt={username + ' Profilbild'}
 					decoding="async"
 					intrinsicsize="150x150"
 					width="20"

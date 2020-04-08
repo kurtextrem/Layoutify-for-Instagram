@@ -16,4 +16,22 @@ if (module.hot) {
 	module.hot.accept('./components/feed/Feed', () => requestAnimationFrame(ready))
 }
 
-if (location.href.indexOf('instagram.com') !== -1 || location.pathname === '/feed.html') ready()
+if (location.pathname === '/feed.html') ready()
+else if (location.href.indexOf('instagram.com') !== -1) {
+	// install navigation observer
+	if (location.pathname === '/' && window._sharedData.config.viewer !== null)
+		// logged
+		ready()
+	else {
+		const observer = new MutationObserver(function (mutations) {
+			for (const i in mutations) {
+				const mutation = mutations[i]
+				if (mutation.target.classList.contains('home')) {
+					ready()
+					return
+				}
+			}
+		})
+		observer.observe(document.getElementById('react-root'), { attributeFilter: ['class'], attributes: true })
+	}
+}

@@ -4,9 +4,10 @@ import { memo } from 'preact/compat'
 
 const Username = props => {
 	const username = props.username,
-		name = props.name || username
+		name = props.name || username,
+		className = props.className
 	return (
-		<a class={"ige_username " + props.className} title={username} href={'/' + username + '/'}>
+		<a class={'ige_username ' + (className !== undefined ? className : '')} title={username} href={'/' + username + '/'}>
 			{props.children}
 			{name}
 		</a>

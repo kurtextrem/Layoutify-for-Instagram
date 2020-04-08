@@ -6,7 +6,7 @@ export default class Dots extends Component {
 	}
 
 	renderDot(i) {
-		return <span key={`${i}`} class={`ige_dots--dot ${i === this.props.index ? ' active' : ''}`} />
+		return <span key={`${i}`} class={`ige_dots--dot ${i === this.props.index ? 'active' : ''}`} />
 	}
 
 	render() {

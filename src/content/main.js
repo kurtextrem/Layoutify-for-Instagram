@@ -129,9 +129,9 @@ let hasNavigated = false,
  */
 function checkURL() {
 	if (location.href !== previousUrl) {
-		previousUrl = location.href
 		hasNavigated = true
 		onNavigate()
+		previousUrl = location.href
 	}
 }
 
@@ -168,6 +168,9 @@ function decideClass() {
 	// insta TV
 	if (pathname.indexOf('/tv/') === 0) return (currentClass = 'tv')
 
+	// login -> 2FA screen
+	if (pathname.indexOf('/2FA/') === 0) return (currentClass = '2FA')
+
 	// profile page
 	return (currentClass = 'profile')
 }
@@ -178,7 +181,7 @@ function decideClass() {
 function addClass() {
 	if (currentClass === '' || root.classList.contains(currentClass)) return
 
-	root.classList.remove('home', 'profile', 'post', 'explore', 'stories')
+	root.classList.remove('home', 'profile', 'post', 'explore', 'stories', 'tv')
 	root.classList.add(currentClass)
 }
 

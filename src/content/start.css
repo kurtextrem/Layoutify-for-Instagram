@@ -1,0 +1,8 @@
+body {
+	overflow-y: auto !important;
+}
+
+/** Hide regular feed */
+#react-root:not([class]) main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+	display: none;
+}

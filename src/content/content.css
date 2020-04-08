@@ -12,12 +12,12 @@ body,
 	min-height: 100%;
 }*/
 
-.home {
-	z-index: unset !important;
+body {
+	/** font-size: 15px !important; we're on desktop, okay? */
 }
 
-#react-root:not(.home) + #ige_feed {
-	display: none;
+.home {
+	z-index: unset !important;
 }
 
 .ige_hideOverflow {
@@ -27,11 +27,6 @@ body,
 /** Hide regular feed */
 .home main > section > div:not(#rcr-anchor) > div:not([class]) > div {
 	display: none;
-}
-
-body {
-	/** font-size: 15px !important; we're on desktop, okay? */
-	overflow-y: auto !important;
 }
 
 /*----------  Performance  ----------*/

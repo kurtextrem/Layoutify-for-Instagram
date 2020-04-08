@@ -18,6 +18,12 @@
 			"js": ["content/InstagramAPI.js", "content/start.js", "content/main.js"],
 			"run_at": "document_idle",
 			"all_frames": false
+		},
+		{
+			"matches": ["*://*.instagram.com/"],
+			"css": ["content/start.css"],
+			"run_at": "document_end",
+			"all_frames": false
 		}
 	],
 	"background": {
