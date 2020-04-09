@@ -1,6 +1,25 @@
 # Changelog
 
-## CURRENT: 3.0.0 - 2020-03-29
+## 3.1.0 - 2020-04-09
+
+### Changed
+
+The "Pictures Only" setting has been updated (and fixed, it was broken from 3.0.0). Here's how it looks combined with "No Space Between Posts":
+
+![Pictures Only Demo](https://raw.githubusercontent.com/kurtextrem/Improved-for-Instagram/master/src/webstore/ScreenshotPicturesOnly.png)
+
+### Bug Fixes
+
+This release contains all the bugfixes from 3.0.1 and 3.0.2:
+
+- Fixed "posts on profiles could not be opened"
+- On the main feed, the like button always did the opposite (_ouups, I'm only human after all... or maybe unintended april fools?_). Fixed.
+- Fixed the "Load more" button on the 3-dots like/saved page
+- Fixed the login screen (the new feed was on top of it)
+
+**Thank you again for all the nice emails, bug reports and so on. This means a lot to me and helps me to fix issues faster.**
+
+## 3.0.0 - 2020-03-29
 
 _Again, it has been quite some time since the latest bigger release (this excludes bug-fixes etc.)._
 
@@ -12,7 +31,7 @@ It is still beta, however. If you find any issues, or missing features, let me k
 
 **Thank you for all your continued support, even though I sometimes don't have much time to update the extension as I'm a full-time student. I also wish you, your family and your loved ones the best during the Corona crisis. ♥**
 
-## [2.10.0] - 2019-08-28
+## 2.10.0 - 2019-08-28
 
 The latest bigger release was in December, but don't worry, in the time between I have done a lot of bug fixes. Feedback welcome (email is on 3-dot page -> About) :)
 
