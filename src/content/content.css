@@ -52,7 +52,8 @@ div > img {
 }
 
 /** Likes & comments amount */
-a:hover > div + div {
+a:hover > div + div,
+a:focus > div + div {
 	z-index: 0;
 }
 
@@ -70,6 +71,7 @@ main > section {
 
 /** Make the flex box layout row instead of column */
 main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+	position: relative;
 	flex-direction: row !important;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -77,7 +79,6 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div {
 	max-width: 100%;
 	margin-top: 10px !important;
 	contain: layout style;
-	position: relative;
 }
 
 /**
@@ -92,6 +93,7 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div
 
 /** Make boxes equal in height and width */
 .home main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > article {
+	z-index: 0;
 	width: var(--boxWidth) !important;
 	min-width: var(--boxWidth) !important;
 	max-width: var(--boxWidth) !important;
@@ -100,7 +102,6 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
 	contain: layout style;
-	z-index: 0;
 }
 
 /** Remove stories thumb focus outline */
@@ -118,14 +119,13 @@ canvas + span:focus {
 =============================================*/
 body > div > div[role='dialog'] article > header,
 #react-root:not(.profile):not(.explore) article > header {
+	/** don't overlap, so article won't get promoted to a layer */
+	z-index: 8;
 	width: 99%;
 	height: 53px !important;
 	margin: auto;
 	padding: 16px 8px !important;
 	contain: strict;
-
-	/** don't overlap, so article won't get promoted to a layer */
-	z-index: 8;
 }
 
 #react-root.post.post.post article > header,
@@ -168,43 +168,42 @@ body > div > div[role='dialog'] header + div + div,
 	flex: 1;
 	flex-direction: row;
 	flex-wrap: wrap;
-	align-content: normal;
-	height: max-content;
-	max-height: 100%;
-	padding: 8px 12px 0 !important;
-	contain: layout style;
 	grid-template:
 		'date likes' min-content
 		'c c' 1fr
 		'buttons comment' 56px
 		/ auto 2fr;
+	align-content: normal;
+	height: max-content;
+	max-height: 100%;
+	padding: 8px 12px 0 !important;
 	overflow-y: auto;
+	contain: layout style;
 }
 
 body > div > div[role='dialog'] header + div + div,
 #react-root.post.post.post header + div + div,
 #react-root.tv.tv.tv header + div + div {
-	height: auto !important;
-	padding: 0 8px 0 23px !important;
-
 	grid-template:
 		'date likes' min-content
 		'c c' 1fr
 		'buttons comment' 56px
 		/ auto 2fr;
+	height: auto !important;
+	padding: 0 8px 0 23px !important;
 }
 
 /** Views / likes */
 div > section + section {
 	/* @todo: Remove flex */
 	flex: 999 1 50%;
+	grid-area: likes;
 	align-self: flex-start;
 
 	order: 1 !important;
 	max-width: 100%;
 	padding: 0 !important;
 	text-align: right;
-	grid-area: likes;
 }
 
 /* Views + likes */
@@ -228,10 +227,10 @@ div > section + section > div > div:last-child {
 div > section + div + div,
 div > section + section + div:only-of-type {
 	flex: 1 1 auto;
+	grid-area: date;
 	/* higher than views / likes to push it to the right */
 	order: 0 !important;
 	margin-bottom: 4px !important;
-	grid-area: date;
 	padding: 0 !important;
 }
 
@@ -255,7 +254,8 @@ ul li div > time + button + button {
 	margin-right: 12px !important;
 }
 
-.profile li[role='menuitem'] > div > div:not(:hover) {
+.profile li[role='menuitem'] > div > div:not(:hover),
+.profile li[role='menuitem'] > div > div:not(:focus) {
 	width: calc(100% - 7px);
 }
 
@@ -273,12 +273,12 @@ h3 + span + div {
 body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child),
 #react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
 	flex-grow: 1;
+	grid-area: c;
 	order: 2 !important;
 	margin: 0 !important;
 	padding: 0 0 5px !important;
 
 	contain: content;
-	grid-area: c;
 }
 
 body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul,
@@ -328,6 +328,7 @@ body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only
 
 /** Heart / Comment / Save */
 header + div + div > section:first-child {
+	grid-area: buttons;
 	align-self: flex-end;
 	order: 4 !important;
 	width: auto;
@@ -337,7 +338,6 @@ header + div + div > section:first-child {
 	padding: 0 !important;
 	border-top: 1px solid #efefef;
 	contain: content;
-	grid-area: buttons;
 }
 
 /** Icons */
@@ -368,13 +368,13 @@ article > div > section:first-child > span:first-child {
 /** "Add comment" */
 article > div > section:last-child {
 	flex: 1;
+	grid-area: comment;
 	align-self: flex-end;
 	order: 5;
 	width: auto;
 	height: 56px;
 	margin: 0;
 	contain: strict;
-	grid-area: comment;
 }
 
 /** Comments */
@@ -398,9 +398,9 @@ video[loop] {
 }
 
 video::-webkit-media-controls {
+	z-index: 1;
 	display: flex !important;
 	contain: strict;
-	z-index: 1;
 }
 
 /** @TODO: Replace IG's play button with the native one once its been rolled out */
@@ -418,15 +418,16 @@ div[role='button'] ~ a ~ div,
 div[role='button'] > div[role='dialog'] > div + div > div + div > span,
 div[role='button'] > div[role='dialog'] > div + div > div + div + a,
 [class*='Sprite'],
-div[role='button'] > div[role='dialog'] + button /* Taged Users icon */,
+div[role='button'] > div[role='dialog'] + button ,
 a[role='button'],
 div[role='button'],
-button[tabindex="-1"],
+button[tabindex='-1'],
 div[role='button'] + button /* tagged users icon on videos */ {
 	z-index: 3;
 }
 
-div[role='button']:hover ~ a {
+div[role='button']:hover ~ a,
+div[role='button']:focus ~ a {
 	opacity: 1;
 }
 
@@ -494,28 +495,47 @@ nav input + span + div + div > div:first-of-type {
 =============================================*/
 /* Fix main feed */
 main > section > div:first-child:not(#rcr-anchor) {
+	float: none;
 	max-width: none;
 	margin-right: 0;
-	float: none;
 	contain: layout style;
 }
 
 /* Sidebar container */
+@media screen and (prefers-reduced-motion: reduce) {
+	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
+		top: 50px !important;
+		left: unset !important;
+		z-index: 10;
+		height: auto !important;
+		margin-bottom: 0;
+		padding-top: 45px;
+		padding-bottom: 45px;
+		background-color: rgba(var(--primary-rgb), 0.8);
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		box-shadow: 0 0 8px 0 #bdbdbd;
+		transform: translateX(80%);
+		transition: none;
+		contain: content;
+	}
+}
+
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	top: 50px !important;
 	left: unset !important;
+	z-index: 10;
 	height: auto !important;
 	margin-bottom: 0;
 	padding-top: 45px;
 	padding-bottom: 45px;
-	transform: translateX(80%);
-	transition: transform 300ms ease-out, opacity 300ms ease-out;
+	background-color: rgba(var(--primary-rgb), 0.8);
 	border-top-left-radius: 4px;
 	border-bottom-left-radius: 4px;
-	background-color: rgba(var(--primary-rgb), 0.8);
 	box-shadow: 0 0 8px 0 #bdbdbd;
+	transform: translateX(80%);
+	transition: transform 300ms ease-out, opacity 300ms ease-out;
 	contain: content;
-	z-index: 10;
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
@@ -526,20 +546,22 @@ canvas {
 	z-index: 9;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover {
-	transform: translateX(0%);
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover,
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:focus {
 	background-color: var(--primary);
+	transform: translateX(0%);
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover > div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover > div,
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:focus > div {
 	background-color: var(--primary);
 }
 
 /* Remove the layer of the empty div */
 main > section > div:first-child:not(#rcr-anchor) + div:empty {
+	z-index: 9;
 	width: 0;
 	contain: strict;
-	z-index: 9;
 }
 
 /* Box container */
@@ -550,12 +572,15 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div,
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div > div > div > div > div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div > div > div > div > div,
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:focus) > div > div,
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:focus) > div > div > div > div > div > div {
 	padding-right: 0;
 	padding-left: 0;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div > div {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div > div,
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:focus) > div > div > div {
 	margin-right: 7px;
 	margin-left: 7px;
 }
@@ -680,7 +705,8 @@ body > div > div[role='dialog'] article,
 									Profile
 =============================================*/
 /** Show likes and so on on hover */
-.profile a:hover > div:last-child {
+.profile a:hover > div:last-child,
+.profile a:focus > div:last-child {
 	z-index: 3;
 }
 
@@ -703,7 +729,8 @@ body > div > div[role='dialog'] article,
 									Explore
 =============================================*/
 /** Liked amount */
-.explore article > div > div > div > div:hover > a > div:last-child {
+.explore article > div > div > div > div:hover > a > div:last-child,
+.explore article > div > div > div > div:focus > a > div:last-child {
 	z-index: 1;
 }
 
@@ -712,15 +739,15 @@ body > div > div[role='dialog'] article,
 }
 
 .explore main > div > h2 + div > div > div {
-	flex-direction: row;
-	justify-content: center !important;
 	display: flex;
+	flex-direction: row;
 	flex-wrap: wrap;
+	justify-content: center !important;
 }
 
 .explore main > div > h2 + div > div > div > div {
-	width: 25%;
 	display: inline-block;
+	width: 25%;
 }
 
 /*=============================================
@@ -739,8 +766,8 @@ footer > div > nav {
 									Extended
 =============================================*/
 .extended--btn {
-	transform: translateY(1px) scale(2);
 	text-shadow: 0 0 2px #2196f3;
+	transform: translateY(1px) scale(2);
 }
 
 /** Extended Marker */
@@ -752,28 +779,28 @@ footer > div > nav {
 	width: 4px;
 	height: 4px;
 	margin: 0 auto;
-	border-radius: 2px;
 	background: #03a9f4;
+	border-radius: 2px;
 	content: '';
 }
 
 .ige_watch::before,
 .ige_watched::before {
-	display: inline-block;
 	position: absolute;
+	display: inline-block;
 	padding: 0.25em 0.4em;
-	transform: translateY(-15px);
-	border-radius: 0.25rem;
-	background-color: #6c757d;
 	color: #fff;
-	font-size: 12px;
 	font-weight: 700;
+	font-size: 12px;
 	line-height: 1;
-	text-align: center;
 	white-space: nowrap;
-	content: 'Watch';
-	cursor: pointer;
+	text-align: center;
 	vertical-align: baseline;
+	background-color: #6c757d;
+	border-radius: 0.25rem;
+	transform: translateY(-15px);
+	cursor: pointer;
+	content: 'Watch';
 }
 
 .ige_watch::before {
@@ -789,15 +816,24 @@ footer > div > nav {
 =============================================*/
 
 /*----------  Picture Only Mode  ----------*/
-.ige_picturesOnly:not(.profile):not(.explore) article > header {
-	height: 40px !important;
+.ige_picturesOnly.home article > header {
+	height: 41px !important;
 }
 
-.ige_picturesOnly:not(.profile):not(.explore) article > header > div:last-child > div:last-child {
+.ige_picturesOnly.home article > header > div:last-child > div:last-child {
 	display: flex;
 }
 
-.ige_picturesOnly:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
+.ige_picturesOnly.home article > .ige_post-content,
+.ige_picturesOnly.home article > .ige_actions_container > .ige_action_amount {
+	display: none;
+}
+
+.ige_picturesOnly.home article > .ige_actions_container {
+	justify-content: center;
+}
+
+.ige_picturesOnly.home header + div + div > div:first-of-type:not(:only-child) {
 	height: 0;
 }
 
@@ -868,8 +904,8 @@ footer > div > nav {
 =============================================*/
 ::-webkit-scrollbar {
 	width: 9px;
-	border-radius: 100px;
 	background-color: rgba(0, 0, 0, 0);
+	border-radius: 100px;
 	contain: strict;
 	/*transition: background-color 1s linear;*/
 }
@@ -879,7 +915,8 @@ footer > div > nav {
 }
 
 /* hover effect for both scrollbar area, and scrollbar 'thumb' */
-::-webkit-scrollbar:hover {
+::-webkit-scrollbar:hover,
+::-webkit-scrollbar:focus {
 	background-color: rgba(0, 0, 0, 0.07);
 }
 
@@ -891,14 +928,14 @@ footer > div > nav {
 ::-webkit-scrollbar-thumb:vertical,
 ::-webkit-scrollbar-thumb:horizontal {
 	min-height: 30px;
-	border: 2px solid rgba(0, 0, 0, 0);
-	border-radius: 100px;
 	background-color: #afafaf;
 	background-clip: padding-box;
+	border: 2px solid rgba(0, 0, 0, 0);
+	border-radius: 100px;
 }
 
 ::-webkit-scrollbar-thumb:vertical:active,
 ::-webkit-scrollbar-thumb:horizontal:active {
-	border-radius: 100px;
 	background-color: #727272; /* Some darker color when you click it */
+	border-radius: 100px;
 }
