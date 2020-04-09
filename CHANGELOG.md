@@ -17,7 +17,7 @@ This release contains all the bugfixes from 3.0.1 and 3.0.2:
 - Fixed the "Load more" button on the 3-dots like/saved page
 - Fixed the login screen (the new feed was on top of it)
 
-**Thank you again for all the nice emails, bug reports and so on. This means a lot to me and helps me to fix issues faster.**
+**Thank you again for all the nice emails, bug reports and so on. This means a lot to me and helps me fix issues faster.**
 
 ## 3.0.0 - 2020-03-29
 
