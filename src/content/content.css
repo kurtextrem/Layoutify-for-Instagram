@@ -816,6 +816,7 @@ footer > div > nav {
 =============================================*/
 
 /*----------  Picture Only Mode  ----------*/
+.ige_picturesOnly.home + #ige_feed article > header,
 .ige_picturesOnly.home article > header {
 	height: 41px !important;
 }
@@ -824,12 +825,12 @@ footer > div > nav {
 	display: flex;
 }
 
-.ige_picturesOnly.home article > .ige_post-content,
-.ige_picturesOnly.home article > .ige_actions_container > .ige_action_amount {
+.ige_picturesOnly.home + #ige_feed article > .ige_post-content,
+.ige_picturesOnly.home + #ige_feed article > .ige_actions_container > .ige_action_amount {
 	display: none;
 }
 
-.ige_picturesOnly.home article > .ige_actions_container {
+.ige_picturesOnly.home + #ige_feed article > .ige_actions_container {
 	justify-content: center;
 }
 
@@ -853,14 +854,14 @@ footer > div > nav {
 
 /*----------  NoSpaceBetweenPosts  ----------*/
 .ige_noSpaceBetweenPosts main > section div > article,
-.ige_noSpaceBetweenPosts + div .ige_post {
+.ige_noSpaceBetweenPosts + #ige_feed .ige_post {
 	margin: 0 !important;
 	border-bottom: transparent !important;
 	border-radius: 0 !important;
 }
 
 .ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n)),
-.ige_noSpaceBetweenPosts + div .ige_post:not(:nth-of-type(4n)) {
+.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n)) {
 	border-right-color: transparent !important;
 }
 
