@@ -160,7 +160,7 @@ export default class Post extends FetchComponent {
 					<button type="button" class="ige_button" onClick={this.handleSave}>
 						<Save width={24} height={24} active={hasSaved} />
 					</button>
-					<div class="ml-auto d-block">
+					<div class="ml-auto d-block ige_action_amount">
 						<a href={'/p/' + shortcode + '/'} class="color-inherit">
 							<>
 								{is_video ? '' : '♥ '}

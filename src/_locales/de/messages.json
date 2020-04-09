@@ -24,7 +24,7 @@
 		"description": ""
 	},
 	"nightModeStart_help": {
-		"message": "Wenn du diese Einstellung und das Ende auf die gleiche zahlt stellst, ist der Nacht Modus dauerhaft an.",
+		"message": "Wenn du diese Einstellung und das Ende auf die gleiche Zahl stellst, ist der Nacht Modus dauerhaft an.",
 		"description": ""
 	},
 	"nightModeEnd": {
@@ -32,7 +32,7 @@
 		"description": ""
 	},
 	"nightModeEnd_help": {
-		"message": "Wenn du diese Einstellung und das Ende auf die gleiche zahlt stellst, ist der Nacht Modus dauerhaft an.",
+		"message": "Wenn du diese Einstellung und das Ende auf die gleiche Zahl stellst, ist der Nacht Modus dauerhaft an.",
 		"description": ""
 	},
 	"picturesOnly": {
@@ -60,7 +60,7 @@
 		"description": "setting"
 	},
 	"rows_help": {
-		"message": "1 stellt das reguläre IG Layout ein. Warnung: Ungerade Zahlen (1,3,5,7) könenn das scrollen kaputt machen. Standard ist 4.",
+		"message": "1 stellt das reguläre IG Layout ein. Standard ist 4.",
 		"description": "setting"
 	},
 	"indicateFollowing": {

@@ -12,7 +12,6 @@
 	--secondary: #757575;
 	--secondary-light: #a4a4a4;
 	--secondary-text: #c5c5c5;
-
 	--post-border: var(--primary);
 	--post-bg: var(--primary);
 	--textarea: var(--primary);
@@ -29,23 +28,29 @@
 
 /* Body */
 body,
-/* Navbar */
 section > nav > div > div,
-/* Main */
 section > main,
-section > main *:not(canvas):not([class*='Sprite']):not(video):not([role="button"]),
-/* Footer */
+section > main *:not(canvas):not([class*='Sprite']):not(video):not([role='button']),
 section > footer,
 div[role='dialog'],
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div /* Stories */,
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div,
 nav input,
 nav input + div {
-	background-color: var(--dark) !important;
 	color: var(--text) !important;
+	background-color: var(--dark) !important;
 }
 
 li span {
 	color: var(--secondary-text) !important;
+}
+
+.profile a:hover > div:last-child,
+.profile a:hover > div:last-child li,
+.profile a:hover > div:last-child li span,
+.profile a:focus > div:last-child,
+.profile a:focus > div:last-child li,
+.profile a:focus > div:last-child li span {
+	background-color: rgba(0, 0, 0, 0.3) !important;
 }
 
 /** Hue Rotation 100% - Important: This has a drastic performance impact. Don't over-use! */
@@ -118,8 +123,8 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 
 /* 3 dots next to follow button */
 body > div > div > div > div > ul > li > button {
-	background: var(--dark) !important;
 	color: var(--secondary) !important;
+	background: var(--dark) !important;
 }
 
 /* Followed by */
@@ -129,13 +134,13 @@ body > div > div > div > div > ul > li > button {
 
 /* Suggested */
 #react-root > section > main > article > div {
-	border: none;
 	background-color: var(--primary);
+	border: none;
 }
 
 #react-root > section > main > article > div > div > div > div > div > ul > li > div > div {
-	border: none;
 	background: var(--light);
+	border: none;
 }
 
 /*=============================================
@@ -160,7 +165,6 @@ body > div > div > div > div > article > div > div > a > time,
 /* Header: likes */
 body > div > div > div > div > article > div > section > div > a > span,
 body > div > div > div> div > article > div > section > div > a,
-
 /* Comments: usernames */
 body > div > div > div > div > article > div > div > ul > li > a,
 body > div > div > div > div > article > div> div > ul > li > span,
@@ -201,7 +205,6 @@ body > div > div > div > div > article > div > section {
 #react-root > section > main > div > div > article > div > div > a > time,
 /* Header: likes */
 #react-root > section > main > div > div > article > div > section > div > a,
-
 /* Comments: usernames */
 #react-root > section > main > div > div > article > div > div > ul > li > a,
 #react-root > section > main > div > div > article > div > div > ul > li > span > span,

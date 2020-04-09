@@ -60,7 +60,7 @@
 		"description": "setting"
 	},
 	"rows_help": {
-		"message": "1 reflects the default IG standard layout. Warning: Uneven numbers (1,3,5,7) and even numbers higher than 4 can break scrolling. Default is 4.",
+		"message": "1 sets the IG standard layout. Default is 4.",
 		"description": "setting"
 	},
 	"indicateFollowing": {
