@@ -859,7 +859,7 @@ footer > div > nav {
 	left: 0;
 	width: 20%;
 	opacity: 0.33;
-	transition: opacity 300ms ease-out;
+	transition: opacity 400ms ease-out;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
@@ -881,7 +881,7 @@ footer > div > nav {
 	width: 80%;
 	border-top: 0;
 	opacity: 0;
-	transition: opacity 300ms ease-out;
+	transition: opacity 400ms ease-out;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
@@ -928,13 +928,13 @@ footer > div > nav {
 	border-radius: 0 !important;
 }
 
-.ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(5n)):not(:first-child),
-.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(5n)):not(:first-child) {
+.ige_noSpaceBetweenPosts main > section div > article:not(:nth-child(4n + 1)),
+.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-child(4n + 1)) {
 	border-left-width: 0 !important;
 }
 
-.ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n)),
-.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n)) {
+.ige_noSpaceBetweenPosts main > section div > article:not(:nth-child(4n)),
+.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-child(4n)) {
 	border-right-width: 0 !important;
 }
 
