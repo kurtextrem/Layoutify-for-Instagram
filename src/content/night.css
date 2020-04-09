@@ -45,9 +45,11 @@ li span {
 }
 
 .profile a:hover > div:last-child,
+.profile a:hover > div:last-child ul,
 .profile a:hover > div:last-child li,
 .profile a:hover > div:last-child li span,
 .profile a:focus > div:last-child,
+.profile a:focus > div:last-child ul,
 .profile a:focus > div:last-child li,
 .profile a:focus > div:last-child li span {
 	background-color: rgba(0, 0, 0, 0.3) !important;

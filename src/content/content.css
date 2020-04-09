@@ -830,8 +830,52 @@ footer > div > nav {
 	display: none;
 }
 
+.ige_picturesOnly.home + #ige_feed article:hover > .ige_actions_container,
+.ige_picturesOnly.home + #ige_feed article:hover > .ige_footer,
+.ige_picturesOnly.home + #ige_feed article:focus > .ige_actions_container,
+.ige_picturesOnly.home + #ige_feed article:focus > .ige_footer {
+	z-index: 1;
+	opacity: 1;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	.ige_picturesOnly.home + #ige_feed article > .ige_actions_container {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 20%;
+		opacity: 0.33;
+		transition: none;
+	}
+}
+
 .ige_picturesOnly.home + #ige_feed article > .ige_actions_container {
-	justify-content: center;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 20%;
+	opacity: 0.33;
+	transition: opacity 250ms ease-out;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	.ige_picturesOnly.home + #ige_feed article > .ige_footer {
+		position: absolute;
+		right: 0;
+		bottom: -5px;
+		width: 80%;
+		opacity: 0;
+		transition: none;
+	}
+}
+
+.ige_picturesOnly.home + #ige_feed article > .ige_footer {
+	position: absolute;
+	right: 0;
+	bottom: -5px;
+	width: 80%;
+	opacity: 0;
+	transition: opacity 250ms ease-out;
 }
 
 .ige_picturesOnly.home header + div + div > div:first-of-type:not(:only-child) {
