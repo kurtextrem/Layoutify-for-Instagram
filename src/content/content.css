@@ -830,6 +830,10 @@ footer > div > nav {
 	display: none;
 }
 
+.ige_picturesOnly.home + #ige_feed article > header {
+	border-bottom: 0;
+}
+
 .ige_picturesOnly.home + #ige_feed article:hover > .ige_actions_container,
 .ige_picturesOnly.home + #ige_feed article:hover > .ige_footer,
 .ige_picturesOnly.home + #ige_feed article:focus > .ige_actions_container,
@@ -855,15 +859,16 @@ footer > div > nav {
 	left: 0;
 	width: 20%;
 	opacity: 0.33;
-	transition: opacity 250ms ease-out;
+	transition: opacity 300ms ease-out;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
 	.ige_picturesOnly.home + #ige_feed article > .ige_footer {
 		position: absolute;
 		right: 0;
-		bottom: -5px;
+		bottom: -3px;
 		width: 80%;
+		border-top: 0;
 		opacity: 0;
 		transition: none;
 	}
@@ -872,10 +877,18 @@ footer > div > nav {
 .ige_picturesOnly.home + #ige_feed article > .ige_footer {
 	position: absolute;
 	right: 0;
-	bottom: -5px;
+	bottom: 3px;
 	width: 80%;
+	border-top: 0;
 	opacity: 0;
-	transition: opacity 250ms ease-out;
+	transition: opacity 300ms ease-out;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	.ige_picturesOnly.home + #ige_feed article > .ige_actions_container,
+	.ige_picturesOnly.home + #ige_feed article > .ige_footer {
+		transition: none;
+	}
 }
 
 .ige_picturesOnly.home header + div + div > div:first-of-type:not(:only-child) {
@@ -885,6 +898,17 @@ footer > div > nav {
 /* Hide comments */
 .ige_picturesOnly header + div + div > div:first-of-type:not(:only-child) > ul {
 	display: none;
+}
+
+.ige_noSpaceBetweenPosts.ige_picturesOnly
+	main
+	> section
+	div
+	> article:not(:first-child):not(:nth-of-type(2)):not(:nth-of-type(3)):not(:nth-of-type(4)),
+.ige_noSpaceBetweenPosts.ige_picturesOnly
+	+ #ige_feed
+	article:not(:first-child):not(:nth-of-type(2)):not(:nth-of-type(3)):not(:nth-of-type(4)) {
+	border-top-width: 0 !important;
 }
 
 /*----------  Hide Stories  ----------*/
@@ -904,9 +928,14 @@ footer > div > nav {
 	border-radius: 0 !important;
 }
 
+.ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(5n)):not(:first-child),
+.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(5n)):not(:first-child) {
+	border-left-width: 0 !important;
+}
+
 .ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n)),
 .ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n)) {
-	border-right-color: transparent !important;
+	border-right-width: 0 !important;
 }
 
 .ige_noSpaceBetweenPosts main > section > div:not(#rcr-anchor) > div:not([class]) > div {
