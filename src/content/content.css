@@ -838,19 +838,7 @@ footer > div > nav {
 .ige_picturesOnly.home + #ige_feed article:hover > .ige_footer,
 .ige_picturesOnly.home + #ige_feed article:focus > .ige_actions_container,
 .ige_picturesOnly.home + #ige_feed article:focus > .ige_footer {
-	z-index: 1;
 	opacity: 1;
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	.ige_picturesOnly.home + #ige_feed article > .ige_actions_container {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 20%;
-		opacity: 0.33;
-		transition: none;
-	}
 }
 
 .ige_picturesOnly.home + #ige_feed article > .ige_actions_container {
@@ -862,22 +850,11 @@ footer > div > nav {
 	transition: opacity 400ms ease-out;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.ige_picturesOnly.home + #ige_feed article > .ige_footer {
-		position: absolute;
-		right: 0;
-		bottom: -3px;
-		width: 80%;
-		border-top: 0;
-		opacity: 0;
-		transition: none;
-	}
-}
-
 .ige_picturesOnly.home + #ige_feed article > .ige_footer {
 	position: absolute;
 	right: 0;
-	bottom: 3px;
+	bottom: -3px;
+	z-index: 1;
 	width: 80%;
 	border-top: 0;
 	opacity: 0;
