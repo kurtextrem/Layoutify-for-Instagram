@@ -86,21 +86,23 @@ export default class Post extends FetchComponent {
 
 	@bind
 	handleAddComment(response) {
-		this.setState((prevState, props) => ({
-			additionalComments: prevState.additionalComments.push({
-				node: {
-					created_at: response.created_time,
-					did_report_as_spam: false,
-					id: response.id,
-					owner: {
-						id: response.from.id,
-						profile_pic_url: response.from.profile_picture,
-						username: response.from.username,
-					},
-					text: response.text,
-					viewer_has_liked: false,
+		const newNode = {
+			node: {
+				created_at: response.created_time,
+				did_report_as_spam: false,
+				id: response.id,
+				owner: {
+					id: response.from.id,
+					profile_pic_url: response.from.profile_picture,
+					username: response.from.username,
 				},
-			}),
+				text: response.text,
+				viewer_has_liked: false,
+			},
+		}
+
+		this.setState((prevState, props) => ({
+			additionalComments: prevState.additionalComments.concat(newNode),
 		}))
 	}
 
