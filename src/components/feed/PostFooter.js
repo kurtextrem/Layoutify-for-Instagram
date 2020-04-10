@@ -21,7 +21,7 @@ export default class PostFooter extends FetchComponent {
 
 			if (response.status === 'ok') {
 				this.props.onComment(response)
-				e.target.clear()
+				e.target.reset()
 			} else {
 				this.setState({ canSubmit: true })
 			}
