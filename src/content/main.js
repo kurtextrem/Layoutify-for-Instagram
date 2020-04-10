@@ -170,6 +170,9 @@ function decideClass() {
 	// login -> 2FA screen
 	if (pathname.indexOf('/accounts/login/two_factor') === 0) return (currentClass = 'twoFA')
 
+	// direct msgs
+	if (pathname.indexOf('/direct/') === 0) return (currentClass = 'dms')
+
 	// profile page
 	return (currentClass = 'profile')
 }
@@ -181,7 +184,7 @@ function addClass() {
 	if (currentClass === '' || root.classList.contains(currentClass)) return
 
 	// @TODO what if we use data-class for this instead?
-	root.classList.remove('home', 'profile', 'post', 'explore', 'stories', 'tv', 'twoFA')
+	root.classList.remove('home', 'profile', 'post', 'explore', 'stories', 'tv', 'twoFA', 'dms')
 	root.classList.add(currentClass)
 }
 

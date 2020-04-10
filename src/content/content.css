@@ -751,6 +751,13 @@ body > div > div[role='dialog'] article,
 }
 
 /*=============================================
+									DMs
+=============================================*/
+.dms > section > div > div:last-child > div > div:first-child {
+	max-width: 65vw !important;
+}
+
+/*=============================================
 									Footer
 =============================================*/
 footer > div {
