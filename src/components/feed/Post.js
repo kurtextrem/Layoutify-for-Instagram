@@ -1,16 +1,14 @@
 import Comments from './Comments'
 import FetchComponent from './FetchComponent'
-import Heart from './Heart'
-import PlayButton from './PlayButton'
 import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
 import PostMedia from './PostMedia' // @todo: when handleEvent works again, remove this
-import Save from './Save'
 import Text from './Text'
 import Username from './Username'
 import bind from 'autobind-decorator'
 import { Fragment, h } from 'preact'
 import { shallowDiffers } from '../Utils'
+import PostAction from './PostAction'
 
 export default class Post extends FetchComponent {
 	state = {
@@ -65,25 +63,6 @@ export default class Post extends FetchComponent {
 		})
 	}
 
-	returnLiked(value, index) {
-		const node = value.node,
-			username = node.username
-
-		return (
-			<Username username={username} className="ige_comma" key={node.id}>
-				<img
-					class="ige_picture_container ige_picture_container-small va-text-top"
-					src={node.profile_pic_url}
-					alt={username + ' Profilbild'}
-					decoding="async"
-					intrinsicsize="150x150"
-					width="20"
-					height="20"
-				/>
-			</Username>
-		)
-	}
-
 	@bind
 	handleAddComment(response) {
 		const newNode = {
@@ -122,7 +101,7 @@ export default class Post extends FetchComponent {
 			user:
 				followed_by_viewer // !
 				is_private				// !
-		 
+
 				requested_by_viewer
 				blocked_by_viewer
 				has_blocked_viewer
@@ -149,29 +128,12 @@ export default class Post extends FetchComponent {
 
 		const text = edge_media_to_caption?.edges[0]?.node?.text
 		const comments = edge_media_preview_comment.edges?.concat(additionalComments)
-		const count = is_video ? video_view_count : edge_media_preview_like?.count
 
 		return (
 			<article class={`ige_post ${is_video ? 'ige_post_video' : ''}`} id={`post_${id}`} data-index={index}>
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
 				<PostMedia data={data} onLike={this.handleLike} />
-				<div class="d-flex f-row a-center px-12 ige_actions_container">
-					<button type="button" class="ige_button" onClick={this.handleLike}>
-						<Heart width={24} height={24} fill="#262626" active={hasLiked} />
-					</button>
-					<button type="button" class="ige_button" onClick={this.handleSave}>
-						<Save width={24} height={24} active={hasSaved} />
-					</button>
-					<div class="ml-auto d-block ige_action_amount">
-						<a href={'/p/' + shortcode + '/'} class="color-inherit">
-							<>
-								{is_video ? '' : '♥ '}
-								{is_video ? <PlayButton fill="black" /> : edge_media_preview_like?.edges?.map(this.returnLiked)}
-								{' ' + count?.toLocaleString()}
-							</>
-						</a>
-					</div>
-				</div>
+				<PostAction like_media={edge_media_preview_like} shortcode={shortcode} is_video={is_video} video_view_count={video_view_count} hasLiked={hasLiked} hasSaved={hasSaved} onLike={this.handleLike} onSave={this.handleSave} />
 				<div class="ige_post-content px-12">
 					{text !== undefined ? (
 						<div class="ige_post-text d-block">
