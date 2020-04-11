@@ -356,6 +356,11 @@ article > div > section:first-child > span:last-child {
 	margin-left: -8px;
 }
 
+/** 3 dots */
+article > header + div + div + div:last-child {
+height: 52px !important;
+}
+
 /** Heart */
 article > div > section:first-child > span:first-child {
 }

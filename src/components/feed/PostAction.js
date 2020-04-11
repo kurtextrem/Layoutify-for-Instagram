@@ -35,6 +35,8 @@ export default class PostAction extends Component {
 
 		const count = is_video ? video_view_count : like_media?.count
 
+		// @todo: Write share dialogue for IG DMs / Twitter / FB etc
+
 		return (
 			<div class="ige_actions_container d-flex f-row a-center px-12">
 				<button type="button" class="ige_button" onClick={onLike}>

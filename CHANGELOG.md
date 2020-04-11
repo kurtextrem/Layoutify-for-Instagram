@@ -19,6 +19,12 @@ This release contains all the bugfixes from 3.0.1 and 3.0.2:
 
 **Thank you again for all the nice emails, bug reports and so on. This means a lot to me and helps me fix issues faster.**
 
+### Upcoming
+
+- Instagram DMs finally arrived on Desktop. This means the "Share" button is useful again, hence in this version you can see it again, when you view a single post. I will try to add the button to the main feed too.
+- Also, the preview of stories in the main feed is missing, this is on my Todo list as well
+
+
 ## 3.0.0 - 2020-03-29
 
 _Again, it has been quite some time since the latest bigger release (this excludes bug-fixes etc.)._
