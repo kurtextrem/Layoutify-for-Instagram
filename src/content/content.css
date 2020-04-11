@@ -351,11 +351,6 @@ article > div > section > span:first-child + span {
 	display: none;
 }
 
-/** Hide useless share icon */
-article > div > section > span:first-child + span + button:not(:last-child) {
-	display: none;
-}
-
 /** Save button */
 article > div > section:first-child > span:last-child {
 	margin-left: -8px;
