@@ -219,7 +219,7 @@ const first = {
 		port: 8080,
 		watchContentBase: true,
 		writeToDisk: filePath => {
-			return /(content\/|manifest.json)/.test(filePath)
+			return /(content\/|manifest.json|_locales|img)/.test(filePath)
 		},
 	},
 

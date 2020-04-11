@@ -13,11 +13,7 @@ export default class Nav extends Component {
 	render() {
 		const { location } = this.props
 		return (
-			<Navbar
-				color="faded"
-				light
-				toggleable
-				class="mb-2 navbar-expand bg-light">
+			<Navbar color="faded" light toggleable class="mb-2 navbar-expand bg-light">
 				<Container>
 					<a href="/index.html">
 						<img
@@ -31,32 +27,24 @@ export default class Nav extends Component {
 
 					<NavI navbar class="grow-1">
 						<NavItem>
-							<NavLink
-								class={
-									Nav.getActive(location, 'liked') || location === ''
-										? 'active'
-										: ''
-								}
-								href="#/">
-								Liked <i class="material-icons">favorite</i>
+							<NavLink class={Nav.getActive(location, 'liked') || location === '' ? 'active' : ''} href="#/">
+							 ❤️ Likes
 							</NavLink>
 						</NavItem>
 						<NavItem>
 							<NavLink class={Nav.getActive(location, 'saved')} href="#/saved">
-								Collections <i class="material-icons">turned_in</i>
+							 🔖 Collections
 							</NavLink>
 						</NavItem>
 
 						<NavItem class="ml-auto">
-							<NavLink
-								class={Nav.getActive(location, 'options')}
-								href="#/options">
-								Options <i class="material-icons">build</i>
+							<NavLink class={Nav.getActive(location, 'options')} href="#/options">
+							 ⚙️ Options
 							</NavLink>
 						</NavItem>
 						<NavItem>
 							<NavLink class={Nav.getActive(location, 'about')} href="#/about">
-								<i class="material-icons">help</i>
+							 ❔ About
 							</NavLink>
 						</NavItem>
 					</NavI>

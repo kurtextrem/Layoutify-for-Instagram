@@ -95,7 +95,7 @@ export default class PostMedia extends Component {
 	}
 
 	getTaggedUsers(edges) {
-		if (edges?.length === 0) return null
+		if (!edges || edges.length === 0) return null
 
 		// FIXME translate -50% needs to be calculated: distance from left side.
 		// FIXME translate -100% needs to be calculatd: distance from bottom.

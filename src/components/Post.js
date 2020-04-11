@@ -1,28 +1,13 @@
-//import ImgWorker from './ImgWorker'
-import PostFooter from './PostFooter'
 import PostHeader from './PostHeader'
-import PostMedia from './PostMedia'
+import PostMedia from './feed/PostMedia'
+import PostAction from './feed/PostAction'
 import bind from 'autobind-decorator'
 import { CardBody, CardText } from 'reactstrap'
-import { Chrome, Storage, getWorkerBlob, logAndReturn, updateCDN } from './Utils'
-import { EventComponent } from './EventComponent'
-import { h } from 'preact' // @todo: when handleEvent works again, remove this
+import { Chrome, Storage, logAndReturn } from './Utils'
+import { default as FeedPost } from './feed/Post'
+import { h } from 'preact'
 
-let initiated = false,
-	worker
-/**
- *
- */
-function init() {
-	initiated = true
-	if (window.Worker !== undefined) {
-		getWorkerBlob()
-			.then(blob => (worker = new window.Worker(blob)))
-			.catch(logAndReturn)
-	}
-}
-
-export default class Post extends EventComponent {
+export default class Post extends FeedPost {
 	static removeItem(id) {
 		Storage.get('items', null)
 			.then(data => {
@@ -35,62 +20,46 @@ export default class Post extends EventComponent {
 			.catch(logAndReturn)
 	}
 
-	constructor(properties) {
-		super(properties)
+	constructor(props) {
+		super(props)
 
-		this.id = properties.data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
-		this.carouselLen = properties.isCarousel ? properties.data.carousel_media.length : 0
-		this.preloaded = false
+		this.state.hasLiked = props.data.has_liked
+		this.state.hasSaved = props.data.saved_collection_ids !== undefined ? true : false
+		this.state.active = this.props.parent === 'liked' ? this.state.hasLiked : this.state.hasSaved
+
+		this.id = props.data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
 		this.timeout = 0
-
-		if (!initiated) init()
-	}
-
-	state = {
-		active: true,
 	}
 
 	@bind
-	mouseenter() {
-		if (this.preloaded) return
+	handleLike() {
+		this.setState(
+			prevState => ({ hasLiked: !prevState.hasLiked }),
+			async () => {
+				window.clearTimeout(this.timeout)
 
-		this.preloaded = true
-		for (let i = 1; i < this.carouselLen; ++i) {
-			this.preload(i)
-		}
+				Chrome.send(this.state.hasLiked ? 'add' : 'remove', { id: this.id, which: 'liked' })
+				if (!this.state.hasLiked && this.props.parent === 'liked') this.timeout = window.setTimeout(() => Post.removeItem(this.id), 7500)
+			}
+		)
 	}
 
 	@bind
-	click(e) {
-		e.stopPropagation()
-		e.preventDefault()
+	handleSave() {
+		this.setState(
+			prevState => ({ hasSaved: !prevState.hasSaved }),
+			async () => {
+				window.clearTimeout(this.timeout)
 
-		if (this.state.active) {
-			Chrome.send('remove', { id: this.id, which: this.props.parent })
-			this.setState((previousState, properties) => ({ active: false }))
-			this.timeout = window.setTimeout(() => Post.removeItem(this.id), 7500)
-		} else {
-			Chrome.send('add', { id: this.id, which: this.props.parent })
-			this.setState((previousState, properties) => ({ active: true }))
-			window.clearTimeout(this.timeout)
-		}
-	}
-
-	preload(index) {
-		if (worker !== undefined) {
-			console.log('preloading', this.props.data.carousel_media[index].image_versions2.candidates[0].url)
-			worker.postMessage(updateCDN(this.props.data.carousel_media[index].image_versions2.candidates[0].url))
-		}
-	}
-
-	shouldComponentUpdate(nextProperties, nextState) {
-		if (this.state.active !== nextState.active) return true
-		return false
+				Chrome.send(this.state.hasSaved ? 'add' : 'remove', { id: this.id, which: 'saved' })
+				if (!this.state.hasSaved && this.props.parent === 'saved') this.timeout = window.setTimeout(() => Post.removeItem(this.id), 7500)
+			}
+		)
 	}
 
 	render() {
 		const {
-			data: { user = {}, caption = {} },
+			data: { user = {}, caption = {}, code = '', view_count = 0, like_count = 0, taken_at = 0 },
 			data,
 			initial,
 			defaultClass,
@@ -98,18 +67,40 @@ export default class Post extends EventComponent {
 			parent,
 			isCarousel,
 		} = this.props
-		const { active } = this.state
-		const carouselLength = this.carouselLen
+		const { active, hasLiked, hasSaved } = this.state
 		const text = (caption && caption.text) || ''
 
+		console.log(data)
+
+		const dataProxy = { ...data }
+		if (dataProxy.carousel_media !== undefined) {
+			const carouselMedia = dataProxy.carousel_media
+			for (const [i, media] of carouselMedia.entries()) {
+				media.is_video = media.media_type === 2
+				media.video_url = media.is_video ? media.video_versions[0].url : undefined
+				media.display_url = media.image_versions2.candidates[0].url
+				media.dimensions = { height: media.image_versions2.candidates[0].height, width: media.image_versions2.candidates[0].width }
+				carouselMedia[i] = { node: media }
+			}
+			dataProxy.edge_sidecar_to_children = { edges: dataProxy.carousel_media }
+		} else {
+			dataProxy.is_video = dataProxy.media_type === 2
+			dataProxy.video_url = dataProxy.is_video ? dataProxy.video_versions[0].url : undefined
+			dataProxy.display_url = dataProxy.image_versions2.candidates[0].url
+			dataProxy.dimensions = {
+				height: dataProxy.image_versions2.candidates[0].height,
+				width: dataProxy.image_versions2.candidates[0].width,
+			}
+		}
+
 		return (
-			<article class={`card${active ? '' : ' fadeOut'}`} id={`post_${this.id}`} onMouseEnter={isCarousel ? this.mouseenter : undefined}>
-				<PostHeader user={user} code={data.code} taken_at={data.taken_at} />
-				<PostMedia isCarousel={isCarousel} carouselLen={carouselLength} initial={initial} data={data} />
+			<article class={`card${active ? '' : ' fadeOut'}`} id={`post_${this.id}`}>
+				<PostHeader user={user} code={code} taken_at={taken_at} />
+				<PostMedia data={dataProxy} onLike={this.handleLike} />
+				<PostAction like_media={{ count: like_count }} shortcode={code} is_video={dataProxy.is_video} video_view_count={view_count} hasLiked={hasLiked} hasSaved={hasSaved} onLike={this.handleLike} onSave={this.handleSave} />
 				<CardBody class="overflow-auto p-3 card-body">
 					<CardText>{text}</CardText>
 				</CardBody>
-				<PostFooter active={active} btnClick={this.click} defaultClass={defaultClass} toggleClass={toggleClass} parent={parent} />
 			</article>
 		)
 	}
