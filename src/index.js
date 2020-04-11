@@ -32,12 +32,7 @@ if (module.hot) {
 	new PerformanceObserver((list, observer) => {
 		for (const entry of list.getEntries()) {
 			const time = Math.round(entry.startTime + entry.duration)
-			console.info(
-				'⚡',
-				entry.name !== '' ? entry.name : entry.entryType,
-				time,
-				entry
-			)
+			console.info('⚡', entry.name !== '' ? entry.name : entry.entryType, time, entry)
 		}
 	}).observe({
 		entryTypes: [
@@ -55,7 +50,6 @@ if (module.hot) {
 }
 
 const init = (fn, app, container) => fn(h(app), container)
-const ready = () =>
-	init(module.hot ? render : hydrate, App, document.body.children[2]) // @todo: https://css-tricks.com/render-caching-for-react/
+const ready = () => init(module.hot ? render : hydrate, App, document.body.children[0]) // @todo: https://css-tricks.com/render-caching-for-react/
 
 documentReady().then(ready).catch(logAndReturn)

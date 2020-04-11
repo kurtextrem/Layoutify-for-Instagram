@@ -70,7 +70,7 @@ const html = {
 const plugins = [
 	//new webpack.ProgressPlugin(),
 	new HtmlWebpackPlugin(html),
-	new MiniCssExtractPlugin('main.css'),
+	new MiniCssExtractPlugin(),
 	new CopyWebpackPlugin([
 		{ from: '*.html' },
 		{
@@ -143,18 +143,6 @@ if (isProduction) {
 			prepack: { delayUnsupportedRequires: true, abstractEffectsInAdditionalFunctions: true, reactEnabled: true },
 		}), // 04.05.18: Not compatible with Webpack 4; 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
 		*/
-		new OptimizeCssAssetsPlugin({
-			cssProcessorPluginOptions: {
-				preset: [
-					'advanced',
-					{
-						discardComments: {
-							removeAll: true,
-						},
-					},
-				],
-			},
-		}),
 		new PurgecssPlugin({
 			paths: glob.sync([`src/**`, `dist/**`], {
 				ignore: ['content/*'],
@@ -216,6 +204,7 @@ const first = {
 	devServer: {
 		compress: false,
 		contentBase: path.join(__dirname, 'dist'),
+		disableHostCheck: true,
 		headers: {
 			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
 			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
@@ -223,6 +212,10 @@ const first = {
 		},
 		host: 'localhost',
 		hot: true,
+		overlay: {
+			errors: true,
+			warnings: true,
+		},
 		port: 8080,
 		watchContentBase: true,
 		writeToDisk: filePath => {
@@ -305,6 +298,18 @@ const first = {
 							toplevel: true,
 						},
 					}),
+					new OptimizeCssAssetsPlugin({
+						cssProcessorPluginOptions: {
+							preset: [
+								'advanced',
+								{
+									discardComments: {
+										removeAll: true,
+									},
+								},
+							],
+						},
+					}),
 				],
 				runtimeChunk: 'single',
 				splitChunks: {
@@ -321,17 +326,12 @@ const first = {
 								return module.nameForCondition && /\.cs{2}$/.test(module.nameForCondition()) && module.type.startsWith('javascript')
 							},
 						},
-						/*vendor: {
-							chunks: 'all',
-							name: 'vendors',
-							test: /[/\\]node_modules[/\\]/,
-						},*/
 					},
 				},
 		  }
 		: {
 				runtimeChunk: 'single',
-				sideEffects: false,
+				sideEffects: false, // faster dev builds
 				splitChunks: {
 					cacheGroups: {
 						commons: {

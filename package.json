@@ -117,5 +117,7 @@
 	"installConfig": {
 		"pnp": true
 	},
-	"sideEffects": false
+	"sideEffects": [
+		"*.css"
+	]
 }
