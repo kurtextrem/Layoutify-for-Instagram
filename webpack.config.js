@@ -12,14 +12,11 @@ const ZipPlugin = require('zip-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const WriteFilePlugin = require('write-file-webpack-plugin')
-const ProgressBarPlugin = require('webpack-simple-progress-plugin')
 const prerender = require('./prerender')
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+//const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
-const { WebpackPluginServe: Serve } = require('webpack-plugin-serve')
+//const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
 // const Critters = require('critters-webpack-plugin')
 const glob = require('fast-glob')
@@ -29,7 +26,7 @@ const PurgecssPlugin = require('purgecss-webpack-plugin')
 // const ReplacePlugin = require('webpack-plugin-replace')
 const replaceBuffer = require('replace-buffer')
 //const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
-const ShakePlugin = require('webpack-common-shake').Plugin
+//const ShakePlugin = require('webpack-common-shake').Plugin
 const pureFuncs = require('side-effects-safe').pureFuncsWithUnusualException // pureFuncsWithUsualException
 
 // const { DuplicatesPlugin } = require('inspectpack/plugin')
@@ -71,15 +68,7 @@ const html = {
 }
 
 const plugins = [
-	new ProgressBarPlugin({
-		messageTemplate: '[:bar] \u001B[32m\u001B[1m:percent\u001B[22m\u001B[39m (:elapseds) \u001B[2m:msg\u001B[22m',
-		progressOptions: {
-			clear: true,
-			complete: '=',
-			incomplete: ' ',
-			renderThrottle: 112,
-		},
-	}),
+	//new webpack.ProgressPlugin(),
 	new HtmlWebpackPlugin(html),
 	new MiniCssExtractPlugin('main.css'),
 	new CopyWebpackPlugin([
@@ -119,7 +108,6 @@ if (isProduction) {
 	)
 
 	plugins.push(
-		new webpack.HashedModuleIdsPlugin(), // @TODO Remove @ webpack5
 		/*new DuplicatePackageCheckerPlugin({
 			emitError: true,
 			verbose: true,
@@ -174,7 +162,7 @@ if (isProduction) {
 			}),
 			whitelistPatterns: [/col-/, /btn-warning/, /btn-secondary/],
 		}),
-		new ShakePlugin(),
+		//new ShakePlugin(), // @todo: Broken in webpack5
 		//new WebpackDeepScopeAnalysisPlugin(), // @todo: 25/10/2018 - doesn't reduce bundle size
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
@@ -200,27 +188,12 @@ if (isProduction) {
 		})
 	)
 } else {
-	const options = {
-		host: 'localhost',
-		middleware: (app, builtins) =>
-			app.use(async (context, next) => {
-				await next()
-				context.set('Access-Control-Allow-Origin', '*')
-				context.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-				context.set('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization')
-			}),
-		port: 8080,
-		static: path.join(__dirname, 'dist'),
-	}
-
 	plugins.push(
 		new HtmlWebpackHarddiskPlugin({
 			outputPath: path.resolve(__dirname, 'dist'),
 		}),
 		new FriendlyErrorsPlugin(),
-		new CaseSensitivePathsPlugin(),
-		new webpack.NamedModulesPlugin(),
-		new Serve(options),
+		new CaseSensitivePathsPlugin()
 		/*new AutoDllPlugin({ // disabled as per https://github.com/mzgoddard/hard-source-webpack-plugin/issues/251
 			inject: true, // will inject the DLL bundles to index.html
 			filename: '[name]_[hash].js',
@@ -228,10 +201,6 @@ if (isProduction) {
 				vendor: ['nervjs', 'nerv-devtool', 'decko'],
 			},
 		}),*/
-		new WriteFilePlugin({
-			log: false,
-			test: /(content\/|manifest.json)/,
-		})
 	)
 }
 
@@ -244,13 +213,28 @@ if (isProduction) {
 const first = {
 	context: path.join(__dirname, 'src'),
 
-	devServer: undefined,
+	devServer: {
+		compress: false,
+		contentBase: path.join(__dirname, 'dist'),
+		headers: {
+			'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+			'Access-Control-Allow-Origin': '*',
+		},
+		host: 'localhost',
+		hot: true,
+		port: 8080,
+		watchContentBase: true,
+		writeToDisk: filePath => {
+			return /(content\/|manifest.json)/.test(filePath)
+		},
+	},
 
-	devtool: isProduction ? false /* 'cheap-module-source-map'*/ /*'source-map'*/ : 'inline-module-source-map',
+	devtool: isProduction ? false /* 'cheap-module-source-map'*/ /*'source-map'*/ : 'inline-cheap-module-source-map',
 
 	entry: {
-		app: isProduction ? './index.js' : ['./index.js', 'webpack-plugin-serve/client'],
-		feed: isProduction ? './feed.js' : ['./feed.js', 'webpack-plugin-serve/client'],
+		app: './index.js',
+		feed: './feed.js',
 	},
 
 	mode: isProduction ? 'production' : 'development',
@@ -266,7 +250,10 @@ const first = {
 		rules: [
 			{
 				exclude: /node_modules/,
-				loader: 'babel-loader?cacheDirectory',
+				loader: 'babel-loader',
+				options: {
+					cacheDirectory: true,
+				},
 				test: /\.jsx?$/i,
 			},
 			{
