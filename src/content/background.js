@@ -318,7 +318,7 @@ chrome.alarms.onAlarm.addListener(getWatchlist)
  */
 function openIG(id) {
 	chrome.tabs.create({
-		url: `https://www.instagram.com/${id.split('_').splice(1).join('_')}/`,
+		url: `https://www.instagram.com/${id.split(';').splice(1)}`,
 	})
 }
 chrome.notifications.onClicked.addListener(openIG)
@@ -424,12 +424,12 @@ function handlePost(json, user, userObject, watchData, options) {
 			watchData[user].pic = picId
 			// @todo: Migration code getProfilePicId(user_pic)
 			options.type = 'basic'
-			options.title = chrome.i18n.getMessage('watch_newPic', user)
+			options.title = chrome.i18n.getMessage('watch_newPic', user) // new profile picture
 
 			getBlobUrl(pic)
 				.then(url => {
 					options.iconUrl = url
-					return chrome.notifications.create(`pic_${user}`, options, nId => {
+					return chrome.notifications.create(`pic;${user}/`, options, nId => {
 						if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
 						URL.revokeObjectURL(url)
 						// @todo: Maybe clear notification?
@@ -450,7 +450,7 @@ function handlePost(json, user, userObject, watchData, options) {
 		.then(values => {
 			options.iconUrl = values[0]
 			options.imageUrl = values[1]
-			return chrome.notifications.create(`post_${user}`, options, nId => {
+			return chrome.notifications.create(`post;/p/${id}/`, options, nId => {
 				if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
 				URL.revokeObjectURL(values[0])
 				URL.revokeObjectURL(values[1])
@@ -485,7 +485,7 @@ function handleStory(json, user, userObject, watchData, options) {
 		getBlobUrl(reel.owner.profile_pic_url)
 			.then(url => {
 				options.iconUrl = url
-				return chrome.notifications.create(`story_${user}`, options, nId => {
+				return chrome.notifications.create(`story;/stories/${user}`, options, nId => {
 					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
 					URL.revokeObjectURL(url)
 					// @todo: Maybe clear notification?
@@ -503,7 +503,7 @@ function notifyError(user, options) {
 	options.title = `${user} could not be found`
 	options.message = `${user} might have changed the Instagram nickname. Please go to the options and remove the name.`
 	options.iconUrl = 'img/icon-128.png'
-	chrome.notifications.create(`error_${user}`, options, undefined) // @TODO: Add 'click to remove'
+	chrome.notifications.create(`error;${user}/`, options, undefined) // @TODO: Add 'click to remove'
 }
 
 const WEB_OPTS = {
