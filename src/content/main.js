@@ -156,22 +156,22 @@ function decideClass() {
 	if (pathname === '/') return (currentClass = 'home')
 
 	// stories
-	if (pathname.indexOf('/stories/') === 0) return (currentClass = 'stories')
+	if (pathname.indexOf('/stories/') !== -1) return (currentClass = 'stories')
 
 	// single post
-	if (pathname.indexOf('/p/') === 0) return (currentClass = 'post')
+	if (pathname.indexOf('/p/') !== -1) return (currentClass = 'post')
 
 	// search results
-	if (pathname.indexOf('/explore/') === 0) return (currentClass = 'explore')
+	if (pathname.indexOf('/explore/') !== -1) return (currentClass = 'explore')
 
 	// insta TV
-	if (pathname.indexOf('/tv/') === 0) return (currentClass = 'tv')
+	if (pathname.indexOf('/tv/') !== -1) return (currentClass = 'tv')
 
 	// login -> 2FA screen
 	if (pathname.indexOf('/accounts/login/two_factor') === 0) return (currentClass = 'twoFA')
 
 	// direct msgs
-	if (pathname.indexOf('/direct/') === 0) return (currentClass = 'dms')
+	if (pathname.indexOf('/direct/') !== -1) return (currentClass = 'dms')
 
 	// profile page
 	return (currentClass = 'profile')

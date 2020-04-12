@@ -358,7 +358,7 @@ article > div > section:first-child > span:last-child {
 
 /** 3 dots */
 article > header + div + div + div:last-child {
-height: 52px !important;
+	height: 52px !important;
 }
 
 /** Heart */
