@@ -173,6 +173,9 @@ function decideClass() {
 	// direct msgs
 	if (pathname.indexOf('/direct/') !== -1) return (currentClass = 'dms')
 
+	// live
+	if (pathname.indexOf('/live/') !== -1) return (currentClass = 'profile live')
+
 	// profile page
 	return (currentClass = 'profile')
 }
