@@ -25,7 +25,6 @@
 .ige_virtual {
 	height: 100%;
 	max-height: 100%;
-	padding-top: 10px;
 
 	contain: strict;
 
@@ -39,6 +38,7 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
+	padding-top: 10px;
 	/*height: 100%;*/
 
 	/*contain: size style;*/
@@ -50,7 +50,7 @@
 	position: absolute;
 	left: 0;
 	display: block;
-	width: 100%; /* 1px */
+	width: 100%; /* @todo 1px */
 	height: 1px;
 	background-color: red;
 	contain: strict;
@@ -197,16 +197,6 @@
 	width: 100%;
 	overflow: hidden;
 	contain: layout style;
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	.img--wrapper > div {
-		position: absolute;
-		top: 0;
-		right: 0;
-		transform: translateX(100%);
-		transition: none;
-	}
 }
 
 .img--wrapper > div {
@@ -378,16 +368,6 @@
 	contain: content;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.ige_dots--dot {
-		width: 6px;
-		height: 6px;
-		background: rgb(var(--dots-color, 168, 168, 168));
-		border-radius: 50%;
-		transition: none;
-	}
-}
-
 .ige_dots--dot {
 	width: 6px;
 	height: 6px;
@@ -416,23 +396,6 @@
 }
 
 .ige_userIcon {
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	.ige_taggedUser {
-		position: absolute;
-
-		z-index: 2;
-		margin-top: 6px;
-		padding: 0 12px;
-		font-size: 14px;
-		line-height: 36px;
-		background-color: rgb(0, 0, 0);
-		border-radius: 4px;
-		transform: translate(-50%, 0%);
-		opacity: 0;
-		transition: none;
-	}
 }
 
 .ige_taggedUser {
@@ -519,30 +482,12 @@
 	contain: strict;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.ball-pulse-sync > div:nth-child(1) {
-		animation: none;
-	}
-}
-
 .ball-pulse-sync > div:nth-child(1) {
 	animation: ball-pulse-sync 0.6s -0.14s infinite ease-in-out;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.ball-pulse-sync > div:nth-child(2) {
-		animation: none;
-	}
-}
-
 .ball-pulse-sync > div:nth-child(2) {
 	animation: ball-pulse-sync 0.6s -0.07s infinite ease-in-out;
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	.ball-pulse-sync > div:nth-child(3) {
-		animation: none;
-	}
 }
 
 .ball-pulse-sync > div:nth-child(3) {
@@ -578,6 +523,10 @@
 
 .ige_add_comment .ige_button {
 	color: rgb(var(--submit-button-color, 0, 149, 246));
+}
+
+.text-gray {
+	color: rgba(var(--gray, 142, 142, 142), 1) !important;
 }
 
 /*=============================================

@@ -1,14 +1,14 @@
 import Comments from './Comments'
 import FetchComponent from './FetchComponent'
+import PostAction from './PostAction'
 import PostFooter from './PostFooter'
-import PostHeader from './PostHeader'
-import PostMedia from './PostMedia' // @todo: when handleEvent works again, remove this
+import PostHeader from './PostHeader' // @todo: when handleEvent works again, remove this
+import PostMedia from './PostMedia'
 import Text from './Text'
 import Username from './Username'
 import bind from 'autobind-decorator'
 import { Fragment, h } from 'preact'
 import { shallowDiffers } from '../Utils'
-import PostAction from './PostAction'
 
 export default class Post extends FetchComponent {
 	state = {
@@ -101,7 +101,7 @@ export default class Post extends FetchComponent {
 			user:
 				followed_by_viewer // !
 				is_private				// !
-
+		 
 				requested_by_viewer
 				blocked_by_viewer
 				has_blocked_viewer
@@ -133,13 +133,27 @@ export default class Post extends FetchComponent {
 			<article class={`ige_post ${is_video ? 'ige_post_video' : ''}`} id={`post_${id}`} data-index={index}>
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
 				<PostMedia data={data} onLike={this.handleLike} />
-				<PostAction like_media={edge_media_preview_like} shortcode={shortcode} is_video={is_video} video_view_count={video_view_count} hasLiked={hasLiked} hasSaved={hasSaved} onLike={this.handleLike} onSave={this.handleSave} />
+				<PostAction
+					like_media={edge_media_preview_like}
+					shortcode={shortcode}
+					is_video={is_video}
+					video_view_count={video_view_count}
+					hasLiked={hasLiked}
+					hasSaved={hasSaved}
+					onLike={this.handleLike}
+					onSave={this.handleSave}
+				/>
 				<div class="ige_post-content px-12">
 					{text !== undefined ? (
 						<div class="ige_post-text d-block">
 							<Username username={owner.username} />
 							<Text text={text} />
 						</div>
+					) : null}
+					{edge_media_preview_comment.count > 2 ? (
+						<a href={`/p/${shortcode}`} class="text-gray">
+							View all {edge_media_preview_comment.count} comments
+						</a>
 					) : null}
 					<Comments data={comments} />
 				</div>
