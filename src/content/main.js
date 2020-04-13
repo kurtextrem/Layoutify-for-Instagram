@@ -535,20 +535,16 @@ function onNavigate() {
 	disconnectObservers()
 	decideClass()
 
-	window.requestIdleCallback(() => {
-		return window.requestAnimationFrame(() => {
-			window.requestAnimationFrame(() => {
-				addClass()
+	window.requestAnimationFrame(() => {
+		addClass()
 
-				document.body.querySelectorAll('video').forEach(addControls)
-				document.body.querySelectorAll('img').forEach(fullPhoto)
+		document.body.querySelectorAll('video').forEach(addControls)
+		document.body.querySelectorAll('img').forEach(fullPhoto)
 
-				if (currentClass === 'profile') addWatched()
+		if (currentClass === 'profile') addWatched()
 
-				addExtendedButton()
-			})
-		})
-	}) // double-rAF
+		addExtendedButton()
+	})
 }
 
 /**

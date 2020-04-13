@@ -35,7 +35,7 @@ export default class PostAction extends Component {
 
 		const count = is_video ? video_view_count : like_media?.count
 
-		// @todo: Write share dialogue for IG DMs / Twitter / FB etc
+		// @todo: On Share click -> load iframe /p/ with #share -> content script then clicks on share button. Size 1:1 to the share dialogue size
 
 		return (
 			<div class="ige_actions_container d-flex f-row a-center px-12">

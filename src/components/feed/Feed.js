@@ -29,12 +29,12 @@ class Feed extends FetchComponent {
 	constructor() {
 		super()
 
-		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id
+		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id // @TODO Update regularely, last check 13.04.2020
 		this.state.cursor = window.__additionalData.feed?.data?.user?.edge_web_feed_timeline?.page_info?.end_cursor || ''
 		this.LoadingWithObserver = withIntersectionObserver(Loading, {
-			delay: 16,
-			root: document.getElementById('ige_virtual'),
-			rootMargin: '0px 0px 500px 0px',
+			//delay: 16,
+			root: document.getElementsByClassName('ige_virtual_container')[0],
+			rootMargin: '0px 0px 800px 0px',
 			trackVisibility: false,
 		})
 	}

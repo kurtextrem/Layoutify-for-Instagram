@@ -288,10 +288,11 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 /**
  *
  */
-function createUpdateAlarm() {
+function createUpdateAlarm(when) {
 	chrome.alarms.create('update', {
 		delayInMinutes: 1,
-		periodInMinutes: 20, // @todo temp. to see if it fixes profiles; normal is 4
+		periodInMinutes: 15,
+		when, // @todo if this is below 20, and we watch over N people, this seems to break profiles sometimes -> 404
 	})
 }
 
@@ -299,7 +300,10 @@ function createUpdateAlarm() {
 chrome.runtime.onInstalled.addListener(details => {
 	if (details.reason !== 'update') return
 
-	createUpdateAlarm()
+	chrome.alarms.get('update', function (alarm) {
+		const when = alarm !== undefined ? alarm.scheduledTime : undefined
+		createUpdateAlarm(when)
+	})
 
 	const currentVersion = chrome.runtime.getManifest().version,
 		splitNew = currentVersion.split('.'),
@@ -377,17 +381,6 @@ const notificationOptions = {
 	title: '', // profile pic
 	type: '',
 }
-
-const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8',
-	storiesParams = {
-		include_chaining: false,
-		include_highlight_reels: false,
-		include_logged_out_extras: false,
-		include_reel: true,
-		include_suggested_users: false,
-		user_id: '',
-	}
-//orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
 
 const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
 
@@ -512,6 +505,17 @@ const WEB_OPTS = {
 	}),
 }
 
+const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8', // @TODO Update regularely, last check 13.04.2020
+	storiesParams = {
+		include_chaining: false,
+		include_highlight_reels: false,
+		include_logged_out_extras: false,
+		include_reel: true,
+		include_suggested_users: false,
+		user_id: '',
+	}
+//orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
+
 /**
  *
  */
@@ -525,10 +529,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 	} /*if (type === 1)*/ else {
 		const params = { ...storiesParams }
 		params.user_id = userObject.id
-		url = `https://www.instagram.com/graphql/query/?${new URLSearchParams({
-			query_hash: QUERY_HASH,
-			variables: JSON.stringify(params),
-		}).toString()}`
+		url = `https://www.instagram.com/graphql/query/?query_hash=${QUERY_HASH}&variables=${JSON.stringify(params)}`
 	}
 
 	const options = { ...notificationOptions }

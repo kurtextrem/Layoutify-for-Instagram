@@ -151,14 +151,17 @@ export default class PostMedia extends Component {
 
 		if (isCarousel) {
 			mediaElement = data.edge_sidecar_to_children.edges.map((v, i) => (
-				<div key={v.id} class={i === carouselIndex ? 'active' : ''}>
+				<div
+					key={v.id}
+					data-active={i === carouselIndex ? '' : undefined}
+					hidden={i > carouselIndex + 1 || (i < carouselIndex - 1 && i > 0)}>
 					{this.getMedia(v.node)}
 					{this.getTaggedUsers(v.node.edge_media_to_tagged_user?.edges)}
 				</div>
 			))
 		} else {
 			mediaElement = (
-				<div class="active">
+				<div data-active>
 					{this.getMedia(data)}
 					{this.getTaggedUsers(data.edge_media_to_tagged_user?.edges)}
 				</div>
@@ -166,7 +169,11 @@ export default class PostMedia extends Component {
 		}
 
 		return (
-			<div class="p-relative" onDblClick={this.handleDblClick} onMouseEnter={this.handleHover} onMouseOut={this.handleMouseOut}>
+			<div
+				class="ige_post-media p-relative"
+				onDblClick={this.handleDblClick}
+				onMouseEnter={this.handleHover}
+				onMouseOut={this.handleMouseOut}>
 				<div class="img--wrapper">{mediaElement}</div>
 				{isCarousel && carouselIndex !== 0 ? (
 					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick}>

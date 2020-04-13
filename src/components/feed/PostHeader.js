@@ -27,6 +27,8 @@ export default class PostHeader extends Component {
 
 		const userHref = '/' + username + '/'
 
+		// @todo Portal popup on timestamp click?
+
 		return (
 			<header class="ige_header px-12">
 				<a class="ige_picture_container" href={userHref} role="button" tabIndex={0}>

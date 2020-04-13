@@ -5,6 +5,10 @@
 	--navHeight: 54px;
 }
 
+[hidden] {
+	display: none; /* as IG sets display: flex everywhere, for whatever reason hidden gets overwrriten */
+}
+
 #ige_feed {
 	position: fixed;
 	top: var(--navHeight);
@@ -142,7 +146,7 @@
 }
 
 .ige_post_video {
-	z-index: 1; /* so posts around videos don't get accelerated */
+	z-index: 3; /* so posts around videos don't get accelerated */
 }
 
 .ige_noSpaceBetweenPosts + #ige_feed > .ige_post {
@@ -207,7 +211,7 @@
 	transition: transform 200ms ease-out;
 }
 
-.img--wrapper > div.active {
+.img--wrapper > div[data-active] {
 	position: static;
 	transform: none;
 }
@@ -239,6 +243,10 @@
 
 .text-right {
 	text-align: right;
+}
+
+.ige_post-media {
+	z-index: 2;
 }
 
 .ige_post-content {
@@ -296,7 +304,7 @@
 }
 
 .ige_actions_container {
-	z-index: 2;
+	z-index: 1;
 	height: 40px;
 	/*contain: strict; @fixme */
 }
@@ -361,7 +369,7 @@
 	bottom: -1.7em;
 	left: 0;
 
-	z-index: 1;
+	z-index: 0;
 	flex-direction: row;
 	justify-content: center;
 	text-align: center;
@@ -376,7 +384,7 @@
 	transition: background-color 0.2s ease-in-out;
 }
 
-.ige_dots--dot.active {
+.ige_dots--dot[data-active] {
 	background-color: rgb(var(--dots-color-active, 0, 149, 246));
 }
 
