@@ -290,9 +290,9 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
  */
 function createUpdateAlarm(when) {
 	chrome.alarms.create('update', {
-		delayInMinutes: 1,
-		periodInMinutes: 15,
-		when, // @todo if this is below 20, and we watch over N people, this seems to break profiles sometimes -> 404
+		delayInMinutes: when ? undefined : 1,
+		periodInMinutes: 15, // @todo if this is below 20, and we watch over N people, this seems to break profiles sometimes -> 404
+		when: when || undefined,
 	})
 }
 

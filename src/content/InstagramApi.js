@@ -176,13 +176,15 @@ class InstagramAPI {
 			item.user.latest_reel_media = undefined
 			item.can_see_insights_as_brand = undefined
 			item.inline_composer_imp_trigger_time = undefined
-			item.caption.bit_flags = undefined
-			item.caption.content_type = undefined
-			item.caption.did_report_as_spam = undefined
-			item.caption.share_enabled = undefined
-			item.caption.user = undefined
-			item.caption.type = undefined
-			item.caption.pk = undefined
+			if (item.caption) {
+				item.caption.bit_flags = undefined
+				item.caption.content_type = undefined
+				item.caption.did_report_as_spam = undefined
+				item.caption.share_enabled = undefined
+				item.caption.user = undefined
+				item.caption.type = undefined
+				item.caption.pk = undefined
+			}
 			item.video_dash_manifest = undefined
 			item.video_duration = undefined
 			item.video_codec = undefined

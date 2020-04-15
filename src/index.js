@@ -1,7 +1,7 @@
 import App from './components/App'
 //import Preact, { h, hydrate, render } from 'preact'
 import { documentReady, logAndReturn } from './components/Utils'
-import { h, hydrate, render } from 'preact'
+import { h, hydrate, options, render } from 'preact'
 /* eslint-disable */
 import './components/main.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -48,6 +48,8 @@ if (module.hot) {
 		], // PerformanceObserver.supportedEntryTypes
 	}) // resource, paint,
 }
+
+options.debounceRendering = requestIdleCallback
 
 const init = (fn, app, container) => fn(h(app), container)
 const ready = () => init(module.hot ? render : hydrate, App, document.body.children[0]) // @todo: https://css-tricks.com/render-caching-for-react/

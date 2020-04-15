@@ -1,6 +1,8 @@
 import Feed from './components/feed/Feed'
 import './components/feed/feed.css'
-import { h, render } from 'preact'
+import { h, options, render } from 'preact'
+
+options.debounceRendering = requestIdleCallback
 
 const ready = () => render(h(Feed), document.getElementById('ige_feed')) // @todo: https://css-tricks.com/render-caching-for-react/
 
