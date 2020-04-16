@@ -8,7 +8,7 @@
 ;(function inject(document) {
 	'use strict'
 
-	const scripts = ['runtime.bundle.js', 'vendors.bundle.js', 'commons.bundle.js', 'feed.bundle.js']
+	const scripts = ['runtime.bundle.js', 'commons.bundle.js', 'feed.bundle.js']
 
 	/**
 	 *

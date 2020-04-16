@@ -36,6 +36,7 @@ export default class PostAction extends Component {
 		this.openModal()
 	}
 
+	@bind
 	openModal() {
 		this.setState({ open: true })
 	}
@@ -76,9 +77,11 @@ export default class PostAction extends Component {
 						</>
 					</a>
 				</div>
-				<Modal open={open} onClose={this.closeModal} center>
-					<iframe src={open ? '/p/' + shortcode + '/#share' : undefined} class="ige_iframe" />
-				</Modal>
+				{open ? (
+					<Modal open onClose={this.closeModal} center>
+						<iframe src={'/p/' + shortcode + '/#share'} class="ige_iframe" />
+					</Modal>
+				) : null}
 			</div>
 		)
 	}

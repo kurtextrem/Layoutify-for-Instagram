@@ -26,6 +26,7 @@ body {
 }
 
 .share ~ [role='presentation'] {
+	background: rgba(0, 0, 0, 0.75);
 	pointer-events: none;
 }
 

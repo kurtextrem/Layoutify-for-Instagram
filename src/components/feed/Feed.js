@@ -1,6 +1,7 @@
 import FetchComponent from './FetchComponent'
 import Loading from '../Loading'
 import Post from './Post'
+import Sentinel from './Sentinel'
 //import VirtualList from './VirtualList'
 import bind from 'autobind-decorator'
 import withIntersectionObserver from './withIntersectionObserver'
@@ -14,6 +15,8 @@ class Feed extends FetchComponent {
 		hasNextPage: true,
 		isNextPageLoading: false,
 		items: window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges || [],
+		nextCount: 0,
+		prevCount: 0,
 	}
 
 	static fetchObj = {
@@ -30,11 +33,13 @@ class Feed extends FetchComponent {
 		super()
 
 		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id // @TODO Update regularely, last check 13.04.2020
+
 		this.state.cursor = window.__additionalData.feed?.data?.user?.edge_web_feed_timeline?.page_info?.end_cursor || ''
-		this.LoadingWithObserver = withIntersectionObserver(Loading, {
+		this.state.count = this.state.items.length
+
+		this.SentinelWithObserver = withIntersectionObserver(Sentinel, {
 			//delay: 16,
-			root: document.getElementsByClassName('ige_virtual_container')[0],
-			rootMargin: '0px 0px 800px 0px',
+			root: document.getElementById('ige_feed'),
 			trackVisibility: false,
 		})
 	}
@@ -69,15 +74,17 @@ class Feed extends FetchComponent {
 
 		const nextCursor = response?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor
 
-		this.setState(
-			(prevState, props) => ({
+		this.setState((prevState, props) => {
+			const nextItems = prevState.items.concat(response.data.user.edge_web_feed_timeline.edges)
+			return {
 				cursor: nextCursor,
 				hasNextPage: nextCursor !== undefined,
 				isNextPageLoading: false,
-				items: prevState.items.concat(response.data.user.edge_web_feed_timeline.edges),
-			}),
-			cb
-		)
+				items: nextItems,
+				nextCount: nextItems.length,
+				prevCount: prevState.nextCount,
+			}
+		}, cb)
 	}
 
 	componentDidUpdate() {
@@ -97,17 +104,15 @@ class Feed extends FetchComponent {
 	}
 
 	@bind
-	renderItems(start, count) {
-		const items = this.state.items,
-			arr = [],
-			len = Math.min(start * 8 + count * 8, items.length)
-		for (let i = start * 8; i < len; ++i) {
-			const current = items[i]
+	renderItems() {
+		const { items, prevCount } = this.state,
+			arr = []
+		for (const [i, current] of items.entries()) {
 			arr.push(
 				current.node.__typename === 'GraphStoriesInFeedItem' ? (
 					this.steal(i)
 				) : (
-					<Post data={current.node} key={current.node.shortcode} index={i} />
+					<Post data={current.node} key={current.node.shortcode} additionalClass={i >= prevCount ? 'ige_fade' : ''} />
 				)
 			)
 		}
@@ -116,12 +121,12 @@ class Feed extends FetchComponent {
 	}
 
 	render() {
-		const { hasNextPage, isNextPageLoading, items } = this.state
+		const { hasNextPage, isNextPageLoading } = this.state
 
 		// Only load 1 page of items at a time.
 		// Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
 		const loadMoreItems = isNextPageLoading ? () => {} : () => this.loadNextPage(true)
-		const LoadingWithObserver = this.LoadingWithObserver
+		const Sentinel = this.SentinelWithObserver
 
 		// @TODO Clone stories node & put in here; stories appear after 8th post usually, tag type div
 		// @TODO Unload out of viewport imgs/videos
@@ -129,12 +134,9 @@ class Feed extends FetchComponent {
 		return (
 			<div class="ige_virtual">
 				<div class="ige_virtual_container">
-					{items.map(v => (v.node.__typename === 'GraphStoriesInFeedItem' ? this.steal() : <Post data={v.node} key={v.node.shortcode} />))}
-					{!hasNextPage && !isNextPageLoading ? (
-						<div>End of feed, try reloading the page.</div>
-					) : (
-						<LoadingWithObserver onVisible={loadMoreItems} />
-					)}
+					{this.renderItems()}
+					<Sentinel onVisible={loadMoreItems} />
+					{!hasNextPage && !isNextPageLoading ? <div>End of feed, try reloading the page.</div> : <Loading />}
 				</div>
 			</div>
 		)

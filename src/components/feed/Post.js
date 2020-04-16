@@ -123,6 +123,7 @@ export default class Post extends FetchComponent {
 			},
 			data,
 			index,
+			additionalClass,
 		} = this.props
 		const { hasLiked, hasSaved, additionalComments } = this.state
 
@@ -130,7 +131,7 @@ export default class Post extends FetchComponent {
 		const comments = edge_media_preview_comment.edges?.concat(additionalComments)
 
 		return (
-			<article class={`ige_post ${is_video ? 'ige_post_video' : ''}`} id={`post_${id}`} data-index={index}>
+			<article class={`ige_post ${is_video ? 'ige_post_video' : ''} ${additionalClass || ''}`} id={`post_${id}`} data-index={index}>
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
 				<PostMedia data={data} onLike={this.handleLike} />
 				<PostAction
