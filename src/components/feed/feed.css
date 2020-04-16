@@ -549,8 +549,8 @@
 }
 
 .react-responsive-modal-closeButton {
-	top: 0 !important;
-	right: -5% !important;
+	top: 0;
+	right: -5%;
 	filter: invert(1);
 }
 

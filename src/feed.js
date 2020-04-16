@@ -1,6 +1,8 @@
 import Feed from './components/feed/Feed'
-import './components/feed/feed.css'
+// eslint-disable-next-line
 import 'react-responsive-modal/styles.css'
+// eslint-disable-next-line
+import './components/feed/feed.css'
 import { h, options, render } from 'preact'
 
 options.debounceRendering = requestIdleCallback

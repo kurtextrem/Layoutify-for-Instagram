@@ -20,12 +20,18 @@ body {
 	z-index: unset !important;
 }
 
+/* Hide body when emulating share */
 .share {
-	display: none;
+	display: none !important;
+}
+
+.share ~ [role='presentation'] {
+	pointer-events: none;
 }
 
 .share ~ [role='presentation'] > [role='dialog'] {
 	height: auto;
+	pointer-events: all;
 }
 
 .share ~ [role='presentation'] > [role='dialog'] h1 + div > button {

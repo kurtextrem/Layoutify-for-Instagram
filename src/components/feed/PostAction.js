@@ -40,6 +40,7 @@ export default class PostAction extends Component {
 		this.setState({ open: true })
 	}
 
+	@bind
 	closeModal() {
 		this.setState({ open: false })
 	}

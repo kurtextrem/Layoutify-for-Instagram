@@ -556,7 +556,7 @@ function onReady() {
 	loadOptions()
 	onNavigate()
 
-	if (location.hash === 'share') {
+	if (location.hash === '#share') {
 		const $elem = $('article > div > section > span:first-child + span + button')
 		if ($elem === null) console.error('Share selector outdated')
 		else $elem.click()
