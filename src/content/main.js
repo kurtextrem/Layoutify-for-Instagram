@@ -159,6 +159,8 @@ function decideClass() {
 	if (pathname.indexOf('/stories/') !== -1) return (currentClass = 'stories')
 
 	// single post
+	if (location.hash === '#share') return (currentClass = 'post share')
+	if (location.hash === '#likes') return (currentClass = 'post likes')
 	if (pathname.indexOf('/p/') !== -1) return (currentClass = 'post')
 
 	// search results
@@ -187,8 +189,8 @@ function addClass() {
 	if (currentClass === '' || root.classList.contains(currentClass)) return
 
 	// @TODO what if we use data-class for this instead?
-	root.classList.remove('home', 'profile', 'post', 'explore', 'stories', 'tv', 'twoFA', 'dms')
-	root.classList.add(currentClass)
+	root.classList.remove('home', 'profile', 'post', 'explore', 'stories', 'tv', 'twoFA', 'dms', 'live', 'share', 'likes')
+	root.classList.add(...currentClass.split(' '))
 }
 
 const Instagram = {
@@ -554,7 +556,11 @@ function onReady() {
 	loadOptions()
 	onNavigate()
 
-	addFeedDiv()
+	if (location.hash === 'share') {
+		const $elem = $('article > div > section > span:first-child + span + button')
+		if ($elem === null) console.error('Share selector outdated')
+		else $elem.click()
+	} else addFeedDiv()
 
 	addChromeListener()
 }

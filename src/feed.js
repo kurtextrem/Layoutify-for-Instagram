@@ -1,5 +1,6 @@
 import Feed from './components/feed/Feed'
 import './components/feed/feed.css'
+import 'react-responsive-modal/styles.css'
 import { h, options, render } from 'preact'
 
 options.debounceRendering = requestIdleCallback

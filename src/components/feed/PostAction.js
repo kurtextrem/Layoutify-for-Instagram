@@ -2,11 +2,16 @@ import Heart from './Heart'
 import PlayButton from './PlayButton'
 import PropTypes from 'prop-types'
 import Save from './Save'
+import Share from './Share'
 import Username from './Username'
+import bind from 'autobind-decorator'
 import { Component, Fragment, h } from 'preact'
+import { Modal } from 'react-responsive-modal'
 import { shallowDiffers } from '../Utils'
 
 export default class PostAction extends Component {
+	state = { open: false }
+
 	returnLiked(value, index) {
 		const node = value.node,
 			username = node.username
@@ -26,8 +31,21 @@ export default class PostAction extends Component {
 		)
 	}
 
+	@bind
+	handleShare() {
+		this.openModal()
+	}
+
+	openModal() {
+		this.setState({ open: true })
+	}
+
+	closeModal() {
+		this.setState({ open: false })
+	}
+
 	shouldComponentUpdate(nextProperties, nextState) {
-		return shallowDiffers(nextProperties, this.props)
+		return nextState.open !== this.state.open || shallowDiffers(nextProperties, this.props)
 	}
 
 	render() {
@@ -35,15 +53,18 @@ export default class PostAction extends Component {
 
 		const count = is_video ? video_view_count : like_media?.count
 
-		// @todo: On Share click -> load iframe /p/ with #share -> content script then clicks on share button. Size 1:1 to the share dialogue size
+		const { open } = this.state
 
 		return (
 			<div class="ige_actions_container d-flex f-row a-center px-12">
 				<button type="button" class="ige_button" onClick={onLike}>
-					<Heart width={24} height={24} fill="#262626" active={hasLiked} />
+					<Heart size={24} fill="#262626" active={hasLiked} />
+				</button>
+				<button type="button" class="ige_button" onClick={this.handleShare}>
+					<Share size={24} />
 				</button>
 				<button type="button" class="ige_button" onClick={onSave}>
-					<Save width={24} height={24} active={hasSaved} />
+					<Save size={24} active={hasSaved} />
 				</button>
 				<div class="ml-auto d-block ige_action_amount">
 					<a href={'/p/' + shortcode + '/'} class="color-inherit">
@@ -54,6 +75,9 @@ export default class PostAction extends Component {
 						</>
 					</a>
 				</div>
+				<Modal open={open} onClose={this.closeModal} center>
+					<iframe src={open ? '/p/' + shortcode + '/#share' : undefined} class="ige_iframe" />
+				</Modal>
 			</div>
 		)
 	}

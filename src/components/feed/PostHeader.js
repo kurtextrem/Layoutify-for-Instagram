@@ -27,7 +27,7 @@ export default class PostHeader extends Component {
 
 		const userHref = '/' + username + '/'
 
-		// @todo Portal popup on timestamp click?
+		// @todo Portal popup on timestamp|like (#like) click?
 
 		return (
 			<header class="ige_header px-12">

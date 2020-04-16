@@ -17,7 +17,7 @@
 			"matches": ["*://*.instagram.com/*"],
 			"js": ["content/InstagramAPI.js", "content/start.js", "content/main.js"],
 			"run_at": "document_idle",
-			"all_frames": false
+			"all_frames": true
 		},
 		{
 			"matches": ["*://*.instagram.com/"],

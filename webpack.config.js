@@ -76,17 +76,24 @@ const plugins = [
 		{
 			from: '*.json',
 			transform: (content, path) => {
-				if (!path.includes('manifest.json') || !isProduction) return content
+				if (!isProduction || !path.includes('manifest.json')) return content
 
 				return replaceBuffer(
 					content,
-					"script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
-					"script-src 'self'; object-src 'self'"
+					"\"content_security_policy\": \"script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'\",",
+					''
 				)
 			},
 		},
 		{ from: 'img/*.png' },
-		{ from: 'content/*' },
+		{
+			from: 'content/*',
+			transform: (content, path) => {
+				if (!isProduction || !path.includes('start.js')) return content
+
+				return replaceBuffer(content, "'vendors.bundle.js', ", '')
+			},
+		},
 		{ from: '_locales/**' },
 	]),
 ]

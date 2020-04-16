@@ -20,6 +20,18 @@ body {
 	z-index: unset !important;
 }
 
+.share {
+	display: none;
+}
+
+.share ~ [role='presentation'] > [role='dialog'] {
+	height: auto;
+}
+
+.share ~ [role='presentation'] > [role='dialog'] h1 + div > button {
+	display: none; /* Hide first X icon, as we want the user to use our X icon */
+}
+
 .ige_hideOverflow {
 	overflow-y: hidden !important;
 }

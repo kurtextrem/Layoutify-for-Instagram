@@ -537,6 +537,23 @@
 	color: rgba(var(--gray, 142, 142, 142), 1) !important;
 }
 
+.ige_iframe {
+	width: 38vw;
+	height: 68vh;
+	border-radius: 12px;
+}
+
+.react-responsive-modal-modal {
+	padding: 0;
+	border-radius: 12px;
+}
+
+.react-responsive-modal-closeButton {
+	top: 0 !important;
+	right: -5% !important;
+	filter: invert(1);
+}
+
 /*=============================================
 								Mac OS Scrollbar
 =============================================*/
