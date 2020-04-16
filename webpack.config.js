@@ -70,7 +70,6 @@ const html = {
 const plugins = [
 	//new webpack.ProgressPlugin(),
 	new HtmlWebpackPlugin(html),
-	new MiniCssExtractPlugin(),
 	new CopyWebpackPlugin([
 		{ from: '*.html' },
 		{
@@ -86,14 +85,7 @@ const plugins = [
 			},
 		},
 		{ from: 'img/*.png' },
-		{
-			from: 'content/*',
-			transform: (content, path) => {
-				if (!isProduction || !path.includes('start.js')) return content
-
-				return replaceBuffer(content, "'vendors.bundle.js', ", '')
-			},
-		},
+		{ from: 'content/*' },
 		{ from: '_locales/**' },
 	]),
 ]
@@ -150,6 +142,7 @@ if (isProduction) {
 			prepack: { delayUnsupportedRequires: true, abstractEffectsInAdditionalFunctions: true, reactEnabled: true },
 		}), // 04.05.18: Not compatible with Webpack 4; 28.01.2018: Error: PP0001: This operation is not yet supported on document at createAttributeNS at 1:49611 to 1:49612
 		*/
+		new MiniCssExtractPlugin(),
 		new PurgecssPlugin({
 			paths: glob.sync([`src/**`, `dist/**`], {
 				ignore: ['content/*'],
@@ -259,12 +252,11 @@ const first = {
 			{
 				test: /\.cs{2}$/, // .css
 				use: [
-					{
-						loader: MiniCssExtractPlugin.loader,
-						options: {
-							hmr: !isProduction,
-						},
-					},
+					isProduction
+						? {
+								loader: MiniCssExtractPlugin.loader,
+						  }
+						: 'style-loader',
 					'css-loader',
 				],
 			},
