@@ -521,25 +521,6 @@ main > section > div:first-child:not(#rcr-anchor) {
 }
 
 /* Sidebar container */
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
-		top: 50px !important;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 45px;
-		padding-bottom: 45px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: 0 0 8px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	top: 50px !important;
 	left: unset !important;
@@ -553,7 +534,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	border-bottom-left-radius: 4px;
 	box-shadow: 0 0 8px 0 #bdbdbd;
 	transform: translateX(80%);
-	transition: transform 300ms ease-out, opacity 300ms ease-out;
+	transition: transform, opacity, right 300ms ease-out;
 	contain: content;
 }
 
@@ -567,8 +548,8 @@ canvas {
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover,
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:focus {
+	right: 235px !important;
 	background-color: var(--primary);
-	transform: translateX(0%);
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover > div,
@@ -885,13 +866,6 @@ footer > div > nav {
 	border-top: 0;
 	opacity: 0;
 	transition: opacity 400ms ease-out;
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	.ige_picturesOnly.home + #ige_feed article > .ige_actions_container,
-	.ige_picturesOnly.home + #ige_feed article > .ige_footer {
-		transition: none;
-	}
 }
 
 .ige_picturesOnly.home header + div + div > div:first-of-type:not(:only-child) {

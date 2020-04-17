@@ -524,6 +524,17 @@ function addFeedDiv() {
 }
 
 /**
+ *
+ */
+function clickShare(tries) {
+	const $elem = $('article > div > section > span:first-child + span + button')
+	if ($elem === null) {
+		console.error('Share selector outdated')
+		if (tries < 3) window.setTimeout(() => clickShare(tries + 1), tries * 100)
+	} else $elem.click()
+}
+
+/**
  * Callback when nodes are removed/inserted.
  */
 function onChange() {
@@ -557,9 +568,7 @@ function onReady() {
 	onNavigate()
 
 	if (location.hash === '#share') {
-		const $elem = $('article > div > section > span:first-child + span + button')
-		if ($elem === null) console.error('Share selector outdated')
-		else $elem.click()
+		window.requestAnimationFrame(() => clickShare(0))
 	} else addFeedDiv()
 
 	addChromeListener()
