@@ -523,6 +523,7 @@ main > section > div:first-child:not(#rcr-anchor) {
 /* Sidebar container */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	top: 50px !important;
+	right: 0;
 	left: unset !important;
 	z-index: 10;
 	height: auto !important;
@@ -534,7 +535,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	border-bottom-left-radius: 4px;
 	box-shadow: 0 0 8px 0 #bdbdbd;
 	transform: translateX(80%);
-	transition: transform, opacity, right 300ms ease-out;
+	transition: transform 300ms ease-out, opacity 300ms ease-out, right 300ms ease-out;
 	contain: content;
 }
 
@@ -548,8 +549,9 @@ canvas {
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover,
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:focus {
-	right: 235px !important;
 	background-color: var(--primary);
+	/*right: 235px !important;*/
+	transform: translateX(0);
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover > div,
@@ -900,7 +902,10 @@ footer > div > nav {
 /*----------  NoSpaceBetweenPosts  ----------*/
 .ige_noSpaceBetweenPosts main > section div > article,
 .ige_noSpaceBetweenPosts + #ige_feed .ige_post {
-	margin: 0 !important;
+	margin-top: 0.3px !important;
+	margin-right: 0.3px !important;
+	margin-bottom: 0.4px !important;
+	margin-left: 0.3px !important;
 	border-bottom: transparent !important;
 	border-radius: 0 !important;
 }
