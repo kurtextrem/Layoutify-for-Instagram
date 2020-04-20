@@ -9,6 +9,16 @@ import { Fragment, h } from 'preact'
 import { shallowDiffers } from '../Utils'
 //import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
 
+/**
+ *
+ */
+function promiseReq(req) {
+	return new Promise((resolve, reject) => {
+		req.onsuccess = () => resolve(req.result)
+		req.onerror = () => reject(req.error)
+	})
+}
+
 class Stories extends FetchComponent {
 	static fetchObj = {
 		highlight_reel_ids: [],
@@ -28,7 +38,7 @@ class Stories extends FetchComponent {
 		this.queryID = 'f5dc1457da7a4d3f88762dae127e0238' // stories query id // @TODO Update regularely, last check 20.04.2020
 		this.state.cursor = 0
 
-		this.db = async () => window.indexedDB.open('redux', 1) // they store reel IDs in the redux DB, until... I don't know, not sure how they invalidate, maybe SW
+		this.db = promiseReq(window.indexedDB.open('redux', 1)) // they store reel IDs in the redux DB, until... I don't know, not sure how they invalidate, maybe SW
 
 		this.SentinelWithObserver = withIntersectionObserver(Sentinel, {
 			//delay: 16,
@@ -43,11 +53,11 @@ class Stories extends FetchComponent {
 
 	async fetchNext(cb) {
 		const db = await this.db
-		const reels = await db.result.transaction('paths').objectStore('paths').get('stories.feedTray')
-		const len = reels.result.length
+		const reels = await promiseReq(db.transaction('paths').objectStore('paths').get('stories.feedTray'))
+		const len = reels.length
 
 		const obj = { ...Stories.fetchObj }
-		obj.reel_ids = reels.result.splice(this.state.cursor, 14)
+		obj.reel_ids = reels.splice(this.state.cursor, 14)
 
 		const response = await this.fetch('/graphql/query/?query_hash=' + this.queryID + '&variables=' + JSON.stringify(obj), {
 			headers: this.getHeaders(false),
@@ -83,6 +93,13 @@ class Stories extends FetchComponent {
 		return arr
 	}
 
+	componentDidMount() {
+		this.fetchNext()
+	}
+
+	@bind
+	handleArrowClick() {}
+
 	render() {
 		const { hasNextPage, isNextPageLoading } = this.state
 
@@ -95,10 +112,16 @@ class Stories extends FetchComponent {
 		// @TODO Unload out of viewport imgs/videos
 
 		return (
-			<div class="ige_stories">
+			<div class="ige_stories ige_post">
+				<div class="d-flex f-row ige_stories-heading">
+					<span>Neue Stories</span>
+					<a href="#" class="ml-auto">
+						Alle ansehen
+					</a>
+				</div>
 				<div class="ige_stories_container">
 					{this.renderItems()}
-					<Sentinel onVisible={loadMoreItems} />
+					{/*<Sentinel onVisible={loadMoreItems} />*/}
 					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.handleArrowClick}>
 						<Arrow direction="right" size="30" fill="gray" />
 					</button>

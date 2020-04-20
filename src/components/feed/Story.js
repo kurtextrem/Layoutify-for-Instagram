@@ -22,25 +22,24 @@ const Story = ({ data, additionalClass }) => {
 
 	return (
 		<>
-			<div class={'g8rEa eju6Z ' + additionalClass}>
-				<button class="_1rQDQ " role="menuitem" tabIndex="0" type="button" onClick={() => setOpen(true)}>
-					<div class="eN6wV _8BNxr ">
-						<img decoding="async" src={imgSrc} />
+			<div class={'ige_story ' + additionalClass}>
+				<button class="ige_story_container" role="menuitem" tabIndex="0" type="button" onClick={() => setOpen(true)}>
+					<div class="ige_story-img">
+						<img decoding="async" src={imgSrc} class="full-img br-6" />
 					</div>
-					<div class="eQXXr UaaDv">
-						<div class="RR-M- " role="button" tabIndex="0">
-							<canvas class="CfWVH" height="66" width="66" style="position: absolute; top: -5px; left: -5px; width: 66px; height: 66px;" />
-							<span class="_2dbep " role="link" tabIndex="0" style="width: 56px; height: 56px;">
-								<img alt={username + 's Profilbild'} class="_6q-tv" src={profile_pic_url} decoding="async" />
+					<div class="ige_story-avatar_container br-6">
+						<div role="button" tabIndex="0" class="d-flex a-center">
+							<span class="ige_story-avatar" role="link" tabIndex="0">
+								<img alt={username + 's Profilbild'} class="full-img br-50" src={profile_pic_url} decoding="async" />
 							</span>
 						</div>
-						<div class="uI5Pp FjOSf">{username}</div>
+						<div class="ige_story-username">{username}</div>
 					</div>
 				</button>
 			</div>
 			{isOpen ? (
-				<Modal open onClose={() => setOpen(false)}>
-					<iframe src={'/stories/' + username + '/'} class="ige_iframe ige_iframe-fullscreen" />
+				<Modal open onClose={() => setOpen(false)} center>
+					<iframe src={'/stories/' + username + '/#story'} class="ige_iframe ige_iframe-fullscreen" />
 				</Modal>
 			) : null}
 		</>

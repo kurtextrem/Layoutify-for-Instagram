@@ -45,6 +45,7 @@
 		"runtime.bundle.js",
 		"vendors.bundle.js",
 		"feed.bundle.js",
-		"feed.css"
+		"feed.css",
+		"img/story.png"
 	]
 }
