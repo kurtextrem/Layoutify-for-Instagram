@@ -38,8 +38,8 @@ const Story = ({ data, additionalClass }) => {
 				</button>
 			</div>
 			{isOpen ? (
-				<Modal open onClose={() => setOpen(false)} center>
-					<iframe src={'/stories/' + username + '/#story'} class="ige_iframe ige_iframe-fullscreen" />
+				<Modal open onClose={() => setOpen(false)} center classNames={{ modal: 'modal-full-height' }}>
+					<iframe src={'/stories/' + username + '/#story'} class="ige_iframe modal-full-height" />
 				</Modal>
 			) : null}
 		</>

@@ -1,5 +1,4 @@
 import FetchComponent from './FetchComponent'
-import Sentinel from './Sentinel'
 //import VirtualList from './VirtualList'
 import Arrow from './Arrow'
 import Story from './Story'
@@ -35,16 +34,11 @@ class Stories extends FetchComponent {
 	constructor(props) {
 		super(props)
 
+		this.db = null
+		this.itemAmount = 12
 		this.queryID = 'f5dc1457da7a4d3f88762dae127e0238' // stories query id // @TODO Update regularely, last check 20.04.2020
-		this.state.cursor = 0
-
-		this.db = promiseReq(window.indexedDB.open('redux', 1)) // they store reel IDs in the redux DB, until... I don't know, not sure how they invalidate, maybe SW
-
-		this.SentinelWithObserver = withIntersectionObserver(Sentinel, {
-			//delay: 16,
-			root: document.getElementById('ige_feed'),
-			trackVisibility: false,
-		})
+		this.state.cursor = props.cursor
+		this.state.page = props.cursor / 14
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
@@ -84,9 +78,11 @@ class Stories extends FetchComponent {
 
 	@bind
 	renderItems() {
-		const { items, prevCount } = this.state,
-			arr = []
-		for (const [i, current] of items.entries()) {
+		const { items, prevCount, page } = this.state,
+			arr = [],
+			len = Math.min(page * this.itemAmount + this.itemAmount, items.length)
+		for (let i = page; i <= len; ++i) {
+			const current = items[i]
 			arr.push(<Story data={current} key={current.id} additionalClass={i >= prevCount ? 'ige_fade' : ''} />)
 		}
 
@@ -94,37 +90,57 @@ class Stories extends FetchComponent {
 	}
 
 	componentDidMount() {
+		this.db = promiseReq(window.indexedDB.open('redux', 1)) // they store reel IDs in the redux DB, until... I don't know, not sure how they invalidate, maybe SW
 		this.fetchNext()
+		this.itemAmount = ~~(document.getElementById('ige_feed').clientWidth / 135)
 	}
 
 	@bind
-	handleArrowClick() {}
+	prevPage() {
+		this.setState(prevState => {
+			const page = prevState.page - 1
+			return {
+				page: page >= 0 ? page : 0,
+			}
+		})
+	}
+
+	@bind
+	nextPage() {
+		this.setState(prevState => {
+			const page = prevState.page + 1,
+				len = prevState.items.length
+			return {
+				page: page < len ? page : len,
+			}
+		})
+	}
 
 	render() {
-		const { hasNextPage, isNextPageLoading } = this.state
+		const { hasNextPage, page } = this.state
 
-		// Only load 1 page of items at a time.
-		// Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
-		const loadMoreItems = isNextPageLoading ? () => {} : () => this.loadNextPage(true)
-		const Sentinel = this.SentinelWithObserver
-
-		// @TODO Clone stories node & put in here; stories appear after 8th post usually, tag type div
 		// @TODO Unload out of viewport imgs/videos
 
 		return (
 			<div class="ige_stories ige_post">
 				<div class="d-flex f-row ige_stories-heading">
-					<span>Neue Stories</span>
-					<a href="#" class="ml-auto">
+					<span>New Stories</span>
+					{/*<a href="#" class="ml-auto">
 						Alle ansehen
-					</a>
+					</a>*/}
 				</div>
 				<div class="ige_stories_container">
+					{page > 0 ? (
+						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.prevPage}>
+							<Arrow direction="left" size="30" fill="gray" />
+						</button>
+					) : null}
 					{this.renderItems()}
-					{/*<Sentinel onVisible={loadMoreItems} />*/}
-					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.handleArrowClick}>
-						<Arrow direction="right" size="30" fill="gray" />
-					</button>
+					{hasNextPage ? (
+						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.nextPage}>
+							<Arrow direction="right" size="30" fill="gray" />
+						</button>
+					) : null}
 				</div>
 			</div>
 		)

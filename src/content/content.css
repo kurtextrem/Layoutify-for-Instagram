@@ -947,22 +947,22 @@ footer > div > nav {
 /*----------  NoSpaceBetweenPosts  ----------*/
 .ige_noSpaceBetweenPosts main > section div > article,
 .ige_noSpaceBetweenPosts + #ige_feed .ige_post {
-	margin-top: 0.3px !important;
-	margin-right: 0.3px !important;
-	margin-bottom: 0.4px !important;
-	margin-left: 0.3px !important;
-	border-bottom: transparent !important;
-	border-radius: 0 !important;
+	margin-top: 0.3px;
+	margin-right: 0.3px;
+	margin-bottom: 0.4px;
+	margin-left: 0.3px;
+	border-bottom: transparent;
+	border-radius: 0;
 }
 
-.ige_noSpaceBetweenPosts main > section div > article:not(:nth-child(4n + 1)),
-.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-child(4n + 1)) {
-	border-left-width: 0 !important;
+.ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n + 1)),
+.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n + 1)) {
+	border-left-width: 0;
 }
 
-.ige_noSpaceBetweenPosts main > section div > article:not(:nth-child(4n)),
-.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-child(4n)) {
-	border-right-width: 0 !important;
+.ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n)),
+.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n)) {
+	border-right-width: 0;
 }
 
 .ige_noSpaceBetweenPosts main > section > div:not(#rcr-anchor) > div:not([class]) > div {

@@ -550,13 +550,18 @@
 	border-radius: 12px;
 }
 
-.ige_iframe-fullscreen {
-	width: 100%;
-	height: 100%;
+.modal-full-height {
+	width: 93vw;
+	max-width: none;
+	height: 93vh;
+}
+
+.modal-full-height .react-responsive-modal-closeButton {
+	right: -2.5%;
 }
 
 .react-responsive-modal-overlay {
-	z-index: 10;
+	z-index: 11 !important;
 }
 
 .react-responsive-modal-modal {
@@ -580,8 +585,8 @@
 	max-width: 92vw;
 	height: auto;
 
-	margin-top: 1em;
-	margin-bottom: 1em;
+	margin-top: 1em !important;
+	margin-bottom: 1em !important;
 	padding: 8px 0 16px;
 	overflow-x: hidden;
 	overflow-y: hidden;

@@ -103,7 +103,7 @@ class Feed extends FetchComponent {
 		for (const [i, current] of items.entries()) {
 			arr.push(
 				current.node.__typename === 'GraphStoriesInFeedItem' ? (
-					<Stories key={current.node.id} additionalClass={i >= prevCount ? 'ige_fade' : ''} />
+					<Stories cursor={i < 10 ? 0 : 14} additionalClass={i >= prevCount ? 'ige_fade' : ''} key={current.node.id} />
 				) : (
 					<Post data={current.node} key={current.node.shortcode} additionalClass={i >= prevCount ? 'ige_fade' : ''} />
 				)
@@ -121,7 +121,6 @@ class Feed extends FetchComponent {
 		const loadMoreItems = isNextPageLoading ? () => {} : () => this.loadNextPage(true)
 		const Sentinel = this.SentinelWithObserver
 
-		// @TODO Clone stories node & put in here; stories appear after 8th post usually, tag type div
 		// @TODO Unload out of viewport imgs/videos
 
 		return (
