@@ -3,6 +3,7 @@ import Loading from '../Loading'
 import Post from './Post'
 import Sentinel from './Sentinel'
 //import VirtualList from './VirtualList'
+import Stories from './Stories'
 import bind from 'autobind-decorator'
 import withIntersectionObserver from './withIntersectionObserver'
 import { Fragment, h } from 'preact'
@@ -29,8 +30,8 @@ class Feed extends FetchComponent {
 		has_threaded_comments: true,
 	}
 
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 
 		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id // @TODO Update regularely, last check 13.04.2020
 
@@ -96,21 +97,13 @@ class Feed extends FetchComponent {
 	}
 
 	@bind
-	steal(index) {
-		// we need to scroll on load once to get the item & steal it after
-		// FIXME: Remove this empty box once virtual list supports flex
-		//return <div className="ige_post ige_stories_after" key={'i' + index} data-index={index} />
-		return null
-	}
-
-	@bind
 	renderItems() {
 		const { items, prevCount } = this.state,
 			arr = []
 		for (const [i, current] of items.entries()) {
 			arr.push(
 				current.node.__typename === 'GraphStoriesInFeedItem' ? (
-					this.steal(i)
+					<Stories key={current.node.id} additionalClass={i >= prevCount ? 'ige_fade' : ''} />
 				) : (
 					<Post data={current.node} key={current.node.shortcode} additionalClass={i >= prevCount ? 'ige_fade' : ''} />
 				)

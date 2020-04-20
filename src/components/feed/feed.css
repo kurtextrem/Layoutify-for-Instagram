@@ -550,6 +550,11 @@
 	border-radius: 12px;
 }
 
+ige_iframe-fullscreen {
+	width: 100vw;
+	height: 100vh;
+}
+
 .react-responsive-modal-modal {
 	padding: 0;
 	border-radius: 12px;
