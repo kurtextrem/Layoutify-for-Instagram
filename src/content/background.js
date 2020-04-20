@@ -67,10 +67,11 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 			if (header.name === 'User-Agent') {
 				// credit https://github.com/mgp25/Instagram-API/master/src/Constants.php
 				header.value =
-					'Instagram 107.0.0.27.121 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 104766893)'
+					'Instagram 136.0.0.34.124 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 104766893)'
 			} else if (header.name === 'Cookie') {
-				// add auth cookies to authenticate API requests
-				header.value = `${header.value}; sessionid=${sessionid}`
+				if (header.value.indexOf('sessionid=') === -1)
+					// add auth cookies to authenticate API requests
+					header.value = `${header.value}; sessionid=${sessionid}`
 			}
 		}
 
@@ -78,7 +79,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 	},
 	{
 		types: ['xmlhttprequest'],
-		urls: ['https://i.instagram.com/*'],
+		urls: ['https://i.instagram.com/api/v1/feed/*'],
 	},
 	['blocking', 'requestHeaders', 'extraHeaders']
 )
@@ -87,7 +88,7 @@ chrome.webRequest.onHeadersReceived.addListener(
 	modifyCspHeaders,
 	{
 		types: ['xmlhttprequest'],
-		urls: ['https://i.instagram.com/*'],
+		urls: ['https://i.instagram.com/api/v1/feed/*'],
 	},
 	['blocking', 'responseHeaders', 'extraHeaders']
 )
