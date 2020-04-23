@@ -49,17 +49,6 @@ class Feed extends FetchComponent {
 		return shallowDiffers(this.state, nextState)
 	}
 
-	@bind
-	loadNextPage(userInitiated) {
-		if (this.state.isNextPageLoading) return
-
-		this.setState({ isNextPageLoading: true }, () => {
-			this.fetchNext(() => {
-				if (userInitiated) requestIdleCallback(() => this.loadNextPage(false)) // preload next
-			})
-		})
-	}
-
 	async fetchNext(cb) {
 		const obj = { ...Feed.fetchObj }
 		obj.fetch_media_item_cursor = this.state.cursor

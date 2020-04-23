@@ -54,6 +54,7 @@ export default class Post extends FetchComponent {
 		)
 	}
 
+	@bind
 	post(action) {
 		const path = action.indexOf('like') !== -1 ? 'likes' : action.replace('un', '') // like -> likes; unsave -> save; ...
 

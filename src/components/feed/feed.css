@@ -358,6 +358,7 @@
 .ige_carousel-btn {
 	position: absolute;
 	top: 50%;
+	z-index: 2;
 	padding: 0;
 	transform: translateY(-50%);
 }
@@ -430,6 +431,7 @@
 
 .ige_show_tagged > .ige_taggedUser {
 	opacity: 1;
+	pointer-events: all;
 }
 
 .ige_post-comments .ige_button {
