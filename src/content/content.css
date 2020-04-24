@@ -684,6 +684,13 @@ section > footer + div {
 	height: auto; /* no need for the black fading background */
 	padding: 0 5px 0 15px;
 	background: none;
+	transform: translateY(65px);
+	transition: transform 200ms ease-out;
+}
+
+.stories section > header + div + div:last-child:hover > button + button + div:last-child,
+.stories section > header + div + div:last-child:focus > button + button + div:last-child {
+	transform: translateY(0);
 }
 
 /*=============================================
@@ -968,12 +975,14 @@ footer > div > nav {
 }
 
 .ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n + 1)),
-.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n + 1)) {
+.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n + 1)),
+.ige_noSpaceBetweenPosts + #ige_feed div ~ .ige_post:not(:nth-of-type(4n + 1)) {
 	border-left-width: 0;
 }
 
 .ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n)),
-.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n)) {
+.ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n)),
+.ige_noSpaceBetweenPosts + #ige_feed div ~ .ige_post:not(:nth-of-type(4n)) {
 	border-right-width: 0;
 }
 
