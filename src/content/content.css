@@ -675,6 +675,18 @@ section > footer + div {
 }
 
 /*=============================================
+										Stories
+=============================================*/
+/** Reply box + send */
+.stories section > header + div + div:last-child > button + button + div:last-child {
+	bottom: 65px;
+	z-index: 2;
+	height: auto; /* no need for the black fading background */
+	padding: 0 5px 0 15px;
+	background: none;
+}
+
+/*=============================================
 										Post
 =============================================*/
 /** Enlargen modal */
