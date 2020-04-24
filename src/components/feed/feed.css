@@ -558,6 +558,30 @@
 	height: 93vh;
 }
 
+.modal-story,
+.modal-story > iframe {
+	width: auto;
+	max-width: none;
+	height: 90vh;
+	margin-top: 5vh;
+}
+
+/* give the iframe a border-radius */
+.modal-story > div {
+	width: 29.5vw;
+	overflow: hidden;
+	border-radius: inherit;
+}
+
+.modal-story iframe {
+	width: 30vw;
+	margin-top: 0;
+}
+
+.modal-story > .react-responsive-modal-closeButton {
+	right: -6%;
+}
+
 .modal-full-height .react-responsive-modal-closeButton {
 	right: -2.5%;
 }

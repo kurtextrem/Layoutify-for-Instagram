@@ -47,6 +47,10 @@ class Stories extends FetchComponent {
 		this.state.page = props.cursor / 14
 	}
 
+	shouldComponentUpdate(nextProperties, nextState) {
+		return shallowDiffers(this.props, nextProperties) || shallowDiffers(this.state, nextState)
+	}
+
 	@bind
 	async fetchNext(cb) {
 		const obj = { ...Stories.fetchObj }
@@ -146,9 +150,9 @@ class Stories extends FetchComponent {
 		this.setState(
 			prevState => {
 				const page = prevState.page + 1,
-					len = prevState.items.length
+					len = Stories.reelsRank.size
 				return {
-					page: page < len ? page : len,
+					page: page * Stories.itemAmount < len ? page : len,
 				}
 			},
 			() => this.loadNextPage(true)
@@ -170,22 +174,20 @@ class Stories extends FetchComponent {
 					</a>*/}
 				</div>
 				<div class="ige_stories_container">
-					{page > 0 ? (
+					{/*page > 0 ? (
 						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.prevPage}>
 							<Arrow direction="left" size="30" fill="gray" />
 						</button>
-					) : null}
+					) : null*/}
 					{items}
-					{hasNextPage ? (
+					{/*hasNextPage ? (
 						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.nextPage}>
 							<Arrow direction="right" size="30" fill="gray" />
 						</button>
-					) : null}
+					) : null*/}
 				</div>
 			</div>
 		)
-
-		//return <VirtualList itemCount={items.length / 8} renderItems={this.renderItems} className="ige_virtual" />
 	}
 }
 

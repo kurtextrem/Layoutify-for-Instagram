@@ -156,6 +156,7 @@ function decideClass() {
 	if (pathname === '/') return (currentClass = 'home')
 
 	// stories
+	if (location.hash === '#story') return (currentClass = 'stories story')
 	if (pathname.indexOf('/stories/') !== -1) return (currentClass = 'stories')
 
 	// single post

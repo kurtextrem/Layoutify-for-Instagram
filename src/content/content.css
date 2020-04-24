@@ -685,12 +685,16 @@ section > footer + div {
 	padding: 0 5px 0 15px;
 	background: none;
 	transform: translateY(65px);
-	transition: transform 200ms ease-out;
+	transition: transform 230ms ease-out;
 }
 
 .stories section > header + div + div:last-child:hover > button + button + div:last-child,
 .stories section > header + div + div:last-child:focus > button + button + div:last-child {
 	transform: translateY(0);
+}
+
+.story .coreSpriteCloseLight {
+	display: none;
 }
 
 /*=============================================
