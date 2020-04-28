@@ -558,8 +558,7 @@
 	height: 93vh;
 }
 
-.modal-story,
-.modal-story > iframe {
+.modal-story {
 	width: auto;
 	max-width: none;
 	height: 90vh;
@@ -575,6 +574,7 @@
 
 .modal-story iframe {
 	width: 30vw;
+	height: 90vh;
 	margin-top: 0;
 }
 

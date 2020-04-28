@@ -174,17 +174,17 @@ class Stories extends FetchComponent {
 					</a>*/}
 				</div>
 				<div class="ige_stories_container">
-					{/*page > 0 ? (
+					{page > 0 ? (
 						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.prevPage}>
 							<Arrow direction="left" size="30" fill="gray" />
 						</button>
-					) : null*/}
+					) : null}
 					{items}
-					{/*hasNextPage ? (
+					{hasNextPage ? (
 						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.nextPage}>
 							<Arrow direction="right" size="30" fill="gray" />
 						</button>
-					) : null*/}
+					) : null}
 				</div>
 			</div>
 		)

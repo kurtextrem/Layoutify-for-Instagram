@@ -431,13 +431,7 @@ const OPTS_MODE = {
 			injectCSS('night')
 	},
 	notify(argument) {
-		const now = Date.now(),
-			last = window.sessionStorage.ige_lastFetch !== undefined ? +window.sessionStorage.ige_lastFetch : 0
-
-		if (now - last > 60000) {
-			window.sessionStorage.ige_lastFetch = now
-			chrome.runtime.sendMessage(null, { action: 'watchNow' })
-		}
+		chrome.runtime.sendMessage(null, { action: 'watchNow' })
 	},
 	only3Dot(argument) {
 		$('#ige_style').remove()

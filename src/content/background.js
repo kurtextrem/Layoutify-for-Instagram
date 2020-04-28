@@ -264,7 +264,13 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 			break
 
 		case 'watchNow':
-			getWatchlist()
+			const now = Date.now(),
+				last = window.sessionStorage.ige_lastFetch !== undefined ? +window.sessionStorage.ige_lastFetch : 0
+
+			if (now - last > 180000) {
+				window.sessionStorage.ige_lastFetch = now
+				getWatchlist()
+			}
 			break
 
 		case 'watchInBackground':
@@ -292,7 +298,7 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 function createUpdateAlarm(when) {
 	chrome.alarms.create('update', {
 		delayInMinutes: when ? undefined : 1,
-		periodInMinutes: 15, // @todo if this is below 20, and we watch over N people, this seems to break profiles sometimes -> 404
+		periodInMinutes: 18, // @todo if this is below 20, and we watch over N people, this seems to break profiles sometimes -> 404
 		when: when || undefined,
 	})
 }
@@ -444,7 +450,7 @@ function handlePost(json, user, userObject, watchData, options) {
 		.then(values => {
 			options.iconUrl = values[0]
 			options.imageUrl = values[1]
-			return chrome.notifications.create(`post;/p/${id}/`, options, nId => {
+			return chrome.notifications.create(`post;p/${id}/`, options, nId => {
 				if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
 				URL.revokeObjectURL(values[0])
 				URL.revokeObjectURL(values[1])
@@ -479,7 +485,7 @@ function handleStory(json, user, userObject, watchData, options) {
 		getBlobUrl(reel.owner.profile_pic_url)
 			.then(url => {
 				options.iconUrl = url
-				return chrome.notifications.create(`story;/stories/${user}`, options, nId => {
+				return chrome.notifications.create(`story;stories/${user}/`, options, nId => {
 					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
 					URL.revokeObjectURL(url)
 					// @todo: Maybe clear notification?
