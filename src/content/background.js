@@ -440,7 +440,7 @@ function handlePost(json, user, userObject, watchData, options) {
 		return
 	}
 
-	console.log(user, 'new post', json.graphql.user)
+	console.log(user, 'new post', node, userObject.post)
 	watchData[user].post = id
 
 	options.type = 'image'

@@ -102,7 +102,7 @@ export default class Post extends FetchComponent {
 			user:
 				followed_by_viewer // !
 				is_private				// !
-		 
+
 				requested_by_viewer
 				blocked_by_viewer
 				has_blocked_viewer
@@ -132,7 +132,11 @@ export default class Post extends FetchComponent {
 		const comments = edge_media_preview_comment.edges?.concat(additionalComments)
 
 		return (
-			<article class={`ige_post ${is_video ? 'ige_post_video' : ''} ${additionalClass || ''}`} id={`post_${id}`} data-index={index}>
+			<article
+				class={`ige_post ${is_video ? 'ige_post_video' : ''} ${additionalClass || ''}`}
+				id={`post_${id}`}
+				data-index={index}
+				rendersubtree="activatable">
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
 				<PostMedia data={data} onLike={this.handleLike} />
 				<PostAction
