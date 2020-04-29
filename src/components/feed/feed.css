@@ -311,7 +311,7 @@
 }
 
 .ige_actions_container {
-	z-index: 1;
+	z-index: 3;
 	height: 40px;
 	/*contain: strict; @fixme */
 }
@@ -377,8 +377,6 @@
 	right: 0;
 	bottom: -1.7em;
 	left: 0;
-
-	z-index: 0;
 	flex-direction: row;
 	justify-content: center;
 	text-align: center;
