@@ -83,16 +83,22 @@ class Stories extends FetchComponent {
 		console.log(Stories.reels)
 		console.log(Stories.reelsRank)
 
-		this.setState((prevState, props) => {
-			const nextCursor = prevState.cursor + 14
-			return {
-				cursor: prevState.cursor + 14,
-				hasNextPage: nextCursor < Stories.reelsRank.size,
-				isNextPageLoading: false,
-				nextCount: prevState.nextCount + nextItems.length,
-				prevCount: prevState.nextCount,
+		this.setState(
+			(prevState, props) => {
+				const nextCursor = prevState.cursor + 14
+				return {
+					cursor: prevState.cursor + 14,
+					hasNextPage: nextCursor < Stories.reelsRank.size,
+					isNextPageLoading: false,
+					nextCount: prevState.nextCount + nextItems.length,
+					prevCount: prevState.nextCount,
+				}
+			},
+			() => {
+				this.isNextPageLoading = false
+				cb()
 			}
-		}, cb)
+		)
 	}
 
 	@bind

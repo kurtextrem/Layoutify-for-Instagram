@@ -7,6 +7,8 @@ import { Component, h } from 'preact'
 export default class FetchComponent extends Component {
 	static rolloutHash = window._cached_shared_Data?.rollout_hash || window._sharedData?.rollout_hash || '<unknown>'
 
+	isNextPageLoading = false
+
 	state = {
 		cursor: undefined,
 		hasNextPage: true,
@@ -36,7 +38,8 @@ export default class FetchComponent extends Component {
 
 	@bind
 	loadNextPage(userInitiated) {
-		if (this.state.isNextPageLoading) return
+		if (this.isNextPageLoading) return
+		this.isNextPageLoading = true
 
 		this.setState({ isNextPageLoading: true }, () => {
 			this.fetchNext(() => {

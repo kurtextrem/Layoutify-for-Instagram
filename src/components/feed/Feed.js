@@ -64,17 +64,23 @@ class Feed extends FetchComponent {
 
 		const nextCursor = response?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor
 
-		this.setState((prevState, props) => {
-			const nextItems = prevState.items.concat(response.data.user.edge_web_feed_timeline.edges)
-			return {
-				cursor: nextCursor,
-				hasNextPage: nextCursor !== undefined,
-				isNextPageLoading: false,
-				items: nextItems,
-				nextCount: nextItems.length,
-				prevCount: prevState.nextCount,
+		this.setState(
+			(prevState, props) => {
+				const nextItems = prevState.items.concat(response.data.user.edge_web_feed_timeline.edges)
+				return {
+					cursor: nextCursor,
+					hasNextPage: nextCursor !== undefined,
+					isNextPageLoading: false,
+					items: nextItems,
+					nextCount: nextItems.length,
+					prevCount: prevState.nextCount,
+				}
+			},
+			() => {
+				this.isNextPageLoading = false
+				cb()
 			}
-		}, cb)
+		)
 	}
 
 	componentDidUpdate() {
