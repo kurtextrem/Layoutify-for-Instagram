@@ -96,13 +96,19 @@ class Feed extends FetchComponent {
 		const { items, prevCount } = this.state,
 			arr = []
 		for (const [i, current] of items.entries()) {
-			arr.push(
-				current.node.__typename === 'GraphStoriesInFeedItem' ? (
-					<Stories cursor={i < 10 ? 0 : 14} additionalClass={i >= prevCount ? 'ige_fade' : ''} key={current.node.id} />
-				) : (
-					<Post data={current.node} key={current.node.shortcode} additionalClass={i >= prevCount ? 'ige_fade' : ''} />
-				)
-			)
+			const type = current.node.__typename
+			if (type !== 'GraphImage' && type !== 'GraphSidecar' && type !== 'GraphVideo' && type !== 'GraphStoriesInFeedItem') {
+				console.info('New typename:', current.node.__typename)
+				continue
+			}
+
+			if (i === 8 || i === 24)
+				// two rows, so stories can load out of view
+				arr.push(<Stories cursor={i < 10 ? 0 : 14} additionalClass={i >= prevCount ? 'ige_fade' : ''} key={current.node.id} />)
+
+			if (type === 'GraphStoriesInFeedItem') continue
+
+			arr.push(<Post data={current.node} key={current.node.shortcode} additionalClass={i >= prevCount ? 'ige_fade' : ''} />)
 		}
 
 		return arr

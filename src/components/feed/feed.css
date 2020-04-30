@@ -220,7 +220,7 @@
 
 .img--wrapper > div[data-active] {
 	position: static;
-	transform: none;
+	transform: translateX(0);
 }
 
 .img-fluid {

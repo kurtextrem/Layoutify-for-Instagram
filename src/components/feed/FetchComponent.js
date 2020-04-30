@@ -38,7 +38,7 @@ export default class FetchComponent extends Component {
 
 	@bind
 	loadNextPage(userInitiated) {
-		if (this.isNextPageLoading) return
+		if (this.isNextPageLoading) return window.setTimeout(() => this.loadNextPage(userInitiated), 1000)
 		this.isNextPageLoading = true
 
 		this.setState({ isNextPageLoading: true }, () => {

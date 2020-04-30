@@ -131,6 +131,7 @@ export default class Post extends FetchComponent {
 		const text = edge_media_to_caption?.edges[0]?.node?.text
 		const comments = edge_media_preview_comment.edges?.concat(additionalComments)
 
+		// @TODO Preload next page when idling (no scroll) for 3 sec
 		return (
 			<article
 				class={`ige_post ${is_video ? 'ige_post_video' : ''} ${additionalClass || ''}`}
