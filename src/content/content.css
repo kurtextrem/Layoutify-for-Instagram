@@ -688,9 +688,13 @@ section > footer + div {
 	transition: transform 230ms ease-out;
 }
 
-.stories section > header + div + div:last-child:hover > button + button + div:last-child,
-.stories section > header + div + div:last-child:focus > button + button + div:last-child {
+.stories section > header + div + div:last-child > button:first-child + div:hover ~ button + button + div:last-child,
+.stories section > header + div + div:last-child > button:first-child + div:focus ~ button + button + div:last-child {
 	transform: translateY(0);
+}
+
+video::-webkit-media-controls:not(.audio-only) div[pseudo='-webkit-media-controls-panel' i] {
+	background-size: auto 69px;
 }
 
 .story .coreSpriteCloseLight {
