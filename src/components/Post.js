@@ -94,10 +94,19 @@ export default class Post extends FeedPost {
 		}
 
 		return (
-			<article class={`card${active ? '' : ' fadeOut'}`} id={`post_${this.id}`}>
+			<article class={`card${active ? '' : ' fadeOut'}`} id={`post_${this.id}`} rendersubtree="activatable">
 				<PostHeader user={user} code={code} taken_at={taken_at} />
 				<PostMedia data={dataProxy} onLike={this.handleLike} />
-				<PostAction like_media={{ count: like_count }} shortcode={code} is_video={dataProxy.is_video} video_view_count={view_count} hasLiked={hasLiked} hasSaved={hasSaved} onLike={this.handleLike} onSave={this.handleSave} />
+				<PostAction
+					like_media={{ count: like_count }}
+					shortcode={code}
+					is_video={dataProxy.is_video}
+					video_view_count={view_count}
+					hasLiked={hasLiked}
+					hasSaved={hasSaved}
+					onLike={this.handleLike}
+					onSave={this.handleSave}
+				/>
 				<CardBody class="overflow-auto p-3 card-body">
 					<CardText>{text}</CardText>
 				</CardBody>
