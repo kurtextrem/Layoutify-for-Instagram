@@ -1,7 +1,7 @@
 import { h } from 'preact'
 import { memo, useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'preact/compat'
 
-const Sentinel = ({ observer }) => {
+const Sentinel = ({ observer, className }) => {
 	const ref = useRef(null)
 	const setRef = useCallback(node => {
 		ref.current = node
@@ -15,9 +15,7 @@ const Sentinel = ({ observer }) => {
 		}
 	}, [observer, ref])
 
-	// index === 0 -> disabled = lastChunk < 3
-
-	return <div className="sentinel-start" ref={setRef} />
+	return <div class={className} ref={setRef} />
 }
 
 const useIntersect = ({ root = null, rootMargin = '', threshold = 0 } = {}) => {
@@ -61,7 +59,7 @@ const useIntersect = ({ root = null, rootMargin = '', threshold = 0 } = {}) => {
 
 // VirtualScroll component
 const VirtualScroll = ({ itemCount, className, renderItems }) => {
-	const endObserver = new IntersectionObserver(endCallback, options) // just two observers
+	const endObserver = useIntersect(endCallback, options) // just two observers
 	const endTarget = document.querySelector('.sentinel')
 	endObserver.observe(endTarget)
 
@@ -71,7 +69,7 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 
 	const chunks = useRef([
 		{
-			items: [],
+			items: { end: 0, start: 8 },
 			offset: 0,
 		},
 	])
@@ -81,21 +79,19 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 	const startFlag = useRef(false)
 
 	let endCallback = function (entries, observer) {
-		if (entries[0].intersectionRatio > 0) {
-			let newChunks = { ...chunks }
-			newChunks = Object.keys(newChunks).map(function (key) {
-				return newChunks[key]
+		if (entries[0].isIntersecting) {
+			const currentLastChunk = lastChunk.current
+			const currentOffsets = offsets.current
+
+			const len = chunks.current.push({
+				items: { end: (currentLastChunk + 1) * 15, start: currentLastChunk * 15 },
+				offset: currentOffsets[currentLastChunk] + document.querySelector('.sentinel').offsetTop + 1000,
 			})
-			newChunks.push({
-				items: data.slice(lastChunk * 15, (lastChunk + 1) * 15),
-				offset: offsets[lastChunk] + document.querySelector('.sentinel').offsetTop + 1000,
-			})
-			offsets[lastChunk + 1] = offsets[lastChunk] + document.querySelector('.sentinel').offsetTop + 1000
-			if (newChunks.length > 2) {
-				newChunks.shift()
-			}
-			chunks = newChunks
-			lastChunk++
+			currentOffsets[currentLastChunk + 1] = currentOffsets[currentLastChunk] + document.querySelector('.sentinel').offsetTop + 1000
+
+			if (len > 2) chunks.current.shift()
+			++currentLastChunk
+
 			setTimeout(function () {
 				startObserver.observe(document.querySelector('.sentinel-start'))
 				endObserver.observe(document.querySelector('.sentinel'))
@@ -104,21 +100,20 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 	}
 
 	let startCallback = function (entries, observer) {
-		if (entries[0].intersectionRatio > 0) {
-			startFlag = true
-			let newChunks = { ...chunks }
-			newChunks = Object.keys(newChunks).map(function (key) {
-				return newChunks[key]
+		if (entries[0].isIntersecting) {
+			startFlag.current = true
+			const currentLastChunk = lastChunk.current
+
+			const len = chunks.current.unshift({
+				items: { end: (currentLastChunk - 2) * 15, start: (currentLastChunk - 2 - 1) * 15 },
+				offset: offsets.current['' + (currentLastChunk - 2)],
 			})
-			newChunks.unshift({
-				items: data.slice((lastChunk - 2 - 1) * 15, (lastChunk - 2) * 15),
-				offset: offsets['' + (lastChunk - 2)],
-			})
-			if (newChunks.length >= 2) {
-				newChunks.pop()
-				lastChunk--
+
+			if (len >= 2) {
+				chunks.current.pop()
+				--currentLastChunk
 			}
-			chunks = newChunks
+
 			setTimeout(function () {
 				startFlag = false
 				startObserver.observe(document.querySelector('.sentinel-start'))
@@ -127,6 +122,7 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 		}
 	}
 
+	// @TODO Container entfernen, Sentinels entfernen, auf bestimmte Items ein IO setzen -> feste Anzahl Items pro Row
 	return (
 		<div style={{ height, overflowY: 'scroll' }} ref={ref} className={className}>
 			<div
@@ -136,14 +132,22 @@ const VirtualScroll = ({ itemCount, className, renderItems }) => {
 					position: 'relative' /* unneeded? */,
 					willChange: 'transform' /* unneeded? */,
 				}}>
-				<div
-					className={className + 'container'}
-					style={{
-						transform: `translateY(${offsetY}px)`,
-						willChange: 'transform',
-					}}>
-					{visibleChildren}
-				</div>
+				{chunks.current.map((chunk, index) => ({
+					<div
+						className={className + 'container'}
+						style={{
+							position: 'absolute',
+							transform: `translateY(${offsetY}px)`,
+							willChange: 'transform',
+							opacity: 0.01,
+							transition: 'opacity 0.3s ease-out',
+							animation: 'fadeIn'
+						}}>
+						{index === 0 ? <Sentinel observer={startObserver} className={`sentinel-start ${lastChunk.current < 3 ? 'disabled' : ''}`} /> : null}
+						{renderItems(chunk.items.start, chunk.items.end)}
+						{index === chunks.current.length - 1 ? <Sentinel observer={endObserver} className={`sentinel ${startFlag.current ? 'disabled' : ''}`} /> : null}
+					</div>
+				}))}
 			</div>
 		</div>
 	)

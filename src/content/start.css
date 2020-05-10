@@ -7,7 +7,6 @@ body {
 	main
 	> section
 	> div:not(#rcr-anchor)
-	> div:not([class])
-	> div {
+	> div:not([class]) {
 	display: none;
 }

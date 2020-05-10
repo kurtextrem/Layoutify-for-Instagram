@@ -63,3 +63,14 @@ save n
 
 
 3rd-block sentinel-bottom: / (unreachable)
+
+
+Other approach:
+const start = 0, end = items.length
+Wenn neue Items geladen werden, retain scroll position + element height using buffer element;
+start = end - padding > 0
+end = items.length
+
+wenn buffer element ende erreicht:
+start = start - padding > 0
+end = start + padding < items.length

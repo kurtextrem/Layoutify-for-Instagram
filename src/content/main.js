@@ -529,6 +529,26 @@ function clickShare(tries) {
 	} else $elem.click()
 }
 
+function moveStories(tries) {
+	window.setTimeout(function () {
+		const el = $('.home main > section > div > div:first-child[class] > div')
+		if (el === null) {
+			++tries
+			window.setTimeout(moveStories, tries * 100)
+		}
+		el.classList.add('ige_movedStories')
+		$('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > :first-child').after(el)
+
+		observe(
+			el,
+			function (mutations) {
+				console.log(mutations)
+			},
+			{ childList: true }
+		)
+	}, 1000)
+}
+
 /**
  * Callback when nodes are removed/inserted.
  */
@@ -545,6 +565,8 @@ function onNavigate() {
 
 	window.requestAnimationFrame(() => {
 		addClass()
+
+		if (currentClass === 'home') moveStories(0)
 
 		document.body.querySelectorAll('video').forEach(addControls)
 		document.body.querySelectorAll('img').forEach(fullPhoto)
