@@ -12,14 +12,14 @@
 #ige_feed {
 	position: fixed;
 	top: var(--navHeight);
-	right: 3vw;
+	right: 66px;
 	bottom: 0;
-	left: 9px;
-	left: 1vw;
+	left: 0;
 	display: none;
 	max-width: 100%;
 
 	contain: strict;
+	background-color: rgb(var(--bg, 250, 250, 250));
 }
 
 .home + #ige_feed {
@@ -27,15 +27,15 @@
 }
 
 .ige_virtual {
-	width: 100%;
 	height: 100%;
 	max-height: 100%;
 
-	contain: strict;
-
 	overflow-y: scroll;
-	overflow-anchor: none;
+	background-color: rgb(var(--bg, 250, 250, 250));
 	backface-visibility: hidden; /** FIXME Scroll performance traded with GPU memory -> better scroll perf */
+
+	contain: strict;
+	overflow-anchor: none;
 }
 
 .ige_virtual_container {
@@ -48,6 +48,7 @@
 
 	/*contain: size style;*/
 	contain: style;
+	background-color: rgb(var(--bg, 250, 250, 250));
 }
 
 .sentinel-top,
@@ -106,7 +107,7 @@
 }
 
 .ige_post {
-	content-visibility: auto;
+	/*content-visibility: auto;*/
 	position: relative;
 	z-index: 0;
 	width: var(--boxWidth);
@@ -172,6 +173,7 @@
 	flex-direction: row;
 	align-items: center;
 	height: 51px;
+	background-color: rgb(var(--white, 255, 255, 255));
 	border-bottom: 1px solid rgb(var(--post-in-border, 239, 239, 239));
 	contain: strict;
 }
@@ -702,6 +704,10 @@
 	width: 135px;
 	height: 90px;
 	background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+}
+
+.black-white {
+	filter: grayscale(1);
 }
 
 /*=============================================

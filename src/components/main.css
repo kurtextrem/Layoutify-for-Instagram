@@ -49,12 +49,13 @@ nav,
 	margin-right: var(--boxMarginRight) !important;
 	margin-bottom: 10px !important;
 	margin-left: var(--boxMarginRight) !important;
+	background-color: white; /* needed for contain */
 	animation: fadeIn 200ms;
 	animation-iteration-count: 1;
 
 	contain: layout style;
 
-	content-visibility: auto;
+	/*content-visibility: auto;*/
 }
 
 .card-footer {

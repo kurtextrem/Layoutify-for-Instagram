@@ -4,6 +4,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/
 
 const Story = ({ data, additionalClass }) => {
 	const [isOpen, setOpen] = useState(false)
+	const [wasOpen, setOpened] = useState(false)
 
 	const {
 		owner: { username = '', profile_pic_url = '' },
@@ -13,6 +14,7 @@ const Story = ({ data, additionalClass }) => {
 
 	let imgSrc = ''
 	// find unseen media
+	console.log(seen, items)
 	for (const element of items) {
 		if (element.taken_at_timestamp < seen) continue
 
@@ -20,10 +22,12 @@ const Story = ({ data, additionalClass }) => {
 		break
 	}
 
+	if (imgSrc === '') return null
+
 	return (
 		<>
-			<div class={'ige_story ' + additionalClass}>
-				<button class="ige_story_container" role="menuitem" tabIndex="0" type="button" onClick={() => setOpen(true)}>
+			<div class={`ige_story ${additionalClass} ${isOpen ? 'black-white' : ''}`}>
+				<button class="ige_story_container" role="menuitem" tabIndex="0" type="button" onClick={() => setOpen(true) && wasOpen(true)}>
 					<div class="ige_story-img">
 						<img decoding="async" src={imgSrc} class="full-img br-6" />
 					</div>
