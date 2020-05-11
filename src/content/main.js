@@ -82,7 +82,7 @@ observe(
 			const mutation = mutations[i],
 				added = mutation.addedNodes
 
-			for (const x in added) {
+			for (let x = 0; x < added.length; ++x) {
 				const element = added[x]
 
 				Promise.resolve().then(handleNode.bind(undefined, element, mutation)).catch(window.logAndReject)
@@ -109,13 +109,28 @@ const handleNodeFns = {
 	VIDEO: addControls,
 }
 
+let movedStories = 0,
+	storiesClass = ''
+
 /**
  *
  */
 function handleNode(node, mutation) {
 	const nodeName = node.nodeName
 
-	if (mutation.target.id === 'react-root' && nodeName === 'SECTION') onChange()
+	if (currentClass === 'home') {
+		let div
+		if (movedStories === 0 && (div = $('.home main > section > div > div:first-child[class] > div')) !== null) {
+			movedStories = 1
+			storiesClass = '.' + div.classList[0] // first we find the class to monitor
+		}
+
+		if (movedStories && $('.ige_movedStories') === null && mutation.target.querySelector(storiesClass) !== null) {
+			moveStories($('.home main > section > div > div:first-child[class] > div'))
+		}
+	}
+
+	if (mutation.target === root && nodeName === 'SECTION') onChange()
 	handleNodeFns[nodeName] !== undefined && handleNodeFns[nodeName](node)
 }
 
@@ -139,9 +154,13 @@ function checkURL() {
  *
  * .home on the main homepage
  * .profile on user profiles
+ * .post share when clicked the share icon from the feed
+ * .post like tbd when user cicks the likes amount
  * .post when a single post is open (also as modal)
  * .explore if the explore tab is open
  * .stories when stories are open
+ * .tv IG TV pages
+ * .twoFA when logging in
  */
 function decideClass() {
 	const pathname = location.pathname
@@ -529,24 +548,17 @@ function clickShare(tries) {
 	} else $elem.click()
 }
 
-function moveStories(tries) {
-	window.setTimeout(function () {
-		const el = $('.home main > section > div > div:first-child[class] > div')
-		if (el === null) {
-			++tries
-			window.setTimeout(moveStories, tries * 100)
-		}
-		el.classList.add('ige_movedStories')
-		$('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > :first-child').after(el)
+function moveStories(el) {
+	el.classList.add('ige_movedStories')
+	$('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > :first-child').after(el)
 
-		observe(
-			el,
-			function (mutations) {
-				console.log(mutations)
-			},
-			{ childList: true }
-		)
-	}, 1000)
+	observe(
+		el,
+		function (mutations) {
+			console.log(mutations)
+		},
+		{ childList: true, subtree: true }
+	)
 }
 
 /**
@@ -565,8 +577,6 @@ function onNavigate() {
 
 	window.requestAnimationFrame(() => {
 		addClass()
-
-		if (currentClass === 'home') moveStories(0)
 
 		document.body.querySelectorAll('video').forEach(addControls)
 		document.body.querySelectorAll('img').forEach(fullPhoto)

@@ -114,8 +114,10 @@ class Stories extends FetchComponent {
 			if (!items.has(i)) continue
 
 			const current = items.get(i)
-			if (current.reel !== undefined)
-				arr.push(<Story data={current.reel} key={current.id} additionalClass={i >= prevCount ? 'ige_fade' : ''} />)
+			if (current.reel !== undefined) {
+				const story = <Story data={current.reel} key={current.id} additionalClass={i >= prevCount ? 'ige_fade' : ''} />
+				if (story !== null) arr.push(story)
+			}
 		}
 
 		return arr

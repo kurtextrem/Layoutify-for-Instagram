@@ -522,7 +522,7 @@ main > section > div:first-child:not(#rcr-anchor) {
 
 /* Sidebar container */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
-	top: 76px !important;
+	top: 61px !important;
 	right: 0;
 	left: unset !important;
 	z-index: 10;
@@ -560,6 +560,11 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 .ige_movedStories canvas + div > div + div > span {
 	width: 32px !important;
 	height: 32px !important;
+}
+
+/* "LIVE" */
+.ige_movedStories canvas + div + div {
+	z-index: 9;
 }
 
 .ige_movedStories canvas + * svg {
@@ -700,7 +705,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:not(:fi
 /** 2020 in feed Stories */
 .ige_movedStories {
 	width: 100%;
-	height: 42vh;
+	height: 42vh !important;
 	padding-left: 10px;
 	overflow-x: hidden;
 	overflow-y: hidden;

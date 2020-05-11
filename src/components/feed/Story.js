@@ -14,9 +14,8 @@ const Story = ({ data, additionalClass }) => {
 
 	let imgSrc = ''
 	// find unseen media
-	console.log(seen, items)
 	for (const element of items) {
-		if (element.taken_at_timestamp < seen) continue
+		if (element.taken_at_timestamp <= seen) continue
 
 		imgSrc = element.display_url
 		break
@@ -26,8 +25,8 @@ const Story = ({ data, additionalClass }) => {
 
 	return (
 		<>
-			<div class={`ige_story ${additionalClass} ${isOpen ? 'black-white' : ''}`}>
-				<button class="ige_story_container" role="menuitem" tabIndex="0" type="button" onClick={() => setOpen(true) && wasOpen(true)}>
+			<div class={`ige_story ${additionalClass} ${wasOpen ? 'black-white' : ''}`}>
+				<button class="ige_story_container" role="menuitem" tabIndex="0" type="button" onClick={() => setOpen(true) && setOpened(true)}>
 					<div class="ige_story-img">
 						<img decoding="async" src={imgSrc} class="full-img br-6" />
 					</div>
