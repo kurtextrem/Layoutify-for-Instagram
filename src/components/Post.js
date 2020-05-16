@@ -75,7 +75,8 @@ export default class Post extends FeedPost {
 		const dataProxy = { ...data }
 		if (dataProxy.carousel_media !== undefined) {
 			const carouselMedia = dataProxy.carousel_media
-			for (const [i, media] of carouselMedia.entries()) {
+			for (let i = 0; i < carouselMedia.length; ++i) {
+				const media = carouselMedia[i]
 				media.is_video = media.media_type === 2
 				media.video_url = media.is_video ? media.video_versions[0].url : undefined
 				media.display_url = media.image_versions2.candidates[0].url

@@ -12,8 +12,9 @@ export default function Posts(items, renderPost, categories) {
 	const collections = { '0': [] }
 
 	let x = 0
-	for (const [i, element] of items.entries()) {
-		const colIds = element.saved_collection_ids
+	for (let i = 0; i < items.length; ++i) {
+		const element = items[i],
+			colIds = element.saved_collection_ids
 		if (Array.isArray(colIds) && colIds.length !== 0) {
 			for (x = 0; x < colIds.length; ++x) {
 				const colId = colIds[x]

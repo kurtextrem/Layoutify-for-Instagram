@@ -95,8 +95,9 @@ class Feed extends FetchComponent {
 	renderItems() {
 		const { items, prevCount } = this.state,
 			arr = []
-		for (const [i, current] of items.entries()) {
-			const type = current.node.__typename
+		for (let i = 0; i < items.length; ++i) {
+			const current = items[i],
+				type = current.node.__typename
 			if (type !== 'GraphImage' && type !== 'GraphSidecar' && type !== 'GraphVideo' && type !== 'GraphStoriesInFeedItem') {
 				console.info('New typename:', current.node.__typename)
 				continue

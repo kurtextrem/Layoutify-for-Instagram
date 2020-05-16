@@ -718,6 +718,11 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:not(:fi
 	overflow-y: hidden;
 }
 
+.ige_movedStories > div > div > div:only-child {
+	transform: none !important;
+	transition: none !important;
+}
+
 .ige_movedStories ul {
 	flex-direction: column;
 	flex-wrap: nowrap;
@@ -802,7 +807,7 @@ section > footer + div {
 .stories section > header + div + div:last-child > div:focus + div + button + button + div:last-child,
 .stories section > header + div + div:last-child > div + div + button + button + div:last-child:hover,
 .stories section > header + div + div:last-child > div + div + button + button + div:last-child:focus {
-	transform: translateY(0);
+	transform: translateY(-1px); /* this for whatever reason avoids bluriness */
 }
 
 video::-webkit-media-controls:not(.audio-only) div[pseudo='-webkit-media-controls-panel' i] {

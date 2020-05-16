@@ -78,13 +78,10 @@ const root = document.getElementById('react-root')
 observe(
 	document.body,
 	mutations => {
-		for (const i in mutations) {
-			const mutation = mutations[i],
-				added = mutation.addedNodes
+		for (const mutation of mutations) {
+			const added = mutation.addedNodes
 
-			for (let x = 0; x < added.length; ++x) {
-				const element = added[x]
-
+			for (const element of added) {
 				Promise.resolve().then(handleNode.bind(undefined, element, mutation)).catch(window.logAndReject)
 			}
 		}
@@ -118,11 +115,13 @@ let movedStories = 0,
 function handleNode(node, mutation) {
 	const nodeName = node.nodeName
 
+	addExtendedButton()
+
 	if (currentClass === 'home') {
-		let div
-		if (movedStories === 0 && (div = $('.home main > section > div > div:first-child[class] > div')) !== null) {
+		let $div
+		if (movedStories === 0 && ($div = $('.home main > section > div > div:first-child[class] > div')) !== null) {
 			movedStories = 1
-			storiesClass = '.' + div.classList[0] // first we find the class to monitor
+			storiesClass = '.' + $div.classList[0] // first we find the class to monitor
 		}
 
 		if (movedStories && $('.ige_movedStories') === null && mutation.target.querySelector(storiesClass) !== null) {
@@ -231,7 +230,7 @@ function addExtendedButton() {
 		return
 	}
 
-	$anchor = $anchor[$anchor.length - 1].parentNode
+	$anchor = $anchor[$anchor.length - 1].parentElement
 	const element = $anchor.cloneNode(true),
 		a = element.firstChild
 
@@ -548,14 +547,50 @@ function clickShare(tries) {
 	} else $elem.click()
 }
 
+/**
+ *
+ */
 function moveStories(el) {
+	// @TODO Fix after clicking stories, it doesn't re-add
 	el.classList.add('ige_movedStories')
 	$('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > :first-child').after(el)
 
 	observe(
 		el,
 		function (mutations) {
-			console.log(mutations)
+			let counterAdded = 0
+			let counterRemoved = 0
+
+			console.log('stories', mutations)
+
+			for (const mutation of mutations) {
+				if (mutation.target.nodeName !== 'UL') continue
+
+				const removed = mutation.removedNodes, // "left"
+					added = mutation.addedNodes // "right"
+
+				if (added.length > 0) counterAdded += added.length
+				if (removed.length > 0) counterRemoved += removed.length
+			}
+
+			console.log({ counterAdded, counterRemoved })
+
+			if (counterAdded > 5) return
+
+			counterAdded += 2
+			counterRemoved += 2
+			const stories = $('.ige_movedStories ul').children,
+				len = stories.length
+			for (let i = 2; i < counterAdded; ++i) {
+				if (stories[i].style.display === 'none') ++counterAdded
+				else stories[i].style.display = 'none'
+			} // 4 -> 4 -> 4
+
+			for (let i = 2 + counterAdded; i < counterRemoved; ++i) {
+				//if (stories[i].style.display === 'none') ++counterRemoved
+				//else
+				stories[i].style.display = 'list-item'
+			} // 0 -> 2 -> 4
 		},
 		{ childList: true, subtree: true }
 	)
@@ -582,8 +617,6 @@ function onNavigate() {
 		document.body.querySelectorAll('img').forEach(fullPhoto)
 
 		if (currentClass === 'profile') addWatched()
-
-		addExtendedButton()
 	})
 }
 

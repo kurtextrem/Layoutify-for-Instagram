@@ -72,7 +72,8 @@ class Stories extends FetchComponent {
 		}
 
 		const nextItems = response.data.reels_media
-		for (const [i, element] of nextItems.entries()) {
+		for (let i = 0; i < nextItems.length; ++i) {
+			const element = nextItems[i]
 			const id = element.id
 			const reel = Stories.reels.get(id)
 			reel.reel = element

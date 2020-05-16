@@ -14,7 +14,8 @@ const Story = ({ data, additionalClass }) => {
 
 	let imgSrc = ''
 	// find unseen media
-	for (const element of items) {
+	for (let i = 0; i < items.length; ++i) {
+		const element = items[i]
 		if (element.taken_at_timestamp <= seen) continue
 
 		imgSrc = element.display_url
