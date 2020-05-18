@@ -107,7 +107,8 @@ const handleNodeFns = {
 }
 
 let movedStories = 0,
-	storiesClass = ''
+	storiesClass = '',
+	OPTS_LOADED = false
 
 /**
  *
@@ -117,7 +118,7 @@ function handleNode(node, mutation) {
 
 	addExtendedButton()
 
-	if (currentClass === 'home') {
+	if (OPTS_LOADED && currentClass === 'home' && !OPTIONS.only3Dot) {
 		let $div
 		if (movedStories === 0 && ($div = $('.home main > section > div > div:first-child[class] > div')) !== null) {
 			movedStories = 1
@@ -452,9 +453,12 @@ const OPTS_MODE = {
 		chrome.runtime.sendMessage(null, { action: 'watchNow' })
 	},
 	only3Dot(argument) {
+		ONLY_3DOT = true
 		$('#ige_style').remove()
 		$('#ige_feed').style.display = 'none'
-		$('#react-root main > section > div:not(#rcr-anchor) > div:not([class]) > div').style.display = 'flex'
+		$(
+			'#react-root:not(.profile):not(.tv):not(.stories):not(.explore):not(.post):not(.twoFA) main > section > div:not(#rcr-anchor) > div:not([class])'
+		).style.display = 'flex'
 		$('#ige_feedCSS').remove()
 	},
 	rows(i) {
@@ -491,6 +495,7 @@ const OPTS = {
 function handleOptions(options) {
 	if (options === null) return options
 	OPTIONS = options
+	OPTS_LOADED = true
 
 	for (const optName in options) {
 		const oFn = OPTS[optName]

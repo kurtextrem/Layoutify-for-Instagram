@@ -544,6 +544,11 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 	height: 56px !important;
 }
 
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child canvas + span {
+	width: 46px !important;
+	height: 46px !important;
+}
+
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child canvas + a {
 	width: 46px !important;
 	height: 46px !important;
