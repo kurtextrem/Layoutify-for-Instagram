@@ -106,9 +106,17 @@ const handleNodeFns = {
 	VIDEO: addControls,
 }
 
-let movedStories = 0,
-	storiesClass = '',
+let storiesClass = '',
 	OPTS_LOADED = false
+
+function handleStories() {
+	if (OPTS_LOADED && currentClass === 'home' && !OPTIONS.only3Dot && $('.ige_movedStories') === null) {
+		let $div
+		if (($div = $('.home main > section > div > div:first-child[class] > div')) !== null) {
+			moveStories($div)
+		}
+	}
+}
 
 /**
  *
@@ -117,18 +125,7 @@ function handleNode(node, mutation) {
 	const nodeName = node.nodeName
 
 	addExtendedButton()
-
-	if (OPTS_LOADED && currentClass === 'home' && !OPTIONS.only3Dot) {
-		let $div
-		if (movedStories === 0 && ($div = $('.home main > section > div > div:first-child[class] > div')) !== null) {
-			movedStories = 1
-			storiesClass = '.' + $div.classList[0] // first we find the class to monitor
-		}
-
-		if (movedStories && $('.ige_movedStories') === null && mutation.target.querySelector(storiesClass) !== null) {
-			moveStories($('.home main > section > div > div:first-child[class] > div'))
-		}
-	}
+	handleStories()
 
 	if (mutation.target === root && nodeName === 'SECTION') onChange()
 	handleNodeFns[nodeName] !== undefined && handleNodeFns[nodeName](node)
