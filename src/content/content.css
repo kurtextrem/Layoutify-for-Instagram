@@ -535,7 +535,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	border-bottom-left-radius: 4px;
 	box-shadow: -1px 1px 7px 0 #bdbdbd;
 	transform: translateX(80%);
-	transition: transform 300ms ease-out, opacity 300ms ease-out, right 300ms ease-out;
+	transition: opacity 300ms ease-out, right 300ms ease-out;
 	contain: content;
 }
 
@@ -598,9 +598,8 @@ canvas {
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover,
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:focus {
+	right: 12.2%;
 	background-color: var(--primary);
-	/*right: 235px !important;*/
-	transform: translateX(0);
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover > div,
