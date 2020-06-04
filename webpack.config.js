@@ -70,24 +70,26 @@ const html = {
 const plugins = [
 	//new webpack.ProgressPlugin(),
 	new HtmlWebpackPlugin(html),
-	new CopyWebpackPlugin([
-		{ from: '*.html' },
-		{
-			from: '*.json',
-			transform: (content, path) => {
-				if (!isProduction || !path.includes('manifest.json')) return content
+	new CopyWebpackPlugin({
+		patterns: [
+			//{ from: '*.html' },
+			{
+				from: '*.json',
+				transform: (content, path) => {
+					if (!isProduction || !path.includes('manifest.json')) return content
 
-				return replaceBuffer(
-					content,
-					"\"content_security_policy\": \"script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'\",",
-					''
-				)
+					return replaceBuffer(
+						content,
+						"\"content_security_policy\": \"script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'\",",
+						''
+					)
+				},
 			},
-		},
-		{ from: 'img/*.png' },
-		{ from: 'content/*' },
-		{ from: '_locales/**' },
-	]),
+			{ from: 'img/*.png' },
+			{ from: 'content/*' },
+			{ from: '_locales/**' },
+		],
+	}),
 ]
 
 if (isProduction) {
@@ -269,6 +271,7 @@ const first = {
 		? {
 				minimizer: [
 					new TerserPlugin({
+						exclude: /content\//,
 						cache: true,
 						extractComments: false,
 						sourceMap: !isProduction,
