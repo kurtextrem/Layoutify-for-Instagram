@@ -106,9 +106,11 @@ const handleNodeFns = {
 	VIDEO: addControls,
 }
 
-let storiesClass = '',
-	OPTS_LOADED = false
+let OPTS_LOADED = false
 
+/**
+ *
+ */
 function handleStories() {
 	if (OPTS_LOADED && currentClass === 'home' && !OPTIONS.only3Dot && $('.ige_movedStories') === null) {
 		let $div

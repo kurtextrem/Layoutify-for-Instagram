@@ -180,6 +180,7 @@
 
 .ige_picture_container {
 	position: relative;
+	flex-shrink: 0;
 	width: 33px;
 	height: 33px;
 	margin-right: 7px;
@@ -292,6 +293,7 @@
 }
 
 .ige_username_container {
+	flex-shrink: 1;
 	overflow: hidden;
 }
 

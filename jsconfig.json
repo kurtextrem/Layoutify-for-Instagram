@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "esnext",
-		"jsx": "React",
+		"jsx": "react",
 		"experimentalDecorators": true,
 		"checkJs": true,
 		"forceConsistentCasingInFileNames": true,
