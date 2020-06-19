@@ -103,7 +103,8 @@ class Feed extends FetchComponent {
 				continue
 			}
 
-			if (i === 8 || (i < 28 && i > 22 && arr.length === 25))
+			const len = arr.length
+			if (len === 8 || len === 25)
 				// two rows, so stories can load out of view
 				arr.push(<Stories cursor={i < 10 ? 0 : 14} additionalClass={i >= prevCount ? 'ige_fade' : ''} key={current.node.id} />)
 
