@@ -55,7 +55,7 @@ nav,
 
 	contain: layout style;
 
-	/*content-visibility: auto;*/
+	content-visibility: auto;
 }
 
 .card-footer {
@@ -69,6 +69,14 @@ nav,
 
 .grow-1 {
 	flex-grow: 1;
+}
+
+a {
+	text-decoration: none !important;
+}
+
+.flex-wrap {
+	flex-wrap: wrap;
 }
 
 .overflow-auto {

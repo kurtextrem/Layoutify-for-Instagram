@@ -10,10 +10,7 @@ export default class PostHeader extends Component {
 		super(properties)
 
 		this.state = {
-			date:
-				properties.taken_at !== 0
-					? new Date(+`${properties.taken_at}000`)
-					: null,
+			date: properties.taken_at !== 0 ? new Date(+`${properties.taken_at}000`) : null,
 		}
 	}
 
@@ -26,36 +23,18 @@ export default class PostHeader extends Component {
 		const { date } = this.state
 
 		return (
-			<header class="media align-items-center card-block grow-0 pl-2 pr-2">
-				<a
-					href={`https://www.instagram.com/${user.username}`}
-					target="_blank"
-					rel="noopener">
-					<img
-						src={updateCDN(user.profile_pic_url)}
-						class="img-fluid profile-pic rounded mr-2"
-						alt="❌"
-						decoding="async"
-					/>
+			<header class="d-flex media align-items-center card-block grow-0 pl-2 pr-2">
+				<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener">
+					<img src={updateCDN(user.profile_pic_url)} class="img-fluid profile-pic rounded mr-2" alt="❌" decoding="async" />
 				</a>
-				<Media body>
-					<a
-						href={`https://instagram.com/${user.username}`}
-						target="_blank"
-						rel="noopener">
+				<Media body class="mr-auto">
+					<a href={`https://instagram.com/${user.username}`} target="_blank" rel="noopener">
 						{user.full_name || user.username}
 					</a>
 				</Media>
 				<span class="text-muted">posted&nbsp;</span>
-				<a
-					href={`https://www.instagram.com/p/${code}`}
-					target="_blank"
-					rel="noopener">
-					{date !== null ? (
-						<TimeAgo class="text-muted" date={date} />
-					) : (
-						<time class="text-muted" />
-					)}
+				<a href={`https://www.instagram.com/p/${code}`} target="_blank" rel="noopener">
+					{date !== null ? <TimeAgo class="text-muted" date={date} /> : <time class="text-muted" />}
 				</a>
 			</header>
 		)

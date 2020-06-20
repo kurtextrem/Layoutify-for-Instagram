@@ -4,7 +4,7 @@ import PostDummy from './PostDummy'
 import Posts from './Posts'
 import PropTypes from 'prop-types'
 import bind from 'autobind-decorator'
-import { Button, CardDeck } from 'reactstrap'
+import { Button } from 'reactstrap'
 import { Chrome, Storage, logAndReturn } from './Utils'
 import { Component, h } from 'preact'
 
@@ -28,12 +28,12 @@ export default class PostsContainer extends Component {
 
 	static dummy = (
 		<div class="position-relative">
-			<CardDeck class="justify-content-center">
+			<div class="d-flex position-relative justify-content-center flex-wrap">
 				<PostDummy />
 				<PostDummy />
 				<PostDummy />
 				<PostDummy />
-			</CardDeck>
+			</div>
 		</div>
 	)
 
@@ -117,7 +117,7 @@ export default class PostsContainer extends Component {
 	@bind
 	handleBtnClick(event) {
 		event.target.disabled = true
-		this.preloadCounter = this.preloadCounter - 2 // so we load another page
+		this.preloadCounter -= 2 // so we load another page
 		this.loadData()
 
 		window.setTimeout(() => {
@@ -187,7 +187,7 @@ export default class PostsContainer extends Component {
 		if (items !== null && items.length !== 0)
 			return (
 				<div class="position-relative">
-					<CardDeck class="justify-content-center">{Posts(items, this.renderPost, hasCategories)}</CardDeck>
+					<div class="d-flex position-relative justify-content-center flex-wrap">{Posts(items, this.renderPost, hasCategories)}</div>
 					<div class="text-center">
 						<Button onClick={this.handleBtnClick} disabled={!canLoadMore}>
 							Load more

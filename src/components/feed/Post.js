@@ -102,7 +102,7 @@ export default class Post extends FetchComponent {
 			user:
 				followed_by_viewer // !
 				is_private				// !
-
+		 
 				requested_by_viewer
 				blocked_by_viewer
 				has_blocked_viewer
@@ -158,7 +158,7 @@ export default class Post extends FetchComponent {
 						</div>
 					) : null}
 					{edge_media_preview_comment.count > 2 ? (
-						<a href={`/p/${shortcode}`} class="text-gray">
+						<a href={`https://www.instagram.com/p/${shortcode}`} class="text-gray">
 							View all {edge_media_preview_comment.count} comments
 						</a>
 					) : null}

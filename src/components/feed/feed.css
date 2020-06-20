@@ -49,6 +49,8 @@
 	/*contain: size style;*/
 	contain: style;
 	background-color: rgb(var(--bg, 250, 250, 250));
+
+	content-visibility: auto;
 }
 
 .sentinel-top,
