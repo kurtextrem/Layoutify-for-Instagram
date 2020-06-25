@@ -547,7 +547,7 @@ function clickShare(tries) {
 	const $elem = $('article > div > section > span:first-child + span + button')
 	if ($elem === null) {
 		console.error('Share selector outdated')
-		if (tries < 3) window.setTimeout(() => clickShare(tries + 1), tries * 100)
+		if (tries < 10) window.setTimeout(() => clickShare(tries + 1), tries * 100)
 	} else $elem.click()
 }
 
