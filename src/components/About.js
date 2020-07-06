@@ -87,6 +87,12 @@ export default class About extends Component {
 					</b>{' '}
 					for the modern and nice new logo.
 					<br />
+					Thanks to{' '}
+					<a href="https://github.com/PaoloC95" target="_blank" rel="noopener">
+						PaoloC95
+					</a>{' '}
+					for the italian translation.
+					<br />
 					And to all the bug reporters that have sent me mails. I always try my best to respond as soon as possible.
 				</p>
 
