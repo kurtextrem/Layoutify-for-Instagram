@@ -172,16 +172,16 @@ div > main:only-child {
 	flex-grow: 1;
 }
 
-body > div > div[role='dialog'] header + div + div,
-.post header + div + div,
-.tv header + div + div {
+body > div > div[role='dialog'] header + div + div + div,
+.post header + div + div + div,
+.tv header + div + div + div {
 	top: 55px !important;
 }
 
 /*----------  Improve new post layout  ----------*/
 /** Row layout */
-body > div > div[role='dialog'] header + div + div,
-#react-root:not(.profile):not(.stories) header + div + div {
+body > div > div[role='dialog'] header + div + div + div,
+#react-root:not(.profile):not(.stories) header + div + div + div {
 	/* @TODO: Min Chrome v60 */
 	display: grid;
 	flex: 1;
@@ -200,16 +200,16 @@ body > div > div[role='dialog'] header + div + div,
 	contain: layout style;
 }
 
-body > div > div[role='dialog'] header + div + div,
-#react-root.post.post.post header + div + div,
-#react-root.tv.tv.tv header + div + div {
+body > div > div[role='dialog'] header + div + div + div,
+#react-root.post.post.post header + div + div + div,
+#react-root.tv.tv.tv header + div + div + div {
 	grid-template:
 		'date likes' min-content
 		'c c' 1fr
 		'buttons comment' 56px
 		/ auto 2fr;
 	height: auto !important;
-	padding: 0 8px 0 23px !important;
+	padding: 0 8px 0 20px !important;
 }
 
 /** Views / likes */
@@ -259,8 +259,8 @@ time {
 	text-transform: none;
 }
 
-body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul > ul > li,
-#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) > ul > ul > li {
+body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li,
+#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li {
 	padding: 0 16px;
 }
 
@@ -289,8 +289,8 @@ h3 + span + div {
 }
 
 /** Grow comments */
-body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child),
-#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) {
+body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child),
+#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	grid-area: c;
 	order: 2 !important;
@@ -300,8 +300,8 @@ body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only
 	contain: content;
 }
 
-body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul,
-#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) > ul {
+body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) > ul,
+#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) > ul {
 	width: 100%;
 	height: 100%;
 	padding: 0;
@@ -309,17 +309,17 @@ body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only
 	overflow-x: hidden;
 }
 
-body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul > li,
-#react-root.post header + div + div > div:first-of-type:not(:only-child) > ul > li,
-#react-root.tv header + div + div > div:first-of-type:not(:only-child) > ul > li {
+body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) > ul > li,
+#react-root.post header + div + div + div > div:first-of-type:not(:only-child) > ul > li,
+#react-root.tv header + div + div + div > div:first-of-type:not(:only-child) > ul > li {
 	margin-top: 0;
 	margin-left: 0;
 	padding: 2px;
 }
 
 /** Comments comment profile pic */
-body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) ul > li > div > div > div,
-#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) ul > li > div > div > div {
+body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) ul > li > div > div > div,
+#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) ul > li > div > div > div {
 	align-self: flex-start;
 	margin-right: 7px;
 }
@@ -334,19 +334,19 @@ body > div > div[role='dialog'] h3 + span + div,
 }
 
 /** Comments comments replies */
-body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul,
-#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul {
+body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul,
+#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul {
 	width: calc(100% - 18px);
 	margin: 4px 0 0 36px;
 }
 
-body > div > div[role='dialog'] header + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul > li:first-child > div,
-#react-root:not(.stories) header + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul > li:first-child > div {
+body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul > li:first-child > div,
+#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul > li:first-child > div {
 	margin-bottom: 0;
 }
 
 /** Heart / Comment / Save */
-header + div + div > section:first-child {
+header + div + div + div > section:first-child {
 	grid-area: buttons;
 	align-self: flex-end;
 	order: 4 !important;
@@ -376,7 +376,13 @@ article > div > section:first-child > span:last-child {
 }
 
 /** 3 dots */
-article > header + div + div + div:last-child {
+/** 3 dots on every post */
+article > header + div + div + div {
+	z-index: 9;
+}
+
+article > header + div {
+	z-index: 6;
 	height: 52px !important;
 }
 
@@ -855,11 +861,6 @@ article > header + div > div > div > div[style^='padding-bottom'] + div + div {
 	margin-bottom: -3px;
 }
 
-/** 3 dots on every post */
-article > header + div + div + div {
-	z-index: 9;
-}
-
 /** Center the image */
 body > div > div[role='dialog'] article,
 #react-root:not(.home) article {
@@ -890,10 +891,8 @@ body > div > div[role='dialog'] article,
 	flex-shrink: 1;
 }
 
-/** More image, less wasted space */
-.post header + div,
-.tv header + div {
-	margin-right: 322px !important;
+.post > section > main > div > div:first-child + div {
+	margin-top: 7vh;
 }
 
 /*=============================================
