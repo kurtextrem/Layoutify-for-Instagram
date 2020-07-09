@@ -381,7 +381,7 @@ article > header + div + div + div {
 	z-index: 9;
 }
 
-article > header + div {
+.post article > header + div {
 	z-index: 6;
 	height: 52px !important;
 }
