@@ -447,7 +447,8 @@ div[role='button'] > div[role='dialog'] + button ,
 a[role='button'],
 div[role='button'],
 button[tabindex='-1'],
-div[role='button'] + button /* tagged users icon on videos */ {
+div[role='button'] + button /* tagged users icon on videos */,
+div[role='button'] + button[class] + div[style] {
 	z-index: 3;
 }
 
