@@ -4,24 +4,24 @@
 
 :root {
 	--blue: #78909c;
-	--primary: #212121;
-	--primary-rgb: 0, 0, 0;
-	--text: #bdbdbd;
+	--primary: #212121 !important;
+	--primary-rgb: 33, 33, 33;
+	--text: #cacaca;
 	--light: #484848;
-	--dark: #333;
-	--bg: #333;
-	--white: #333;
+	--dark: #111;
+	--bg: #111;
+	--white: #111;
 	--secondary: #757575;
 	--secondary-light: #a4a4a4;
 	--secondary-text: #c5c5c5;
-	--post-border: var(--primary);
-	--post-bg: var(--primary);
-	--textarea: var(--primary);
-	--post-in-border: var(--primary);
-	--pic-bg: var(--primary);
-	--anchor-color: var(--primary);
-	--footer-color: var(--primary);
-	--submit-button-color: var(--primary);
+	--post-border: var(--primary-rgb);
+	--post-bg: var(--primary-rgb);
+	--textarea: var(--primary-rgb);
+	--post-in-border: var(--primary-rgb);
+	--pic-bg: var(--primary-rgb);
+	/*--anchor-color: var(--primary-rgb);*/
+	--footer-color: var(--primary-rgb);
+	/*--submit-button-color: var(--primary-rgb);*/
 }
 
 /*=============================================
@@ -30,16 +30,24 @@
 
 /* Body */
 body,
-section > nav > div > div,
 section > main,
-section > main *:not(canvas):not([class*='Sprite']):not(video):not([role='button']),
+section > main *:not(canvas):not([class*='Sprite']):not(video):not([role='button']) {
+	color: var(--text) !important;
+	background-color: var(--bg) !important;
+}
+
+section > nav > div > div,
 section > footer,
 div[role='dialog'],
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div,
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div {
+	color: var(--text) !important;
+	background-color: var(--primary) !important;
+}
+
 nav input,
 nav input + div {
 	color: var(--text) !important;
-	background-color: var(--dark) !important;
+	background-color: var(--primary) !important;
 }
 
 li span {
@@ -59,7 +67,8 @@ li span {
 
 /** Hue Rotation 100% - Important: This has a drastic performance impact. Don't over-use! */
 [class*='Sprite'],
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div::after /** Stories after "shadow" **/ {
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div::after /** Stories after "shadow" **/,
+ svg {
 	filter: invert(100%) hue-rotate(180deg); /* 60%, no hue rotation before */
 	mix-blend-mode: screen;
 }
