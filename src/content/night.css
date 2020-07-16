@@ -4,7 +4,7 @@
 
 :root {
 	--blue: #78909c;
-	--blue-rgb: 1120, 144, 156;
+	--blue-rgb: 120, 144, 156; /* nice red: 1120, 144, 156; */
 	--primary: #212121 !important;
 	--primary-rgb: 33, 33, 33;
 	--text: #cacaca;
