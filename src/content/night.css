@@ -4,6 +4,7 @@
 
 :root {
 	--blue: #78909c;
+	--blue-rgb: 1120, 144, 156;
 	--primary: #212121 !important;
 	--primary-rgb: 33, 33, 33;
 	--text: #cacaca;
@@ -19,9 +20,9 @@
 	--textarea: var(--primary-rgb);
 	--post-in-border: var(--primary-rgb);
 	--pic-bg: var(--primary-rgb);
-	/*--anchor-color: var(--primary-rgb);*/
+	--anchor-color: var(--blue-rgb);
 	--footer-color: var(--primary-rgb);
-	/*--submit-button-color: var(--primary-rgb);*/
+	--submit-button-color: var(--blue-rgb);
 }
 
 /*=============================================
