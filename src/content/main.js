@@ -291,7 +291,7 @@ function addChromeListener() {
 	})
 }
 
-const connection = navigator.connection.type,
+const connection = navigator.connection.type || '',
 	speed = navigator.connection.downlink,
 	fullSizeCondition = connection.indexOf('cell') === -1 && speed > 1.9,
 	fullsizeObserver = observe(
