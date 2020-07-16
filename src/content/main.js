@@ -293,7 +293,7 @@ function addChromeListener() {
 
 const connection = navigator.connection.type,
 	speed = navigator.connection.downlink,
-	fullSizeCondition = connection === 'wifi' && speed > 1.9,
+	fullSizeCondition = connection.indexOf('cell') === -1 && speed > 1.9,
 	fullsizeObserver = observe(
 		undefined,
 		mutations => {
