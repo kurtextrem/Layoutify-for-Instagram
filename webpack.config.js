@@ -86,6 +86,7 @@ const plugins = [
 				},
 			},
 			{ from: 'img/*.png' },
+			{ from: 'img/*.webp' },
 			{ from: 'content/*' },
 			{ from: '_locales/**' },
 		],
@@ -271,8 +272,8 @@ const first = {
 		? {
 				minimizer: [
 					new TerserPlugin({
-						exclude: /content\//,
 						cache: true,
+						exclude: /content\//,
 						extractComments: false,
 						sourceMap: !isProduction,
 						terserOptions: {

@@ -176,14 +176,10 @@ export default class PostMedia extends Component {
 				onMouseOut={this.handleMouseOut}>
 				<div class="img--wrapper">{mediaElement}</div>
 				{isCarousel && carouselIndex !== 0 ? (
-					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick}>
-						<Arrow direction="left" size="30" fill="gray" />
-					</button>
+					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick} />
 				) : null}
 				{isCarousel ? (
-					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.handleArrowClick}>
-						<Arrow direction="right" size="30" fill="gray" />
-					</button>
+					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.handleArrowClick} />
 				) : null}
 				{isCarousel ? <Dots index={carouselIndex} len={carouselLen} /> : null}
 			</div>

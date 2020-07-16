@@ -46,6 +46,7 @@
 		"vendors.bundle.js",
 		"feed.bundle.js",
 		"feed.css",
-		"img/story.png"
+		"img/story.png",
+		"img/IGsprite.webp"
 	]
 }

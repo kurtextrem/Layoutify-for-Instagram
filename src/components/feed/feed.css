@@ -326,6 +326,10 @@
 	padding-left: 0;
 }
 
+.ige_action_amount {
+	max-width: 41%;
+}
+
 .pl-2 {
 	padding-left: 0.3em;
 }
@@ -367,15 +371,23 @@
 	top: 50%;
 	z-index: 2;
 	padding: 0;
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/IGsprite.webp');
+	background-repeat: no-repeat;
 	transform: translateY(-50%);
 }
 
 .ige_carousel-btn--left {
 	left: 0;
+	width: 30px;
+	height: 30px;
+	background-position: -130px -98px;
 }
 
 .ige_carousel-btn--right {
 	right: 0;
+	width: 30px;
+	height: 30px;
+	background-position: -162px -98px;
 }
 
 .ige_dots {
@@ -673,7 +685,7 @@
 	left: -6px;
 	z-index: 1;
 	display: block;
-	background-image: url(chrome-extension://alahoejmdjackgolkpimcpckgglpmlfe/img/story.png);
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/story.png');
 	background-size: contain;
 	content: '';
 }
