@@ -56,7 +56,6 @@ video {
 	z-index: 1;
 }
 
-form > textarea,
 header > a {
 	contain: strict;
 }
@@ -400,6 +399,12 @@ article > div > section:last-child {
 	height: 56px;
 	margin: 0;
 	contain: strict;
+}
+
+article > div > section textarea {
+	height: auto !important;
+	padding-right: 2px !important;
+	padding-left: 2px !important;
 }
 
 /** Comments */
