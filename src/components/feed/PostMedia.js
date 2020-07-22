@@ -186,3 +186,11 @@ export default class PostMedia extends Component {
 		)
 	}
 }
+
+window.requestIdleCallback(function () {
+	PostMedia.volume = +window.localStorage.ige_volume || 1
+
+	window.addEventListener('beforeunload', function () {
+		window.localStorage.ige_volume = PostMedia.volume
+	})
+})
