@@ -15,17 +15,18 @@ function prerender(outputDirectory, params) {
 				return {}
 			},
 			location: {
+				hash: '#' + url,
 				href: url,
 				pathname: url,
 				replace() {},
-				hash: '#' + url,
 				search: '',
 			},
 		},
 		history: {},
 		navigator: { userAgent: '' },
 		pushState: {},
-		setTimeout() {},
+		requestIdleCallback() {},
+		setTimeout() {}
 	}
 	global.navigator = global.window.navigator
 	global.window.location = global.window.document.location

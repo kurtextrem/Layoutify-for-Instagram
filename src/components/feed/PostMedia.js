@@ -45,7 +45,7 @@ export default class PostMedia extends Component {
 	}
 
 	componentDidMount() {
-		if (this.videoRef.current !== undefined) this.videoRef.current.volume = PostMedia.volume
+		if (this.videoRef.current) this.videoRef.current.volume = PostMedia.volume
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
@@ -58,7 +58,7 @@ export default class PostMedia extends Component {
 
 	@bind
 	setPreload() {
-		if (this.videoRef.current !== undefined) this.videoRef.current.preload = 'auto'
+		if (this.videoRef.current) this.videoRef.current.preload = 'auto'
 	}
 
 	getMedia(media) {
