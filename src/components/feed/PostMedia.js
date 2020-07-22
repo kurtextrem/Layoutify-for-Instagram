@@ -5,7 +5,7 @@ import bind from 'autobind-decorator'
 import { Component, Fragment, createRef, h } from 'preact'
 
 export default class PostMedia extends Component {
-	static volume = 1
+	static volume = null
 
 	videoRef = createRef()
 
@@ -19,6 +19,8 @@ export default class PostMedia extends Component {
 
 	constructor(props) {
 		super(props)
+
+		if (PostMedia.volume === null) PostMedia.volume = +window.localStorage.ige_volume || 1
 
 		const carousel = props.data.edge_sidecar_to_children
 		if (carousel !== undefined) {
@@ -187,10 +189,6 @@ export default class PostMedia extends Component {
 	}
 }
 
-window.requestIdleCallback(function () {
-	PostMedia.volume = +window.localStorage.ige_volume || 1
-
-	window.addEventListener('beforeunload', function () {
-		window.localStorage.ige_volume = PostMedia.volume
-	})
+window.addEventListener('beforeunload', function () {
+	window.localStorage.ige_volume = PostMedia.volume
 })
