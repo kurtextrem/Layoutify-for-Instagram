@@ -10,6 +10,7 @@ function prerender(outputDirectory, params) {
 		url = params.url || '/'
 
 	global.window = {
+		addEventListener() {},
 		document: {
 			createElement() {
 				return {}
@@ -26,7 +27,7 @@ function prerender(outputDirectory, params) {
 		navigator: { userAgent: '' },
 		pushState: {},
 		requestIdleCallback() {},
-		setTimeout() {}
+		setTimeout() {},
 	}
 	global.navigator = global.window.navigator
 	global.window.location = global.window.document.location

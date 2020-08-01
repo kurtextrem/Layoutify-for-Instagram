@@ -293,7 +293,7 @@ function addChromeListener() {
 
 const connection = navigator.connection.type || '',
 	speed = navigator.connection.downlink,
-	fullSizeCondition = connection.indexOf('cell') === -1 && speed > 1.9,
+	fullSizeCondition = document.hidden || (connection.indexOf('cell') === -1 && speed > 1.9),
 	fullsizeObserver = observe(
 		undefined,
 		mutations => {
@@ -544,10 +544,11 @@ function addFeedDiv() {
  *
  */
 function clickShare(tries) {
-	const $elem = $('article > div > section > span:first-child + span + button')
+	const $elem = $('article section > span:first-child + span + button')
 	if ($elem === null) {
 		console.error('Share selector outdated')
 		if (tries < 10) window.setTimeout(() => clickShare(tries + 1), tries * 100)
+		else root.style.display = 'flex !important'
 	} else $elem.click()
 }
 
@@ -555,7 +556,6 @@ function clickShare(tries) {
  *
  */
 function moveStories(el) {
-	// @TODO Fix after clicking stories, it doesn't re-add
 	el.classList.add('ige_movedStories')
 	$('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > :first-child').after(el)
 
@@ -583,17 +583,20 @@ function moveStories(el) {
 
 			counterAdded += 2
 			counterRemoved += 2
-			const stories = $('.ige_movedStories ul').children,
-				len = stories.length
+			const $stories = $('.ige_movedStories ul')
+			if ($stories === null) console.warn('empty stories ul', el)
+
+			const storyChildren = $stories.children,
+				len = storyChildren.length
 			for (let i = 2; i < counterAdded; ++i) {
-				if (stories[i].style.display === 'none') ++counterAdded
-				else stories[i].style.display = 'none'
+				if (storyChildren[i].style.display === 'none') ++counterAdded
+				else storyChildren[i].style.display = 'none'
 			} // 4 -> 4 -> 4
 
 			for (let i = 2 + counterAdded; i < counterRemoved; ++i) {
-				//if (stories[i].style.display === 'none') ++counterRemoved
+				//if (storyChildren[i].style.display === 'none') ++counterRemoved
 				//else
-				stories[i].style.display = 'list-item'
+				storyChildren[i].style.display = 'list-item'
 			} // 0 -> 2 -> 4
 		},
 		{ childList: true, subtree: true }

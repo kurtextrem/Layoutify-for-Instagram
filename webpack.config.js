@@ -202,6 +202,13 @@ if (isProduction) {
 )*/
 
 const first = {
+	cache: {
+		buildDependencies: {
+			config: [__filename]
+		},
+		type: "filesystem"
+	},
+
 	context: path.join(__dirname, 'src'),
 
 	devServer: {
@@ -397,6 +404,14 @@ const first = {
 }
 
 const second = {
+	cache: {
+		buildDependencies: {
+			config: [__filename]
+		},
+
+		type: "filesystem"
+	},
+
 	context: first.context,
 
 	entry: ['./components/App'],

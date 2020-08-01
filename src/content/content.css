@@ -135,8 +135,8 @@ canvas + span:focus {
 /*=============================================
 						Slimmer Post Header
 =============================================*/
-body > div > div[role='dialog'] article > header,
-#react-root:not(.profile):not(.explore) article > header {
+body > div > div[role='dialog'] article > div > header,
+#react-root:not(.profile):not(.explore) article > div > header {
 	/** don't overlap, so article won't get promoted to a layer */
 	z-index: 8;
 	width: 99%;
@@ -146,20 +146,26 @@ body > div > div[role='dialog'] article > header,
 	contain: strict;
 }
 
-#react-root.post.post.post article > header,
-#react-root.tv.tv.tv article > header {
+#react-root.post.post.post article > header /* @deprecated */,
+#react-root.tv.tv.tv article > header /* @deprecated */,
+#react-root.post.post.post article > div > header,
+#react-root.tv.tv.tv article > div > header {
 	padding: 4px !important;
 }
 
-body > div > div[role='dialog'] article > header,
-#react-root.post article > header,
-#react-root.tv article > header {
+body > div > div[role='dialog'] article > header /* @deprecated */,
+#react-root.post article > header /* @deprecated */,
+#react-root.tv article > header /* @deprecated */,
+body > div > div[role='dialog'] article > div > header,
+#react-root.post article > div > header,
+#react-root.tv article > div > header {
 	right: 8px !important;
 	width: 305px !important;
 	border: 0 !important;
 }
 
-body > div > div[role='dialog'] article > header {
+body > div > div[role='dialog'] article > header /* @deprecated */,
+body > div > div[role='dialog'] article > div > header {
 	padding: 16px 4px !important;
 }
 
@@ -358,14 +364,21 @@ header + div + div + div > section:first-child {
 	contain: content;
 }
 
+header + div + div + div > section:first-child > * {
+	display: flex;
+	align-items: center;
+}
+
 /** Icons */
 article > div > section:first-child > span {
 	display: flex;
 }
 
 /** Hide useless comment icon */
-section > a[role='button']:first-child + a[role='button']:not([aria-disabled]),
-article > div > section > span:first-child + span {
+section > a[role='button']:first-child + a[role='button']:not([aria-disabled]) /* @deprecated */,
+article > div > section > span:first-child + span /* @deprecated */,
+div[role='dialog'] header + div + div + div > section:first-child > span:first-child + span,
+header + div + div + div > section:first-child > span:first-child + span {
 	display: none;
 }
 
@@ -376,11 +389,13 @@ article > div > section:first-child > span:last-child {
 
 /** 3 dots */
 /** 3 dots on every post */
-article > header + div + div + div {
+article > header + div + div + div /* @deprecated */,
+article > div > header + div + div + div {
 	z-index: 9;
 }
 
-.post article > header + div {
+.post article > header + div /* @deprecated */,
+.post article > div > header + div {
 	z-index: 6;
 	height: 52px !important;
 }
@@ -390,7 +405,8 @@ article > div > section:first-child > span:first-child {
 }
 
 /** "Add comment" */
-article > div > section:last-child {
+article > div > section:last-child /* @deprecated */,
+article > div > div > section:last-child {
 	flex: 1;
 	grid-area: comment;
 	align-self: flex-end;
@@ -401,7 +417,8 @@ article > div > section:last-child {
 	contain: strict;
 }
 
-article > div > section textarea {
+article > div > section textarea  /* @deprecated */,
+article > div > div > section textarea {
 	height: auto !important;
 	padding-right: 2px !important;
 	padding-left: 2px !important;
@@ -834,6 +851,14 @@ video::-webkit-media-controls:not(.audio-only) div[pseudo='-webkit-media-control
 	display: none;
 }
 
+.stories div > img + div,
+.stories div > img + div > div,
+.stories div > img + div > div > div {
+	position: static;
+	height: 0;
+	overflow: visible;
+}
+
 /*=============================================
 										Post
 =============================================*/
@@ -857,12 +882,14 @@ body > div > div[role='dialog'] > div:first-child > div > div {
 	/* max-width: 52vh !important; */
 }
 
-body > div > div[role='dialog'] article > header + div {
+body > div > div[role='dialog'] article > header + div /* @deprecated */,
+body > div > div[role='dialog'] article > div > header + div {
 	margin-right: 320px !important;
 }
 
 /** dots in multiple posts */
-article > header + div > div > div > div[style^='padding-bottom'] + div + div {
+article > header + div > div > div > div[style^='padding-bottom'] + div + div /* @deprecated */,
+article > div > header + div > div > div > div[style^='padding-bottom'] + div + div {
 	margin-top: 12px;
 	margin-bottom: -3px;
 }
@@ -1023,12 +1050,15 @@ footer > div > nav {
 =============================================*/
 
 /*----------  Picture Only Mode  ----------*/
-.ige_picturesOnly.home + #ige_feed article > header,
-.ige_picturesOnly.home article > header {
+.ige_picturesOnly.home + #ige_feed article > header /* @deprecated */,
+.ige_picturesOnly.home article > header /* @deprecated */,
+.ige_picturesOnly.home + #ige_feed article > div > header,
+.ige_picturesOnly.home article > div > header {
 	height: 41px !important;
 }
 
-.ige_picturesOnly.home article > header > div:last-child > div:last-child {
+.ige_picturesOnly.home article > header > div:last-child > div:last-child /* @deprecated */,
+.ige_picturesOnly.home article > div > header > div:last-child > div:last-child {
 	display: flex;
 }
 
@@ -1037,7 +1067,8 @@ footer > div > nav {
 	display: none;
 }
 
-.ige_picturesOnly.home + #ige_feed article > header {
+.ige_picturesOnly.home + #ige_feed article > header /* @deprecated */,
+.ige_picturesOnly.home + #ige_feed article > div > header {
 	border-bottom: 0;
 }
 
