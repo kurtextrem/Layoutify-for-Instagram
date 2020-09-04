@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.1.5 - 2020-09-04
+
+### Known Issues
+
+On the 3-dots page, posts will show up two or three times instead of once. This is a bug that still puzzles me, but I'll continue trying to fix it.
+
+### Changed
+
+Instagram lawyer forced me to change the extension **icon**, possibly the name in the future. :(
+
+### Bug Fixes
+
+Since the last release with a changelog, there have been many releases containing just bug fixes. If you find any more, please write an email to me.
+
 ## 3.1.0 - 2020-04-09
 
 ### Changed
@@ -23,7 +37,6 @@ This release contains all the bugfixes from 3.0.1 and 3.0.2:
 
 - Instagram DMs finally arrived on Desktop. This means the "Share" button is useful again, hence in this version you can see it again, when you view a single post. I will try to add the button to the main feed too.
 - Also, the preview of stories in the main feed is missing, this is on my Todo list as well
-
 
 ## 3.0.0 - 2020-03-29
 

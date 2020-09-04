@@ -1,148 +1,148 @@
 {
-    "extTitle": {
-        "message": "Improved Layout for Instagram.com",
-        "description": "Titolo dell'estensione."
-    },
-    "extDesc": {
-        "message": "Il layout di default di instagram.com non è ottimizzato per la navigazione da browser desktop. Questa estensione la ottimizza.",
-        "description": "Descrizione dell'estensione"
-    },
-    "blockPosts": {
-        "message": "Nascondi i Posts da",
-        "description": "Blocca i Posts dai Settaggi Utente."
-    },
-    "blockStories": {
-        "message": "Nascondi le Stories da",
-        "description": "Blocca le Stories dai Settaggi Utente."
-    },
-    "night": {
-        "message": "Abilita Tema Notturno",
-        "description": "Impostazioni Tema Notturno."
-    },
-    "nightModeStart": {
-        "message": "Ora di Inizio del Tema Notturno",
-        "description": ""
-    },
-    "nightModeStart_help": {
-        "message": "Imposta questo e l'ultimo parametro con lo stesso numero per applicare il Tema Notturno permanentemente.",
-        "description": ""
-    },
-    "nightModeEnd": {
-        "message": "Ora di Fine del Tema Notturno",
-        "description": ""
-    },
-    "nightModeEnd_help": {
-        "message": "Imposta questo e il primo parametro con lo stesso numero per applicare il Tema Notturno permanentemente.",
-        "description": ""
-    },
-    "picturesOnly": {
-        "message": "Mostra solo immagini",
-        "description": "Impostazioni"
-    },
-    "hideStories": {
-        "message": "Nascondi Tutte le Stories",
-        "description": "Impostazioni"
-    },
-    "hideRecommended": {
-        "message": "Nascondi gli Utenti Suggeriti",
-        "description": "Impostazioni"
-    },
-    "highlightOP": {
-        "message": "Punti salienti dell'Autore nei commenti",
-        "description": "Impostazioni"
-    },
-    "only3Dot": {
-        "message": "Rimuovi tutti le modifiche di stile",
-        "description": "Impostazioni"
-    },
-    "rows": {
-        "message": "Post per riga",
-        "description": "Impostazioni"
-    },
-    "rows_help": {
-        "message": "1 imposta il layout standard di Instagram. Quello di default è 4.",
-        "description": "Impostazioni"
-    },
-    "indicateFollowing": {
-        "message": "Indicatore dei Follower",
-        "description": "Impostazioni"
-    },
-    "noSpaceBetweenPosts": {
-        "message": "Nessuno Spazio tra i Posts.",
-        "description": "Impostazioni"
-    },
-    "rowsFourBoxWidth": {
-        "message": "Larghezza dei Posts nel layout a 4 Righe",
-        "description": "Impostazioni"
-    },
-    "rowsFourBoxWidth_help": {
-        "message": "Si applica solo quando il parametro 'Posts per Riga' è 4. Quello di default è 23.",
-        "description": "Impostazioni"
-    },
-    "rowsTwoBoxWidth": {
-        "message": "Larghezza dei Posts nel layout a 2 Righe",
-        "description": "Impostazioni"
-    },
-    "rowsTwoBoxWidth_help": {
-        "message": "Si applica solo quando il parametro 'Posts per Riga' è 2. Quello di default è 40.",
-        "description": "Impostazioni"
-    },
-    "watchPosts": {
-        "message": "Guarda i Posts da",
-        "description": "Impostazioni"
-    },
-    "watchPosts_help": {
-        "message": "Sii sicuro che lo Username sia corretto (es. https://instagram.com/TheUsername funziona)",
-        "description": "Impostazioni"
-    },
-    "watchStories": {
-        "message": "Guarda Stories da",
-        "description": "Impostazioni"
-    },
-    "watchStories_help": {
-        "message": "Sii sicuro che lo Username sia corretto (es. https://instagram.com/TheUsername funziona)",
-        "description": "Impostazioni"
-    },
-    "watchInBackground": {
-        "message": "Vedere in Background?",
-        "description": "Impostazioni"
-    },
-    "watchInBackground_help": {
-        "message": "Quando è spento verrai notificato solo quando apri Instagram.com.",
-        "description": "Impostazioni"
-    },
-    "watch_openProfile": {
-        "message": "Clicca per aprire il profilo.",
-        "description": "Testo nelle Notifiche"
-    },
-    "watch_newPost": {
-        "message": "Guarda il nuovo post di $user$",
-        "description": "Testo delle Notifiche quando si vuole vedere il nuovo post di un Utente.",
-        "placeholders": {
-            "user": {
-                "content": "$1",
-                "example": "JacobGross_"
-            }
-        }
-    },
-    "watch_newStory": {
-        "message": "Guarda le storie non viste di $user$",
-        "description": "Testo delle Notifiche quando si vuole vedere la nuova Storia non vista di un Utente.",
-        "placeholders": {
-            "user": {
-                "content": "$1",
-                "example": "JacobGross_"
-            }
-        }
-    },
-    "watch_newPic": {
-        "message": "$user$ ha una nuova foto profilo",
-        "description": "Testo delle Notifiche quando un Utente aggiorna la propria foto profilo.",
-        "placeholders": {
-            "user": {
-                "content": "$1",
-                "example": "JacobGross_"
-            }
-        }
-    }
+	"extTitle": {
+		"message": "Improved Layout for Instagram",
+		"description": "Titolo dell'estensione."
+	},
+	"extDesc": {
+		"message": "Il layout di default di instagram.com non è ottimizzato per la navigazione da browser desktop. Questa estensione la ottimizza.",
+		"description": "Descrizione dell'estensione"
+	},
+	"blockPosts": {
+		"message": "Nascondi i Posts da",
+		"description": "Blocca i Posts dai Settaggi Utente."
+	},
+	"blockStories": {
+		"message": "Nascondi le Stories da",
+		"description": "Blocca le Stories dai Settaggi Utente."
+	},
+	"night": {
+		"message": "Abilita Tema Notturno",
+		"description": "Impostazioni Tema Notturno."
+	},
+	"nightModeStart": {
+		"message": "Ora di Inizio del Tema Notturno",
+		"description": ""
+	},
+	"nightModeStart_help": {
+		"message": "Imposta questo e l'ultimo parametro con lo stesso numero per applicare il Tema Notturno permanentemente.",
+		"description": ""
+	},
+	"nightModeEnd": {
+		"message": "Ora di Fine del Tema Notturno",
+		"description": ""
+	},
+	"nightModeEnd_help": {
+		"message": "Imposta questo e il primo parametro con lo stesso numero per applicare il Tema Notturno permanentemente.",
+		"description": ""
+	},
+	"picturesOnly": {
+		"message": "Mostra solo immagini",
+		"description": "Impostazioni"
+	},
+	"hideStories": {
+		"message": "Nascondi Tutte le Stories",
+		"description": "Impostazioni"
+	},
+	"hideRecommended": {
+		"message": "Nascondi gli Utenti Suggeriti",
+		"description": "Impostazioni"
+	},
+	"highlightOP": {
+		"message": "Punti salienti dell'Autore nei commenti",
+		"description": "Impostazioni"
+	},
+	"only3Dot": {
+		"message": "Rimuovi tutti le modifiche di stile",
+		"description": "Impostazioni"
+	},
+	"rows": {
+		"message": "Post per riga",
+		"description": "Impostazioni"
+	},
+	"rows_help": {
+		"message": "1 imposta il layout standard di Instagram. Quello di default è 4.",
+		"description": "Impostazioni"
+	},
+	"indicateFollowing": {
+		"message": "Indicatore dei Follower",
+		"description": "Impostazioni"
+	},
+	"noSpaceBetweenPosts": {
+		"message": "Nessuno Spazio tra i Posts.",
+		"description": "Impostazioni"
+	},
+	"rowsFourBoxWidth": {
+		"message": "Larghezza dei Posts nel layout a 4 Righe",
+		"description": "Impostazioni"
+	},
+	"rowsFourBoxWidth_help": {
+		"message": "Si applica solo quando il parametro 'Posts per Riga' è 4. Quello di default è 23.",
+		"description": "Impostazioni"
+	},
+	"rowsTwoBoxWidth": {
+		"message": "Larghezza dei Posts nel layout a 2 Righe",
+		"description": "Impostazioni"
+	},
+	"rowsTwoBoxWidth_help": {
+		"message": "Si applica solo quando il parametro 'Posts per Riga' è 2. Quello di default è 40.",
+		"description": "Impostazioni"
+	},
+	"watchPosts": {
+		"message": "Guarda i Posts da",
+		"description": "Impostazioni"
+	},
+	"watchPosts_help": {
+		"message": "Sii sicuro che lo Username sia corretto (es. https://instagram.com/TheUsername funziona)",
+		"description": "Impostazioni"
+	},
+	"watchStories": {
+		"message": "Guarda Stories da",
+		"description": "Impostazioni"
+	},
+	"watchStories_help": {
+		"message": "Sii sicuro che lo Username sia corretto (es. https://instagram.com/TheUsername funziona)",
+		"description": "Impostazioni"
+	},
+	"watchInBackground": {
+		"message": "Vedere in Background?",
+		"description": "Impostazioni"
+	},
+	"watchInBackground_help": {
+		"message": "Quando è spento verrai notificato solo quando apri Instagram.com.",
+		"description": "Impostazioni"
+	},
+	"watch_openProfile": {
+		"message": "Clicca per aprire il profilo.",
+		"description": "Testo nelle Notifiche"
+	},
+	"watch_newPost": {
+		"message": "Guarda il nuovo post di $user$",
+		"description": "Testo delle Notifiche quando si vuole vedere il nuovo post di un Utente.",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "JacobGross_"
+			}
+		}
+	},
+	"watch_newStory": {
+		"message": "Guarda le storie non viste di $user$",
+		"description": "Testo delle Notifiche quando si vuole vedere la nuova Storia non vista di un Utente.",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "JacobGross_"
+			}
+		}
+	},
+	"watch_newPic": {
+		"message": "$user$ ha una nuova foto profilo",
+		"description": "Testo delle Notifiche quando un Utente aggiorna la propria foto profilo.",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "JacobGross_"
+			}
+		}
+	}
 }
