@@ -201,7 +201,7 @@ body > div > div[role='dialog'] header + div + div + div,
 	height: max-content;
 	max-height: 100%;
 	padding: 8px 12px 0 !important;
-	overflow-y: auto;
+	/*overflow-y: auto; /* issues for autocomplete tags in comment textarea */
 	contain: layout style;
 }
 
@@ -414,7 +414,6 @@ article > div > div > section:last-child {
 	width: auto;
 	height: 56px;
 	margin: 0;
-	contain: strict;
 }
 
 article > div > section textarea  /* @deprecated */,
