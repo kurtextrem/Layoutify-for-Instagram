@@ -98,7 +98,7 @@ export default class About extends Component {
 
 				<h3>
 					<a href="https://github.com/kurtextrem/Improved-for-Instagram/blob/master/CHANGELOG.md#changelog" target="_blank" rel="noopener">
-						Changelog <i class="material-icons">description</i>
+						Changelog 📃
 					</a>
 				</h3>
 

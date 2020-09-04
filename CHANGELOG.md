@@ -6,6 +6,8 @@
 
 On the 3-dots page, posts will show up two or three times instead of once. This is a bug that still puzzles me, but I'll continue trying to fix it.
 
+I sadly don't have much time at the moment, as I'm the only developer of this extension and I'll do my Bachelor thesis soon.
+
 ### Changed
 
 Instagram lawyer forced me to change the extension **icon**, possibly the name in the future. :(
