@@ -116,6 +116,31 @@ function handleStories() {
 		let $div
 		if (($div = $('.home main > section > div > div:first-child[class] > div')) !== null) {
 			moveStories($div)
+
+			let $sidebar = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child')
+
+		}
+	}
+}
+
+
+/**
+ *
+ */
+function handleSidebar() {
+	if (OPTS_LOADED && currentClass === 'home' && !OPTIONS.only3Dot && $('.ige_sidebar') === null) {
+		let $div
+		if (($div = $('.main > section > div:first-child:not(#rcr-anchor) ~ div:last-child')) !== null) {
+			let $stories = $('.ige_movedStories')
+			if ($stories === null) return
+
+			$div.classList.add('ige_sidebar')
+			$div.addEventlistener('mouseenter', function() {
+				$stories.classList.add('hover')
+			})
+			$div.addEventlistener('mouseout', function() {
+				$stories.classList.remove('hover')
+			})
 		}
 	}
 }
@@ -128,6 +153,7 @@ function handleNode(node, mutation) {
 
 	addExtendedButton()
 	handleStories()
+	handleSidebar()
 
 	if (mutation.target === root && nodeName === 'SECTION') onChange()
 	handleNodeFns[nodeName] !== undefined && handleNodeFns[nodeName](node)
@@ -557,7 +583,6 @@ function clickShare(tries) {
  */
 function moveStories(el) {
 	el.classList.add('ige_movedStories')
-	$('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > :first-child').after(el)
 
 	observe(
 		el,
