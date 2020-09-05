@@ -34,14 +34,14 @@ export default function Posts(items, renderPost, categories) {
 			headings.push(
 				<>
 					<a key={id} href={`#${id}`}>
-						<span class="badge badge-secondary">{c}</span>
+						<span class="badge bg-secondary">{c}</span>
 					</a>
 					{/*<i class="material-icons">edit</i>*/}
 				</>
 			)
 			posts.push(
 				<h1 key={id} class="saved--heading" id={id}>
-					<a href={`#${id}`} class="badge badge-primary">
+					<a href={`#${id}`} class="badge bg-primary">
 						{c}
 					</a>
 				</h1>
