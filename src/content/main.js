@@ -116,9 +116,6 @@ function handleStories() {
 		let $div
 		if (($div = $('.home main > section > div > div:first-child[class] > div')) !== null) {
 			moveStories($div)
-
-			let $sidebar = $('main > section > div:first-child:not(#rcr-anchor) ~ div:last-child')
-
 		}
 	}
 }
@@ -578,54 +575,62 @@ function clickShare(tries) {
 	} else $elem.click()
 }
 
+function storiesMutationHandler(mutations) {
+	let counterAdded = 0
+	let counterRemoved = 0
+
+	console.log('stories', mutations)
+
+	for (const mutation of mutations) {
+		if (mutation.target.nodeName !== 'UL') continue
+
+		const removed = mutation.removedNodes, // "left"
+			added = mutation.addedNodes // "right"
+
+		if (added.length > 0) counterAdded += added.length
+		if (removed.length > 0) counterRemoved += removed.length
+	}
+
+	console.log({ counterAdded, counterRemoved })
+
+	if (counterAdded > 5) return
+
+	const amountDummyNodes = 2 // the dummy nodes <li>
+	counterAdded += amountDummyNodes
+	counterRemoved += amountDummyNodes
+	const $stories = $('.ige_movedStories ul')
+	if ($stories === null) console.warn('empty stories ul', el)
+
+	const storyChildren = $stories.children,
+		len = storyChildren.length
+
+	if (len === 11) { // page 0
+		for (let i = amountDummyNodes; i < len; ++i) {
+			storyChildren[i].style.display = 'list-item'
+		} // 4 -> 4 -> 4
+		return
+	}
+
+	for (let i = amountDummyNodes; i < counterAdded; ++i) {
+		if (storyChildren[i].style.display === 'none') ++counterAdded
+		else storyChildren[i].style.display = 'none'
+	} // 4 -> 4 -> 4
+
+	for (let i = 2 + counterAdded; i < counterRemoved; ++i) {
+		//if (storyChildren[i].style.display === 'none') ++counterRemoved
+		//else
+		storyChildren[i].style.display = 'list-item'
+		if (i + 1 < len && storyChildren[i + 1].style.display === 'none') ++counterRemoved
+	} // 0 -> 2 -> 4
+}
+
 /**
  *
  */
 function moveStories(el) {
 	el.classList.add('ige_movedStories')
 
-	observe(
-		el,
-		function (mutations) {
-			let counterAdded = 0
-			let counterRemoved = 0
-
-			console.log('stories', mutations)
-
-			for (const mutation of mutations) {
-				if (mutation.target.nodeName !== 'UL') continue
-
-				const removed = mutation.removedNodes, // "left"
-					added = mutation.addedNodes // "right"
-
-				if (added.length > 0) counterAdded += added.length
-				if (removed.length > 0) counterRemoved += removed.length
-			}
-
-			console.log({ counterAdded, counterRemoved })
-
-			if (counterAdded > 5) return
-
-			counterAdded += 2
-			counterRemoved += 2
-			const $stories = $('.ige_movedStories ul')
-			if ($stories === null) console.warn('empty stories ul', el)
-
-			const storyChildren = $stories.children,
-				len = storyChildren.length
-			for (let i = 2; i < counterAdded; ++i) {
-				if (storyChildren[i].style.display === 'none') ++counterAdded
-				else storyChildren[i].style.display = 'none'
-			} // 4 -> 4 -> 4
-
-			for (let i = 2 + counterAdded; i < counterRemoved; ++i) {
-				//if (storyChildren[i].style.display === 'none') ++counterRemoved
-				//else
-				storyChildren[i].style.display = 'list-item'
-			} // 0 -> 2 -> 4
-		},
-		{ childList: true, subtree: true }
-	)
+	observe(el, storiesMutationHandler, { childList: true, subtree: true })
 }
 
 /**
