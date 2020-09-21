@@ -120,7 +120,6 @@ function handleStories() {
 	}
 }
 
-
 /**
  *
  */
@@ -128,14 +127,14 @@ function handleSidebar() {
 	if (OPTS_LOADED && currentClass === 'home' && !OPTIONS.only3Dot && $('.ige_sidebar') === null) {
 		let $div
 		if (($div = $('.main > section > div:first-child:not(#rcr-anchor) ~ div:last-child')) !== null) {
-			let $stories = $('.ige_movedStories')
+			const $stories = $('.ige_movedStories')
 			if ($stories === null) return
 
 			$div.classList.add('ige_sidebar')
-			$div.addEventlistener('mouseenter', function() {
+			$div.addEventlistener('mouseenter', function () {
 				$stories.classList.add('hover')
 			})
-			$div.addEventlistener('mouseout', function() {
+			$div.addEventlistener('mouseout', function () {
 				$stories.classList.remove('hover')
 			})
 		}
@@ -312,6 +311,8 @@ function addChromeListener() {
 			listenerActions[request.action](request)
 		}
 	})
+
+	chrome.runtime.sendMessage({ action: 'ig-claim', path: sessionStorage['www-claim-v2'] || localStorage['www-claim-v2'] })
 }
 
 const connection = navigator.connection.type || '',
@@ -575,6 +576,9 @@ function clickShare(tries) {
 	} else $elem.click()
 }
 
+/**
+ *
+ */
 function storiesMutationHandler(mutations) {
 	let counterAdded = 0
 	let counterRemoved = 0
@@ -604,7 +608,8 @@ function storiesMutationHandler(mutations) {
 	const storyChildren = $stories.children,
 		len = storyChildren.length
 
-	if (len === 11) { // page 0
+	if (len === 11) {
+		// page 0
 		for (let i = amountDummyNodes; i < len; ++i) {
 			storyChildren[i].style.display = 'list-item'
 		} // 4 -> 4 -> 4
