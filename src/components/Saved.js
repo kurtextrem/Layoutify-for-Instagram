@@ -25,23 +25,21 @@ export default class Saved extends Component {
 		const id = this.props.id
 		if (!id)
 			return (
-				<>
-					<div class="d-flex w-100 justify-content-center flex-wrap">
-						{this.state.collections.map(item => (
-							<a href={`#/collection/${item.collection_id}`} class="collection">
-								<div class="collection--image">
-									<img src={item.cover_media?.image_versions2?.candidates?.[0].url} />
-								</div>
-								<div class="collection--title">{item.collection_name}</div>
-								<div class="collection--footer">{item.collection_media_count}</div>
-							</a>
-						))}
-						<i class="w-100 text-center">(middle- or right-click to open a collection in a new tab)</i>
-					</div>
-					<PostsContainer id="saved" defaultClass="turned_in" toggleClass="turned_in_not" preload={0} />
-				</>
+				<div class="d-flex w-100 justify-content-center flex-wrap">
+					{this.state.collections.map(item => (
+						<a href={`#/collection/${item.collection_id}`} class="collection">
+							<div class="collection--image">
+								<img src={item.cover_media?.image_versions2?.candidates?.[0].url} />
+							</div>
+							<div class="collection--title">{item.collection_name}</div>
+							<div class="collection--footer">{item.collection_media_count}</div>
+						</a>
+					))}
+					<i class="w-100 text-center">(middle- or right-click to open a collection in a new tab)</i>
+					{/* <PostsContainer id="saved" defaultClass="turned_in" toggleClass="turned_in_not" preload={0} /> */}
+				</div>
 			)
 
-		return <PostsContainer id={`saved/${id}`} defaultClass="turned_in" toggleClass="turned_in_not" preload={10} />
+		return 'yay' // <PostsContainer id={'collection/' + id} defaultClass="turned_in" toggleClass="turned_in_not" preload={5} />
 	}
 }

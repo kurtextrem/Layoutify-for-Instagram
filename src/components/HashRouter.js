@@ -46,7 +46,7 @@ export class HashRouter extends EventComponent {
 		let i
 		for (i = 0; i < locations.length; ++i) {
 			const location = locations[i]
-			if (location.length !== locArrayLen && location.indexOf(parentLocation) === -1) {
+			if (location.length !== locArrayLen || location.indexOf(parentLocation) === -1) {
 				// Remove elements that don't fit our location
 				locations.splice(i, 1)
 				scores.splice(i, 1)
