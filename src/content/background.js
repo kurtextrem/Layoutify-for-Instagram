@@ -268,20 +268,28 @@ function fetchFromBackground(which, path, sendResponse, options) {
 function fetchAux(url, options, type) {
 	return new Promise((resolve, reject) => {
 		let opts
-		if (options !== undefined) opts = { credentials: 'include', ...options }
+		if (options !== undefined) opts = { credentials: 'include', method: 'GET', ...options }
 
 		const xhr = new XMLHttpRequest()
 		xhr.open(opts.method, url, true)
 		xhr.responseType = type || 'text'
 		if (opts.credentials !== 'omit') xhr.withCredentials = true
 
-		for (const header in opts.headers) {
-			xhr.setRequestHeader(header, opts.headers[header])
+		const headers = opts.headers
+		for (const header in headers) {
+			if (!headers.hasOwnProperty(header)) continue
+
+			xhr.setRequestHeader(header, headers[header])
 		}
 
 		xhr.addEventListener('load', function () {
 			resolve(xhr.response)
 		})
+
+		xhr.addEventListener('error', logAndReject)
+		xhr.addEventListener('abort', logAndReject)
+
+		xhr.send()
 	})
 }
 
@@ -546,9 +554,9 @@ function notifyError(user, options) {
 }
 
 const WEB_OPTS = {
-	headers: new Headers({
+	headers: {
 		'x-requested-with': 'XMLHttpRequest',
-	}),
+	},
 }
 
 const QUERY_HASH = 'd4d88dc1500312af6f937f7b804c68c3', // @TODO Update regularely, last check 09.09.2020 - request loads on any profile/non-home page

@@ -2,8 +2,8 @@
  * Created by AntonioGiordano, partially rewritten by Jacob "Kurtextrem" Groß on 06/07/16.
  */
 
+import EventComponent from './EventComponent'
 import PropTypes from 'prop-types'
-import { EventComponent } from './EventComponent'
 import { h, toChildArray } from 'preact'
 
 export class HashRouter extends EventComponent {
@@ -41,10 +41,12 @@ export class HashRouter extends EventComponent {
 		const scores = this.scores.slice(0)
 		const children = this.children.slice(0)
 		const params = this.params.slice(0)
+		const parentLocation = locArray[0]
 
 		let i
 		for (i = 0; i < locations.length; ++i) {
-			if (locations[i].length !== locArrayLen) {
+			const location = locations[i]
+			if (location.length !== locArrayLen && location.indexOf(parentLocation) === -1) {
 				// Remove elements that don't fit our location
 				locations.splice(i, 1)
 				scores.splice(i, 1)
@@ -54,13 +56,14 @@ export class HashRouter extends EventComponent {
 			}
 		}
 
+		/* multi-routes? https://github.com/antoniogiordano/react-redux-hash-router/commit/ddc81448e13ab1a0c846fdea932404321bf1690c#diff-25d902c24283ab8cfbac54dfa101ad31
 		const regexParam = /^{(.*)}$/
 		for (const l in locArray) {
 			for (i = 0; i < locations.length; ++i) {
 				const location = locations[i][l]
 				if (locArray[l] === location) {
 					scores[i] += 100
-				} else if (location.match(regexParam, '$1') !== null) {
+				} else if (location.match(regexParam)) {
 					scores[i] += 1
 					params[i][location.match(regexParam, '$1')[1]] = locArray[l]
 				} else {
@@ -72,7 +75,7 @@ export class HashRouter extends EventComponent {
 					i--
 				}
 			}
-		}
+		}*/
 
 		if (locations.length !== 0) {
 			let max = 0
@@ -100,7 +103,7 @@ export class HashRouter extends EventComponent {
 	}
 
 	calcChildren(props) {
-		toChildArray(props.children).forEach((child) => {
+		toChildArray(props.children).forEach(child => {
 			const childArray = child.props.hash.split('/')
 			if (childArray.length !== 0) childArray.shift()
 
@@ -132,8 +135,7 @@ export class HashRouter extends EventComponent {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		if (nextState.render !== this.state.render) return true
-		if (nextProps.onLocationChanged !== this.props.onLocationChanged)
-			return true
+		if (nextProps.onLocationChanged !== this.props.onLocationChanged) return true
 		return false
 	}
 
@@ -156,7 +158,7 @@ HashRouter.propTypes = {
 	onLocationChanged: PropTypes.func,
 }
 
-export const Route = (props) => props.children
+export const Route = props => props.children
 
 Route.propTypes = {
 	hash: PropTypes.string.isRequired,

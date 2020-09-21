@@ -1,5 +1,5 @@
 import About from './About'
-import Changelog from './Changelog'
+import EventComponent from './EventComponent'
 import Liked from './Liked'
 import Nav from './Nav'
 import Options from './Options'
@@ -9,9 +9,9 @@ import { Component, h } from 'preact'
 import { HashRouter, Route } from './HashRouter'
 // @todo: Lazy-load router and routes for faster TTI
 
-class App extends Component {
+class App extends EventComponent {
 	state = {
-		location: window.location.hash.replace('#/', ''),
+		location: window.location.hash,
 	}
 
 	@bind
@@ -22,6 +22,14 @@ class App extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		return nextState.location !== this.state.location
+	}
+
+	hashchange(e) {
+		console.log(e)
+	}
+
+	componentDidMount() {
+		window.addEventListener('hashchange', this)
 	}
 
 	render() {
@@ -35,7 +43,10 @@ class App extends Component {
 							{Liked}
 						</Route>
 						<Route key="saved" hash="#/saved">
-							{Saved}
+							<Saved />
+						</Route>
+						<Route key="collection" hash="#/collection">
+							<Saved id={this.state.location.split('/')[2]} />
 						</Route>
 						<Route key="options" hash="#/options">
 							<Options />
@@ -43,13 +54,10 @@ class App extends Component {
 						<Route key="about" hash="#/about">
 							<About />
 						</Route>
-						<Route key="changelog" hash="#/changelog">
-							<Changelog />
-						</Route>
 					</HashRouter>
 				</main>
 				<a href="#" id="backToTop">
-					<i class="material-icons">keyboard_arrow_up</i>
+					↑️
 				</a>
 			</div>
 		)
