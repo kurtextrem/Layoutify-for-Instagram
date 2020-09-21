@@ -7,7 +7,7 @@ const documentElement = document.documentElement,
 	WIDTH = window.innerWidth
 
 /** Stores the current options */
-let OPTIONS
+let OPTIONS = {}
 
 /**
  *

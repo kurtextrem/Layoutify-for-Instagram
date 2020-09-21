@@ -66,6 +66,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
 			if (header.name === 'User-Agent') {
 				// credit https://github.com/mgp25/Instagram-API/master/src/Constants.php
+				// https://packagist.org/packages/mgp25/instagram-php / https://github.com/dilame/instagram-private-api
 				header.value =
 					'Instagram 136.0.0.34.124 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 104766893)'
 			} else if (header.name === 'Cookie') {
@@ -108,11 +109,6 @@ function modifyCspHeaders(details) {
 	}
 
 	return { responseHeaders: details.responseHeaders }
-}
-
-const fetchOptions = {
-	credentials: 'include',
-	mode: 'cors',
 }
 
 /**
@@ -167,53 +163,61 @@ function parseJSON(response) {
 
 const API_URL = {
 	PRIVATE: 'https://i.instagram.com/api/v1/',
+	PRIVATE_WEB: 'https://i.instagram.com/api/v1/', // once web has more abilities, replace PRIVATE
 	PUBLIC: 'https://www.instagram.com/web/',
 }
 
 const PRIVATE_API_OPTS = {
-	headers: new Headers({
+	headers: {
 		Accept: '*/*',
+		//'Accept-Encoding': 'gzip, deflate',
 		'Accept-Language': 'en-US',
-		Connection: 'keep-alive',
-		'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+		//Connection: 'keep-alive',
 		'X-FB-HTTP-Engine': 'Liger',
 		'X-IG-App-ID': '567067343352427',
 		'X-IG-Bandwidth-Speed-KBPS': '-1.000',
 		'X-IG-Bandwidth-TotalBytes-B': '0',
 		'X-IG-Bandwidth-TotalTime-MS': '0',
 		'X-IG-Capabilities': '3brTvw==',
-		'X-IG-Connection-Speed': '3700kbps',
+		'X-IG-Connection-Speed': ~~(Math.random() * 5000 + 1000) + 'kbps',
 		'X-IG-Connection-Type': 'WIFI',
-	}),
-
+	},
+	method: 'GET',
 	// credits to https://github.com/mgp25/Instagram-API/blob/master/src/Request.php#L377
-	referrerPolicy: 'no-referrer',
+}
+
+const PRIVATE_WEB_API_OPTS = {
+	headers: {
+		'X-IG-App-ID': '936619743392459',
+		'X-IG-WWW-Claim': '',
+	},
+	method: 'GET',
 }
 
 const PUBLIC_API_OPTS = {
-	headers: new Headers({
+	headers: {
 		'x-csrftoken': '',
 		'X-IG-App-ID': '936619743392459',
 		'x-instagram-ajax': '1',
 		'x-requested-with': 'XMLHttpRequest',
-	}),
+	},
 	method: 'POST',
 }
 
 const GRAPHQL_API_OPTS = {
-	headers: new Headers({
+	headers: {
 		'x-csrftoken': '',
 		'X-IG-App-ID': '936619743392459',
 		'X-IG-WWW-Claim': '',
 		'x-requested-with': 'XMLHttpRequest',
-	}),
+	},
 	method: 'GET',
 }
 
 /**
  *
  */
-function fetchFromBackground(which, path, sendResponse) {
+function fetchFromBackground(which, path, sendResponse, options) {
 	if (which === 'PUBLIC') {
 		getCookie('csrftoken')
 			.then(value => {
@@ -227,8 +231,26 @@ function fetchFromBackground(which, path, sendResponse) {
 		return false // for now
 	}
 
-	fetchAux(API_URL[which] + path, PRIVATE_API_OPTS)
-		.then(toText)
+	if (which === 'PRIVATE_WEB') {
+		PRIVATE_WEB_API_OPTS['ig-claim'] = localStorage['ig-claim']
+		fetchAux(API_URL[which] + path, PRIVATE_WEB_API_OPTS, 'text')
+			.then(fixMaxId)
+			.then(parseJSON)
+			.then(sendResponse)
+			.catch(sendResponse)
+
+		return true
+	}
+
+	const opts = { ...PRIVATE_API_OPTS, ...options }
+	if (opts.method === undefined || opts.method !== 'GET') {
+		if (opts.body !== undefined) {
+			opts.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+			opts.body = new FormData()
+		}
+	}
+
+	fetchAux(API_URL[which] + path, opts, 'text')
 		.then(fixMaxId)
 		.then(parseJSON)
 		.then(sendResponse)
@@ -243,11 +265,24 @@ function fetchFromBackground(which, path, sendResponse) {
 /**
  *
  */
-function fetchAux(url, options) {
-	let options_ = fetchOptions
-	if (options !== undefined) options_ = { ...options_, ...options }
+function fetchAux(url, options, type) {
+	return new Promise((resolve, reject) => {
+		let opts
+		if (options !== undefined) opts = { credentials: 'include', ...options }
 
-	return fetch(url, options_).then(checkStatus).catch(logAndReject)
+		const xhr = new XMLHttpRequest()
+		xhr.open(opts.method, url, true)
+		xhr.responseType = type || 'text'
+		if (opts.credentials !== 'omit') xhr.withCredentials = true
+
+		for (const header in opts.headers) {
+			xhr.setRequestHeader(header, opts.headers[header])
+		}
+
+		xhr.addEventListener('load', function () {
+			resolve(xhr.response)
+		})
+	})
 }
 
 /**
@@ -282,8 +317,12 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 			break
 
 		case 'fetch':
-			fetchFromBackground(request.which.toUpperCase(), request.path, sendResponse)
+			fetchFromBackground(request.which.toUpperCase(), request.path, sendResponse, request.options)
 			return true
+
+		case 'ig-claim':
+			window.localStorage['ig-claim'] = request.path
+			break
 
 		default:
 			break
@@ -512,16 +551,17 @@ const WEB_OPTS = {
 	}),
 }
 
-const QUERY_HASH = '9ca88e465c3f866a76f7adee3871bdd8', // @TODO Update regularely, last check 13.04.2020
+const QUERY_HASH = 'd4d88dc1500312af6f937f7b804c68c3', // @TODO Update regularely, last check 09.09.2020 - request loads on any profile/non-home page
 	storiesParams = {
-		include_chaining: false,
+		include_chaining: true,
 		include_highlight_reels: false,
+		include_live_status: true,
 		include_logged_out_extras: false,
 		include_reel: true,
 		include_suggested_users: false,
 		user_id: '',
 	}
-//orig: {"user_id":"XX","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":true}
+//orig: {"user_id":"1514906067","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":false,"include_live_status":true}
 
 /**
  *
@@ -540,8 +580,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 	}
 
 	const options = { ...notificationOptions }
-	fetchAux(url, fetchOptions_)
-		.then(toJSON)
+	fetchAux(url, fetchOptions_, 'json')
 		.then(json => {
 			if (type === 0) {
 				handlePost(json, user, userObject, watchData, options)
@@ -567,8 +606,7 @@ function createUserObject(user, watchData) {
 	let fetchOptions_ = WEB_OPTS
 	if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
 
-	return fetchAux(`https://www.instagram.com/${user.replace('$$ANON$$', '')}/?__a=1`, fetchOptions_)
-		.then(toJSON)
+	return fetchAux(`https://www.instagram.com/${user.replace('$$ANON$$', '')}/?__a=1`, fetchOptions_, 'json')
 		.then(json => {
 			if (watchData[user] === undefined)
 				return (watchData[user] = {

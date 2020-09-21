@@ -226,3 +226,13 @@ export function markAtsAndHashtags(text, replacer) {
 
 	return arr
 }
+
+export function fetchFromBackground(which, path, options) {
+	return new Promise((resolve, reject) => {
+		chrome.runtime.sendMessage({ action: 'fetch', options, path, which }, text => {
+			if (text === undefined && chrome.runtime.lastError) return reject(chrome.runtime.lastError.message)
+
+			return resolve(text)
+		})
+	})
+}

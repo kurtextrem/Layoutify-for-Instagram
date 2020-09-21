@@ -570,7 +570,8 @@ main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
 main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
 	top: 88px !important;
 	z-index: 11;
-	height: 43vh !important;
+	height: 42vh !important;
+	padding-bottom: 0;
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;

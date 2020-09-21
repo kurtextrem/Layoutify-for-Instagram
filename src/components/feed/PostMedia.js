@@ -171,20 +171,22 @@ export default class PostMedia extends Component {
 		}
 
 		return (
-			<div
-				class="ige_post-media p-relative"
-				onDblClick={this.handleDblClick}
-				onMouseEnter={this.handleHover}
-				onMouseOut={this.handleMouseOut}>
-				<div class="img--wrapper">{mediaElement}</div>
-				{isCarousel && carouselIndex !== 0 ? (
-					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick} />
-				) : null}
-				{isCarousel ? (
-					<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.handleArrowClick} />
-				) : null}
+			<>
+				<div
+					class="ige_post-media p-relative"
+					onDblClick={this.handleDblClick}
+					onMouseEnter={this.handleHover}
+					onMouseOut={this.handleMouseOut}>
+					<div class="img--wrapper">{mediaElement}</div>
+					{isCarousel && carouselIndex !== 0 ? (
+						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick} />
+					) : null}
+					{isCarousel ? (
+						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.handleArrowClick} />
+					) : null}
+				</div>
 				{isCarousel ? <Dots index={carouselIndex} len={carouselLen} /> : null}
-			</div>
+			</>
 		)
 	}
 }

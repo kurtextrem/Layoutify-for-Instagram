@@ -390,14 +390,12 @@
 }
 
 .ige_dots {
-	position: absolute;
-	right: 0;
-	bottom: -1.7em;
-	left: 0;
-	flex-direction: row;
-	justify-content: center;
-	text-align: center;
-	contain: content;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    contain: content;
+    width: min-content;
+    align-self: center;margin-top: 15px;margin-bottom: -20px;
 }
 
 .ige_dots--dot {

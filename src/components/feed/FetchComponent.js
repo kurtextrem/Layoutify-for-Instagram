@@ -31,6 +31,8 @@ export default class FetchComponent extends Component {
 			'x-requested-with': 'XMLHttpRequest',
 		})
 
+		chrome.runtime.sendMessage({ action: 'ig-claim', path: headers.get('X-IG-WWW-Claim') }, function (){})
+
 		if (withRollout) headers.append('x-instagram-ajax', FetchComponent.rolloutHash)
 
 		return headers
@@ -38,7 +40,7 @@ export default class FetchComponent extends Component {
 
 	@bind
 	loadNextPage(userInitiated) {
-		if (this.isNextPageLoading) return window.setTimeout(() => this.loadNextPage(userInitiated), 1000)
+		if (this.isNextPageLoading) return window.setTimeout(() => this.loadNextPage(userInitiated), 500)
 		this.isNextPageLoading = true
 
 		this.setState({ isNextPageLoading: true }, () => {
