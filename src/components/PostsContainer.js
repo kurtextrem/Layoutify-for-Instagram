@@ -61,7 +61,7 @@ export default class PostsContainer extends Component {
 	}
 
 	setTimeout(timeout) {
-		this.setState((previousState, properties) => ({ timeout }))
+		this.setState({ timeout })
 		if (timeout !== PostsContainer.TIME_STATE.ERROR)
 			window.setTimeout(() => this.setTimeout(PostsContainer.TIME_STATE.ERROR), PostsContainer.TIME_STATE.ERROR)
 	}

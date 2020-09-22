@@ -266,19 +266,24 @@ function fetchFromBackground(which, path, sendResponse, options) {
  *
  */
 function fetchAux(url, options, type) {
-	return new Promise((resolve, reject) => {
-		let opts
-		if (options !== undefined) opts = { credentials: 'include', method: 'GET', ...options }
+	let opts
+	if (options !== undefined) opts = { credentials: 'include', method: 'GET', ...options }
 
+	if (opts.credentials === 'omit')
+		return fetch(url, opts)
+			.then(checkStatus)
+			.then(type === 'json' ? toJSON : toText)
+			.catch(logAndReject)
+
+	return new Promise((resolve, reject) => {
 		const xhr = new XMLHttpRequest()
 		xhr.open(opts.method, url, true)
 		xhr.responseType = type || 'text'
-		if (opts.credentials !== 'omit') xhr.withCredentials = true
+		xhr.withCredentials = true
 
 		const headers = opts.headers
 		for (const header in headers) {
 			if (!headers.hasOwnProperty(header)) continue
-
 			xhr.setRequestHeader(header, headers[header])
 		}
 
