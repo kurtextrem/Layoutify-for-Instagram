@@ -283,7 +283,7 @@ function fetchAux(url, options, type) {
 
 		const headers = opts.headers
 		for (const header in headers) {
-			if (!headers.hasOwnProperty(header)) continue
+			if (!Object.prototype.hasOwnProperty.call(headers, header)) continue
 			xhr.setRequestHeader(header, headers[header])
 		}
 

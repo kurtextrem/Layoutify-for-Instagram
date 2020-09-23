@@ -275,7 +275,7 @@ function addExtendedButton() {
 
 		// @TODO Remove this and fetch entirely on 3-dot page, as we fetch from bg already anyway
 		Instagram.liked.start().then(Instagram.liked.fetch).catch(window.logAndReject)
-		Instagram.saved.start().then(Instagram.saved.fetch).catch(window.logAndReject)
+		//Instagram.saved.start().then(Instagram.saved.fetch).catch(window.logAndReject)
 
 		chrome.runtime.sendMessage(null, { action: 'click' })
 		if (!clickedExtendedButton) window.localStorage.clickedExtendedBtn = true
@@ -294,7 +294,13 @@ const listenerActions = {
 	},
 
 	load(request) {
-		return Instagram[request.which].fetch()
+		const which = request.which
+		if (Instagram[which]) return Instagram[which].fetch()
+		else {
+			Instagram[which] = new InstagramAPI(which)
+			Instagram[which].start()
+			Instagram[which].fetch()
+		}
 	},
 
 	remove(request) {
@@ -307,7 +313,7 @@ const listenerActions = {
  */
 function addChromeListener() {
 	chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-		if (listenerActions[request.action] !== undefined && Instagram[request.which] !== undefined) {
+		if (listenerActions[request.action] !== undefined) {
 			listenerActions[request.action](request)
 		}
 	})

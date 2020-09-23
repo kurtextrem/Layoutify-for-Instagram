@@ -6,22 +6,26 @@ export function logAndReturn(e) {
 	return e
 }
 
+export function checkStatus(response) {
+	if (response.ok) return response
+
+	const error = new Error(response.statusText)
+	error.status = response.status
+	error.response = response
+	throw error
+}
+
+export function parseJSON(response) {
+	return response.json()
+}
+
 export class XHR {
-	static checkStatus(response) {
-		if (response.ok) return response
+	static checkStatus = checkStatus
 
-		const error = new Error(response.statusText)
-		error.status = response.status
-		error.response = response
-		throw error
-	}
-
-	static parseJSON(response) {
-		return response.json()
-	}
+	static parseJSON = parseJSON
 
 	static fetch(url, options) {
-		return window.fetch(url, options).then(XHR.checkStatus).then(XHR.parseJSON).catch(logAndReturn)
+		return window.fetch(url, options).then(checkStatus).then(parseJSON).catch(logAndReturn)
 	}
 }
 
@@ -234,5 +238,12 @@ export function fetchFromBackground(which, path, options) {
 
 			return resolve(text)
 		})
+	})
+}
+
+export function promiseReq(req) {
+	return new Promise((resolve, reject) => {
+		req.onsuccess = () => resolve(req.result)
+		req.onerror = () => reject(req.error)
 	})
 }

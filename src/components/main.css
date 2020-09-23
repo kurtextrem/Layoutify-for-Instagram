@@ -54,8 +54,6 @@ nav,
 	animation-iteration-count: 1;
 
 	contain: layout style;
-
-	content-visibility: auto;
 }
 
 .card-footer {

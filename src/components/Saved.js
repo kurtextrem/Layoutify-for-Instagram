@@ -1,6 +1,6 @@
 import PostsContainer from './PostsContainer'
 import bind from 'autobind-decorator'
-import { Component, Fragment, h } from 'preact'
+import { Component, h } from 'preact'
 import { fetchFromBackground } from './Utils'
 
 export default class Saved extends Component {
@@ -8,7 +8,7 @@ export default class Saved extends Component {
 
 	async componentDidMount() {
 		// @TODO Implement more_available
-		// @TODO Prio: Add caching for like 10min?
+		// @TODO Prio: Add caching for like 10min? --> localStorage?
 		//fetchFromBackground('private_web', 'collections/list/').then(this.setCollections)
 		const req = await fetch('../collectionList.json')
 		const json = await req.json()
@@ -17,17 +17,23 @@ export default class Saved extends Component {
 
 	@bind
 	setCollections(collections) {
-		console.log(collections)
-		this.setState((prevState, props) => ({ collections: collections.items }))
+		this.setState({ collections: collections.items })
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		const id = this.props.id
+		if (nextState.collections.length !== this.state.collections.length) return true
+		if (id === nextProps.id) return false
+		return (nextProps.id === undefined && id !== undefined) || (nextProps.id !== undefined && id === undefined) || nextProps.id() !== id()
 	}
 
 	render() {
 		const id = this.props.id
-		if (!id)
+		if (id === undefined)
 			return (
 				<div class="d-flex w-100 justify-content-center flex-wrap">
 					{this.state.collections.map(item => (
-						<a href={`#/collection/${item.collection_id}`} class="collection">
+						<a key={item.collection_id} href={`#/collection/${item.collection_id}`} class="collection">
 							<div class="collection--image">
 								<img src={item.cover_media?.image_versions2?.candidates?.[0].url} />
 							</div>
@@ -36,10 +42,10 @@ export default class Saved extends Component {
 						</a>
 					))}
 					<i class="w-100 text-center">(middle- or right-click to open a collection in a new tab)</i>
-					{/* <PostsContainer id="saved" defaultClass="turned_in" toggleClass="turned_in_not" preload={0} /> */}
+					<PostsContainer id="saved" defaultClass="turned_in" toggleClass="turned_in_not" preload={0} />
 				</div>
 			)
 
-		return 'yay' // <PostsContainer id={'collection/' + id} defaultClass="turned_in" toggleClass="turned_in_not" preload={5} />
+		return <PostsContainer id={'collection/' + id()} defaultClass="turned_in" toggleClass="turned_in_not" preload={5} />
 	}
 }

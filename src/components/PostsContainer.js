@@ -186,7 +186,7 @@ export default class PostsContainer extends Component {
 		if (items !== null && items.length !== 0)
 			return (
 				<div class="position-relative">
-					<div class="d-flex position-relative justify-content-center flex-wrap">{Posts(items, this.renderPost)}</div>
+					<div class="ige_virtual_container">{Posts(items, this.renderPost)}</div>
 					<div class="text-center">
 						<Button onClick={this.handleBtnClick} disabled={!canLoadMore}>
 							Load more

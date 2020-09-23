@@ -142,58 +142,58 @@ class InstagramAPI {
 
 			// @todo: Rewrite to whitelist instead of blacklist
 			const item = items[i]
-			item.preview_comments = undefined // we don't want to store too much
-			item.organic_tracking_token = undefined
-			item.max_num_visible_preview_comments = undefined
-			item.location = undefined // @todo
-			item.lng = undefined // @todo
-			item.lat = undefined // @todo
-			item.inline_composer_display_condition = undefined
-			item.has_viewer_saved = undefined
-			item.has_more_comments = undefined
-			item.filter_type = undefined
-			item.device_timestamp = undefined // @todo
-			item.client_cache_key = undefined // @todo
-			item.caption_is_edited = undefined // @todo
-			item.can_viewer_save = undefined
-			item.can_viewer_reshare = undefined
-			item.can_view_more_preview_comments = undefined
-			item.comment_count = undefined // @todo
-			item.comment_likes_enabled = undefined // @todo
-			item.comment_threading_enabled = undefined
-			item.photo_of_you = undefined // @todo
-			item.pk = undefined
-			item.original_height = undefined
-			item.original_width = undefined
-			item.user.friendship_status = undefined // @todo is_bestie
-			item.user.has_anonymous_profile_picture = undefined
-			item.user.is_favorite = undefined
-			item.user.is_private = undefined
-			item.user.is_unpublished = undefined
-			item.user.is_verified = undefined
-			item.user.pk = undefined
-			item.user.profile_pic_id = undefined
-			item.user.latest_reel_media = undefined
-			item.can_see_insights_as_brand = undefined
-			item.inline_composer_imp_trigger_time = undefined
+			delete item.preview_comments // we don't want to store too much
+			delete item.organic_tracking_token
+			delete item.max_num_visible_preview_comments
+			delete item.location // @todo
+			delete item.lng // @todo
+			delete item.lat // @todo
+			delete item.inline_composer_display_condition
+			delete item.has_viewer_saved
+			delete item.has_more_comments
+			delete item.filter_type
+			delete item.device_timestamp // @todo
+			delete item.client_cache_key // @todo
+			delete item.caption_is_edited // @todo
+			delete item.can_viewer_save
+			delete item.can_viewer_reshare
+			delete item.can_view_more_preview_comments
+			delete item.comment_count // @todo
+			delete item.comment_likes_enabled // @todo
+			delete item.comment_threading_enabled
+			delete item.photo_of_you // @todo
+			delete item.pk
+			delete item.original_height
+			delete item.original_width
+			delete item.user.friendship_status // @todo is_bestie
+			delete item.user.has_anonymous_profile_picture
+			delete item.user.is_favorite
+			delete item.user.is_private
+			delete item.user.is_unpublished
+			delete item.user.is_verified
+			delete item.user.pk
+			delete item.user.profile_pic_id
+			delete item.user.latest_reel_media
+			delete item.can_see_insights_as_brand
+			delete item.inline_composer_imp_trigger_time
 			if (item.caption) {
-				item.caption.bit_flags = undefined
-				item.caption.content_type = undefined
-				item.caption.did_report_as_spam = undefined
-				item.caption.share_enabled = undefined
-				item.caption.user = undefined
-				item.caption.type = undefined
-				item.caption.pk = undefined
+				delete item.caption.bit_flags
+				delete item.caption.content_type
+				delete item.caption.did_report_as_spam
+				delete item.caption.share_enabled
+				delete item.caption.user
+				delete item.caption.type
+				delete item.caption.pk
 			}
-			item.video_dash_manifest = undefined
-			item.video_duration = undefined
-			item.video_codec = undefined
-			item.is_dash_eligible = undefined
+			delete item.video_dash_manifest
+			delete item.video_duration
+			delete item.video_codec
+			delete item.is_dash_eligible
 
 			const candidates_length = item.image_versions2 !== undefined ? item.image_versions2.candidates.length : 0
 			for (let x = 0; x < candidates_length; ++x) {
 				const iv = item.image_versions2.candidates[x]
-				iv.estimated_scans_sizes = undefined
+				delete iv.estimated_scans_sizes
 			}
 		}
 
@@ -214,7 +214,17 @@ class InstagramAPI {
 	 * @return {Bool} True if a match has been found
 	 */
 	mergeItems(items) {
-		const length_ = items.length - 1
+		if (!items || items.length === 0) return this.items
+		if (this.items.length === 0 || items[0].id !== this.items[0].id) {
+			this.items = items
+			return this.items
+		}
+
+		// remove items.length items from this.items
+		this.items.splice(0, items.length)
+		this.items = items.concat(this.items)
+
+		/*const length_ = items.length - 1
 		const oldItems = this.items,
 			oldLength = oldItems.length - 1,
 			optimizedLen = Math.min(length_, oldLength)
@@ -236,13 +246,14 @@ class InstagramAPI {
 		}
 
 		this.items = items.concat(oldItems.splice(match + 1)) // add new items to the start
-		return true
+		return true*/
 	}
 
 	setData(data) {
-		if (this.firstRun) this.mergeItems(data.items)
-		else this.items = this.items.concat(data.items)
-		this.firstRun = false
+		if (this.firstRun) {
+			this.mergeItems(data.items)
+			this.firstRun = false
+		} else this.items = this.items.concat(data.items)
 
 		return data
 	}

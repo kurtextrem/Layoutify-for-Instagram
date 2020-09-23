@@ -1,6 +1,6 @@
 import { Fragment, h } from 'preact'
 import { Modal } from 'react-responsive-modal'
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
+import { memo, useState } from 'preact/compat'
 
 const Story = ({ data, additionalClass }) => {
 	const [isOpen, setOpen] = useState(false)
@@ -10,6 +10,7 @@ const Story = ({ data, additionalClass }) => {
 		owner: { username = '', profile_pic_url = '' },
 		seen,
 		items,
+		has_besties_media,
 	} = data
 
 	let imgSrc = ''
@@ -26,7 +27,7 @@ const Story = ({ data, additionalClass }) => {
 
 	return (
 		<>
-			<div class={`ige_story ${additionalClass} ${wasOpen ? 'black-white' : ''}`}>
+			<div class={`ige_story ${additionalClass} ${wasOpen ? 'black-white' : ''} ${has_besties_media ? 'bestie-story' : ''}`}>
 				<button class="ige_story_container" role="menuitem" tabIndex="0" type="button" onClick={() => setOpen(true) && setOpened(true)}>
 					<div class="ige_story-img">
 						<img decoding="async" src={imgSrc} class="full-img br-6" />
