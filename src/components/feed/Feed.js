@@ -7,10 +7,12 @@ import Stories from './Stories'
 import bind from 'autobind-decorator'
 import withIntersectionObserver from './withIntersectionObserver'
 import { Fragment, h } from 'preact'
-import { shallowDiffers } from '../Utils'
+import { promiseReq, shallowDiffers } from '../Utils'
 //import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
 
 class Feed extends FetchComponent {
+	db = null
+
 	state = {
 		cursor: '',
 		hasNextPage: true,
@@ -88,7 +90,32 @@ class Feed extends FetchComponent {
 	}
 
 	componentDidMount() {
+		if (this.db === null && this.state.items.length === 0) this.db = promiseReq(window.indexedDB.open('redux', 1)) // they store reel IDs in the redux DB, until... I don't know, not sure how they invalidate, maybe SW
 		this.componentDidUpdate()
+	}
+
+	@bind
+	async loadDBItems() {
+		const db = await this.db
+		const path = await promiseReq(db.transaction('paths').objectStore('paths'))
+		const items = promiseReq(path.get('feed.items'))
+		const posts = promiseReq(path.get('posts.byId'))
+		const comments = promiseReq(path.get('comments.byId'))
+		const users = promiseReq(path.get('users.users'))
+
+		const [itemsResult, postsResult, commentsResult, usersResult] = await Promise.all([items, posts, comments, users])
+
+		const result = []
+		for (let i = 0; i < itemsResult.length; ++i) {
+			const item = postsResult[itemsResult[i].postId]
+			item.edge_media_preview_comment = { edges: [] }
+			for (let x = 0; x < item.previewCommentIds.length; ++x) {
+				const node = { node: commentsResult[item.previewCommentIds[x]] }
+				node.owner = usersResult[node.userId]
+				item.edge_media_preview_comment.edges.push(node)
+			}
+			result.push(item)
+		}
 	}
 
 	@bind
