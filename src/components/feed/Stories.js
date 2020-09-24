@@ -1,10 +1,10 @@
 import FetchComponent from './FetchComponent'
 //import VirtualList from './VirtualList'
 import Arrow from './Arrow'
-import Story from './Story'
+import Story, { returnUnseenSrc } from './Story'
 import bind from 'autobind-decorator'
 import { Fragment, h } from 'preact'
-import { checkStatus, shallowDiffers, toJSON } from '../Utils'
+import { shallowDiffers } from '../Utils'
 //import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
 
 class Stories extends FetchComponent {
@@ -20,6 +20,20 @@ class Stories extends FetchComponent {
 		stories_video_dash_manifest: false,
 	}
 
+	static reelsFetchObj = {
+		highlight_reel_ids: [],
+		location_ids: [],
+		precomposed_overlay: false,
+		reel_ids: null, // []
+		show_story_viewer_list: false,
+		stories_video_dash_manifest: false,
+		story_viewer_cursor: '',
+		story_viewer_fetch_count: 0,
+		tag_names: [],
+	}
+
+	static reelsQueryID = 'f5dc1457da7a4d3f88762dae127e0238' // stories query id // @TODO Update regularely, last check 20.04.2020
+
 	static itemAmount = 12
 
 	constructor(props) {
@@ -30,21 +44,77 @@ class Stories extends FetchComponent {
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
-		return shallowDiffers(this.props, nextProperties) || shallowDiffers(this.state, nextState)
+		return true
+		//return shallowDiffers(this.props, nextProperties) || shallowDiffers(this.state, nextState)
 	}
 
 	@bind
-	fetchNext(cb) {
-		if (Stories.reels_promise !== null) return Stories.reels_promise
+	fetchInitial(cb) {
+		if (Stories.reels_promise !== null) return Stories.reels_promise.then(_ => this.forceUpdate())
 
 		Stories.reels_promise = this.fetch('/graphql/query/?query_hash=' + Stories.queryID + '&variables=' + JSON.stringify(Stories.fetchObj), {
 			headers: this.getHeaders(false),
 		})
-			.then(checkStatus)
-			.then(toJSON)
 			.then(json => {
 				Stories.reels = json?.data?.user?.feed_reels_tray?.edge_reels_tray_to_reel?.edges || []
-				this.setState({ isNextPageLoading: false })
+				cb()
+				return json
+			})
+			.catch(e => {
+				console.error(e)
+				this.setState({ hasNextPage: false, isNextPageLoading: false })
+			})
+	}
+
+	@bind
+	fetchNext(cb) {
+		const obj = { ...Stories.reelsFetchObj }
+		obj.reel_ids = []
+
+		const cursor = this.state.cursor
+		const end = Math.min(cursor + 14, Stories.reels.length)
+		let itemMap = {}
+		for (let i = cursor; i < end; ++i) {
+			const item = Stories.reels[i].node
+			if (item.items === null) {
+				obj.reel_ids.push(item.id)
+				itemMap[item.id] = item
+			}
+		}
+
+		if (obj.reel_ids.length === 0) return this.forceUpdate()
+
+		this.fetch('/graphql/query/?query_hash=' + Stories.reelsQueryID + '&variables=' + JSON.stringify(obj), {
+			headers: this.getHeaders(false),
+		})
+			.then(json => {
+				const nextItems = json.data.reels_media,
+					len = nextItems.length
+				for (let i = 0; i < len; ++i) {
+					const item = nextItems[i]
+					itemMap[item.id].items = item.items
+				}
+
+				itemMap = null // GC
+
+				this.setState(
+					(prevState, props) => {
+						const nextCursor = prevState.cursor + 14
+						return {
+							cursor: prevState.cursor + 14,
+							hasNextPage: nextCursor < Stories.reels.length,
+							isNextPageLoading: false,
+							nextCount: prevState.nextCount + len,
+							prevCount: prevState.nextCount,
+						}
+					},
+					() => {
+						this.isNextPageLoading = false
+						cb()
+					}
+				)
+
+				return json
 			})
 			.catch(e => {
 				console.error(e)
@@ -62,10 +132,12 @@ class Stories extends FetchComponent {
 			len = Stories.itemAmount
 		for (let i = start; arr.length < len && i < size; ++i) {
 			// fill array until `itemAmount`, to avoid endless loop, break on `size`
-			const current = items[i]
-			if (current.reel !== undefined) {
-				const story = <Story data={current.reel} key={current.id} additionalClass={i >= prevCount ? 'ige_fade' : ''} />
-				if (story !== null) arr.push(story)
+			const current = items[i].node
+			if (current !== undefined) {
+				const src = returnUnseenSrc(current.items, current.unseen)
+				if (src === null) continue
+
+				arr.push(<Story key={current.id} data={current} src={src} additionalClass={i >= prevCount ? 'ige_fade' : ''} />)
 			}
 		}
 
@@ -75,7 +147,7 @@ class Stories extends FetchComponent {
 	componentDidMount() {
 		console.log('didmount')
 		Stories.itemAmount = ~~(document.getElementById('ige_feed').clientWidth / 135)
-		this.fetchNext()
+		this.fetchInitial(() => this.fetchNext(false))
 	}
 
 	@bind
@@ -90,22 +162,27 @@ class Stories extends FetchComponent {
 
 	@bind
 	nextPage(e) {
-		this.setState(prevState => {
-			const page = prevState.page + 1,
-				len = Stories.reels.length,
-				hasNextPage = page * Stories.itemAmount < Stories.reels.length
-			return {
-				hasNextPage,
-				page: hasNextPage ? page : len,
-			}
-		})
+		this.setState(
+			prevState => {
+				const page = prevState.page + 1,
+					len = Stories.reels.length,
+					hasNextPage = page * Stories.itemAmount < Stories.reels.length
+				return {
+					hasNextPage,
+					page: hasNextPage ? page : len,
+				}
+			},
+			() => this.loadNextPage(true)
+		)
 	}
 
 	render() {
-		if (Stories.reels.size === 0) return null
+		if (Stories.reels.length === 0) return null
 
 		const { hasNextPage, page } = this.state
 		const items = this.renderItems()
+
+		if (items.length === 0) return null
 
 		// @TODO Unload out of viewport imgs/videos
 		return (

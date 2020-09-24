@@ -15,17 +15,17 @@ export function checkStatus(response) {
 	throw error
 }
 
-export function parseJSON(response) {
+export function toJSON(response) {
 	return response.json()
 }
 
 export class XHR {
 	static checkStatus = checkStatus
 
-	static parseJSON = parseJSON
+	static parseJSON = toJSON
 
 	static fetch(url, options) {
-		return window.fetch(url, options).then(checkStatus).then(parseJSON).catch(logAndReturn)
+		return window.fetch(url, options).then(checkStatus).then(toJSON).catch(logAndReturn)
 	}
 }
 
