@@ -11,16 +11,16 @@ import { promiseReq, shallowDiffers } from '../Utils'
 //import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
 
 class Feed extends FetchComponent {
-	db = null
-
-	state = {
-		cursor: '',
-		hasNextPage: true,
-		isNextPageLoading: false,
-		items: window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges || [],
-		nextCount: 0,
-		prevCount: 0,
+	static TIME_STATE = {
+		ERROR: 2000,
+		LOADING: 900,
 	}
+
+	static loading = (<Loading />)
+
+	static error = (<div>End of feed, try reloading the page.</div>)
+
+	db = null
 
 	static fetchObj = {
 		cached_feed_item_ids: [],
@@ -37,14 +37,22 @@ class Feed extends FetchComponent {
 
 		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id // @TODO Update regularely, last check 13.04.2020
 
+		this.state.timeout = 0
+		this.state.items = window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges || []
 		this.state.cursor = window.__additionalData.feed?.data?.user?.edge_web_feed_timeline?.page_info?.end_cursor || ''
-		this.state.count = this.state.items.length
 
 		this.SentinelWithObserver = withIntersectionObserver(Sentinel, {
 			//delay: 16,
 			root: document.getElementById('ige_feed'),
 			trackVisibility: false,
 		})
+
+		window.setTimeout(() => this.setTimeout(Feed.TIME_STATE.LOADING), Feed.TIME_STATE.LOADING)
+	}
+
+	setTimeout(timeout) {
+		this.setState({ timeout })
+		if (timeout !== Feed.TIME_STATE.ERROR) window.setTimeout(() => this.setTimeout(Feed.TIME_STATE.ERROR), Feed.TIME_STATE.ERROR)
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
@@ -67,7 +75,7 @@ class Feed extends FetchComponent {
 		const nextCursor = response?.data?.user?.edge_web_feed_timeline?.page_info.end_cursor
 
 		this.setState(
-			(prevState, props) => {
+			prevState => {
 				const nextItems = prevState.items.concat(response.data.user.edge_web_feed_timeline.edges)
 				return {
 					cursor: nextCursor,
@@ -90,14 +98,17 @@ class Feed extends FetchComponent {
 	}
 
 	componentDidMount() {
-		if (this.db === null && this.state.items.length === 0) this.db = promiseReq(window.indexedDB.open('redux', 1)) // they store reel IDs in the redux DB, until... I don't know, not sure how they invalidate, maybe SW
+		if (this.db === null && this.state.items.length === 0) {
+			this.db = promiseReq(window.indexedDB.open('redux', 1)) // they store reel IDs in the redux DB, until... I don't know, not sure how they invalidate, maybe SW
+			this.loadDBItems()
+		}
 		this.componentDidUpdate()
 	}
 
 	@bind
 	async loadDBItems() {
 		const db = await this.db
-		const path = await promiseReq(db.transaction('paths').objectStore('paths'))
+		const path = db.transaction('paths').objectStore('paths')
 		const items = promiseReq(path.get('feed.items'))
 		const posts = promiseReq(path.get('posts.byId'))
 		const comments = promiseReq(path.get('comments.byId'))
@@ -108,14 +119,43 @@ class Feed extends FetchComponent {
 		const result = []
 		for (let i = 0; i < itemsResult.length; ++i) {
 			const item = postsResult[itemsResult[i].postId]
-			item.edge_media_preview_comment = { edges: [] }
+
+			// We adapt the stored items to be compatible to the feed response
+			if (item.isSidecar) item.__typename = 'GraphSidecar'
+			else if (item.isVideo) item.__typename = 'GraphVideo'
+			else item.__typename = 'GraphImage'
+
+			item.is_video = item.isVideo
+			item.shortcode = item.code
+			item.display_url = item.src
+			item.viewer_has_liked = item.likedByViewer
+			item.viewer_has_saved = item.savedByViewer
+			item.viewer_has_saved_to_collection = item.savedByViewerToCollection
+			item.taken_at_timestamp = item.postedAt
+			item.edge_media_to_caption = { edges: [{ node: { text: item.caption } }] }
+			item.comments_disabled = item.commentsDisabled
+			item.video_view_count = item.videoViews || item.numPreviewLikes
+			// usertags
+			// location
+
+			const owner = item.owner
+			owner.is_private = owner.isPrivate
+			owner.is_verified = owner.isVerified
+			owner.profile_pic_url = owner.profilePictureUrl
+
+			// comments
+			item.edge_media_preview_comment = { count: item.numComments, edges: [] }
 			for (let x = 0; x < item.previewCommentIds.length; ++x) {
 				const node = { node: commentsResult[item.previewCommentIds[x]] }
-				node.owner = usersResult[node.userId]
+				node.node.owner = usersResult[node.node.userId]
 				item.edge_media_preview_comment.edges.push(node)
 			}
-			result.push(item)
+
+			result.push({ node: item })
 		}
+
+		console.log(result)
+		this.setState({ items: result })
 	}
 
 	@bind
@@ -126,7 +166,7 @@ class Feed extends FetchComponent {
 			const current = items[i],
 				type = current.node.__typename
 			if (type !== 'GraphImage' && type !== 'GraphSidecar' && type !== 'GraphVideo' && type !== 'GraphStoriesInFeedItem') {
-				console.info('New typename:', current.node.__typename)
+				console.info('New typename', type)
 				continue
 			}
 
@@ -144,7 +184,7 @@ class Feed extends FetchComponent {
 	}
 
 	render() {
-		const { hasNextPage, isNextPageLoading } = this.state
+		const { hasNextPage, isNextPageLoading, items, timeout } = this.state
 
 		// Only load 1 page of items at a time.
 		// Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
@@ -152,16 +192,19 @@ class Feed extends FetchComponent {
 		const Sentinel = this.SentinelWithObserver
 
 		// @TODO Unload out of viewport imgs/videos
-
-		return (
-			<div class="ige_virtual">
-				<div class="ige_virtual_container">
-					{this.renderItems()}
-					<Sentinel onVisible={loadMoreItems} />
-					{!hasNextPage && !isNextPageLoading ? <div>End of feed, try reloading the page.</div> : <Loading />}
+		if (items.length !== 0)
+			return (
+				<div class="ige_virtual">
+					<div class="ige_virtual_container">
+						{this.renderItems()}
+						<Sentinel onVisible={loadMoreItems} />
+						{!hasNextPage && !isNextPageLoading ? Feed.error : Feed.loading}
+					</div>
 				</div>
-			</div>
-		)
+			)
+
+		if (timeout === Feed.TIME_STATE.LOADING) return Feed.loading
+		if (timeout === Feed.TIME_STATE.ERROR) return Feed.error
 
 		//return <VirtualList itemCount={items.length / 8} renderItems={this.renderItems} className="ige_virtual" />
 	}

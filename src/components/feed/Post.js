@@ -21,11 +21,11 @@ export default class Post extends FetchComponent {
 		super(props)
 
 		const {
-			data: { id = null, viewer_has_liked = false, viewer_has_saved = false },
+			data: { id = null, viewer_has_liked = false, viewer_has_saved = false, viewer_has_saved_to_collection = false },
 		} = this.props
 
 		this.state.hasLiked = viewer_has_liked
-		this.state.hasSaved = viewer_has_saved
+		this.state.hasSaved = viewer_has_saved || viewer_has_saved_to_collection
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
@@ -90,19 +90,15 @@ export default class Post extends FetchComponent {
 		/**
 		 * Unused keys:
 		 * follow_hashtag_info // 1
-		 * user.is_verified // !
 		 * attribution // !
 		 * edge_media_preview_comment.has_next_page, end_cursor // !
 		 * "gating_info": null, // !
       "fact_check_overall_rating": null, // !
 			"fact_check_information": null, // !
 			edge_media_to_sponsor_user // !
-			viewer_has_saved_to_collection // !
 			viewer_in_photo_of_you
 			user:
-				followed_by_viewer // !
-				is_private				// !
-		 
+				followed_by_viewer
 				requested_by_viewer
 				blocked_by_viewer
 				has_blocked_viewer
@@ -110,7 +106,7 @@ export default class Post extends FetchComponent {
 		 */
 		const {
 			data: {
-				owner = {},
+				owner = null,
 				taken_at_timestamp = 0,
 				location = null,
 				edge_media_to_caption = null,

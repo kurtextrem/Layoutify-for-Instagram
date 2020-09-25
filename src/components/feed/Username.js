@@ -3,13 +3,13 @@ import { h } from 'preact'
 import { memo } from 'preact/compat'
 
 const Username = props => {
-	const username = props.username,
-		name = props.name || username,
-		className = props.className
+	const { username, name, className, isPrivate, isVerified } = props
 	return (
 		<a class={'ige_username ' + (className !== undefined ? className : '')} title={username} href={'/' + username + '/'}>
 			{props.children}
-			{name}
+			{name || username}
+			{isVerified ? <i class="ig_sprite verified" /> : null}
+			{isPrivate ? '🔒' : null}
 		</a>
 	)
 }

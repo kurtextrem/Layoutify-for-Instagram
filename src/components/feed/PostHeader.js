@@ -19,7 +19,7 @@ export default class PostHeader extends Component {
 
 	render() {
 		const {
-			user: { username = '', full_name = '', profile_pic_url = '' },
+			user: { username = '', full_name = '', profile_pic_url = '', is_private = false, is_verified = false },
 			shortcode,
 			location,
 		} = this.props
@@ -28,6 +28,7 @@ export default class PostHeader extends Component {
 		const userHref = '/' + username + '/'
 
 		// @todo Portal popup on timestamp|like (#like) click?
+		// @todo Add info popover https://i.instagram.com/api/v1/users/ID/info/
 
 		return (
 			<header class="ige_header px-12">
@@ -36,7 +37,7 @@ export default class PostHeader extends Component {
 					<img alt={username + ' Profilbild'} src={profile_pic_url} decoding="async" intrinsicsize="150x150" width="33" height="33" />
 				</a>
 				<div class="ige_username_container">
-					<Username username={username} name={full_name} />
+					<Username username={username} name={full_name} isVerified={is_verified} isPrivate={is_private} />
 					{location !== null && location.has_public_page ? (
 						<a class="ige_location" href={'/explore/locations/' + location.id + '/' + location.slug + '/'}>
 							{location.name}

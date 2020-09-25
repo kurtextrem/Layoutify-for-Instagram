@@ -50,14 +50,14 @@ class Stories extends FetchComponent {
 
 	@bind
 	fetchInitial(cb) {
-		if (Stories.reels_promise !== null) return Stories.reels_promise.then(_ => this.forceUpdate())
+		if (Stories.reels_promise !== null) return Stories.reels_promise.then(_ => cb && cb())
 
 		Stories.reels_promise = this.fetch('/graphql/query/?query_hash=' + Stories.queryID + '&variables=' + JSON.stringify(Stories.fetchObj), {
 			headers: this.getHeaders(false),
 		})
 			.then(json => {
 				Stories.reels = json?.data?.user?.feed_reels_tray?.edge_reels_tray_to_reel?.edges || []
-				cb()
+				cb && cb()
 				return json
 			})
 			.catch(e => {
@@ -98,20 +98,17 @@ class Stories extends FetchComponent {
 				itemMap = null // GC
 
 				this.setState(
-					(prevState, props) => {
+					prevState => {
 						const nextCursor = prevState.cursor + 14
 						return {
-							cursor: prevState.cursor + 14,
+							cursor: nextCursor,
 							hasNextPage: nextCursor < Stories.reels.length,
 							isNextPageLoading: false,
 							nextCount: prevState.nextCount + len,
 							prevCount: prevState.nextCount,
 						}
 					},
-					() => {
-						this.isNextPageLoading = false
-						cb()
-					}
+					() => cb && cb()
 				)
 
 				return json
@@ -137,7 +134,7 @@ class Stories extends FetchComponent {
 				const src = returnUnseenSrc(current.items, current.unseen)
 				if (src === null) continue
 
-				arr.push(<Story key={current.id} data={current} src={src} additionalClass={i >= prevCount ? 'ige_fade' : ''} />)
+				arr.push(<Story key={current.id} data={current} src={src.src} type={src.type} additionalClass={i >= prevCount ? 'ige_fade' : ''} />)
 			}
 		}
 
@@ -147,7 +144,7 @@ class Stories extends FetchComponent {
 	componentDidMount() {
 		console.log('didmount')
 		Stories.itemAmount = ~~(document.getElementById('ige_feed').clientWidth / 135)
-		this.fetchInitial(() => this.fetchNext(false))
+		this.fetchInitial(this.fetchNext)
 	}
 
 	@bind
@@ -166,7 +163,7 @@ class Stories extends FetchComponent {
 			prevState => {
 				const page = prevState.page + 1,
 					len = Stories.reels.length,
-					hasNextPage = page * Stories.itemAmount < Stories.reels.length
+					hasNextPage = page * Stories.itemAmount < len
 				return {
 					hasNextPage,
 					page: hasNextPage ? page : len,

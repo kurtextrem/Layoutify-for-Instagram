@@ -306,6 +306,10 @@
 	text-overflow: ellipsis;
 }
 
+.ige_username:hover {
+	text-decoration: underline;
+}
+
 .ige_location {
 	overflow: hidden;
 	color: rgb(var(--anchor-color, 38, 38, 38)) !important;
@@ -667,6 +671,32 @@
 .bestie-story .ige_story-img {
 	border: 2px solid #8bc34a;
 	border-radius: 6px;
+}
+
+.story-video::before {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/IGsprite.webp');
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 18px;
+	background-position: -363px -334px;
+	content: '';
+	position: absolute;
+	left: 10px;
+	top: 5px;
+}
+
+.ig_sprite {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/IGsprite.webp');
+	background-repeat: no-repeat;
+	display: inline-block;
+}
+
+.verified {
+	background-position: 0 -369px;
+	width: 18px;
+	height: 18px;
+	vertical-align: text-top;
+	margin-left: 3px;
 }
 
 .ige_story-img {
