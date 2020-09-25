@@ -145,6 +145,7 @@ export default class Post extends FetchComponent {
 					hasSaved={hasSaved}
 					onLike={this.handleLike}
 					onSave={this.handleSave}
+					enableShare={true} // !owner.is_private
 				/>
 				<div class="ige_post-content px-12">
 					{text !== undefined ? (

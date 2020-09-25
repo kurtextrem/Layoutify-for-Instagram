@@ -1,8 +1,16 @@
 import bind from 'autobind-decorator'
 import { Button } from 'reactstrap'
 import { Component, h } from 'preact'
+import { Storage } from './Utils'
 
 export default class About extends Component {
+	@bind
+	onBtnClick(e) {
+		Storage.remove('liked')
+		Storage.remove('saved')
+		e.target.textContent = 'Cleared!'
+	}
+
 	shouldComponentUpdate() {
 		return false
 	}
@@ -85,6 +93,13 @@ export default class About extends Component {
 						this
 					</a>{' '}
 					tutorial.
+				</p>
+				<h3>Clear Outdated Data</h3>
+				<p>
+					Sometimes old posts are displayed, which aren&quot;t saved or liked anymore. Use this button to clear old data (not options):{' '}
+					<Button color="warning" onClick={this.onBtnClick}>
+						Clear
+					</Button>
 				</p>
 				<h3>Thanks to</h3>
 				<p>

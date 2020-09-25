@@ -574,11 +574,15 @@ function addFeedDiv() {
  *
  */
 function clickShare(tries) {
-	const $elem = $('article section > span:first-child + span + button')
+	const $elem = $('article section > span:first-child ~ button')
 	if ($elem === null) {
-		console.error('Share selector outdated')
-		if (tries < 10) window.setTimeout(() => clickShare(tries + 1), tries * 100)
-		else root.style.display = 'flex !important'
+		console.error('Share selector outdated', tries)
+
+		if (tries < 50) {
+			const $a = $('a > time')
+			if ($a !== null) $a.parentElement.click() // somehow fixes the hidden share button
+			window.setTimeout(() => clickShare(tries + 1), tries * 100)
+		} else root.style.display = 'flex !important'
 	} else $elem.click()
 }
 

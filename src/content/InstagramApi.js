@@ -201,17 +201,12 @@ class InstagramAPI {
 	}
 
 	/**
-	 * Compares an old dataset with a new dataset and merges accordingly. If a match has been found, the new data set is always preferred.
-	 * n := old dataset length
-	 * m := new datset length
-	 *
-	 * Runs from min(n, m) until 0 and compares all items from the new dataset with the current item `i` from the new.
-	 * Then replaces all items from the old dataset, that are lower than the found `match` number.
+	 * Simple merging algorithm: Checks the first items of each set, if they match, replace n items of the old set, with n := length items of the new set.
 	 *
 	 * This has one caveat: We can't replace older items and thus there might be deleted items still left. We can not delete them.
 	 *
 	 * @param {object} items
-	 * @return {Bool} True if a match has been found
+	 * @return {object} items
 	 */
 	mergeItems(items) {
 		if (!items || items.length === 0) return this.items
@@ -221,32 +216,8 @@ class InstagramAPI {
 		}
 
 		// remove items.length items from this.items
-		this.items.splice(0, items.length)
-		this.items = items.concat(this.items)
-
-		/*const length_ = items.length - 1
-		const oldItems = this.items,
-			oldLength = oldItems.length - 1,
-			optimizedLen = Math.min(length_, oldLength)
-
-		let match = -1
-		outer: for (let i = optimizedLen; i >= 0; --i) {
-			for (let x = length_; x >= 0; --x) {
-				// compare every new item to `i` old item
-				if (oldItems[i].id !== items[x].id) continue
-				match = i
-				break outer
-			}
-		}
-
-		// no match
-		if (match === -1) {
-			this.items = items
-			return false
-		}
-
-		this.items = items.concat(oldItems.splice(match + 1)) // add new items to the start
-		return true*/
+		this.items.splice(0, items.length - 1, ...this.items)
+		return this.items
 	}
 
 	setData(data) {

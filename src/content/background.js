@@ -313,10 +313,10 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 
 		case 'watchNow':
 			const now = Date.now(),
-				last = window.sessionStorage.ige_lastFetch !== undefined ? +window.sessionStorage.ige_lastFetch : 0
+				last = window.localStorage.ige_lastFetch || now
 
-			if (now - last > 180000) {
-				window.sessionStorage.ige_lastFetch = now
+			if (now - +last > 180000) {
+				window.localStorage.ige_lastFetch = now
 				getWatchlist()
 			}
 			break
@@ -350,7 +350,7 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 function createUpdateAlarm(when) {
 	chrome.alarms.create('update', {
 		delayInMinutes: when ? undefined : 1,
-		periodInMinutes: 20, // @todo if this is below 20, and we watch over N people, this seems to break profiles sometimes -> 404
+		periodInMinutes: 15, // @todo Try to get this as low as possible
 		when: when || undefined,
 	})
 }
@@ -374,7 +374,15 @@ chrome.runtime.onInstalled.addListener(details => {
 		})
 })
 
-chrome.alarms.onAlarm.addListener(getWatchlist)
+chrome.alarms.onAlarm.addListener(function (e) {
+	const now = Date.now(),
+		last = window.localStorage.ige_lastFetch || now
+
+	if (now - +last > 180000) {
+		window.localStorage.ige_lastFetch = now
+		getWatchlist()
+	}
+})
 
 /**
  *

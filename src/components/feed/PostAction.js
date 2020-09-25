@@ -51,7 +51,7 @@ export default class PostAction extends Component {
 	}
 
 	render() {
-		const { onLike, onSave, hasLiked, hasSaved, shortcode, like_media, is_video, video_view_count } = this.props
+		const { onLike, onSave, hasLiked, hasSaved, shortcode, like_media, is_video, video_view_count, enableShare } = this.props
 
 		const count = is_video ? video_view_count : like_media?.count
 
@@ -62,16 +62,18 @@ export default class PostAction extends Component {
 				<button type="button" class="ige_button" onClick={onLike}>
 					<Heart size={24} fill="#262626" active={hasLiked} />
 				</button>
-				<button type="button" class="ige_button" onClick={this.handleShare}>
-					<Share size={24} />
-				</button>
+				{enableShare ? (
+					<button type="button" class="ige_button" onClick={this.handleShare}>
+						<Share size={24} />
+					</button>
+				) : null}
 				<button type="button" class="ige_button" onClick={onSave}>
 					<Save size={24} active={hasSaved} />
 				</button>
 				<div class="ml-auto d-block ige_action_amount">
 					<a href={'/p/' + shortcode + '/'} class="color-inherit">
 						<>
-							{is_video ? '' : '♥ '}
+							{is_video ? null : '♥ '}
 							{is_video ? <PlayButton fill="black" /> : like_media?.edges?.map(this.returnLiked)}
 							{' ' + count?.toLocaleString()}
 						</>
