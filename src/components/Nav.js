@@ -1,11 +1,14 @@
 import { Component, h } from 'preact'
 import { Container, Nav as NavI, NavItem, NavLink, Navbar } from 'reactstrap'
 
-export default class Nav extends Component {
-	static getActive(location, key) {
-		return location === key ? 'active' : ''
-	}
+/**
+ *
+ */
+export function getActive(location, key) {
+	return location === key ? 'active' : ''
+}
 
+export default class Nav extends Component {
 	shouldComponentUpdate(nextProps) {
 		return nextProps.location !== this.props.location
 	}
@@ -27,24 +30,26 @@ export default class Nav extends Component {
 
 					<NavI navbar class="grow-1">
 						<NavItem>
-							<NavLink class={Nav.getActive(location, 'liked') || location === '' ? 'active' : ''} href="#/">
-							 ❤️ Likes
+							<NavLink class={getActive(location, 'liked') || location === '' ? 'active' : ''} href="#/">
+								❤️ Likes
 							</NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink class={Nav.getActive(location, 'saved')} href="#/saved">
-							 🔖 Collections
+							<NavLink class={getActive(location, 'saved')} href="#/saved">
+								🔖 Collections
 							</NavLink>
 						</NavItem>
+						<div id="portal" class="d-flex" />
+						{/* this is bad code, don't copy it. We abuse Portals to render something here, which is deep down the tree. */}
 
 						<NavItem class="ml-auto">
-							<NavLink class={Nav.getActive(location, 'options')} href="#/options">
-							 ⚙️ Options
+							<NavLink class={getActive(location, 'options')} href="#/options">
+								⚙️ Options
 							</NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink class={Nav.getActive(location, 'about')} href="#/about">
-							 ❔ About
+							<NavLink class={getActive(location, 'about')} href="#/about">
+								❔ About
 							</NavLink>
 						</NavItem>
 					</NavI>

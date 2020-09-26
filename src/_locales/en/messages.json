@@ -144,5 +144,13 @@
 				"example": "JacobGross_"
 			}
 		}
+	},
+	"hidePrivateIcon": {
+		"message": "Hide 'Private Profile' Icon",
+		"description": "Option to hide the private profile icon"
+	},
+	"hideVerifiedIcon": {
+		"message": "Hide 'Verified Profile' Icon",
+		"description": "Option to hide the verified profile icon"
 	}
 }

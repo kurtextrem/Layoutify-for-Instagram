@@ -22,6 +22,18 @@ header {
 	contain: strict;
 }
 
+#portal {
+	overflow-y: auto;
+}
+
+.navbar-nav {
+	width: inherit;
+}
+
+.nav-item {
+	width: fit-content;
+}
+
 .nav-link i {
 	position: relative;
 	top: 5px;
