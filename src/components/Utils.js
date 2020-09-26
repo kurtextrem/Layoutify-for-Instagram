@@ -70,9 +70,18 @@ class Storage {
 		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
 	}
 
+	getBytes() {
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].getBytesInUse(null, resolve))
+	}
+
 	static check(data, resolve, reject) {
 		if (chrome.runtime.lastError) {
 			console.error(chrome.runtime.lastError.message)
+			if (chrome.runtime.lastError.message.indexOf('QUOTA_BYTES') !== 0) {
+				alert(
+					'Because you have a lot of likes / collections, please go to "About" and click the Permit button for unlimited storage or clear old data.'
+				)
+			}
 			return reject(chrome.runtime.lastError.message)
 		}
 

@@ -1,23 +1,76 @@
 import bind from 'autobind-decorator'
 import { Button } from 'reactstrap'
 import { Component, h } from 'preact'
-import { Storage } from './Utils'
+import { Storage, StorageSync } from './Utils'
 
 export default class About extends Component {
+	state = {
+		bytesLocal: 0,
+		bytesMaxLocal: 0,
+		bytesMaxSync: 0,
+		bytesSync: 0,
+		granted: false,
+	}
+
 	@bind
 	onBtnClick(e) {
-		Storage.remove('liked')
-		Storage.remove('saved')
+		chrome.storage.local.clear()
 		e.target.textContent = 'Cleared!'
 	}
 
-	shouldComponentUpdate() {
-		return false
+	@bind
+	onRequest(e) {
+		if (!this.state.granted)
+			chrome.permissions.request(
+				{
+					permissions: ['unlimitedStorage'],
+				},
+				function (granted) {
+					if (granted) {
+						e.target.textContent = 'Granted!'
+					} else {
+						e.target.textContent = 'Permit'
+					}
+				}
+			)
+		else
+			chrome.permissions.remove(
+				{
+					permissions: ['unlimitedStorage'],
+				},
+				function (granted) {
+					if (granted) {
+						e.target.textContent = 'Revoked!'
+					} else {
+						e.target.textContent = 'Revoke'
+					}
+				}
+			)
+	}
+
+	async componentDidMount() {
+		const bytesLocal = await Storage.getBytes()
+		const bytesSync = await StorageSync.getBytes()
+
+		chrome.permissions.contains({ permissions: ['unlimitedStorage'] }, granted => {
+			this.setState({
+				bytesLocal,
+				bytesMaxLocal: chrome.storage.local.QUOTA_BYTES,
+				bytesMaxSync: chrome.storage.sync.QUOTA_BYTES,
+				bytesSync,
+				granted,
+			})
+		})
 	}
 
 	render() {
 		return (
 			<div>
+				<h3>
+					<a href="https://github.com/kurtextrem/Improved-for-Instagram/blob/master/CHANGELOG.md#changelog" target="_blank" rel="noopener">
+						Changelog 📃
+					</a>
+				</h3>
 				<h3>About</h3>
 				<p>
 					Improved Layout for Instagram does not store any data of your Instagram account apart from on your PC. The code is Open-Source on{' '}
@@ -96,10 +149,24 @@ export default class About extends Component {
 				</p>
 				<h3>Clear Outdated Data</h3>
 				<p>
-					Sometimes old posts are displayed, which aren&quot;t saved or liked anymore. Use this button to clear old data (not options):{' '}
+					Sometimes old posts are displayed, which aren&apos;t saved or liked anymore. Use this button to clear old local data (does not
+					clear options):{' '}
 					<Button color="warning" onClick={this.onBtnClick}>
 						Clear
 					</Button>
+				</p>
+				<h3>Grant Unlimited Storage</h3>
+				<p>
+					If you have many collections, liked posts or others, you may want to enable unlimited storage access to keep the extension
+					working:{' '}
+					<Button color="success" onClick={this.onRequest}>
+						{this.state.granted ? 'Revoke' : 'Permit'}
+					</Button>
+					<br />
+					Current local usage: {~~(this.state.bytesLocal / 1000 / 1000)} / {~~(this.state.bytesMaxLocal / 1000 / 1000)} MB
+					<br />
+					Current sync usage: {~~(this.state.bytesSync / 1000)} / {~~(this.state.bytesMaxSync / 1000)} KB
+					<br />
 				</p>
 				<h3>Thanks to</h3>
 				<p>
@@ -127,11 +194,6 @@ export default class About extends Component {
 					<br />
 					And to all the bug reporters that have sent me mails. I always try my best to respond as soon as possible.
 				</p>
-				<h3>
-					<a href="https://github.com/kurtextrem/Improved-for-Instagram/blob/master/CHANGELOG.md#changelog" target="_blank" rel="noopener">
-						Changelog 📃
-					</a>
-				</h3>
 				<small>
 					<b>Legal</b>
 					<br />
