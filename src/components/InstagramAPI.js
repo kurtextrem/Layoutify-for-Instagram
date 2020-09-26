@@ -123,7 +123,7 @@ class InstagramAPI {
 
 			if (item.image_versions2 !== undefined) {
 				const el = item.image_versions2.candidates[0]
-				item.image_versions2 = el
+				item.image_versions2 = { candidates: [el] }
 				delete el.estimated_scans_sizes
 				delete el.scans_profile
 			}
