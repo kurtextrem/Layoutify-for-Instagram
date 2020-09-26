@@ -1,10 +1,11 @@
+import PostAction from './feed/PostAction'
 import PostHeader from './PostHeader'
 import PostMedia from './feed/PostMedia'
-import PostAction from './feed/PostAction'
 import bind from 'autobind-decorator'
 import { CardBody, CardText } from 'reactstrap'
 import { Chrome, Storage, logAndReturn } from './Utils'
 import { default as FeedPost } from './feed/Post'
+import { Instagram } from './InstagramAPI'
 import { h } from 'preact'
 
 export default class Post extends FeedPost {
@@ -24,7 +25,7 @@ export default class Post extends FeedPost {
 		super(props)
 
 		this.state.hasLiked = props.data.has_liked
-		this.state.hasSaved = props.data.saved_collection_ids !== undefined ? true : false
+		this.state.hasSaved = props.data.saved_collection_ids !== undefined
 		this.state.active = this.props.parent === 'liked' ? this.state.hasLiked : this.state.hasSaved
 
 		this.id = props.data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
@@ -35,10 +36,10 @@ export default class Post extends FeedPost {
 	handleLike() {
 		this.setState(
 			prevState => ({ hasLiked: !prevState.hasLiked }),
-			async () => {
+			() => {
 				window.clearTimeout(this.timeout)
 
-				Chrome.send(this.state.hasLiked ? 'add' : 'remove', { id: this.id, which: 'liked' })
+				this.state.hasLiked ? Instagram.liked.add(this.id) : Instagram.liked.remove(this.id)
 				if (!this.state.hasLiked && this.props.parent === 'liked') this.timeout = window.setTimeout(() => Post.removeItem(this.id), 7500)
 			}
 		)
@@ -48,10 +49,10 @@ export default class Post extends FeedPost {
 	handleSave() {
 		this.setState(
 			prevState => ({ hasSaved: !prevState.hasSaved }),
-			async () => {
+			() => {
 				window.clearTimeout(this.timeout)
 
-				Chrome.send(this.state.hasSaved ? 'add' : 'remove', { id: this.id, which: 'saved' })
+				this.state.hasSaved ? Instagram.saved.add(this.id) : Instagram.saved.remove(this.id)
 				if (!this.state.hasSaved && this.props.parent === 'saved') this.timeout = window.setTimeout(() => Post.removeItem(this.id), 7500)
 			}
 		)

@@ -13,14 +13,11 @@ function createTab(id, force) {
 	if (tabId !== undefined && !force) {
 		chrome.tabs.update(
 			tabId,
-			{
-				active: true,
-				url: `${chrome.runtime.getURL('index.html')}?tabid=${id}`,
-			},
+			{ active: true },
 			() => chrome.runtime.lastError && createTab(id, true) // only create new tab when there was an error
 		)
 	} else {
-		chrome.tabs.create({ url: `${chrome.runtime.getURL('index.html')}?tabid=${id}` }, newTab => (tabId = newTab.id))
+		chrome.tabs.create({ url: chrome.runtime.getURL('index.html') }, newTab => (tabId = newTab.id))
 	}
 }
 

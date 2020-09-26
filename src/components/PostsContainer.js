@@ -7,6 +7,7 @@ import bind from 'autobind-decorator'
 import { Button } from 'reactstrap'
 import { Chrome, Storage, logAndReturn } from './Utils'
 import { Component, h } from 'preact'
+import { Instagram } from './InstagramAPI'
 
 export default class PostsContainer extends Component {
 	static TIME_STATE = {
@@ -72,7 +73,7 @@ export default class PostsContainer extends Component {
 		if (++this.preloadCounter > preload || this.postCount / 20 /* 20 posts per page */ > 2 * preload) return
 
 		console.log('preloading', id)
-		Chrome.send('load', { which: id })
+		this.loadData()
 	}
 
 	@bind
@@ -111,7 +112,7 @@ export default class PostsContainer extends Component {
 	}
 
 	loadData() {
-		Chrome.send('load', { which: this.props.id })
+		Instagram.fetch(this.props.id)
 	}
 
 	@bind
@@ -204,7 +205,6 @@ export default class PostsContainer extends Component {
 
 PostsContainer.propTypes = {
 	defaultClass: PropTypes.string.isRequired,
-	hasCategories: PropTypes.bool.isRequired,
 	id: PropTypes.string.isRequired,
 	preload: PropTypes.number.isRequired,
 	toggleClass: PropTypes.string.isRequired,

@@ -3,6 +3,7 @@ import Loading from '../Loading'
 import Post from './Post'
 import Sentinel from './Sentinel'
 //import VirtualList from './VirtualList'
+import PostDummy from '../PostDummy'
 import Stories from './Stories'
 import bind from 'autobind-decorator'
 import withIntersectionObserver from './withIntersectionObserver'
@@ -19,6 +20,17 @@ class Feed extends FetchComponent {
 	static loading = (<Loading />)
 
 	static error = (<div>End of feed, try reloading the page.</div>)
+
+	static dummy = (
+		<div class="position-relative">
+			<div class="d-flex position-relative justify-content-center flex-wrap">
+				<PostDummy />
+				<PostDummy />
+				<PostDummy />
+				<PostDummy />
+			</div>
+		</div>
+	)
 
 	db = null
 
@@ -86,10 +98,7 @@ class Feed extends FetchComponent {
 					prevCount: prevState.nextCount,
 				}
 			},
-			() => {
-				this.isNextPageLoading = false
-				cb()
-			}
+			() => cb && cb()
 		)
 	}
 
@@ -206,6 +215,7 @@ class Feed extends FetchComponent {
 		if (timeout === Feed.TIME_STATE.LOADING) return Feed.loading
 		if (timeout === Feed.TIME_STATE.ERROR) return Feed.error
 
+		return Feed.dummy
 		//return <VirtualList itemCount={items.length / 8} renderItems={this.renderItems} className="ige_virtual" />
 	}
 }

@@ -1,15 +1,6 @@
 import bind from 'autobind-decorator'
-import {
-	Button,
-	Col,
-	Container,
-	Form,
-	FormGroup,
-	FormText,
-	Input,
-	Label,
-} from 'reactstrap'
-import { Component, h, Fragment } from 'preact'
+import { Button, Col, Container, Form, FormGroup, FormText, Input, Label } from 'reactstrap'
+import { Component, Fragment, h } from 'preact'
 import { StorageSync, i18n, logAndReturn, throttle } from './Utils'
 
 export default class Options extends Component {
@@ -22,6 +13,7 @@ export default class Options extends Component {
 	 * - array
 	 * - number
 	 */
+	/* eslint-disable */
 	static OPTS = {
 		watchPosts: [],
 		watchStories: [],
@@ -39,11 +31,15 @@ export default class Options extends Component {
 		rowsFourBoxWidth: 23,
 		rowsTwoBoxWidth: 40,
 
+		hidePrivateIcon: false,
+		hideVerifiedIcon: false,
+
 		// hideRecommended: false, // @TODO: Implement (easy)
 		// highlightOP: true, // @TODO: Implement (easy)
 		// indicateFollowing: true // @TODO: Implement (fairly easy)
 		// blockUnseen: false, // @TODO: Block URL "https://www.instagram.com/stories/reel/seen", however the chance that they remove this ability is fairly high
 	}
+	/* elsint-enable */
 
 	/**
 	 * Additional settings for options.
@@ -108,10 +104,8 @@ export default class Options extends Component {
 		watchInBackground: {
 			help: true,
 			onChange(e) {
-				if (e.target.checked === true)
-					chrome.runtime.sendMessage(null, { action: 'watchInBackground' })
-				else
-					chrome.runtime.sendMessage(null, { action: 'stopWatchInBackground' })
+				if (e.target.checked === true) chrome.runtime.sendMessage(null, { action: 'watchInBackground' })
+				else chrome.runtime.sendMessage(null, { action: 'stopWatchInBackground' })
 			},
 		},
 	}
@@ -181,8 +175,7 @@ export default class Options extends Component {
 		if (!value || (opt !== null && opt.indexOf(value) !== -1)) return
 
 		const additional = Options.OPTS_ADDITIONAL[name]
-		if (additional !== undefined && additional.onChange !== undefined)
-			additional.onChange(value)
+		if (additional !== undefined && additional.onChange !== undefined) additional.onChange(value)
 
 		this.save(name, value, false)
 	}
@@ -203,8 +196,7 @@ export default class Options extends Component {
 	@bind
 	async onChange(e) {
 		const target = e.target
-		if (!target.reportValidity())
-			return Promise.reject(new Error('Invalid Entry'))
+		if (!target.reportValidity()) return Promise.reject(new Error('Invalid Entry'))
 
 		switch (target.type) {
 			case 'checkbox':
@@ -233,8 +225,7 @@ export default class Options extends Component {
 	}
 
 	static renderLabel(id) {
-		if (Options.OPTS[id] === undefined)
-			return console.warn('outdated option', id) // @todo: Remove from dataset
+		if (Options.OPTS[id] === undefined) return console.warn('outdated option', id) // @todo: Remove from dataset
 
 		return (
 			<Label for={id} sm={3}>
@@ -250,12 +241,7 @@ export default class Options extends Component {
 	@bind
 	renderOption(key) {
 		return (
-			<option
-				key={key}
-				value={key}
-				title="Right click to remove"
-				onDoubleClick={this.remove}
-				onContextMenu={this.remove}>
+			<option key={key} value={key} title="Right click to remove" onDoubleClick={this.remove} onContextMenu={this.remove}>
 				{key}
 			</option>
 		)
@@ -265,24 +251,12 @@ export default class Options extends Component {
 		const onChange =
 			additional === undefined || additional.onChange === undefined
 				? e => this.onChange(e).catch(logAndReturn)
-				: e =>
-						this.onChange(e)
-							.then(additional.onChange)
-							.catch(logAndReturn)
+				: e => this.onChange(e).then(additional.onChange).catch(logAndReturn)
 
 		const type = Options.OPTS[id]
 		if (type === undefined) return console.warn('outdated option', id, value)
 
-		if (typeof type === 'boolean')
-			return (
-				<Input
-					type="checkbox"
-					name={id}
-					id={id}
-					checked={value ? true : undefined}
-					onChange={onChange}
-				/>
-			)
+		if (typeof type === 'boolean') return <Input type="checkbox" name={id} id={id} checked={value ? true : undefined} onChange={onChange} />
 		if (Array.isArray(type)) {
 			if (!Array.isArray(value)) value = [value] // fixes a bug from prev versions, needed for compat
 			return (
@@ -290,12 +264,7 @@ export default class Options extends Component {
 					<Input name={id} type="select" multiple>
 						{value.map(this.renderOption)}
 					</Input>
-					<Input
-						type="text"
-						name={`${id}_add`}
-						placeholder="Instagram Username"
-						onKeyUp={this.add}
-					/>
+					<Input type="text" name={`${id}_add`} placeholder="Instagram Username" onKeyUp={this.add} />
 					<Button type="button" onClick={this.add}>
 						Add
 					</Button>
@@ -321,14 +290,7 @@ export default class Options extends Component {
 			for (let i = min; i <= max; i += step) {
 				radio.push(
 					<Label key={i}>
-						<Input
-							type="radio"
-							name={id}
-							value={i}
-							onChange={onChange}
-							checked={i === value ? true : undefined}
-						/>{' '}
-						{i}
+						<Input type="radio" name={id} value={i} onChange={onChange} checked={i === value ? true : undefined} /> {i}
 					</Label>
 				)
 			}
@@ -347,9 +309,7 @@ export default class Options extends Component {
 				{Options.renderLabel(id)}
 				<Col sm={9}>
 					{this.renderBasedOnType(id, this.state.options[id], additional)}
-					{additional !== undefined &&
-						additional.help &&
-						Options.renderHelp(id)}
+					{additional !== undefined && additional.help && Options.renderHelp(id)}
 				</Col>
 			</FormGroup>
 		)

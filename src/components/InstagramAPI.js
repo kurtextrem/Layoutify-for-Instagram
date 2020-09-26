@@ -1,77 +1,5 @@
-'use strict'
-
-window.logAndReject = function logAndReject(e) {
-	console.error(e)
-	return Promise.reject(e)
-}
-
-class Storage {
-	constructor(storage) {
-		this.STORAGE = storage
-
-		this.promise = this.promise.bind(this)
-		this.set = this.set.bind(this)
-		this.get = this.get.bind(this)
-		this.remove = this.remove.bind(this)
-	}
-
-	promise(callback) {
-		return new Promise((resolve, reject) => {
-			if (chrome.storage[this.STORAGE] === undefined) return reject(new Error('Chrome storage not available'))
-
-			try {
-				return callback(resolve, reject)
-			} catch (e) {
-				return reject(e)
-			}
-		})
-	}
-
-	set(key, value) {
-		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
-		)
-	}
-
-	setObj(object) {
-		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].set(object, data => Storage.check(data, resolve, reject)))
-	}
-
-	get(key, defaultValue) {
-		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
-		)
-	}
-
-	remove(key) {
-		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
-	}
-
-	static check(data, resolve, reject) {
-		if (chrome.runtime.lastError) {
-			console.error(chrome.runtime.lastError.message)
-			return reject(chrome.runtime.lastError.message)
-		}
-
-		return resolve(data)
-	}
-}
-
-window.IG_Storage = new Storage('local')
-window.IG_Storage_Sync = new Storage('sync')
-
-/**
- *
- */
-function fetchFromBackground(which, path, options) {
-	return new Promise((resolve, reject) => {
-		chrome.runtime.sendMessage({ action: 'fetch', options, path, which }, text => {
-			if (text === undefined && chrome.runtime.lastError) return reject(chrome.runtime.lastError.message)
-
-			return resolve(text)
-		})
-	})
-}
+import bind from 'autobind-decorator'
+import { Storage, fetchFromBackground, logAndReturn } from './Utils'
 
 /**
  * 0 -> posts + set next max id -> max id -> posts + set next max id -> repeat from 1.
@@ -84,45 +12,37 @@ class InstagramAPI {
 		this.firstRun = true
 		this.nextMaxId = null
 		this.items = []
-
-		this.start = this.start.bind(this)
-		this.fetch = this.fetch.bind(this)
-		this.storeNext = this.storeNext.bind(this)
-		this.normalize = this.normalize.bind(this)
-		this.setData = this.setData.bind(this)
-		this.mergeItems = this.mergeItems.bind(this)
-		this.storeItems = this.storeItems.bind(this)
 	}
 
-	start() {
+	@bind
+	async start() {
 		if (this.firstRun) {
-			return window.IG_Storage.get(this.endpoint, {
+			const data = await Storage.get(this.endpoint, {
 				items: [],
 				nextMaxId: '',
-			}).then(data => {
-				this.nextMaxId = data.nextMaxId
-				this.items = data.items
-				return data
 			})
+			this.nextMaxId = data.nextMaxId
+			this.items = data.items
+			return data
 		}
-		return Promise.resolve(this.items)
+		return this.items
 	}
 
-	fetch() {
-		if (!this.firstRun && this.nextMaxId === '') return Promise.resolve(this.items) // nothing more to fetch
+	@bind
+	async fetch() {
+		if (!this.firstRun && this.nextMaxId === '') return this.items // nothing more to fetch
+		await this.start()
 
 		return fetchFromBackground('private', `feed/${this.endpoint}/?${this.nextMaxId && !this.firstRun ? `max_id=${this.nextMaxId}&` : ''}`) // maxId means "show everything before X"
 			.then(this.storeNext)
 			.then(this.normalize)
 			.then(this.setData)
 			.then(this.storeItems)
-			.catch(data => {
-				console.error(data)
-				return data
-			})
+			.catch(logAndReturn)
 			.catch(this.storeItems)
 	}
 
+	@bind
 	storeNext(data) {
 		console.log(data)
 		if (!this.firstRun || this.nextMaxId === '') this.nextMaxId = data.next_max_id ? `${data.next_max_id}` : ''
@@ -130,6 +50,7 @@ class InstagramAPI {
 		return data
 	}
 
+	@bind
 	normalize(data) {
 		const items = data.items
 		if (!Array.isArray(items)) return new Error('No items')
@@ -168,9 +89,7 @@ class InstagramAPI {
 			delete item.user.friendship_status // @todo is_bestie
 			delete item.user.has_anonymous_profile_picture
 			delete item.user.is_favorite
-			delete item.user.is_private
 			delete item.user.is_unpublished
-			delete item.user.is_verified
 			delete item.user.pk
 			delete item.user.profile_pic_id
 			delete item.user.latest_reel_media
@@ -208,6 +127,7 @@ class InstagramAPI {
 	 * @param {object} items
 	 * @return {object} items
 	 */
+	@bind
 	mergeItems(items) {
 		if (!items || items.length === 0) return this.items
 		if (this.items.length === 0 || items[0].id !== this.items[0].id) {
@@ -220,6 +140,7 @@ class InstagramAPI {
 		return this.items
 	}
 
+	@bind
 	setData(data) {
 		if (this.firstRun) {
 			this.mergeItems(data.items)
@@ -229,8 +150,9 @@ class InstagramAPI {
 		return data
 	}
 
+	@bind
 	storeItems(data) {
-		window.IG_Storage.set(this.endpoint, {
+		Storage.set(this.endpoint, {
 			items: this.items,
 			nextMaxId: this.nextMaxId,
 		})
@@ -238,6 +160,7 @@ class InstagramAPI {
 		return data
 	}
 
+	@bind
 	add(id) {
 		let node = this.action
 		if (node === 'like') node += 's'
@@ -245,10 +168,25 @@ class InstagramAPI {
 		return fetchFromBackground('public', `${node}/${id}/${this.action}/`)
 	}
 
+	@bind
 	remove(id) {
 		let node = this.action
 		if (node === 'like') node += 's'
 
 		return fetchFromBackground('public', `${node}/${id}/un${this.action}/`)
 	}
+}
+
+export const Instagram = {
+	fetch(type) {
+		if (this[type]) {
+			this[type].fetch()
+			return
+		}
+
+		this[type] = new InstagramAPI(type)
+		this[type].fetch()
+	},
+	liked: new InstagramAPI('liked'),
+	saved: new InstagramAPI('saved'),
 }

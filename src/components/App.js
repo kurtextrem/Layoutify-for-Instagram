@@ -10,7 +10,7 @@ import { HashRouter, Route } from './HashRouter'
 
 class App extends Component {
 	state = {
-		location: window.location.hash.replace('#/', ''),
+		location: window.location.hash,
 	}
 
 	@bind

@@ -84,17 +84,6 @@ const storageSync = new Storage('sync')
 export { storage as Storage, storageSync as StorageSync }
 
 export class Chrome {
-	static send(action, additional = {}) {
-		const search = document.location.search.replace('?', '').split('='),
-			index = search.indexOf('tabid')
-		if (index !== -1) {
-			console.log('sending req', action, additional)
-			chrome.tabs.sendMessage(+search[index + 1], { action, ...additional }, null)
-			return true
-		}
-		return false
-	}
-
 	static i18n(key) {
 		return chrome.i18n.getMessage(key) || `i18n::${key}`
 	}

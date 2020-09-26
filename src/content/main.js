@@ -1,4 +1,62 @@
-/* global InstagramAPI, udomdiff */
+window.logAndReject = function logAndReject(e) {
+	console.error(e)
+	return Promise.reject(e)
+}
+
+class Storage {
+	constructor(storage) {
+		this.STORAGE = storage
+
+		this.promise = this.promise.bind(this)
+		this.set = this.set.bind(this)
+		this.get = this.get.bind(this)
+		this.remove = this.remove.bind(this)
+	}
+
+	promise(callback) {
+		return new Promise((resolve, reject) => {
+			if (chrome.storage[this.STORAGE] === undefined) return reject(new Error('Chrome storage not available'))
+
+			try {
+				return callback(resolve, reject)
+			} catch (e) {
+				return reject(e)
+			}
+		})
+	}
+
+	set(key, value) {
+		return this.promise((resolve, reject) =>
+			chrome.storage[this.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
+		)
+	}
+
+	setObj(object) {
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].set(object, data => Storage.check(data, resolve, reject)))
+	}
+
+	get(key, defaultValue) {
+		return this.promise((resolve, reject) =>
+			chrome.storage[this.STORAGE].get({ [key]: defaultValue }, data => Storage.check(data[key], resolve, reject))
+		)
+	}
+
+	remove(key) {
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
+	}
+
+	static check(data, resolve, reject) {
+		if (chrome.runtime.lastError) {
+			console.error(chrome.runtime.lastError.message)
+			return reject(chrome.runtime.lastError.message)
+		}
+
+		return resolve(data)
+	}
+}
+
+window.IG_Storage = new Storage('local')
+window.IG_Storage_Sync = new Storage('sync')
 
 const documentElement = document.documentElement,
 	$ = e => {
@@ -234,11 +292,6 @@ function addClass() {
 	root.classList.add(...currentClass.split(' '))
 }
 
-const Instagram = {
-	liked: new InstagramAPI('liked'),
-	saved: new InstagramAPI('saved'),
-}
-
 /**
  *
  */
@@ -272,11 +325,6 @@ function addExtendedButton() {
 	a.title = 'Improved Layout for Instagram'
 	a.addEventListener('click', function (e) {
 		e.preventDefault()
-
-		// @TODO Remove this and fetch entirely on 3-dot page, as we fetch from bg already anyway
-		Instagram.liked.start().then(Instagram.liked.fetch).catch(window.logAndReject)
-		//Instagram.saved.start().then(Instagram.saved.fetch).catch(window.logAndReject)
-
 		chrome.runtime.sendMessage(null, { action: 'click' })
 		if (!clickedExtendedButton) window.localStorage.clickedExtendedBtn = true
 	})
@@ -284,40 +332,11 @@ function addExtendedButton() {
 	$anchor.parentNode.appendChild(element)
 }
 
-const listenerActions = {
-	_action(request) {
-		return Instagram[request.which][request.action] !== undefined && Instagram[request.which][request.action](request.id)
-	},
-
-	add(request) {
-		return this._action(request)
-	},
-
-	load(request) {
-		const which = request.which
-		if (Instagram[which]) return Instagram[which].fetch()
-		else {
-			Instagram[which] = new InstagramAPI(which)
-			Instagram[which].start()
-			Instagram[which].fetch()
-		}
-	},
-
-	remove(request) {
-		return this._action(request)
-	},
-}
-
 /**
  *
  */
 function addChromeListener() {
-	chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-		if (listenerActions[request.action] !== undefined) {
-			listenerActions[request.action](request)
-		}
-	})
-
+	//chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {})
 	chrome.runtime.sendMessage({ action: 'ig-claim', path: sessionStorage['www-claim-v2'] || localStorage['www-claim-v2'] })
 }
 
