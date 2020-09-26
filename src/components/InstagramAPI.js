@@ -96,6 +96,13 @@ class InstagramAPI {
 			delete item.can_see_insights_as_brand
 			delete item.inline_composer_imp_trigger_time
 			if (item.caption) {
+				delete item.caption.created_at_utc
+				delete item.caption.has_translation
+				delete item.caption.is_covered
+				delete item.caption.media_id
+				delete item.caption.private_reply_status
+				delete item.caption.active
+				delete item.caption.user_id
 				delete item.caption.bit_flags
 				delete item.caption.content_type
 				delete item.caption.did_report_as_spam
@@ -108,11 +115,17 @@ class InstagramAPI {
 			delete item.video_duration
 			delete item.video_codec
 			delete item.is_dash_eligible
+			delete item.deleted_reason
+			delete item.is_in_profile_grid
+			delete item.is_shop_the_look_eligible
+			delete item.profile_grid_control_enabled
+			delete item.sharing_friction_info
 
-			const candidates_length = item.image_versions2 !== undefined ? item.image_versions2.candidates.length : 0
-			for (let x = 0; x < candidates_length; ++x) {
-				const iv = item.image_versions2.candidates[x]
-				delete iv.estimated_scans_sizes
+			if (item.image_versions2 !== undefined) {
+				const el = item.image_versions2.candidates[0]
+				item.image_versions2 = el
+				delete el.estimated_scans_sizes
+				delete el.scans_profile
 			}
 		}
 
@@ -125,26 +138,26 @@ class InstagramAPI {
 	 * This has one caveat: We can't replace older items and thus there might be deleted items still left. We can not delete them.
 	 *
 	 * @param {object} items
-	 * @return {object} items
+	 * @return {boolean} merged
 	 */
 	@bind
 	mergeItems(items) {
 		if (!items || items.length === 0) return this.items
 		if (this.items.length === 0 || items[0].id !== this.items[0].id) {
 			this.items = items
-			return this.items
+			return false
 		}
 
 		// remove items.length items from this.items
-		this.items.splice(0, items.length - 1, ...this.items)
-		return this.items
+		this.items.splice(0, items.length, ...this.items)
+		return true
 	}
 
 	@bind
 	setData(data) {
 		if (this.firstRun) {
-			this.mergeItems(data.items)
 			this.firstRun = false
+			if (!this.mergeItems(data.items)) this.storeNext(data)
 		} else this.items = this.items.concat(data.items)
 
 		return data
