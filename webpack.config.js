@@ -151,7 +151,7 @@ if (isProduction) {
 				ignore: ['content/*'],
 				onlyFiles: true,
 			}),
-			whitelistPatterns: [/col-/, /btn-warning/, /btn-secondary/],
+			safelist: [/col-/, /btn-/, /btn-/],
 		}),
 		//new ShakePlugin(), // @todo: Broken in webpack5
 		//new WebpackDeepScopeAnalysisPlugin(), // @todo: 25/10/2018 - doesn't reduce bundle size
@@ -204,9 +204,9 @@ if (isProduction) {
 const first = {
 	cache: {
 		buildDependencies: {
-			config: [__filename]
+			config: [__filename],
 		},
-		type: "filesystem"
+		type: 'filesystem',
 	},
 
 	context: path.join(__dirname, 'src'),
@@ -406,10 +406,10 @@ const first = {
 const second = {
 	cache: {
 		buildDependencies: {
-			config: [__filename]
+			config: [__filename],
 		},
 
-		type: "filesystem"
+		type: 'filesystem',
 	},
 
 	context: first.context,
