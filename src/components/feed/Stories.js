@@ -44,13 +44,12 @@ class Stories extends FetchComponent {
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
-		return true
-		//return shallowDiffers(this.props, nextProperties) || shallowDiffers(this.state, nextState)
+		return shallowDiffers(this.props, nextProperties) || shallowDiffers(this.state, nextState)
 	}
 
 	@bind
 	fetchInitial(cb) {
-		if (Stories.reels_promise !== null) return Stories.reels_promise.then(_ => cb && cb())
+		if (Stories.reels_promise !== null) return Stories.reels_promise.then(() => cb && cb())
 
 		Stories.reels_promise = this.fetch('/graphql/query/?query_hash=' + Stories.queryID + '&variables=' + JSON.stringify(Stories.fetchObj), {
 			headers: this.getHeaders(false),
@@ -108,7 +107,10 @@ class Stories extends FetchComponent {
 							prevCount: prevState.nextCount,
 						}
 					},
-					() => cb && cb()
+					() => {
+						this._isNextPageLoading = false
+						cb && cb()
+					}
 				)
 
 				return json
@@ -159,18 +161,15 @@ class Stories extends FetchComponent {
 
 	@bind
 	nextPage(e) {
-		this.setState(
-			prevState => {
-				const page = prevState.page + 1,
-					len = Stories.reels.length,
-					hasNextPage = page * Stories.itemAmount < len
-				return {
-					hasNextPage,
-					page: hasNextPage ? page : len,
-				}
-			},
-			() => this.loadNextPage(true)
-		)
+		this.setState(prevState => {
+			const page = prevState.page + 1,
+				len = Stories.reels.length,
+				hasNextPage = page * Stories.itemAmount < len
+			return {
+				hasNextPage,
+				page: hasNextPage ? page : len,
+			}
+		}, this.loadNextPageRender)
 	}
 
 	render() {

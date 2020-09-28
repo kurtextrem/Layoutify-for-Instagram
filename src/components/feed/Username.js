@@ -9,7 +9,11 @@ const Username = props => {
 			{props.children}
 			{name || username}
 			{isVerified ? <i class="ig_sprite verified" /> : null}
-			{isPrivate ? '🔒' : null}
+			{isPrivate ? (
+				<span class="ige_private" role="img" aria-label="Private">
+					🔒
+				</span>
+			) : null}
 		</a>
 	)
 }

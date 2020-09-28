@@ -31,8 +31,8 @@ export default class Options extends Component {
 		rowsFourBoxWidth: 23,
 		rowsTwoBoxWidth: 40,
 
-		hidePrivateIcon: false,
-		hideVerifiedIcon: false,
+		//hidePrivateIcon: false, // @TODO load in main.js & then apply CSS
+		//hideVerifiedIcon: false, // @TODO load in main.js & then apply CSS
 
 		// hideRecommended: false, // @TODO: Implement (easy)
 		// highlightOP: true, // @TODO: Implement (easy)

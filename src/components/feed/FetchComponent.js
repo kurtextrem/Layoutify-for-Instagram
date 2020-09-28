@@ -7,7 +7,14 @@ import { Component, h } from 'preact'
 export default class FetchComponent extends Component {
 	static rolloutHash = window._cached_shared_Data?.rollout_hash || window._sharedData?.rollout_hash || '<unknown>'
 
-	isNextPageLoading = false
+	/**
+	 * Used as gate-keeper toggle to the loading of multiple pages at the same time.
+	 */
+	_isNextPageLoading = false
+
+	loadNextPageRender = () => this.loadNextPage(true)
+
+	fetchNext(cb) {}
 
 	state = {
 		cursor: undefined,
@@ -38,12 +45,12 @@ export default class FetchComponent extends Component {
 
 	@bind
 	loadNextPage(userInitiated) {
-		if (this.isNextPageLoading) return window.setTimeout(() => this.loadNextPage(userInitiated), 500)
-		this.isNextPageLoading = true
+		if (this._isNextPageLoading) return window.setTimeout(this.loadNextPage.bind(this, userInitiated), 500)
+		this._isNextPageLoading = true
 
 		this.setState({ isNextPageLoading: true }, () => {
 			this.fetchNext(() => {
-				if (userInitiated) requestIdleCallback(() => this.loadNextPage(false)) // preload next
+				if (userInitiated) requestIdleCallback(this.loadNextPage.bind(this, false)) // preload next
 			})
 		})
 	}

@@ -12,16 +12,16 @@ import { promiseReq, shallowDiffers } from '../Utils'
 //import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
 
 class Feed extends FetchComponent {
-	static TIME_STATE = {
+	TIME_STATE = {
 		ERROR: 2000,
 		LOADING: 900,
 	}
 
-	static loading = (<Loading />)
+	loading = (<Loading />)
 
-	static error = (<div>End of feed, try reloading the page.</div>)
+	error = (<div>End of feed, try reloading the page.</div>)
 
-	static dummy = (
+	dummy = (
 		<div class="position-relative">
 			<div class="d-flex position-relative justify-content-center flex-wrap">
 				<PostDummy />
@@ -34,7 +34,7 @@ class Feed extends FetchComponent {
 
 	db = null
 
-	static fetchObj = {
+	fetchObj = {
 		cached_feed_item_ids: [],
 		fetch_comment_count: 4,
 		fetch_like: 3,
@@ -59,20 +59,20 @@ class Feed extends FetchComponent {
 			trackVisibility: false,
 		})
 
-		window.setTimeout(() => this.setTimeout(Feed.TIME_STATE.LOADING), Feed.TIME_STATE.LOADING)
+		window.setTimeout(() => this.setTimeout(this.TIME_STATE.LOADING), this.TIME_STATE.LOADING)
 	}
 
 	setTimeout(timeout) {
 		this.setState({ timeout })
-		if (timeout !== Feed.TIME_STATE.ERROR) window.setTimeout(() => this.setTimeout(Feed.TIME_STATE.ERROR), Feed.TIME_STATE.ERROR)
+		if (timeout !== this.TIME_STATE.ERROR) window.setTimeout(() => this.setTimeout(this.TIME_STATE.ERROR), this.TIME_STATE.ERROR)
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
-		return shallowDiffers(this.state, nextState)
+		return shallowDiffers(this.state, nextState) || shallowDiffers(this.props, nextProperties)
 	}
 
 	async fetchNext(cb) {
-		const obj = { ...Feed.fetchObj }
+		const obj = { ...this.fetchObj }
 		obj.fetch_media_item_cursor = this.state.cursor
 
 		const response = await this.fetch('/graphql/query/?query_hash=' + this.queryID + '&variables=' + JSON.stringify(obj), {
@@ -98,7 +98,10 @@ class Feed extends FetchComponent {
 					prevCount: prevState.nextCount,
 				}
 			},
-			() => cb && cb()
+			() => {
+				this._isNextPageLoading = false
+				cb && cb()
+			}
 		)
 	}
 
@@ -195,9 +198,6 @@ class Feed extends FetchComponent {
 	render() {
 		const { hasNextPage, isNextPageLoading, items, timeout } = this.state
 
-		// Only load 1 page of items at a time.
-		// Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
-		const loadMoreItems = isNextPageLoading ? () => {} : () => this.loadNextPage(true)
 		const Sentinel = this.SentinelWithObserver
 
 		// @TODO Unload out of viewport imgs/videos
@@ -206,16 +206,16 @@ class Feed extends FetchComponent {
 				<div class="ige_virtual">
 					<div class="ige_virtual_container">
 						{this.renderItems()}
-						<Sentinel onVisible={loadMoreItems} />
-						{!hasNextPage && !isNextPageLoading ? Feed.error : Feed.loading}
+						<Sentinel onVisible={this.loadNextPageRender} />
+						{!hasNextPage && !isNextPageLoading ? this.error : this.loading}
 					</div>
 				</div>
 			)
 
-		if (timeout === Feed.TIME_STATE.LOADING) return Feed.loading
-		if (timeout === Feed.TIME_STATE.ERROR) return Feed.error
+		if (timeout === this.TIME_STATE.LOADING) return this.loading
+		if (timeout === this.TIME_STATE.ERROR) return this.error
 
-		return Feed.dummy
+		return this.dummy
 		//return <VirtualList itemCount={items.length / 8} renderItems={this.renderItems} className="ige_virtual" />
 	}
 }

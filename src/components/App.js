@@ -17,19 +17,27 @@ class App extends Component {
 	}
 
 	@bind
+	async getItems() {
+		const items = await Storage.get('collections', null)
+		console.log('loading items', items)
+		this.setState({ items })
+	}
+
+	@bind
 	handleLocationChanged(childKey, params, cb) {
 		this.setState({ location: childKey })
-		cb()
+		if (cb) cb()
+	}
+
+	componentDidMount() {
+		this.getItems()
+		chrome.storage.onChanged.addListener(changes => {
+			if (changes.collections !== undefined) this.setState({ items: changes.collections.newValue })
+		})
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		return shallowDiffers(this.state, nextState)
-	}
-
-	async componentDidMount() {
-		const items = await Storage.get('collections', null)
-		console.log('loading items', items)
-		this.setState({ items })
 	}
 
 	render() {
