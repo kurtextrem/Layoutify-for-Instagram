@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extTitle__",
-	"version": "3.2.1",
+	"version": "3.3.0",
 	"manifest_version": 2,
 
 	"description": "__MSG_extDesc__",
@@ -33,8 +33,7 @@
 	"options_page": "index.html",
 	"minimum_chrome_version": "72",
 
-	"permissions": ["*://*.instagram.com/*", "storage", "webRequest", "webRequestBlocking", "cookies", "notifications", "alarms"],
-	"optional_permissions": ["unlimitedStorage"],
+	"permissions": ["*://*.instagram.com/*", "storage", "webRequest", "webRequestBlocking", "cookies", "notifications", "alarms", "unlimitedStorage"],
 	"incognito": "split",
 	"content_security_policy": "script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
 

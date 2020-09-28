@@ -78,9 +78,7 @@ class Storage {
 		if (chrome.runtime.lastError) {
 			console.error(chrome.runtime.lastError.message)
 			if (chrome.runtime.lastError.message.indexOf('QUOTA_BYTES') !== 0) {
-				alert(
-					'Because you have a lot of likes / collections, please go to "About" and click the Permit button for unlimited storage or clear old data.'
-				)
+				alert('Because you have a lot of likes / collections, please go to "About" and clear old data.')
 			}
 			return reject(chrome.runtime.lastError.message)
 		}

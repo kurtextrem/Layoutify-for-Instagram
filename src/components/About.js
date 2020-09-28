@@ -9,43 +9,12 @@ export default class About extends Component {
 		bytesMaxLocal: 0,
 		bytesMaxSync: 0,
 		bytesSync: 0,
-		granted: false,
 	}
 
 	@bind
 	onBtnClick(e) {
 		chrome.storage.local.clear()
 		e.target.textContent = 'Cleared!'
-	}
-
-	@bind
-	onRequest(e) {
-		if (!this.state.granted)
-			chrome.permissions.request(
-				{
-					permissions: ['unlimitedStorage'],
-				},
-				function (granted) {
-					if (granted) {
-						e.target.textContent = 'Granted!'
-					} else {
-						e.target.textContent = 'Permit'
-					}
-				}
-			)
-		else
-			chrome.permissions.remove(
-				{
-					permissions: ['unlimitedStorage'],
-				},
-				function (granted) {
-					if (granted) {
-						e.target.textContent = 'Revoked!'
-					} else {
-						e.target.textContent = 'Revoke'
-					}
-				}
-			)
 	}
 
 	async componentDidMount() {
@@ -154,19 +123,6 @@ export default class About extends Component {
 					<Button color="warning" onClick={this.onBtnClick}>
 						Clear
 					</Button>
-				</p>
-				<h3>Grant Unlimited Storage</h3>
-				<p>
-					If you have many collections, liked posts or others, you may want to enable unlimited storage access to keep the extension
-					working:{' '}
-					<Button color="success" onClick={this.onRequest}>
-						{this.state.granted ? 'Revoke' : 'Permit'}
-					</Button>
-					<br />
-					Current local usage: {~~(this.state.bytesLocal / 1000 / 1000)} / {~~(this.state.bytesMaxLocal / 1000 / 1000)} MB
-					<br />
-					Current sync usage: {~~(this.state.bytesSync / 1000)} / {~~(this.state.bytesMaxSync / 1000)} KB
-					<br />
 				</p>
 				<h3>Thanks to</h3>
 				<p>

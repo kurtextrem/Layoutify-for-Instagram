@@ -382,6 +382,11 @@ header + div + div + div > section:first-child > span:first-child + span {
 	display: none;
 }
 
+/** Share button */
+article > div > section:first-child > span ~ button {
+	padding-left: 0;
+}
+
 /** Save button */
 article > div > section:first-child > span:last-child {
 	margin-left: -8px;
