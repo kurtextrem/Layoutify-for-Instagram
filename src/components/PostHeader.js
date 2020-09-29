@@ -31,11 +31,11 @@ export default class PostHeader extends Component {
 						{user.full_name || user.username}
 					</a>
 				</Media>
+				{isAd ? '[Ad]' : ''}
 				<a href={`https://www.instagram.com/p/${code}`} target="_blank" rel="noopener">
 					<span class="text-muted">posted </span>
 					{date !== null ? <TimeAgo class="text-muted" date={date} /> : <time class="text-muted" />}
 				</a>
-				{isAd ? '[Ad]' : ''}
 			</header>
 		)
 	}

@@ -61,6 +61,7 @@ export default class Post extends FeedPost {
 	render() {
 		const {
 			data: { user = {}, caption = {}, code = '', view_count = 0, like_count = 0, taken_at = 0, link = null, overlay_text = null },
+			data,
 		} = this.props
 		const { active, hasLiked, hasSaved } = this.state
 		const text = (caption && caption.text) || ''

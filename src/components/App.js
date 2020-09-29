@@ -30,6 +30,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
+		//CSS.paintWorklet.addModule('masonry.js')
 		this.getItems()
 		chrome.storage.onChanged.addListener(changes => {
 			if (changes.collections !== undefined) this.setState({ items: changes.collections.newValue })

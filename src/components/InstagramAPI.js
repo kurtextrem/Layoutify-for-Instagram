@@ -67,8 +67,8 @@ class InstagramAPI {
 			delete item.organic_tracking_token
 			delete item.max_num_visible_preview_comments
 			//delete item.location // @todo
-			//delete item.lng // @todo
-			//delete item.lat // @todo
+			delete item.lng // is in location too
+			delete item.lat // is in location too
 			delete item.inline_composer_display_condition
 			//delete item.has_viewer_saved
 			//delete item.has_more_comments
@@ -145,7 +145,7 @@ class InstagramAPI {
 
 			if (item.carousel_media !== undefined) {
 				for (let x = 0; x < item.carousel_media.length; ++x) {
-					const node = item.carousel_media[x].node
+					const node = item.carousel_media[x]
 					delete node.sharing_friction_info
 					delete node.pk
 

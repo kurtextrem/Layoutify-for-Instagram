@@ -69,7 +69,7 @@ export default class PostsContainer extends Component {
 	@bind
 	preload() {
 		const { preload, id } = this.props
-		if (++this.preloadCounter > preload) return
+		if (++this.preloadCounter > preload || (this.state.items && this.state.items.length / 21 > 2 * preload)) return // 21 posts per page
 
 		console.log('preloading', id)
 		this.loadData()

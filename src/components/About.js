@@ -59,34 +59,21 @@ export default class About extends Component {
 				<h3>Donate</h3>
 				<p>
 					As I am doing this in my freetime during University and don&apos;t get any money for working on this project, I would very much
-					appreciate any donation. So if you want to buy me a 🍻 or ☕, use either of these PayPal buttons ❤️
+					appreciate any donation. So if you want to buy me a ☕ or 🍻, please this button (redirects to PayPal) ❤️
 				</p>
 				<div class="d-flex">
-					Euro (€):
 					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" rel="noopener">
 						<input type="hidden" name="cmd" value="_s-xclick" />
-						<input type="hidden" name="hosted_button_id" value="LAHXLBYJPA822" />
+						<input type="hidden" name="hosted_button_id" value="ZZD7VFF99KE74" />
 						<input
 							type="image"
-							src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+							src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif"
 							border="0"
 							name="submit"
-							alt="Donate with PayPal."
+							title="PayPal - The safer, easier way to pay online!"
+							alt="Donate with PayPal button"
 						/>
-						<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
-					</form>
-					Dollar ($):
-					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" rel="noopener">
-						<input type="hidden" name="cmd" value="_s-xclick" />
-						<input type="hidden" name="hosted_button_id" value="274AUHUBFNZAU" />
-						<input
-							type="image"
-							src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
-							border="0"
-							name="submit"
-							alt="Donate with PayPal."
-						/>
-						<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
+						<img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1" />
 					</form>
 				</div>
 				<p>

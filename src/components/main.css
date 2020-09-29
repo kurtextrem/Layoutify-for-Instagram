@@ -68,6 +68,12 @@ nav,
 	contain: layout style;
 }
 
+/*.ige_virtual_container {
+	--padding: 10;
+	--columns: 4;
+	display: layout(masonry);
+}*/
+
 .card-footer {
 	padding: 5px;
 	background-color: initial;
