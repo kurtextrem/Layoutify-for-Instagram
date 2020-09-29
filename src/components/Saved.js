@@ -11,6 +11,8 @@ import { getActive } from './Nav'
  *
  */
 export function renderCollection(items, type) {
+	if (!items || !items.length) return null
+
 	const result = []
 	for (let i = 0; i < items.length; ++i) {
 		const item = items[i]
@@ -50,15 +52,19 @@ export default class Saved extends Component {
 
 		if (collections === null || now - collections.date > 300000) {
 			// 5min
-			const json = await fetchFromBackground('private_web', 'collections/list/')
+			try {
+				const json = await fetchFromBackground('private_web', 'collections/list/')
+				const items = json.items ? json.items : []
+				for (let i = 0; i < items.length; ++i) {
+					items[i].cover_media.image_versions2.candidates = [items[i].cover_media.image_versions2.candidates[0]] // save storage
+				}
 
-			const items = json.items
-			for (let i = 0; i < items.length; ++i) {
-				items[i].cover_media.image_versions2.candidates = [items[i].cover_media.image_versions2.candidates[0]] // save storage
+				Storage.set('collections', { date: now, items })
+				this.setItems(items)
+			} catch (e) {
+				Storage.set('collections', { date: now, items: [] })
+				console.error('no collections', e)
 			}
-
-			Storage.set('collections', { date: now, items: json.items })
-			this.setItems(json.items)
 			return
 		}
 		//const req = await fetch('../collectionList.json')
@@ -84,16 +90,18 @@ export default class Saved extends Component {
 	render() {
 		const id = this.props.id
 
-		if (id === undefined)
+		if (id === undefined) {
+			const collections = renderCollection(this.state.items, 'render')
 			return (
 				<Suspense fallback={<Loading />}>
 					<div class="d-flex w-100 justify-content-center flex-wrap">
-						{renderCollection(this.state.items, 'render')}
-						<i class="w-100 text-center">(middle- or right-click to open a collection in a new tab)</i>
-						<PostsContainer id="saved" defaultClass="turned_in" toggleClass="turned_in_not" preload={1} />
+						{collections}
+						{collections !== null ? <i class="w-100 text-center">(middle- or right-click to open a collection in a new tab)</i> : null}
+						<PostsContainer id="saved" defaultClass="turned_in" toggleClass="turned_in_not" preload={2} />
 					</div>
 				</Suspense>
 			)
+		}
 
 		return <PostsContainer id={'collection/' + id()} defaultClass="turned_in" toggleClass="turned_in_not" preload={3} />
 	}
