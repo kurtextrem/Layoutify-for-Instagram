@@ -306,7 +306,8 @@
 	text-overflow: ellipsis;
 }
 
-.ige_username:hover {
+.ige_username:hover,
+.ige_username:focus {
 	text-decoration: underline;
 }
 
@@ -327,10 +328,6 @@
 
 .ige_actions_container > button:first-child {
 	padding-left: 0;
-}
-
-.ige_action_amount {
-	max-width: 41%;
 }
 
 .pl-2 {
@@ -398,8 +395,8 @@
 	align-self: center;
 	justify-content: center;
 	width: min-content;
-	margin-top: 15px;
-	margin-bottom: -20px;
+	margin-top: 7px;
+	margin-bottom: -7px;
 	text-align: center;
 	contain: content;
 }
@@ -674,29 +671,29 @@
 }
 
 .story-video::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/img/IGsprite.webp');
-	background-repeat: no-repeat;
+	position: absolute;
+	top: 5px;
+	left: 10px;
 	width: 16px;
 	height: 18px;
+	background-image: url('chrome-extension://__MSG_@@extension_id__/img/IGsprite.webp');
+	background-repeat: no-repeat;
 	background-position: -363px -334px;
 	content: '';
-	position: absolute;
-	left: 10px;
-	top: 5px;
 }
 
 .ig_sprite {
+	display: inline-block;
 	background-image: url('chrome-extension://__MSG_@@extension_id__/img/IGsprite.webp');
 	background-repeat: no-repeat;
-	display: inline-block;
 }
 
 .verified {
-	background-position: 0 -369px;
 	width: 18px;
 	height: 18px;
-	vertical-align: text-top;
 	margin-left: 3px;
+	vertical-align: text-top;
+	background-position: 0 -369px;
 }
 
 .ige_story-img {

@@ -60,16 +60,11 @@ export default class Post extends FeedPost {
 
 	render() {
 		const {
-			data: { user = {}, caption = {}, code = '', view_count = 0, like_count = 0, taken_at = 0 },
-			data,
-			initial,
-			defaultClass,
-			toggleClass,
-			parent,
-			isCarousel,
+			data: { user = {}, caption = {}, code = '', view_count = 0, like_count = 0, taken_at = 0, link = null, overlay_text = null },
 		} = this.props
 		const { active, hasLiked, hasSaved } = this.state
 		const text = (caption && caption.text) || ''
+		const isAd = link !== null
 
 		console.log(data)
 
@@ -97,8 +92,13 @@ export default class Post extends FeedPost {
 
 		return (
 			<article class={`card${active ? '' : ' fadeOut'}`} id={`post_${this.id}`} rendersubtree="activatable">
-				<PostHeader user={user} code={code} taken_at={taken_at} />
+				<PostHeader user={user} code={code} taken_at={taken_at} isAd={isAd} />
 				<PostMedia data={dataProxy} onLike={this.handleLike} />
+				{isAd ? (
+					<a href={link} class="btn btn-link" target="_blank" rel="noopener">
+						{overlay_text}
+					</a>
+				) : null}
 				<PostAction
 					like_media={{ count: like_count }}
 					shortcode={code}

@@ -227,7 +227,7 @@ const first = {
 			warnings: true,
 		},
 		port: 8080,
-		watchContentBase: true,
+		watchContentBase: false,
 		writeToDisk: filePath => {
 			return /(content\/|manifest.json|_locales|img)/.test(filePath)
 		},

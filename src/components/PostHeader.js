@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import TimeAgo from 'react-timeago'
 import { Component, h } from 'preact'
 import { Media } from 'reactstrap'
-import { updateCDN } from './Utils'
 
 export default class PostHeader extends Component {
 	constructor(properties) {
@@ -19,13 +18,13 @@ export default class PostHeader extends Component {
 	}
 
 	render() {
-		const { user, code } = this.props
+		const { user, code, isAd } = this.props
 		const { date } = this.state
 
 		return (
 			<header class="d-flex media align-items-center card-block grow-0 pl-2 pr-2">
 				<a href={`https://www.instagram.com/${user.username}`} target="_blank" rel="noopener">
-					<img src={updateCDN(user.profile_pic_url)} class="img-fluid profile-pic rounded mr-2" alt="❌" decoding="async" />
+					<img src={user.profile_pic_url} class="img-fluid profile-pic rounded mr-2" alt="❌" decoding="async" />
 				</a>
 				<Media body class="mr-auto">
 					<a href={`https://instagram.com/${user.username}`} target="_blank" rel="noopener">
@@ -36,6 +35,7 @@ export default class PostHeader extends Component {
 					<span class="text-muted">posted </span>
 					{date !== null ? <TimeAgo class="text-muted" date={date} /> : <time class="text-muted" />}
 				</a>
+				{isAd ? '[Ad]' : ''}
 			</header>
 		)
 	}
