@@ -1,5 +1,21 @@
 # Changelog
 
+## 3.3.0 - 2020-09-21
+
+### New
+
+Collections now finally have their correct names and you can view each of them like in the Instagram app <small>_(the "wishlist" collection is currently missing, but it seems like this is an app-only thing)_</small>.
+
+![Collections](https://raw.githubusercontent.com/kurtextrem/Improved-for-Instagram/master/src/webstore/Screenshot_80.png)
+
+Also, added a donation button to the "❔ About" page, as I'm a student working on this extension during my freetime, which means I don't get any money for doing so.<br>So if you want to buy me a ☕ or 🍻, use the PayPal button on that page. Donations are of course optional and will always stay optional, but I really appreciate any amount. ❤️
+
+### Fixed
+
+When you open a profile and then switch to the main feed, it did not load posts. This is now fixed.
+
+Stories in the main feed now always work correctly and mark stories with videos using a play button.
+
 ## 3.2.0 - 2020-09-04
 
 ### Known Issues
