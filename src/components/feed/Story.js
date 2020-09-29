@@ -1,6 +1,15 @@
 import { Fragment, h } from 'preact'
 import { Modal } from 'react-responsive-modal'
-import { memo, useState } from 'preact/compat'
+import { memo, useCallback, useState } from 'preact/compat'
+
+/**
+ *
+ */
+function isHome(iframe) {
+	return iframe.contentWindow && iframe.contentWindow.location.href === 'https://www.instagram.com/'
+}
+
+let timer = null
 
 /**
  *
@@ -9,9 +18,27 @@ const Story = ({ data, src, type, additionalClass }) => {
 	const [isOpen, setOpen] = useState(false)
 	const [wasOpen, setOpened] = useState(false)
 
+	const iframeCloser = useCallback(
+		node => {
+			/**
+			 *
+			 */
+			function closeIframe() {
+				if (isHome(node)) setOpen(false)
+				else timer = setTimeout(closeIframe, 100)
+			}
+
+			clearTimeout(timer)
+			timer = null
+			if (node !== null && isOpen) closeIframe()
+		},
+		[isOpen]
+	)
+
 	const {
 		owner: { username = '', profile_pic_url = '' },
 		has_besties_media,
+		id = '',
 	} = data
 
 	if (type !== 'GraphStoryImage' && type !== 'GraphStoryVideo') console.info('New story type', type)
@@ -47,7 +74,7 @@ const Story = ({ data, src, type, additionalClass }) => {
 			{isOpen ? (
 				<Modal open onClose={() => setOpen(false)} center classNames={{ modal: 'modal-story' }}>
 					<div>
-						<iframe src={'/stories/' + username + '/#story'} class="ige_iframe" />
+						<iframe src={`/stories/${username}/${id}/#story`} class="ige_iframe" ref={iframeCloser} />
 					</div>
 				</Modal>
 			) : null}

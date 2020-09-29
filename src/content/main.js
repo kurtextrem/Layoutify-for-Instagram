@@ -698,9 +698,8 @@ function onReady() {
 	loadOptions()
 	onNavigate()
 
-	if (location.hash === '#share') {
-		window.requestAnimationFrame(() => clickShare(0))
-	} else addFeedDiv()
+	if (location.hash === '#share') window.requestAnimationFrame(() => clickShare(0))
+	else if (location.hash !== '#story') addFeedDiv()
 
 	addChromeListener()
 }
