@@ -5,9 +5,9 @@ import Posts from './Posts'
 import PropTypes from 'prop-types'
 import bind from 'autobind-decorator'
 import { Button } from 'reactstrap'
-import { Chrome, Storage, logAndReturn } from './Utils'
 import { Component, h } from 'preact'
 import { Instagram } from './InstagramAPI'
+import { Storage, logAndReturn, shallowDiffers } from './Utils'
 
 export default class PostsContainer extends Component {
 	static TIME_STATE = {
@@ -48,7 +48,6 @@ export default class PostsContainer extends Component {
 		super(properties)
 
 		this.initial = 0
-		this.postCount = 0
 		this.preloadCounter = 0
 
 		this.populateData()
@@ -70,7 +69,7 @@ export default class PostsContainer extends Component {
 	@bind
 	preload() {
 		const { preload, id } = this.props
-		if (++this.preloadCounter > preload || this.postCount / 20 /* 20 posts per page */ > 2 * preload) return
+		if (++this.preloadCounter > preload) return
 
 		console.log('preloading', id)
 		this.loadData()
@@ -139,22 +138,7 @@ export default class PostsContainer extends Component {
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
-		const { timeout, items } = this.state
-		const nextItems = nextState.items
-		/*console.log(
-			nextProps.id !== this.props.id,
-			nextState.timeout !== timeout,
-			items === null && nextState.items !== null,
-			nextState.items,
-			items
-		)*/
-
-		return (
-			nextProperties.id !== this.props.id ||
-			(nextState.timeout !== timeout && (nextItems === null || nextItems.length === 0)) ||
-			(items === null && nextItems !== null) || // first items
-			(items !== null && nextItems !== null && nextItems.length !== items.length)
-		)
+		return shallowDiffers(this.state, nextState) || shallowDiffers(this.props, nextProperties)
 	}
 
 	componentWillUnmount() {

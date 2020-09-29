@@ -6,31 +6,6 @@ export function logAndReturn(e) {
 	return e
 }
 
-export function checkStatus(response) {
-	if (response.ok) return response
-
-	const error = new Error(response.statusText)
-	error.status = response.status
-	error.response = response
-	throw error
-}
-
-export function toJSON(response) {
-	return response.json()
-}
-
-export class XHR {
-	static checkStatus = checkStatus
-
-	static parseJSON = toJSON
-
-	static fetch(url, options) {
-		return window.fetch(url, options).then(checkStatus).then(toJSON).catch(logAndReturn)
-	}
-}
-
-export const fetch = XHR.fetch
-
 // @TODO: https://github.com/domenic/async-local-storage/blob/master/README.md
 class Storage {
 	constructor(storage) {
@@ -90,21 +65,8 @@ const storage = new Storage('local')
 const storageSync = new Storage('sync')
 export { storage as Storage, storageSync as StorageSync }
 
-export class Chrome {
-	static i18n(key) {
-		return chrome.i18n.getMessage(key) || `i18n::${key}`
-	}
-}
-
-export const i18n = Chrome.i18n
-
-//const regex = /-fr[atx]\d-\d/
-/**
- *
- */
-export function updateCDN(url) {
-	return url
-	// return url.replace(regex, '-frt3-1') // 10.08.2017
+export function i18n(key) {
+	return chrome.i18n.getMessage(key) || `i18n::${key}`
 }
 
 /**
@@ -116,19 +78,6 @@ export function shallowDiffers(a, b) {
 	return false
 }
 
-export const webWorkerScript = `const postMsg = (url, response) => self.postMessage(url)
-function checkStatus(response) {
-	if (response.ok) return response
-	throw response
-}
-const opts = {headers: {accept: 'image/webp,image/apng,image/*,*/*;q=0.8'}, redirect: 'follow', referrerPolicy: 'no-referrer', mode: 'cors'}
-self.addEventListener('message', event => {
-	const url = event.data,
-		bound = postMsg.bind(undefined, url)
-	self.fetch(url, opts).then(checkStatus).then(bound).catch(e => console.error(e) && bound())
-})
-`
-
 /**
  *
  */
@@ -137,16 +86,6 @@ export function documentReady() {
 		if (document.readyState === 'interactive' || document.readyState === 'complete') resolve()
 		else document.addEventListener('DOMContentLoaded', resolve)
 	})
-}
-
-let workerBlob
-/**
- *
- */
-export async function getWorkerBlob() {
-	await documentReady() // creating a blob is synchronous and takes around 120ms on a powerful machine
-	if (workerBlob === undefined) workerBlob = URL.createObjectURL(new Blob([webWorkerScript], { type: 'application/javascript' }))
-	return workerBlob
 }
 
 // based on https://code.lengstorf.com/get-form-values-as-json/
