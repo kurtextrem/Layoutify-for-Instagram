@@ -26,7 +26,7 @@ Do you want to help with developing? You're very welcome.
 
 To get this extension running (if you're a dev), follow these steps:
 
-1.  Download the [ZIP](archive/master.zip) archive of the repository.
+1.  Download the [ZIP](https://github.com/kurtextrem/Improved-for-Instagram/archive/master.zip) archive of the repository.
 2.  Unpack somewhere.
 3.  Run `npm install` in the folder _(make sure you have [NodeJS](https://nodejs.org/en/) installed)_
 
