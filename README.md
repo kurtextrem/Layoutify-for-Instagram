@@ -1,14 +1,16 @@
 <h1 align="center">
-<img src="src/img/logo/logotype_horizontal.png?raw=true" alt="Improved for Instagram" width="512">
+
+![Logo](src/img/icon-128.png?raw=true 'Layoutify: Improved for Instagram Logo')
 <br>
-Improved Layout for Instagram
+Layoutify: Improved Layout for Instagram
+
 </h1>
 
 The default Instagram.com layout is not optimized for the desktop. This extension improves this.
 
 Download from [Chrome Web Store](https://chrome.google.com/webstore/detail/nekeeojpcbiehcignddhindbgacbghmi).
 
-![Screenshot](https://raw.githubusercontent.com/kurtextrem/Instagram-Extended/master/src/webstore/night.png 'Logo Title Text 1')
+![Screenshot](src/webstore/night.png 'Night Mode Screenshot')
 
 ## Legal
 
@@ -24,7 +26,7 @@ Do you want to help with developing? You're very welcome.
 
 To get this extension running (if you're a dev), follow these steps:
 
-1.  Download the [ZIP](https://github.com/kurtextrem/Twitch5/archive/master.zip) archive of the repository.
+1.  Download the [ZIP](archive/master.zip) archive of the repository.
 2.  Unpack somewhere.
 3.  Run `npm install` in the folder _(make sure you have [NodeJS](https://nodejs.org/en/) installed)_
 
