@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.3.1 - 2020-10-05
+
+Instagram requested me to change the extension name. The new name is "Layoutify: Improved Layout for Instagram".
+
 ## 3.3.0 - 2020-09-21
 
 ### New
