@@ -42,18 +42,20 @@ export default class About extends Component {
 				</h3>
 				<h3>About</h3>
 				<p>
-					Improved Layout for Instagram does not store any data of your Instagram account apart from on your PC. The code is Open-Source on{' '}
+					Layoutify: Improved Layout does not collect any data and stores liked/saved posts only on your system. The code is Open-Source on{' '}
 					<a href="https://github.com/kurtextrem/Improved-for-Instagram" target="_blank" rel="noopener">
 						GitHub
 					</a>
-					.
+					. I developed this extension, as I was not satisfied with the Instagram.com design and published it, as I thought I am probably
+					not the only one thinking so. Also, I wanted to see likes and collections on the desktop, but this was not really possible. So I
+					developed all on my own.
 				</p>
 				<p>
 					If you find any issues, please report them on{' '}
 					<a href="https://github.com/kurtextrem/Improved-for-Instagram/issues" target="_blank" rel="noopener">
 						GitHub
 					</a>{' '}
-					or mail me: <a href="mailto:kurtextrem@gmail.com">kurtextrem@gmail.com</a>.
+					or mail me: <a href="mailto:kurtextrem@gmail.com">kurtextrem [at] gmail.com</a> (replace &nbsp;[at]&nbsp; with @).
 				</p>
 
 				<h3>Donate</h3>

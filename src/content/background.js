@@ -218,7 +218,7 @@ function fetchFromBackground(which, path, sendResponse, options) {
 	if (which === 'PUBLIC') {
 		getCookie('csrftoken')
 			.then(value => {
-				PUBLIC_API_OPTS.headers.set('x-csrftoken', value)
+				PUBLIC_API_OPTS.headers['x-csrftoken'] = value
 				fetchAux(API_URL[which] + path, PUBLIC_API_OPTS)
 
 				return value

@@ -3,9 +3,9 @@ import PostHeader from './PostHeader'
 import PostMedia from './feed/PostMedia'
 import bind from 'autobind-decorator'
 import { CardBody, CardText } from 'reactstrap'
-import { Chrome, Storage, logAndReturn } from './Utils'
 import { default as FeedPost } from './feed/Post'
 import { Instagram } from './InstagramAPI'
+import { Storage, logAndReturn } from './Utils'
 import { h } from 'preact'
 
 export default class Post extends FeedPost {

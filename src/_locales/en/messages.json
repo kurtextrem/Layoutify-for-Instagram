@@ -1,10 +1,10 @@
 {
 	"extTitle": {
-		"message": "Improved Layout for Instagram",
+		"message": "Layoutify: Improved Layout for Instagram",
 		"description": "Extension Title."
 	},
 	"extDesc": {
-		"message": "The default Instagram.com layout is not optimized for the desktop. This extension improves this.",
+		"message": "The layout of Instagram.com is not optimized for the desktop. This extension improves this.",
 		"description": "Extension description."
 	},
 	"blockPosts": {
