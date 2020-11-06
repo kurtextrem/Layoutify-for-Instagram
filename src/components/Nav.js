@@ -5,7 +5,7 @@ import { Container, Nav as NavI, NavItem, NavLink, Navbar } from 'reactstrap'
  *
  */
 export function getActive(location, key) {
-	return location === key ? 'active' : ''
+	return location === '#/' + key ? 'active' : ''
 }
 
 export default class Nav extends Component {

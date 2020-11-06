@@ -7,6 +7,7 @@ import { default as FeedPost } from './feed/Post'
 import { Instagram } from './InstagramAPI'
 import { Storage, logAndReturn } from './Utils'
 import { h } from 'preact'
+import PostDummy from './PostDummy'
 
 export default class Post extends FeedPost {
 	static removeItem(id) {
@@ -21,15 +22,11 @@ export default class Post extends FeedPost {
 			.catch(logAndReturn)
 	}
 
+	state = { hasLiked: false, hasSaved: false, active: false, data: null }
+
 	constructor(props) {
 		super(props)
-
-		this.state.hasLiked = props.data.has_liked
-		this.state.hasSaved = props.data.saved_collection_ids !== undefined
-		this.state.active = this.props.parent === 'liked' ? this.state.hasLiked : this.state.hasSaved
-
-		this.id = props.data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
-		this.timeout = 0
+		this.proxify(props, true)
 	}
 
 	@bind
@@ -58,22 +55,23 @@ export default class Post extends FeedPost {
 		)
 	}
 
-	render() {
-		const {
-			data: { user = {}, caption = {}, code = '', view_count = 0, like_count = 0, taken_at = 0, link = null, overlay_text = null },
-			data,
-		} = this.props
-		const { active, hasLiked, hasSaved } = this.state
-		const text = (caption && caption.text) || ''
-		const isAd = link !== null
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if (this.props.data.id !== prevProps.data.id) this.proxify(this.props, false)
+	}
+
+	proxify(props, initial) {
+		const data = props.data
+		this.id = data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
+		this.timeout = 0
 
 		console.log(data)
-
-		const dataProxy = { ...data }
+		const dataProxy = { ...props.data }
 		if (dataProxy.carousel_media !== undefined) {
 			const carouselMedia = dataProxy.carousel_media
 			for (let i = 0; i < carouselMedia.length; ++i) {
 				const media = carouselMedia[i]
+				if (media.node !== undefined) continue // we modified this already
+
 				media.is_video = media.media_type === 2
 				media.video_url = media.is_video ? media.video_versions[0].url : undefined
 				media.display_url = media.image_versions2.candidates[0].url
@@ -91,10 +89,38 @@ export default class Post extends FeedPost {
 			}
 		}
 
+		if (initial) {
+			this.state.data = dataProxy
+			this.state.hasLiked = data.has_liked
+			this.state.hasSaved = data.saved_collection_ids !== undefined
+			this.state.active = props.parent === 'liked' ? data.has_liked : data.has_saved
+		} else
+			this.setState({
+				data: dataProxy,
+				hasLiked: data.has_liked,
+				hasSaved: data.saved_collection_ids !== undefined,
+				active: props.parent === 'liked' ? data.has_liked : data.has_saved,
+			})
+	}
+
+	render() {
+		const data = this.state.data
+		if (data === null) return <PostDummy />
+
+		const {
+			active,
+			hasLiked,
+			hasSaved,
+			data: { user = {}, caption = {}, code = '', view_count = 0, like_count = 0, taken_at = 0, link = null, overlay_text = null },
+		} = this.state
+
+		const text = (caption && caption.text) || ''
+		const isAd = link !== null
+
 		return (
 			<article class={`card${active ? '' : ' fadeOut'}`} id={`post_${this.id}`} rendersubtree="activatable">
 				<PostHeader user={user} code={code} taken_at={taken_at} isAd={isAd} />
-				<PostMedia data={dataProxy} onLike={this.handleLike} />
+				<PostMedia data={data} onLike={this.handleLike} />
 				{isAd ? (
 					<a href={link} class="btn btn-link" target="_blank" rel="noopener">
 						{overlay_text}
@@ -103,7 +129,7 @@ export default class Post extends FeedPost {
 				<PostAction
 					like_media={{ count: like_count }}
 					shortcode={code}
-					is_video={dataProxy.is_video}
+					is_video={data.is_video}
 					video_view_count={view_count}
 					hasLiked={hasLiked}
 					hasSaved={hasSaved}
