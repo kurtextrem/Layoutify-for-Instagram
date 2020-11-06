@@ -25,7 +25,7 @@ class App extends Component {
 
 	@bind
 	handleLocationChanged(childKey, params, cb) {
-		this.setState({ location: childKey })
+		this.setState({ location: window.location.hash })
 		if (cb) cb()
 	}
 
@@ -65,7 +65,7 @@ class App extends Component {
 							<About />
 						</Route>
 					</HashRouter>
-					{items !== null ? <NavPortal>{renderCollection(items.items, 'nav')}</NavPortal> : null}
+					{items ? <NavPortal>{renderCollection(items.items, 'nav')}</NavPortal> : null}
 				</main>
 				<a href="#" id="backToTop">
 					↑️

@@ -21,14 +21,11 @@ export default class About extends Component {
 		const bytesLocal = await Storage.getBytes()
 		const bytesSync = await StorageSync.getBytes()
 
-		chrome.permissions.contains({ permissions: ['unlimitedStorage'] }, granted => {
-			this.setState({
-				bytesLocal,
-				bytesMaxLocal: chrome.storage.local.QUOTA_BYTES,
-				bytesMaxSync: chrome.storage.sync.QUOTA_BYTES,
-				bytesSync,
-				granted,
-			})
+		this.setState({
+			bytesLocal,
+			bytesMaxLocal: chrome.storage.local.QUOTA_BYTES,
+			bytesMaxSync: chrome.storage.sync.QUOTA_BYTES,
+			bytesSync,
 		})
 	}
 
@@ -36,14 +33,14 @@ export default class About extends Component {
 		return (
 			<div>
 				<h3>
-					<a href="https://github.com/kurtextrem/Improved-for-Instagram/blob/master/CHANGELOG.md#changelog" target="_blank" rel="noopener">
+					<a href="https://github.com/kurtextrem/Layoutify-for-Instagram/blob/master/CHANGELOG.md#changelog" target="_blank" rel="noopener">
 						Changelog 📃
 					</a>
 				</h3>
 				<h3>About</h3>
 				<p>
 					Layoutify: Improved Layout does not collect any data and stores liked/saved posts only on your system. The code is Open-Source on{' '}
-					<a href="https://github.com/kurtextrem/Improved-for-Instagram" target="_blank" rel="noopener">
+					<a href="https://github.com/kurtextrem/Layoutify-for-Instagram" target="_blank" rel="noopener">
 						GitHub
 					</a>
 					. I developed this extension, as I was not satisfied with the Instagram.com design and published it, as I thought I am probably
@@ -52,7 +49,7 @@ export default class About extends Component {
 				</p>
 				<p>
 					If you find any issues, please report them on{' '}
-					<a href="https://github.com/kurtextrem/Improved-for-Instagram/issues" target="_blank" rel="noopener">
+					<a href="https://github.com/kurtextrem/Layoutify-for-Instagram/issues" target="_blank" rel="noopener">
 						GitHub
 					</a>{' '}
 					or mail me: <a href="mailto:kurtextrem@gmail.com">kurtextrem [at] gmail.com</a> (replace &nbsp;[at]&nbsp; with @).
@@ -85,7 +82,7 @@ export default class About extends Component {
 					<span class="star" />
 					<span class="star" /> rating in the{' '}
 					<a
-						href="https://chrome.google.com/webstore/detail/improved-layout-for-insta/nekeeojpcbiehcignddhindbgacbghmi/reviews"
+						href="https://chrome.google.com/webstore/detail/layoutify-improved-layout/nekeeojpcbiehcignddhindbgacbghmi/reviews"
 						target="_blank"
 						rel="noopener">
 						Chrome Webstore

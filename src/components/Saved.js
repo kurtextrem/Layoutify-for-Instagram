@@ -84,7 +84,7 @@ export default class Saved extends Component {
 		const id = this.props.id
 		if (nextState.items.length !== this.state.items.length) return true
 		if (id === nextProps.id) return false
-		return (nextProps.id === undefined && id !== undefined) || (nextProps.id !== undefined && id === undefined) || nextProps.id() !== id()
+		return true
 	}
 
 	render() {
