@@ -38,6 +38,9 @@ export default class PostsContainer extends Component {
 		</div>
 	)
 
+	initial = 0
+	preloadCounter = 0
+
 	state = {
 		canLoadMore: true,
 		items: null,

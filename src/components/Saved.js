@@ -31,7 +31,7 @@ export function renderCollection(items, type) {
 		else
 			result.push(
 				<NavItem>
-					<NavLink class={getActive(location.hash, link)} href={link}>
+					<NavLink class={getActive(window.location.hash, link)} href={link}>
 						{item.collection_name}
 					</NavLink>
 				</NavItem>
@@ -97,12 +97,13 @@ export default class Saved extends Component {
 					<div class="d-flex w-100 justify-content-center flex-wrap">
 						{collections}
 						{collections !== null ? <i class="w-100 text-center">(middle- or right-click to open a collection in a new tab)</i> : null}
-						<PostsContainer id="saved" defaultClass="turned_in" toggleClass="turned_in_not" preload={2} />
+						<PostsContainer key="saved" id="saved" defaultClass="turned_in" toggleClass="turned_in_not" preload={2} />
 					</div>
 				</Suspense>
 			)
 		}
 
-		return <PostsContainer id={'collection/' + id()} defaultClass="turned_in" toggleClass="turned_in_not" preload={3} />
+		const key = 'collection/' + id()
+		return <PostsContainer key={key} id={key} defaultClass="turned_in" toggleClass="turned_in_not" preload={3} />
 	}
 }
