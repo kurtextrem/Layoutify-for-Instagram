@@ -279,10 +279,8 @@ const first = {
 		? {
 				minimizer: [
 					new TerserPlugin({
-						cache: true,
 						exclude: /content\//,
 						extractComments: false,
-						sourceMap: !isProduction,
 						terserOptions: {
 							compress: {
 								arguments: true,

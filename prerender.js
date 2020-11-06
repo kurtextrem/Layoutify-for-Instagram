@@ -3,7 +3,7 @@ const { resolve } = require('path')
 /**
  *
  */
-function prerender(outputDirectory, params) {
+module.exports = function prerender(outputDirectory, params) {
 	params = params || {}
 
 	const entry = './' + outputDirectory + '/ssr-bundle.js',
@@ -39,6 +39,15 @@ function prerender(outputDirectory, params) {
 			onChanged: {
 				addListener() {},
 			},
+			local: {
+				get() {},
+			},
+			sync: {
+				get() {},
+			},
+		},
+		runtime: {
+			sendMessage() {},
 		},
 	}
 
@@ -51,9 +60,7 @@ function prerender(outputDirectory, params) {
 
 	const app = (m && m.default) || m
 	if (typeof app !== 'function') {
-		console.warn(
-			'Entry does not export a Component function/class, aborting prerendering.'
-		)
+		console.warn('Entry does not export a Component function/class, aborting prerendering.')
 		return ''
 	}
 
@@ -62,6 +69,5 @@ function prerender(outputDirectory, params) {
 
 	return renderToString(preact.h(app))
 }
-module.exports = prerender
 
 //console.log(prerender('dist'))
