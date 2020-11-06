@@ -67,7 +67,7 @@ module.exports = function (api) {
 					'babel-plugin-optimize-clsx',
 					//'@babel/plugin-transform-react-constant-elements', // see https://github.com/facebookincubator/create-react-app/issues/553#issuecomment-359196326
 					//['babel-plugin-transform-hoist-nested-functions', { methods: true }], // see ^^^
-					'babel-plugin-closure-elimination', // @TODO: Benchmark w/ & w/o, see ^^^
+					//'babel-plugin-closure-elimination', // @TODO: Benchmark w/ & w/o, see ^^^ // @TODO Breaks navigation 06/11/2020
 
 					// 'module:fast-async', - enabled from Chrome 55
 					'babel-plugin-annotate-pure-calls',
@@ -103,6 +103,7 @@ module.exports = function (api) {
 					'@babel/plugin-proposal-json-strings',
 
 					['@babel/plugin-transform-react-jsx', { pragma: 'h', pragmaFrag: 'Fragment', useBuiltIns: true }],
+					'@babel/plugin-transform-react-jsx-source',
 					// '@babel/plugin-transform-react-jsx-source', not useful for preact 06/04/2020
 					'babel-plugin-transform-console-log-variable-names',
 					'babel-plugin-console-groupify',
