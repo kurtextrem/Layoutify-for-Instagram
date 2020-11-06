@@ -22,11 +22,45 @@ export default class Post extends FeedPost {
 			.catch(logAndReturn)
 	}
 
-	state = { hasLiked: false, hasSaved: false, active: false, data: null }
+	timeout = 0
+	state = { hasLiked: false, hasSaved: false, active: false, data: null, id: '' }
 
-	constructor(props) {
-		super(props)
-		this.proxify(props, true)
+	static getDerivedStateFromProps(props, state) {
+		if (state.data === null || props.data.id !== state.data.id) {
+			const data = { ...props.data }
+			if (data.carousel_media !== undefined) {
+				const carouselMedia = data.carousel_media
+				for (let i = 0; i < carouselMedia.length; ++i) {
+					const media = carouselMedia[i]
+					if (media.node !== undefined) continue // we modified this already
+
+					media.is_video = media.media_type === 2
+					media.video_url = media.is_video ? media.video_versions[0].url : undefined
+					media.display_url = media.image_versions2.candidates[0].url
+					media.dimensions = { height: media.image_versions2.candidates[0].height, width: media.image_versions2.candidates[0].width }
+					carouselMedia[i] = { node: media }
+				}
+				data.edge_sidecar_to_children = { edges: data.carousel_media }
+			} else {
+				data.is_video = data.media_type === 2
+				data.video_url = data.is_video ? data.video_versions[0].url : undefined
+				data.display_url = data.image_versions2.candidates[0].url
+				data.dimensions = {
+					height: data.image_versions2.candidates[0].height,
+					width: data.image_versions2.candidates[0].width,
+				}
+			}
+
+			return {
+				data,
+				hasLiked: data.has_liked,
+				hasSaved: data.saved_collection_ids !== undefined,
+				active: props.parent === 'liked' ? data.has_liked : data.has_saved,
+				id: data.id.split('_')[0], // after _ comes the user id, which we don't want in the media id
+			}
+		}
+
+		return null
 	}
 
 	@bind
@@ -36,8 +70,9 @@ export default class Post extends FeedPost {
 			() => {
 				window.clearTimeout(this.timeout)
 
-				this.state.hasLiked ? Instagram.liked.add(this.id) : Instagram.liked.remove(this.id)
-				if (!this.state.hasLiked && this.props.parent === 'liked') this.timeout = window.setTimeout(() => Post.removeItem(this.id), 7500)
+				this.state.hasLiked ? Instagram.liked.add(this.state.id) : Instagram.liked.remove(this.state.id)
+				if (!this.state.hasLiked && this.props.parent === 'liked')
+					this.timeout = window.setTimeout(() => Post.removeItem(this.state.id), 7500)
 			}
 		)
 	}
@@ -49,58 +84,11 @@ export default class Post extends FeedPost {
 			() => {
 				window.clearTimeout(this.timeout)
 
-				this.state.hasSaved ? Instagram.saved.add(this.id) : Instagram.saved.remove(this.id)
-				if (!this.state.hasSaved && this.props.parent === 'saved') this.timeout = window.setTimeout(() => Post.removeItem(this.id), 7500)
+				this.state.hasSaved ? Instagram.saved.add(this.state.id) : Instagram.saved.remove(this.state.id)
+				if (!this.state.hasSaved && this.props.parent === 'saved')
+					this.timeout = window.setTimeout(() => Post.removeItem(this.state.id), 7500)
 			}
 		)
-	}
-
-	componentDidUpdate(prevProps, prevState, snapshot) {
-		if (this.props.data.id !== prevProps.data.id) this.proxify(this.props, false)
-	}
-
-	proxify(props, initial) {
-		const data = props.data
-		this.id = data.id.split('_')[0] // after _ comes the user id, which we don't want in the media id
-		this.timeout = 0
-
-		console.log(data)
-		const dataProxy = { ...props.data }
-		if (dataProxy.carousel_media !== undefined) {
-			const carouselMedia = dataProxy.carousel_media
-			for (let i = 0; i < carouselMedia.length; ++i) {
-				const media = carouselMedia[i]
-				if (media.node !== undefined) continue // we modified this already
-
-				media.is_video = media.media_type === 2
-				media.video_url = media.is_video ? media.video_versions[0].url : undefined
-				media.display_url = media.image_versions2.candidates[0].url
-				media.dimensions = { height: media.image_versions2.candidates[0].height, width: media.image_versions2.candidates[0].width }
-				carouselMedia[i] = { node: media }
-			}
-			dataProxy.edge_sidecar_to_children = { edges: dataProxy.carousel_media }
-		} else {
-			dataProxy.is_video = dataProxy.media_type === 2
-			dataProxy.video_url = dataProxy.is_video ? dataProxy.video_versions[0].url : undefined
-			dataProxy.display_url = dataProxy.image_versions2.candidates[0].url
-			dataProxy.dimensions = {
-				height: dataProxy.image_versions2.candidates[0].height,
-				width: dataProxy.image_versions2.candidates[0].width,
-			}
-		}
-
-		if (initial) {
-			this.state.data = dataProxy
-			this.state.hasLiked = data.has_liked
-			this.state.hasSaved = data.saved_collection_ids !== undefined
-			this.state.active = props.parent === 'liked' ? data.has_liked : data.has_saved
-		} else
-			this.setState({
-				data: dataProxy,
-				hasLiked: data.has_liked,
-				hasSaved: data.saved_collection_ids !== undefined,
-				active: props.parent === 'liked' ? data.has_liked : data.has_saved,
-			})
 	}
 
 	render() {
@@ -112,13 +100,14 @@ export default class Post extends FeedPost {
 			hasLiked,
 			hasSaved,
 			data: { user = {}, caption = {}, code = '', view_count = 0, like_count = 0, taken_at = 0, link = null, overlay_text = null },
+			id,
 		} = this.state
 
 		const text = (caption && caption.text) || ''
 		const isAd = link !== null
 
 		return (
-			<article class={`card${active ? '' : ' fadeOut'}`} id={`post_${this.id}`} rendersubtree="activatable">
+			<article class={`card${active ? '' : ' fadeOut'}`} id={`post_${id}`} rendersubtree="activatable">
 				<PostHeader user={user} code={code} taken_at={taken_at} isAd={isAd} />
 				<PostMedia data={data} onLike={this.handleLike} />
 				{isAd ? (
