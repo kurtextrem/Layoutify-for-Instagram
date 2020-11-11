@@ -38,7 +38,6 @@ export default class PostsContainer extends Component {
 		</div>
 	)
 
-	initial = 0
 	preloadCounter = 0
 
 	state = {
@@ -50,16 +49,9 @@ export default class PostsContainer extends Component {
 	constructor(properties) {
 		super(properties)
 
-		this.initial = 0
 		this.preloadCounter = 0
 
 		this.populateData()
-			.then(data => {
-				if (properties.preload > 0) this.preload()
-				return data
-			})
-			.catch(logAndReturn)
-
 		window.setTimeout(() => this.setTimeout(PostsContainer.TIME_STATE.LOADING), PostsContainer.TIME_STATE.LOADING)
 	}
 
@@ -96,20 +88,18 @@ export default class PostsContainer extends Component {
 
 	@bind
 	handleData(data) {
-		++this.initial
-		if (data !== null) {
-			this.setState(
-				(previousState, properties) => ({
-					canLoadMore: data.nextMaxId !== '',
-					items: data.items,
-					timeout: previousState.timeout,
-				}),
-				() => {
-					window.setTimeout(this.preload, this.preloadCounter * 1000)
-				}
-			)
-		}
+		if (!data) return data
 
+		this.setState(
+			(prevState, props) => ({
+				canLoadMore: data.nextMaxId !== '',
+				items: data.items,
+				timeout: prevState.timeout,
+			}),
+			() => {
+				window.setTimeout(this.preload, this.preloadCounter * 1000)
+			}
+		)
 		return data
 	}
 
@@ -152,7 +142,6 @@ export default class PostsContainer extends Component {
 	renderPost(post) {
 		if (!post || !post.id) return console.warn('faulty post', post)
 
-		++this.postCount
 		const { id, defaultClass, toggleClass } = this.props
 
 		return (
@@ -162,7 +151,6 @@ export default class PostsContainer extends Component {
 				parent={id}
 				defaultClass={defaultClass}
 				toggleClass={toggleClass}
-				initial={this.initial === 1 && this.postCount < 12}
 				isCarousel={post.media_type === 8}
 			/>
 		)
