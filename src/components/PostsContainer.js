@@ -64,7 +64,7 @@ export default class PostsContainer extends Component {
 	@bind
 	preload() {
 		const { preload, id } = this.props
-		if (++this.preloadCounter > preload || (this.state.items && this.state.items.length / 21 > 2 * preload)) return // 21 posts per page
+		if (++this.preloadCounter > preload || (this.state.items && this.state.items.length / 21 > 1.5 * preload)) return // 21 posts per page
 
 		console.log('preloading', id)
 		this.loadData()
@@ -80,10 +80,17 @@ export default class PostsContainer extends Component {
 		}
 	}
 
+	@bind
 	populateData() {
 		console.log('populating data')
 
-		return Storage.get(this.props.id, null).then(this.handleData).catch(logAndReturn)
+		return Storage.get(this.props.id, null)
+			.then(data => {
+				if (data === null) this.preload()
+				else this.handleData(data)
+				return data
+			})
+			.catch(logAndReturn)
 	}
 
 	@bind

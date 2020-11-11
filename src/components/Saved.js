@@ -62,7 +62,7 @@ export default class Saved extends Component {
 						item.cover_media = { image_versions2: { candidates: [{ url: '' }] } }
 						continue
 					}
-					cover_media.image_versions2.candidates = [cover_media] // save storage
+					item.cover_media.image_versions2.candidates = [cover_media] // save storage
 				}
 
 				Storage.set('collections', { date: now, items })
