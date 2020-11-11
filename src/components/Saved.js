@@ -22,7 +22,7 @@ export function renderCollection(items, type) {
 			result.push(
 				<a key={item.collection_id} href={link} class="collection">
 					<div class="collection--image">
-						<img src={item.cover_media?.image_versions2?.candidates?.[0].url} alt={item.collection_name} />
+						<img src={item.cover_media.image_versions2.candidates[0].url} alt={item.collection_name} />
 					</div>
 					<div class="collection--title">{item.collection_name}</div>
 					<div class="collection--footer">{item.collection_media_count}</div>
@@ -56,7 +56,13 @@ export default class Saved extends Component {
 				const json = await fetchFromBackground('private_web', 'collections/list/')
 				const items = json.items ? json.items : []
 				for (let i = 0; i < items.length; ++i) {
-					items[i].cover_media.image_versions2.candidates = [items[i].cover_media.image_versions2.candidates[0]] // save storage
+					const item = items[i],
+						cover_media = item.cover_media?.image_versions2?.candidates?.[0]
+					if (!cover_media || !cover_media.url) {
+						item.cover_media = { image_versions2: { candidates: [{ url: '' }] } }
+						continue
+					}
+					cover_media.image_versions2.candidates = [cover_media] // save storage
 				}
 
 				Storage.set('collections', { date: now, items })
