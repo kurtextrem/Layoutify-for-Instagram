@@ -125,8 +125,8 @@
 	border-radius: 3px;
 	contain: layout style;
 
-	content-visibility: auto;
-	contain-intrinsic-size: var(--boxWidth) calc(100vh + var(--navHeight) * 2);
+	/*content-visibility: auto;
+	contain-intrinsic-size: var(--boxWidth) calc(100vh + var(--navHeight) * 2);*/
 }
 
 .ige_textarea {
