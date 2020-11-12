@@ -66,6 +66,9 @@ nav,
 	animation-iteration-count: 1;
 
 	contain: layout style;
+
+	content-visibility: auto;
+	contain-intrinsic-size: var(--boxWidth) var(--maxBoxHeight);
 }
 
 /*.ige_virtual_container {
