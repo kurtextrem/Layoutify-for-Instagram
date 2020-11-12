@@ -46,15 +46,6 @@ export default class PostsContainer extends Component {
 		timeout: 0,
 	}
 
-	constructor(properties) {
-		super(properties)
-
-		this.preloadCounter = 0
-
-		this.populateData()
-		window.setTimeout(() => this.setTimeout(PostsContainer.TIME_STATE.LOADING), PostsContainer.TIME_STATE.LOADING)
-	}
-
 	setTimeout(timeout) {
 		this.setState({ timeout })
 		if (timeout !== PostsContainer.TIME_STATE.ERROR)
@@ -64,7 +55,7 @@ export default class PostsContainer extends Component {
 	@bind
 	preload() {
 		const { preload, id } = this.props
-		if (++this.preloadCounter > preload || (this.state.items && this.state.items.length / 21 > 1.5 * preload)) return // 21 posts per page
+		if (++this.preloadCounter > preload || (this.state.items && this.state.items.length / 21 > preload)) return // 21 posts per page
 
 		console.log('preloading', id)
 		this.loadData()
@@ -84,13 +75,7 @@ export default class PostsContainer extends Component {
 	populateData() {
 		console.log('populating data')
 
-		return Storage.get(this.props.id, null)
-			.then(data => {
-				if (data === null) this.preload()
-				else this.handleData(data)
-				return data
-			})
-			.catch(logAndReturn)
+		return Storage.get(this.props.id, null).then(this.handleData).catch(logAndReturn)
 	}
 
 	@bind
@@ -135,6 +120,13 @@ export default class PostsContainer extends Component {
 
 	componentDidMount() {
 		this.addStorageListener()
+
+		// load old data
+		this.populateData()
+		// load new data
+		this.loadData()
+
+		window.setTimeout(() => this.setTimeout(PostsContainer.TIME_STATE.LOADING), PostsContainer.TIME_STATE.LOADING)
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {

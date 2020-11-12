@@ -58,8 +58,6 @@ class Feed extends FetchComponent {
 			root: document.getElementById('ige_feed'),
 			trackVisibility: false,
 		})
-
-		window.setTimeout(() => this.setTimeout(this.TIME_STATE.LOADING), this.TIME_STATE.LOADING)
 	}
 
 	setTimeout(timeout) {
@@ -114,6 +112,8 @@ class Feed extends FetchComponent {
 			this.db = promiseReq(window.indexedDB.open('redux', 1)) // they store reel IDs in the redux DB, until... I don't know, not sure how they invalidate, maybe SW
 			this.loadDBItems()
 		}
+
+		window.setTimeout(() => this.setTimeout(this.TIME_STATE.LOADING), this.TIME_STATE.LOADING)
 		this.componentDidUpdate()
 	}
 

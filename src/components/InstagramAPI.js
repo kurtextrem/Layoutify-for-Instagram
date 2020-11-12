@@ -171,7 +171,7 @@ class InstagramAPI {
 	 *
 	 * This has one caveat: We can't replace older items and thus there might be deleted items still left. We can not delete them.
 	 *
-	 * @param {object} items
+	 * @param {Array} items
 	 * @return {boolean} merged
 	 */
 	@bind
@@ -183,7 +183,7 @@ class InstagramAPI {
 		}
 
 		// remove items.length items from this.items
-		this.items.splice(0, items.length, ...this.items)
+		this.items.splice(0, items.length, ...items)
 		return true
 	}
 
