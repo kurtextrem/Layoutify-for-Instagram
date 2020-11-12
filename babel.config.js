@@ -103,7 +103,6 @@ module.exports = function (api) {
 					'@babel/plugin-proposal-json-strings',
 
 					['@babel/plugin-transform-react-jsx', { pragma: 'h', pragmaFrag: 'Fragment', useBuiltIns: true }],
-					'@babel/plugin-transform-react-jsx-source',
 					// '@babel/plugin-transform-react-jsx-source', not useful for preact 06/04/2020
 					'babel-plugin-transform-console-log-variable-names',
 					'babel-plugin-console-groupify',
