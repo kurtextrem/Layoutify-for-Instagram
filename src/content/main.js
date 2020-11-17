@@ -493,7 +493,8 @@ const OPTS_MODE = {
 		if (
 			(hour >= OPTIONS.nightModeStart && hour > OPTIONS.nightModeEnd) ||
 			(hour < OPTIONS.nightModeStart && hour < OPTIONS.nightModeEnd) ||
-			OPTIONS.nightModeStart === OPTIONS.nightModeEnd
+			OPTIONS.nightModeStart === OPTIONS.nightModeEnd ||
+			(OPTIONS.nightSystem && window.matchMedia('(prefers-color-scheme:dark)').matches)
 		)
 			injectCSS('night')
 	},

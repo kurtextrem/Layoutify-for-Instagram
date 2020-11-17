@@ -35,6 +35,14 @@
 		"message": "Set this and start to the same number to enable night mode permanently.",
 		"description": ""
 	},
+	"nightSystem": {
+		"message": "System Night Mode",
+		"description": ""
+	},
+	"nightSystem_help": {
+		"message": "The Night Mode gets activated when the System is also in night mode.",
+		"description": ""
+	},
 	"picturesOnly": {
 		"message": "Show pictures only",
 		"description": "setting"

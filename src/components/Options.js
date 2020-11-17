@@ -22,6 +22,7 @@ export default class Options extends Component {
 		night: true,
 		nightModeStart: 23,
 		nightModeEnd: 6,
+		nightSystem: true,
 
 		picturesOnly: false,
 		hideStories: false,
@@ -121,7 +122,7 @@ export default class Options extends Component {
 
 		StorageSync.get('options', Options.OPTS)
 			.then(data => {
-				this.setState((previousState, properties) => ({ options: data }))
+				this.setState({ options: data })
 				return data
 			})
 			.catch(logAndReturn)

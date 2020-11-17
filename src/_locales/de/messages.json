@@ -35,6 +35,14 @@
 		"message": "Wenn du diese Einstellung und das Ende auf die gleiche Zahl stellst, ist der Nacht Modus dauerhaft an.",
 		"description": ""
 	},
+	"nightSystem": {
+		"message": "System Nacht Modus",
+		"description": ""
+	},
+	"nightSystem_help": {
+		"message": "Der Nacht Modus wird aktiviert, wenn das System im Nacht Modus ist.",
+		"description": ""
+	},
 	"picturesOnly": {
 		"message": "Nur Bilder zeigen",
 		"description": "setting"
