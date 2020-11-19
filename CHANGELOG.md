@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.3.2 - 2020-11-19
+
+Added new option "System Night Mode". If the option is turned on (on by default), the night mode will automatically turn on when your Operating System (Windows/Mac/Linux) is in Night Mode (dark mode) too.
+
 ## 3.3.1 - 2020-10-05
 
 Instagram requested me to change the extension name. The new name is "Layoutify: Improved Layout for Instagram".
