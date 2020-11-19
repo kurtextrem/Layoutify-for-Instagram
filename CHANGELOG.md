@@ -2,7 +2,7 @@
 
 ## 3.3.2 - 2020-11-19
 
-Added new option "System Night Mode". If the option is turned on (on by default), the night mode will automatically turn on when your Operating System (Windows/Mac/Linux) is in Night Mode (dark mode) too.
+Added new option "System Night Mode". Turned on by default. When turned on, the night mode automatically activates when your Operating System (Windows/Mac/Linux/Chrome OS) is in Night/Dark Mode.
 
 ## 3.3.1 - 2020-10-05
 
