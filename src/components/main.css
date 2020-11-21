@@ -317,69 +317,6 @@ label + label {
 	}
 }
 
-input[type='radio'],
-input[type='checkbox'] {
-	margin: 0 1px 0 0;
-	padding: initial;
-	color: rgb(68, 68, 68);
-	font: inherit;
-	text-shadow: rgb(240, 240, 240) 0 1px 0;
-	background-color: initial;
-	background-image: linear-gradient(rgb(237, 237, 237) 38%, rgb(222, 222, 222));
-	border-color: rgba(0, 0, 0, 0.25);
-	border-style: solid;
-	border-width: 1px;
-	border-radius: 2px;
-	border-image: initial;
-	outline: none;
-	box-shadow: rgba(0, 0, 0, 0.08) 0 1px 0, rgba(255, 255, 255, 0.75) 0 1px 2px inset;
-	cursor: default;
-	/* autoprefixer: off */
-	-webkit-appearance: none;
-}
-
-input[type='checkbox'] {
-	position: relative;
-	width: 13px;
-	height: 13px;
-	vertical-align: middle;
-}
-
-input[type='checkbox']:checked::before {
-	display: block;
-	width: 100%;
-	height: 100%;
-	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAQAAAADpb+tAAAAZ0lEQVR4AWNAA2xAiAXEM8xiMEAXVGJYz7AZCFEkmBi6wYKtEC4/gxqY9gILrmYQhwiXMWxkiAVyVoOFfSCCpkAmCK4Fk+1QA4GqekECUAMkka0KY9gIFvZDd5oawwyGBqACdIDqOwAQzBnTWnnU+gAAAABJRU5ErkJggg==);
-	background-size: 100% 100%;
-	content: '';
-	user-select: none;
-}
-
-input[type='radio'] {
-	position: relative;
-	width: 15px;
-	height: 15px;
-	vertical-align: middle;
-	border-radius: 100%;
-}
-
-input[type='radio']:checked::before {
-	position: absolute;
-	top: 3px;
-	right: 3px;
-	bottom: 3px;
-	left: 3px;
-	display: block;
-	background-color: rgb(102, 102, 102);
-	border-radius: 100%;
-	content: '';
-}
-
-input[type='text'],
-input[type='number'] {
-	display: inline;
-}
-
 .btn {
 	vertical-align: unset;
 }
@@ -468,6 +405,30 @@ html[data-night] .bg-light {
 
 input::-webkit-inner-spin-button {
 	opacity: 1;
+}
+
+select {
+	height: 6.5em;
+	margin-bottom: 0.3em !important;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, height 200ms ease-out !important;
+	transition-delay: 200ms !important;
+}
+
+select:hover,
+select:focus {
+	height: var(--size);
+}
+
+.f-1 {
+	flex: 1;
+}
+
+input[type='checkbox'] + small {
+	margin-left: 0.4em;
+}
+
+.form-group {
+	margin-bottom: 0.5em;
 }
 
 /** Mac OS Scrollbar */

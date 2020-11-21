@@ -85,6 +85,10 @@ export default class Options extends Component {
 			help: true,
 			onChange: undefined,
 		},
+		nightSystem: {
+			help: true,
+			onChange: undefined,
+		},
 
 		/**
 		 * watchData type
@@ -260,16 +264,18 @@ export default class Options extends Component {
 		if (typeof type === 'boolean') return <Input type="checkbox" name={id} id={id} checked={value ? true : undefined} onChange={onChange} />
 		if (Array.isArray(type)) {
 			if (!Array.isArray(value)) value = [value] // fixes a bug from prev versions, needed for compat
+
+			const options = value.map(this.renderOption)
 			return (
-				<>
-					<Input name={id} type="select" multiple>
-						{value.map(this.renderOption)}
+				<div class="d-flex flex-wrap">
+					<Input name={id} type="select" multiple style={{ '--size': options.length * 1.5 + 'em' }}>
+						{options}
 					</Input>
-					<Input type="text" name={`${id}_add`} placeholder="Instagram Username" onKeyUp={this.add} />
+					<Input type="text" name={`${id}_add`} placeholder="Instagram Username" onKeyUp={this.add} class="w-auto f-1" />
 					<Button type="button" onClick={this.add}>
 						Add
 					</Button>
-				</>
+				</div>
 			)
 		}
 		if (Number.isInteger(type)) {
