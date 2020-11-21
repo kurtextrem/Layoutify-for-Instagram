@@ -572,6 +572,10 @@
 	border-radius: 12px;
 }
 
+.react-responsive-modal-container {
+	display: block !important;
+}
+
 .modal-full-height {
 	width: 93vw;
 	max-width: none;
@@ -598,14 +602,6 @@
 	margin-top: 0;
 }
 
-.modal-story > .react-responsive-modal-closeButton {
-	right: -6%;
-}
-
-.modal-full-height .react-responsive-modal-closeButton {
-	right: -2.5%;
-}
-
 .react-responsive-modal-overlay {
 	z-index: 11 !important;
 }
@@ -616,8 +612,6 @@
 }
 
 .react-responsive-modal-closeButton {
-	top: 0;
-	right: -5%;
 	filter: invert(1);
 }
 
