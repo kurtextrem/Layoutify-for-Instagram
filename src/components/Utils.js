@@ -182,3 +182,35 @@ export function promiseReq(req) {
 		req.onerror = () => reject(req.error)
 	})
 }
+
+/**
+ *
+ */
+export function isHome(iframe) {
+	return iframe.contentWindow && iframe.contentWindow.location.href === 'https://www.instagram.com/'
+}
+
+// this is bad code, but only one modal can be open at the same time, so we can just use it as microptimization.
+let iframeTimer = null
+export function closeIframe(isOpen, closeModal, node) {
+	clearTimeout(iframeTimer)
+	iframeTimer = null
+
+	if (node !== null && isOpen) {
+		if (isHome(node)) closeModal()
+		else iframeTimer = setTimeout(closeIframe, 100)
+	}
+}
+
+let modalTimer = null
+export function openModalDelayed(setRenderModal, event) {
+	modalTimer = setTimeout(() => {
+		setRenderModal(true)
+		setTimeout(setRenderModal.bind(null, false), 10000) // unload after 5 sec again
+	}, 200)
+}
+
+export function cancelOpenModalDelayed(event) {
+	clearTimeout(modalTimer)
+	modalTimer = null
+}

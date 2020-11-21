@@ -1,39 +1,25 @@
 import { Fragment, h } from 'preact'
 import { Modal } from 'react-responsive-modal'
 import { memo, useCallback, useState } from 'preact/compat'
+import { closeIframe, openModalDelayed, cancelOpenModalDelayed } from '../Utils'
 
 /**
  *
  */
-function isHome(iframe) {
-	return iframe.contentWindow && iframe.contentWindow.location.href === 'https://www.instagram.com/'
-}
-
-let timer = null
-
-/**
- *
- */
-const Story = ({ data, src, type, additionalClass }) => {
+function Story({ data, src, type, additionalClass }) {
 	const [isOpen, setOpen] = useState(false)
+	const [renderModal, setRenderModal] = useState(false)
 	const [wasOpen, setOpened] = useState(false)
 
-	const iframeCloser = useCallback(
-		node => {
-			/**
-			 *
-			 */
-			function closeIframe() {
-				if (isHome(node)) setOpen(false)
-				else timer = setTimeout(closeIframe, 100)
-			}
+	const closeModal = useCallback(() => {
+		setOpened(true)
+		setOpen(false)
+		setRenderModal(false)
+	}, [setOpen, setOpened, setRenderModal])
+	const openModal = () => setOpen(true)
 
-			clearTimeout(timer)
-			timer = null
-			if (node !== null && isOpen) closeIframe()
-		},
-		[isOpen]
-	)
+	const iframeCloser = useCallback(closeIframe.bind(null, isOpen, closeModal), [closeModal]) // ref callback, calls fn(node)
+	const renderModalDelayed = openModalDelayed.bind(null, setRenderModal)
 
 	const {
 		owner: { username = '', profile_pic_url = '' },
@@ -48,16 +34,10 @@ const Story = ({ data, src, type, additionalClass }) => {
 			<div
 				class={`ige_story ${additionalClass} ${wasOpen ? 'black-white' : ''} ${has_besties_media ? 'bestie-story' : ''} ${
 					type === 'GraphStoryVideo' ? 'story-video' : ''
-				}`}>
-				<button
-					class="ige_story_container"
-					role="menuitem"
-					tabIndex="0"
-					type="button"
-					onClick={() => {
-						setOpen(true)
-						setOpened(true)
-					}}>
+				}`}
+				onMouseOver={renderModalDelayed}
+				onMouseOut={cancelOpenModalDelayed}>
+				<button class="ige_story_container" role="menuitem" tabIndex="0" type="button" onClick={openModal}>
 					<div class="ige_story-img">
 						<img decoding="async" src={src} class="full-img br-6" />
 					</div>
@@ -71,8 +51,8 @@ const Story = ({ data, src, type, additionalClass }) => {
 					</div>
 				</button>
 			</div>
-			{isOpen ? (
-				<Modal open onClose={() => setOpen(false)} center classNames={{ modal: 'modal-story' }}>
+			{isOpen || renderModal ? (
+				<Modal open onClose={closeModal} center classNames={{ modal: 'modal-story', root: !isOpen ? 'd-none' : undefined }} hidden={isOpen}>
 					<div>
 						<iframe src={`/stories/${username}/${id}/#story`} class="ige_iframe" ref={iframeCloser} />
 					</div>

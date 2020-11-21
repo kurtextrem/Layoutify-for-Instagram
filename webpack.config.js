@@ -151,7 +151,7 @@ if (isProduction) {
 				ignore: ['content/*'],
 				onlyFiles: true,
 			}),
-			safelist: [/col-/, /btn-/, /btn-/],
+			safelist: [/col-/, /btn-/],
 		}),
 		//new ShakePlugin(), // @todo: Broken in webpack5
 		//new WebpackDeepScopeAnalysisPlugin(), // @todo: 25/10/2018 - doesn't reduce bundle size

@@ -602,10 +602,6 @@
 	margin-top: 0;
 }
 
-.react-responsive-modal-overlay {
-	z-index: 11 !important;
-}
-
 .react-responsive-modal-modal {
 	padding: 0;
 	border-radius: 12px;
@@ -752,6 +748,10 @@
 
 .black-white {
 	filter: grayscale(1);
+}
+
+.d-none {
+	display: none !important;
 }
 
 /*=============================================
