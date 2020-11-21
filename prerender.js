@@ -11,6 +11,7 @@ module.exports = function prerender(outputDirectory, params) {
 
 	global.window = {
 		addEventListener() {},
+		removeEventListener() {},
 		document: {
 			createElement() {
 				return {}
