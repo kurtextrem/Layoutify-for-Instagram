@@ -67,7 +67,7 @@ module.exports = function (api) {
 					'babel-plugin-optimize-clsx',
 					//'@babel/plugin-transform-react-constant-elements', // see https://github.com/facebookincubator/create-react-app/issues/553#issuecomment-359196326
 					//['babel-plugin-transform-hoist-nested-functions', { methods: true }], // see ^^^
-					'babel-plugin-closure-elimination', // @TODO: Benchmark w/ & w/o, see ^^^
+					//'babel-plugin-closure-elimination', // @TODO: Benchmark w/ & w/o, see ^^^ // broken collections portal navigation 21/11/2020
 
 					// 'module:fast-async', - enabled from Chrome 55
 					'babel-plugin-annotate-pure-calls',
