@@ -207,7 +207,7 @@ export function openModalDelayed(setRenderModal, event) {
 	modalTimer = setTimeout(() => {
 		setRenderModal(true)
 		setTimeout(setRenderModal.bind(null, false), 10000) // unload after 5 sec again
-	}, 200)
+	}, 150)
 }
 
 export function cancelOpenModalDelayed(event) {
