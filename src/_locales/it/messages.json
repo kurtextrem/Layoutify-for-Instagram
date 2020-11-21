@@ -35,6 +35,14 @@
 		"message": "Imposta questo e il primo parametro con lo stesso numero per applicare il Tema Notturno permanentemente.",
 		"description": ""
 	},
+	"nightSystem": {
+		"message": "Usa tema di sistema",
+		"description": ""
+	},
+	"nightSystem_help": {
+		"message": "The Night Mode gets activated when the System is also in night mode.",
+		"description": ""
+	},
 	"picturesOnly": {
 		"message": "Mostra solo immagini",
 		"description": "Impostazioni"
