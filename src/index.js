@@ -1,7 +1,7 @@
 import App from './components/App'
 //import Preact, { h, hydrate, render } from 'preact'
 import { documentReady, logAndReturn } from './components/Utils'
-import { h, hydrate, options, render } from 'preact'
+import { h, options, render } from 'preact'
 /* eslint-disable */
 import './components/main.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -52,6 +52,6 @@ if (module.hot) {
 options.debounceRendering = requestIdleCallback
 
 const init = (fn, app, container) => fn(h(app), container)
-const ready = () => init(module.hot ? render : hydrate, App, document.body.children[0]) // @todo: https://css-tricks.com/render-caching-for-react/
+const ready = () => init(module.hot ? render : render, App, document.body.children[0]) // @todo: https://css-tricks.com/render-caching-for-react/ @todo: hydrate breaks reload.
 
 documentReady().then(ready).catch(logAndReturn)
