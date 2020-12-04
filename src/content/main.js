@@ -150,6 +150,8 @@ observe(
 const handleNodeFns = {
 	ARTICLE(node) {
 		handleNodeFns.DIV(node)
+
+		window.requestIdleCallback(() => handleNodeFns.DIV(node))
 	},
 	DIV(node) {
 		node.querySelectorAll('img').forEach(fullPhoto)
@@ -349,7 +351,9 @@ const connection = navigator.connection.type || '',
 			for (const i in mutations) {
 				const mutation = mutations[i].target
 
-				if (mutation.sizes !== '1080px') mutation.sizes = '1080px'
+				if (mutation.srcset.indexOf('480w') === -1 && mutation.src !== '') mutation.srcset = ''
+				// stories only have 320w in their srcset, so we don't wan't to use this.
+				else if (mutation.sizes !== '1080px') mutation.sizes = '1080px'
 			}
 		},
 		{ attributeFilter: ['sizes'], attributes: true }
@@ -371,8 +375,10 @@ function fullPhoto(element) {
 
 	element.decoding = 'async'
 	if (fullSizeCondition) {
-		// @todo: Make sure this also happens on first time load on a profile
-		element.sizes = '1080px'
+		if (element.srcset.indexOf('480w') === -1 && element.src !== '') element.srcset = ''
+		// stories only have 320w in their srcset, so we don't wan't to use this.
+		else if (element.sizes !== '1080px') element.sizes = '1080px'
+
 		fullsizeObserver.observe(element)
 	}
 }
