@@ -38,7 +38,7 @@ function PostAction({ onLike, onSave, hasLiked, hasSaved, shortcode, like_media,
 	}, [setOpen, setRenderModal])
 	const openModal = () => setOpen(true)
 
-	const iframeCloser = useCallback(closeIframe.bind(null, isOpen, closeModal), [closeModal]) // ref callback, calls fn(node)
+	const iframeCloser = useCallback(closeIframe.bind(null, isOpen, closeModal), [isOpen]) // ref callback, calls fn(node)
 	const renderModalDelayed = openModalDelayed.bind(null, setRenderModal)
 
 	const count = is_video ? video_view_count : like_media?.count
@@ -67,7 +67,7 @@ function PostAction({ onLike, onSave, hasLiked, hasSaved, shortcode, like_media,
 			</div>
 			{isOpen || renderModal ? (
 				<Modal open onClose={closeModal} center classNames={{ root: !isOpen ? 'd-none' : undefined }}>
-					<iframe src={'/p/' + shortcode + '/#share'} class="ige_iframe" />
+					<iframe src={'/p/' + shortcode + '/#share'} class="ige_iframe" ref={iframeCloser} />
 				</Modal>
 			) : null}
 		</div>

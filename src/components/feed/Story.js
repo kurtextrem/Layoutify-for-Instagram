@@ -18,7 +18,7 @@ function Story({ data, src, type, additionalClass }) {
 	}, [setOpen, setOpened, setRenderModal])
 	const openModal = () => setOpen(true)
 
-	const iframeCloser = useCallback(closeIframe.bind(null, isOpen, closeModal), [closeModal]) // ref callback, calls fn(node)
+	const iframeCloser = useCallback(closeIframe.bind(null, isOpen, closeModal), [isOpen]) // ref callback, calls fn(node)
 	const renderModalDelayed = openModalDelayed.bind(null, setRenderModal)
 
 	const {

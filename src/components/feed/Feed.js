@@ -144,9 +144,10 @@ class Feed extends FetchComponent {
 			item.viewer_has_saved = item.savedByViewer
 			item.viewer_has_saved_to_collection = item.savedByViewerToCollection
 			item.taken_at_timestamp = item.postedAt
-			item.edge_media_to_caption = { edges: [{ node: { text: item.caption } }] }
 			item.comments_disabled = item.commentsDisabled
-			item.video_view_count = item.videoViews || item.numPreviewLikes
+			item.edge_media_to_caption = { edges: [{ node: { text: item.caption } }] }
+			item.edge_media_preview_like = { count: item.numPreviewLikes } // edges: .likers
+			item.video_view_count = item.videoViews
 			// usertags
 			// location
 

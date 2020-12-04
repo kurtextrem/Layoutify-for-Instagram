@@ -198,16 +198,18 @@ export function closeIframe(isOpen, closeModal, node) {
 
 	if (node !== null && isOpen) {
 		if (isHome(node)) closeModal()
-		else iframeTimer = setTimeout(closeIframe, 100)
+		else iframeTimer = setTimeout(closeIframe.bind(null, isOpen, closeModal, node), 100)
 	}
 }
 
 let modalTimer = null
 export function openModalDelayed(setRenderModal, event) {
+	cancelOpenModalDelayed()
+
 	modalTimer = setTimeout(() => {
 		setRenderModal(true)
-		setTimeout(setRenderModal.bind(null, false), 10000) // unload after 5 sec again
-	}, 150)
+		setTimeout(setRenderModal.bind(null, false), 10000) // unload after 10 sec again
+	}, 90)
 }
 
 export function cancelOpenModalDelayed(event) {
