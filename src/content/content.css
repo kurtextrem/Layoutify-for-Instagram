@@ -867,7 +867,7 @@ section > footer + div {
 										Stories
 =============================================*/
 /** Reply box + send */
-.stories section > header + div + div:last-child > button + button + div:last-child {
+.stories section header + button + div:last-child {
 	bottom: 70px;
 	z-index: 2;
 	height: auto; /* no need for the black fading background */
@@ -877,10 +877,10 @@ section > footer + div {
 	transition: transform 230ms ease-out;
 }
 
-.stories section > header + div + div:last-child > div:hover + div + button + button + div:last-child,
-.stories section > header + div + div:last-child > div:focus + div + button + button + div:last-child,
-.stories section > header + div + div:last-child > div + div + button + button + div:last-child:hover,
-.stories section > header + div + div:last-child > div + div + button + button + div:last-child:focus {
+.stories section div:hover ~ header + button + div:last-child,
+.stories section div:focus ~ header + button + div:last-child,
+.stories section header + button + div:last-child:hover,
+.stories section header + button + div:last-child:focus {
 	transform: translateY(-1px); /* this for whatever reason avoids bluriness */
 }
 
@@ -896,8 +896,12 @@ video::-webkit-media-controls:not(.audio-only) div[pseudo='-webkit-media-control
 .stories div > img + div > div,
 .stories div > img + div > div > div {
 	position: static;
-	height: 0;
+	height: 0 !important;
 	overflow: visible;
+}
+
+.stories div + header {
+	z-index: 4;
 }
 
 /*=============================================
@@ -1171,11 +1175,11 @@ footer > div > nav {
 
 /*----------  NoSpaceBetweenPosts  ----------*/
 .ige_noSpaceBetweenPosts + #ige_feed {
-	left: 30px;
+	left: 0;
 }
 
 .ige_noSpaceBetweenPosts + #ige_feed > .ige_virtual {
-	padding-left: 33px;
+	padding-left: 63px;
 }
 
 .ige_noSpaceBetweenPosts main > section div > article,
