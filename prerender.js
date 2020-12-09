@@ -11,7 +11,6 @@ module.exports = function prerender(outputDirectory, params) {
 
 	global.window = {
 		addEventListener() {},
-		removeEventListener() {},
 		document: {
 			createElement() {
 				return {}
@@ -27,6 +26,7 @@ module.exports = function prerender(outputDirectory, params) {
 		history: {},
 		navigator: { userAgent: '' },
 		pushState: {},
+		removeEventListener() {},
 		requestIdleCallback() {},
 		setTimeout() {},
 	}
@@ -36,21 +36,23 @@ module.exports = function prerender(outputDirectory, params) {
 	global.document = global.window.document
 	global.location = global.window.location
 	global.chrome = {
+		runtime: {
+			sendMessage() {},
+		},
 		storage: {
-			onChanged: {
-				addListener() {},
-			},
 			local: {
 				get() {},
+			},
+			onChanged: {
+				addListener() {},
 			},
 			sync: {
 				get() {},
 			},
 		},
-		runtime: {
-			sendMessage() {},
-		},
 	}
+	window.IntersectionObserver = class {}
+	window.ResizeObserver = class {}
 
 	let m
 	try {

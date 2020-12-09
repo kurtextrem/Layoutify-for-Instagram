@@ -8,12 +8,12 @@ import Stories from './Stories'
 import bind from 'autobind-decorator'
 import withIntersectionObserver from './withIntersectionObserver'
 import { Fragment, h } from 'preact'
-import { promiseReq, shallowDiffers } from '../Utils'
+import { iObs, promiseReq, rObs, shallowDiffers } from '../Utils'
 //import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
 
 class Feed extends FetchComponent {
 	TIME_STATE = {
-		ERROR: 2000,
+		ERROR: 2_000,
 		LOADING: 900,
 	}
 
@@ -44,10 +44,15 @@ class Feed extends FetchComponent {
 		has_threaded_comments: true,
 	}
 
+	ref = null
+
 	constructor(props) {
 		super(props)
 
 		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id // @TODO Update regularely, last check 13.04.2020
+
+		this.iObs = iObs()
+		this.rObs = rObs()
 
 		this.state.timeout = 0
 		this.state.items = window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges || []
@@ -58,6 +63,11 @@ class Feed extends FetchComponent {
 			root: document.getElementById('ige_feed'),
 			trackVisibility: false,
 		})
+	}
+
+	@bind
+	setRef(ref) {
+		this.ref = ref
 	}
 
 	setTimeout(timeout) {
@@ -105,6 +115,16 @@ class Feed extends FetchComponent {
 
 	componentDidUpdate() {
 		;/\s*/g.exec('') // free regexp memory
+
+		if (this.ref) {
+			this.ref.children.forEach(el => {
+				if (el.isObserved) return
+
+				el.isObserved = true
+				this.iObs.observe(el)
+				this.rObs.observe(el)
+			})
+		}
 	}
 
 	componentDidMount() {
@@ -115,6 +135,11 @@ class Feed extends FetchComponent {
 
 		window.setTimeout(() => this.setTimeout(this.TIME_STATE.LOADING), this.TIME_STATE.LOADING)
 		this.componentDidUpdate()
+	}
+
+	componentWillUnmount() {
+		this.iObs.disconnect()
+		this.rObs.disconnect()
 	}
 
 	@bind
@@ -205,7 +230,7 @@ class Feed extends FetchComponent {
 		if (items.length !== 0)
 			return (
 				<div class="ige_virtual">
-					<div class="ige_virtual_container">
+					<div class="ige_virtual_container" ref={this.setRef}>
 						{this.renderItems()}
 						<Sentinel onVisible={this.loadNextPageRender} />
 						{!hasNextPage && !isNextPageLoading ? this.error : this.loading}

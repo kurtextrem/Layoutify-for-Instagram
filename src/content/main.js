@@ -151,7 +151,7 @@ const handleNodeFns = {
 	ARTICLE(node) {
 		handleNodeFns.DIV(node)
 
-		window.requestIdleCallback(() => handleNodeFns.DIV(node))
+		window.requestIdleCallback(() => handleNodeFns.DIV(node)) // in case any img still slips through
 	},
 	DIV(node) {
 		node.querySelectorAll('img').forEach(fullPhoto)
@@ -268,7 +268,10 @@ function decideClass() {
 	if (pathname.indexOf('/explore/') !== -1) return (currentClass = 'explore')
 
 	// insta TV
-	if (pathname.indexOf('/tv/') !== -1) return (currentClass = 'tv')
+	if (pathname.indexOf('/tv/') !== -1) return (currentClass = 'post tv')
+
+	// reels
+	if (pathname.indexOf('/reels/') !== -1) return (currentClass = 'post reels')
 
 	// login -> 2FA screen
 	if (pathname.indexOf('/accounts/login/two_factor') === 0) return (currentClass = 'twoFA')
@@ -604,7 +607,7 @@ function clickShare(tries) {
 	if ($elem === null) {
 		console.error('Share selector outdated', tries)
 
-		if (tries < 50) {
+		if (tries < 30) {
 			const $a = $('a > time')
 			if ($a !== null) $a.parentElement.click() // somehow fixes the hidden share button
 			window.setTimeout(() => clickShare(tries + 1), tries * 100)

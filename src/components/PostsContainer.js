@@ -7,11 +7,11 @@ import bind from 'autobind-decorator'
 import { Button } from 'reactstrap'
 import { Component, h } from 'preact'
 import { Instagram } from './InstagramAPI'
-import { Storage, logAndReturn, shallowDiffers } from './Utils'
+import { Storage, iObs, logAndReturn, rObs, shallowDiffers } from './Utils'
 
 export default class PostsContainer extends Component {
 	static TIME_STATE = {
-		ERROR: 2000,
+		ERROR: 2_000,
 		LOADING: 900,
 	}
 
@@ -40,16 +40,30 @@ export default class PostsContainer extends Component {
 
 	preloadCounter = 0
 
+	ref = null
+
 	state = {
 		canLoadMore: true,
 		items: null,
 		timeout: 0,
 	}
 
+	constructor(props) {
+		super(props)
+
+		this.iObs = iObs()
+		this.rObs = rObs()
+	}
+
 	setTimeout(timeout) {
 		this.setState({ timeout })
 		if (timeout !== PostsContainer.TIME_STATE.ERROR)
 			window.setTimeout(() => this.setTimeout(PostsContainer.TIME_STATE.ERROR), PostsContainer.TIME_STATE.ERROR)
+	}
+
+	@bind
+	setRef(ref) {
+		this.ref = ref
 	}
 
 	@bind
@@ -89,7 +103,7 @@ export default class PostsContainer extends Component {
 				timeout: prevState.timeout,
 			}),
 			() => {
-				window.setTimeout(this.preload, this.preloadCounter * 1000)
+				window.setTimeout(this.preload, this.preloadCounter * 1_000)
 			}
 		)
 		return data
@@ -107,7 +121,7 @@ export default class PostsContainer extends Component {
 
 		window.setTimeout(() => {
 			event.target.disabled = false
-		}, 15000) // let user retry if nothing has happened after 15 sec
+		}, 15_000) // let user retry if nothing has happened after 15 sec
 	}
 
 	addStorageListener() {
@@ -133,8 +147,22 @@ export default class PostsContainer extends Component {
 		return shallowDiffers(this.state, nextState) || shallowDiffers(this.props, nextProperties)
 	}
 
+	componentDidUpdate() {
+		if (this.ref) {
+			this.ref.children.forEach(el => {
+				if (el.isObserved) return
+
+				el.isObserved = true
+				this.iObs.observe(el)
+				this.rObs.observe(el)
+			})
+		}
+	}
+
 	componentWillUnmount() {
 		this.removeStorageListener()
+		this.iObs.disconnect()
+		this.rObs.disconnect()
 	}
 
 	@bind
@@ -161,7 +189,9 @@ export default class PostsContainer extends Component {
 		if (items !== null && items.length !== 0)
 			return (
 				<div class="position-relative">
-					<div class="ige_virtual_container">{Posts(items, this.renderPost)}</div>
+					<div class="ige_virtual_container" ref={this.setRef}>
+						{Posts(items, this.renderPost)}
+					</div>
 					<div class="text-center">
 						<Button onClick={this.handleBtnClick} disabled={!canLoadMore}>
 							Load more
