@@ -115,12 +115,12 @@ export default class PostsContainer extends Component {
 
 	@bind
 	handleBtnClick(event) {
-		event.target.disabled = true
+		this.setState({ canLoadMore: false })
 		this.preloadCounter -= 2 // so we load another page
 		this.loadData()
 
 		window.setTimeout(() => {
-			event.target.disabled = false
+			this.setState({ canLoadMore: false })
 		}, 15_000) // let user retry if nothing has happened after 15 sec
 	}
 
