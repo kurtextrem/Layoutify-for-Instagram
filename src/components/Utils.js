@@ -218,21 +218,27 @@ export function cancelOpenModalDelayed(event) {
 }
 
 // from https://infrequently.org/2020/12/resize-resilient-deferred-rendering/
-let eqIsh = (a, b, fuzz = 1) => {
+let eqIsh = (a, b, fuzz = 2) => {
 	return Math.abs(a - b) <= fuzz
 }
 
-let rectNotEQ = (a, b, fuzz = 2) => {
-	return !eqIsh(a.width, b.width, fuzz) || !eqIsh(a.height, b.height, fuzz)
+let rectNotEQ = (a, b) => {
+	return !eqIsh(a.width, b.width) || !eqIsh(a.height, b.height)
 }
 
+// Keep a map of elements and the dimensions of
+// their place-holders, re-setting the element's
+// intrinsic size when we get updated measurements
+// from observers.
 let spaced = new WeakMap()
-// Only call this when it's known cheap; post layout
-let reserveSpace = (el, rect) => {
+
+// Only call this when known cheap, post layout
+let reserveSpace = (el, rect = el.getClientBoundingRect()) => {
 	let old = spaced.get(el)
-	spaced.set(el, rect)
-	// Set intrinsic size to prevent jumping.
+	// Set intrinsic size to prevent jumping on un-painting:
+	//    https://drafts.csswg.org/css-sizing-4/#intrinsic-size-override
 	if (!old || rectNotEQ(old, rect)) {
+		spaced.set(el, rect)
 		el.attributeStyleMap.set('contain-intrinsic-size', `${rect.width}px ${rect.height}px`)
 	}
 }
@@ -241,21 +247,18 @@ export let iObs = () =>
 	new window.IntersectionObserver(
 		(entries, o) => {
 			entries.forEach(entry => {
-				if (!(entry.intersectionRatio > 0)) {
-					return
-				}
+				// We don't care if the element is intersecting or
+				// has been laid out as our page structure ensures
+				// they'll get the right width.
 				reserveSpace(entry.target, entry.boundingClientRect)
 			})
 		},
-		{ rootMargin: '50px 0px 100px 0px' }
+		{ rootMargin: '500px 0px 500px 0px' }
 	)
 
 export let rObs = () =>
 	new window.ResizeObserver((entries, o) => {
 		entries.forEach(entry => {
-			if (!entry.contentRect.height) {
-				return
-			}
 			reserveSpace(entry.target, entry.contentRect)
 		})
 	})

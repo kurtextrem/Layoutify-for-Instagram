@@ -12,7 +12,7 @@
 		// Process & infer types from .js files.
 		"allowJs": true,
 		// Don't emit; allow Babel to transform files.
-		"noEmit": true,
+		//"noEmit": true,
 		// Enable strictest settings like strictNullChecks & noImplicitAny.
 		"strict": true,
 		// Disallow features that require cross-file information for emit.
@@ -26,7 +26,12 @@
 		"module": "esnext",
 		//"allowUmdGlobalAccess": true,
 		"alwaysStrict": true,
-		"jsxFactory": "h"
+		"jsxFactory": "h",
+		"declaration": true,
+		// This compiler run should
+		// only output d.ts files
+		"emitDeclarationOnly": true,
+		"outDir": "types"
 	},
 	"exclude": ["dist", "node_modules"]
 }

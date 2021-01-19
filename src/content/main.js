@@ -15,12 +15,12 @@ class Storage {
 
 	promise(callback) {
 		return new Promise((resolve, reject) => {
-			if (chrome.storage[this.STORAGE] === undefined) return reject(new Error('Chrome storage not available'))
+			if (chrome.storage[this.STORAGE] === undefined) reject(new Error('Chrome storage not available'))
 
 			try {
-				return callback(resolve, reject)
+				callback(resolve, reject)
 			} catch (e) {
-				return reject(e)
+				reject(e)
 			}
 		})
 	}
@@ -76,7 +76,7 @@ function injectCSS(file) {
 	style.id = 'ige_style'
 	style.rel = 'stylesheet'
 	style.href = chrome.extension.getURL(`content/${file}.css`)
-	document.head.appendChild(style) // inserted css is always non-blocking
+	document.head.append(style) // inserted css is always non-blocking
 }
 injectCSS('content') // inject as early as possible
 
@@ -108,7 +108,7 @@ window.addEventListener(
 /**
  * Creates a new observer, starts observing and returns the observer.
  *
- * @param {Node} elem Element to observe
+ * @param {Node} element Element to observe
  * @param {MutationCallback} fn Mutation Callback
  * @param {MutationOptions} options Options
  * @return {MutationObserver} Callback
@@ -273,6 +273,9 @@ function decideClass() {
 	// reels
 	if (pathname.indexOf('/reels/') !== -1) return (currentClass = 'post reels')
 
+	// reel
+	if (pathname.indexOf('/reel/') !== -1) return (currentClass = 'post reel')
+
 	// login -> 2FA screen
 	if (pathname.indexOf('/accounts/login/two_factor') === 0) return (currentClass = 'twoFA')
 
@@ -334,7 +337,7 @@ function addExtendedButton() {
 		if (!clickedExtendedButton) window.localStorage.clickedExtendedBtn = true
 	})
 
-	$anchor.parentNode.appendChild(element)
+	$anchor.parentNode.append(element)
 }
 
 /**
@@ -371,7 +374,7 @@ function disconnectObservers() {
 
 /**
  *
- * @param {HTMLImageElement} el Image
+ * @param {HTMLImageElement} element Image
  */
 function fullPhoto(element) {
 	if (!element) return
@@ -389,7 +392,7 @@ function fullPhoto(element) {
 /**
  * Adds controls to videos and preloads if needed.
  *
- * @param {HTMLVideoElement} el Video
+ * @param {HTMLVideoElement} element Video
  */
 function addControls(element) {
 	if (!element) return
@@ -484,9 +487,9 @@ const OPTS_MODE = {
 	//highlightOP(arg) {},
 	_boxWidth(i) {},
 	boxWidth(i) {
-		if (OPTIONS.rows === 2 && i > 25 && i !== 49) return setBoxWidth(i)
-		if (OPTIONS.rows === 4 && i < 25 && i !== 23) return setBoxWidth(i)
-		if (OPTIONS.rows === 1) {
+		if (OPTIONS.rows === 2 && i > 25 && i !== 49) setBoxWidth(i)
+		else if (OPTIONS.rows === 4 && i < 25 && i !== 23) setBoxWidth(i)
+		else if (OPTIONS.rows === 1) {
 			const $style = $('#ige_style')
 			if ($style !== null) $style.remove()
 		}
@@ -511,7 +514,6 @@ const OPTS_MODE = {
 		chrome.runtime.sendMessage(null, { action: 'watchNow' })
 	},
 	only3Dot(argument) {
-		ONLY_3DOT = true
 		$('#ige_style').remove()
 		$('#ige_feed').style.display = 'none'
 		$(
@@ -642,7 +644,7 @@ function storiesMutationHandler(mutations) {
 	counterAdded += amountDummyNodes
 	counterRemoved += amountDummyNodes
 	const $stories = $('.ige_movedStories ul')
-	if ($stories === null) console.warn('empty stories ul', el)
+	if ($stories === null) console.warn('empty stories ul', $stories)
 
 	const storyChildren = $stories.children,
 		len = storyChildren.length
