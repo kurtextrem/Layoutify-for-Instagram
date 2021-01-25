@@ -67,8 +67,8 @@ nav,
 
 	contain: layout style;
 
-	content-visibility: auto;
-	contain-intrinsic-size: var(--boxWidth) var(--maxBoxHeight);
+	/*content-visibility: auto;
+	contain-intrinsic-size: var(--boxWidth) var(--maxBoxHeight);*/
 }
 
 /*.ige_virtual_container {

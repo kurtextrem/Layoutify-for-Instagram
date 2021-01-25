@@ -51,8 +51,8 @@ export default class PostsContainer extends Component {
 	constructor(props) {
 		super(props)
 
-		this.iObs = iObs()
-		this.rObs = rObs()
+		//this.iObs = iObs()
+		//this.rObs = rObs()
 	}
 
 	setTimeout(timeout) {
@@ -148,21 +148,21 @@ export default class PostsContainer extends Component {
 	}
 
 	componentDidUpdate() {
-		if (this.ref) {
+		/*if (this.ref) {
 			this.ref.children.forEach(el => {
 				if (el.isObserved) return
 
 				el.isObserved = true
-				this.iObs.observe(el)
-				this.rObs.observe(el)
+				//this.iObs.observe(el)
+				//this.rObs.observe(el)
 			})
-		}
+		}*/
 	}
 
 	componentWillUnmount() {
 		this.removeStorageListener()
-		this.iObs.disconnect()
-		this.rObs.disconnect()
+		//this.iObs.disconnect()
+		//this.rObs.disconnect()
 	}
 
 	@bind

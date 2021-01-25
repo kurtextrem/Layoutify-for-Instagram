@@ -51,8 +51,8 @@ class Feed extends FetchComponent {
 
 		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id // @TODO Update regularely, last check 13.04.2020
 
-		this.iObs = iObs()
-		this.rObs = rObs()
+		//this.iObs = iObs()
+		//this.rObs = rObs()
 
 		this.state.timeout = 0
 		this.state.items = window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges || []
@@ -116,15 +116,15 @@ class Feed extends FetchComponent {
 	componentDidUpdate() {
 		;/\s*/g.exec('') // free regexp memory
 
-		if (this.ref) {
+		/*if (this.ref) {
 			this.ref.children.forEach(el => {
 				if (el.isObserved) return
 
-				el.isObserved = true
-				this.iObs.observe(el)
-				this.rObs.observe(el)
+				//el.isObserved = true
+				//this.iObs.observe(el)
+				//this.rObs.observe(el)
 			})
-		}
+		}*/
 	}
 
 	componentDidMount() {
@@ -138,8 +138,8 @@ class Feed extends FetchComponent {
 	}
 
 	componentWillUnmount() {
-		this.iObs.disconnect()
-		this.rObs.disconnect()
+		//this.iObs.disconnect()
+		//this.rObs.disconnect()
 	}
 
 	@bind
