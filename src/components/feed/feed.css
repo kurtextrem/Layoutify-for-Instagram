@@ -607,6 +607,9 @@
 }
 
 .react-responsive-modal-closeButton {
+	position: fixed;
+	top: 16.5vh;
+	right: 29.2vw;
 	filter: invert(1);
 }
 

@@ -605,7 +605,7 @@ function addFeedDiv() {
  *
  */
 function clickShare(tries) {
-	const $elem = $('article section > span:first-child ~ button')
+	const $elem = $('article section > span:nth-of-type(3n) button')
 	if ($elem === null) {
 		console.error('Share selector outdated', tries)
 
