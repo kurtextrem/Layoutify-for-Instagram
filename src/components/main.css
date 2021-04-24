@@ -71,6 +71,10 @@ nav,
 	contain-intrinsic-size: var(--boxWidth) var(--maxBoxHeight);*/
 }
 
+/*img[width][height] {
+	content-visibility: auto;
+}*/
+
 /*.ige_virtual_container {
 	--padding: 10;
 	--columns: 4;

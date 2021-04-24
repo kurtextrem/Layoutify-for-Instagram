@@ -33,7 +33,7 @@ class InstagramAPI {
 		if (!this.firstRun && this.nextMaxId === '') return this.items // nothing more to fetch
 		await this.start()
 
-		return fetchFromBackground('private', `feed/${this.endpoint}/?${this.nextMaxId && !this.firstRun ? `max_id=${this.nextMaxId}&` : ''}`) // maxId means "show everything before X"
+		return fetchFromBackground('private', `feed/${this.endpoint}/?${this.nextMaxId && !this.firstRun ? `max_id=${this.nextMaxId}` : ''}`) // maxId means "show everything before X"
 			.then(this.storeNext)
 			.then(this.normalize)
 			.then(this.setData)
