@@ -10,7 +10,7 @@
 		"16": "img/icon-128.png",
 		"48": "img/icon-128.png"
 	},
-	"author": "Jacob „kurtextrem\" Groß",
+	"author": "Jacob \"kurtextrem\" Groß",
 
 	"content_scripts": [
 		{
@@ -33,7 +33,7 @@
 	"options_page": "index.html",
 	"minimum_chrome_version": "72",
 
-	"permissions": ["*://*.instagram.com/*", "storage", "webRequest", "webRequestBlocking", "cookies", "notifications", "alarms", "unlimitedStorage"],
+	"permissions": ["*://*.instagram.com/*", "*://*.fbcdn.net/*", "storage", "webRequest", "webRequestBlocking", "cookies", "notifications", "alarms", "unlimitedStorage"],
 	"incognito": "split",
 	"content_security_policy": "script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
 

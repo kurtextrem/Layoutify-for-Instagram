@@ -82,31 +82,33 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 	['blocking', 'requestHeaders', 'extraHeaders']
 )
 
-chrome.webRequest.onHeadersReceived.addListener(
-	modifyCspHeaders,
-	{
-		types: ['xmlhttprequest'],
-		urls: ['https://i.instagram.com/api/v1/feed/*'],
-	},
-	['blocking', 'responseHeaders', 'extraHeaders']
-)
-
-/**
- *
+/**^
+ * So we can load IMGs on 3-dots page.
  */
-function modifyCspHeaders(details) {
-	const headers = details.responseHeaders
+chrome.webRequest.onBeforeSendHeaders.addListener(
+	function modifyCospHeaders(details) {
+		const headers = details.requestHeaders
 
-	for (const i in headers) {
-		const header = headers[i]
+		let updated = false
+		for (const i in headers) {
+			const header = headers[i]
 
-		if (header.name.toLowerCase() === 'content-security-policy') {
-			header.value.replace("connect-src 'self'", `connect-src 'self' https://i.instagram.com`)
+			if (header.name === 'Referer') {
+				header.value = 'https://www.instagram.com/'
+				updated = true
+			}
 		}
-	}
 
-	return { responseHeaders: details.responseHeaders }
-}
+		if (!updated) headers.push({ name: 'referer', value: 'https://www.instagram.com/' })
+
+		return { requestHeaders: details.requestHeaders }
+	},
+	{
+		types: ['image'],
+		urls: ['*://*.fbcdn.net/*'],
+	},
+	['blocking', 'requestHeaders', 'extraHeaders']
+)
 
 /**
  *
@@ -229,7 +231,7 @@ function fetchFromBackground(which, path, sendResponse, options) {
 	}
 
 	if (which === 'PRIVATE_WEB') {
-		PRIVATE_WEB_API_OPTS['ig-claim'] = localStorage['ig-claim']
+		PRIVATE_WEB_API_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
 		fetchAux(API_URL[which] + path, PRIVATE_WEB_API_OPTS, 'text')
 			.then(fixMaxId)
 			.then(parseJSON)
@@ -367,7 +369,7 @@ chrome.runtime.onInstalled.addListener(details => {
 	if (+splitNew[0] > +splitOld[0] || +splitNew[1] > +splitOld[1])
 		// we only check major und minor, nothing else
 		chrome.tabs.create({
-			url: 'https://github.com/kurtextrem/Improved-for-Instagram/blob/master/CHANGELOG.md#changelog',
+			url: 'https://github.com/kurtextrem/Layoutify-for-Instagram/blob/master/CHANGELOG.md#changelog',
 		})
 })
 
