@@ -65,7 +65,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 				// credit https://github.com/mgp25/Instagram-API/master/src/Constants.php
 				// https://packagist.org/packages/mgp25/instagram-php / https://github.com/dilame/instagram-private-api
 				header.value =
-					'Instagram 136.0.0.34.124 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 104766893)'
+					'Instagram 121.0.0.29.119 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 185203708)'
 			} else if (header.name === 'Cookie') {
 				if (header.value.indexOf('sessionid=') === -1)
 					// add auth cookies to authenticate API requests
@@ -148,7 +148,7 @@ function logAndReject(e) {
  *
  */
 function fixMaxId(response) {
-	const response_ = response.replace(/"next_max_id": (\d+)/g, '"next_max_id": "$1"')
+	const response_ = response.replace(/"next_max_id":(\d+)/g, '"next_max_id":"$1"')
 	;/\s*/g.exec('') // clear regex cache to prevent memory leak
 	return response_
 }
@@ -169,7 +169,7 @@ const API_URL = {
 const PRIVATE_API_OPTS = {
 	headers: {
 		Accept: '*/*',
-		//'Accept-Encoding': 'gzip, deflate',
+		'Accept-Encoding': 'gzip, deflate',
 		'Accept-Language': 'en-US',
 		//Connection: 'keep-alive',
 		'X-FB-HTTP-Engine': 'Liger',
