@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.4.0 - 2021-04-24
+
+Unfortunately, Instagram somehow broke the likes on the 3-dot page (you can only the first 20, repeatedly). I give my best to restore the functionality, but for now I can not figure out how to unbreak it.
+
+Also, the new version needs new permissions to display images on the 3-dots page, as Instagram changed that too.
+
 ## 3.3.2 - 2020-11-19
 
 Added new option "System Night Mode". Turned on by default. When turned on, the night mode automatically activates when your Operating System (Windows/Mac/Linux/Chrome OS) is in Night/Dark Mode.
