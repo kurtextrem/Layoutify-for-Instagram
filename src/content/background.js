@@ -169,7 +169,7 @@ const API_URL = {
 const PRIVATE_API_OPTS = {
 	headers: {
 		Accept: '*/*',
-		'Accept-Encoding': 'gzip, deflate',
+		//'Accept-Encoding': 'gzip, deflate',
 		'Accept-Language': 'en-US',
 		//Connection: 'keep-alive',
 		'X-FB-HTTP-Engine': 'Liger',
@@ -311,13 +311,7 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 			break
 
 		case 'watchNow':
-			const now = Date.now(),
-				last = window.localStorage.ige_lastFetch || now
-
-			if (now - +last > 180000) {
-				window.localStorage.ige_lastFetch = now
-				getWatchlist()
-			}
+			watchNow()
 			break
 
 		case 'watchInBackground':
@@ -373,15 +367,17 @@ chrome.runtime.onInstalled.addListener(details => {
 		})
 })
 
-chrome.alarms.onAlarm.addListener(function (e) {
+function watchNow(e) {
 	const now = Date.now(),
-		last = window.localStorage.ige_lastFetch || now
+		last = window.localStorage.ige_lastFetch || 0
 
 	if (now - +last > 180000) {
 		window.localStorage.ige_lastFetch = now
 		getWatchlist()
 	}
-})
+}
+
+chrome.alarms.onAlarm.addListener(watchNow)
 
 /**
  *
