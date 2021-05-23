@@ -82,8 +82,8 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 	['blocking', 'requestHeaders', 'extraHeaders']
 )
 
-/**^
- * So we can load IMGs on 3-dots page.
+/**
+ * So we can load images/videos on 3-dots page.
  */
 chrome.webRequest.onBeforeSendHeaders.addListener(
 	function modifyCospHeaders(details) {
@@ -104,7 +104,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 		return { requestHeaders: details.requestHeaders }
 	},
 	{
-		types: ['image'],
+		types: ['image', 'media'],
 		urls: ['*://*.fbcdn.net/*'],
 	},
 	['blocking', 'requestHeaders', 'extraHeaders']
