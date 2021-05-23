@@ -497,7 +497,7 @@ div[role='button'] > div > div:not(:first-child):not(:last-child),
 div[role='button'] > div > button {
 	z-index: 3; /* so it doesn't overlap tagged users */
 }
-
+div[role='button'] + div[class] + div[class][style] /* tagged users */ { z-index: 4; }
 div[role='button'] > div > button {
 	opacity: 1; /* always show */
 }

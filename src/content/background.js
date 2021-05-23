@@ -371,7 +371,8 @@ function watchNow(e) {
 	const now = Date.now(),
 		last = window.localStorage.ige_lastFetch || 0
 
-	if (now - +last > 180000) {
+	const INTERVAL = 180000 // 3min
+	if (now - +last > INTERVAL) {
 		window.localStorage.ige_lastFetch = now
 		getWatchlist()
 	}
