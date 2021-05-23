@@ -71,9 +71,11 @@ export default class PostMedia extends Component {
 					src={media.video_url}
 					poster={media.display_url}
 					type="video/mp4"
-					class="img-fluid"
+					class="img-fluid full-img"
 					preload="none"
 					intrinsicsize={media.dimensions !== undefined ? `${media.dimensions.width}x${media.dimensions.height}` : undefined}
+					width={media.dimensions.width}
+					height={media.dimensions.height}
 					controls
 					onVolumeChange={this.setVolume}
 					ref={this.videoRef}
@@ -88,6 +90,8 @@ export default class PostMedia extends Component {
 				class="img-fluid"
 				decoding="async"
 				intrinsicsize={media.dimensions !== undefined ? `${media.dimensions.width}x${media.dimensions.height}` : undefined}
+				width={media.dimensions.width}
+				height={media.dimensions.height}
 			/>
 		)
 	}
