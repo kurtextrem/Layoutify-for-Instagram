@@ -105,7 +105,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 	},
 	{
 		types: ['image', 'media'],
-		urls: ['*://*.fbcdn.net/*'],
+		urls: ['*://*.fbcdn.net/*', '*://*.cdninstagram.com/*'],
 	},
 	['blocking', 'requestHeaders', 'extraHeaders']
 )
@@ -343,7 +343,7 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 function createUpdateAlarm(when) {
 	chrome.alarms.create('update', {
 		delayInMinutes: when ? undefined : 1,
-		periodInMinutes: 15, // @todo Try to get this as low as possible
+		periodInMinutes: 30, // @todo Try to get this as low as possible, 15: acc locked
 		when: when || undefined,
 	})
 }
@@ -371,7 +371,7 @@ function watchNow(e) {
 	const now = Date.now(),
 		last = window.localStorage.ige_lastFetch || 0
 
-	const INTERVAL = 180000 // 3min
+	const INTERVAL = 900000 // 15min
 	if (now - +last > INTERVAL) {
 		window.localStorage.ige_lastFetch = now
 		getWatchlist()
