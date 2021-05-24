@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.4.0 - 2021-05-24
+
+No exciting new features, sorry - but exciting news: I have completed University - and the post/story notifications work again _(had been broken way too long, sorry!)_.
+
+New Permissions: Instagram changed how websites can display their images/videos, and since the 3-dot page does display them, I have to ask for new permissions in order to access the following URLs:
+
+- cdninstagram.com: this is where Instagram saves your images/videos.
+- fbcdn.net: this is where Facebook saves your images/videos (Instagram is a brand of Facebook)
+
+**Your images/videos never leave your PC. This extension will NEVER collect any personal data. Respecting your privacy is my highest principle, the code is visible for everyone on GitHub.**
+
+Until the next update, stay safe and healthy, make sure your loved ones know how you feel about them (RIP my dear friend Arif, who lost the fight against Covid).<br>
+I know _you_ are loved too. Keep being awesome ❤️
+
 ## 3.3.2 - 2020-11-19
 
 Added new option "System Night Mode". Turned on by default. When turned on, the night mode automatically activates when your Operating System (Windows/Mac/Linux/Chrome OS) is in Night/Dark Mode.
@@ -14,7 +28,7 @@ Instagram requested me to change the extension name. The new name is "Layoutify:
 
 Collections now finally have their correct names and you can view each of them like in the Instagram app <small>_(the "wishlist" collection is currently missing, but it seems like this is an app-only thing)_</small>.
 
-![Collections](https://raw.githubusercontent.com/kurtextrem/Improved-for-Instagram/master/src/webstore/Screenshot_80.png)
+![Collections](https://raw.githubusercontent.com/kurtextrem/Layoutify-for-Instagram/master/src/webstore/Screenshot_80.png)
 
 Also, added a donation button to the "❔ About" page, as I'm a student working on this extension during my freetime, which means I don't get any money for doing so.<br>So if you want to buy me a ☕ or 🍻, use the PayPal button on that page. Donations are of course optional and will always stay optional, but I really appreciate any amount. ❤️
 
@@ -46,7 +60,7 @@ Since the last release with a changelog, there have been many releases containin
 
 The "Pictures Only" setting has been updated (and fixed, it was broken from 3.0.0). Here's how it looks combined with "No Space Between Posts":
 
-![Pictures Only Demo](https://raw.githubusercontent.com/kurtextrem/Improved-for-Instagram/master/src/webstore/ScreenshotPicturesOnly.png)
+![Pictures Only Demo](https://raw.githubusercontent.com/kurtextrem/Layoutify-for-Instagram/master/src/webstore/ScreenshotPicturesOnly.png)
 
 ### Bug Fixes
 
