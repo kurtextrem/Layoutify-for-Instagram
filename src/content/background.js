@@ -170,7 +170,7 @@ const PRIVATE_API_OPTS = {
 	headers: {
 		Accept: '*/*',
 		//'Accept-Encoding': 'gzip, deflate',
-		'Accept-Language': 'en-US',
+		//'Accept-Language': 'en-US',
 		//Connection: 'keep-alive',
 		'X-FB-HTTP-Engine': 'Liger',
 		'X-IG-App-ID': '567067343352427',
@@ -343,7 +343,7 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 function createUpdateAlarm(when) {
 	chrome.alarms.create('update', {
 		delayInMinutes: when ? undefined : 1,
-		periodInMinutes: 30, // @todo Try to get this as low as possible, 15: acc locked
+		periodInMinutes: 52, // @todo Try to get this as low as possible, 15: acc locked
 		when: when || undefined,
 	})
 }
