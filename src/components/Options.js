@@ -261,10 +261,8 @@ export default class Options extends Component {
 		const type = Options.OPTS[id]
 		if (type === undefined) return console.warn('outdated option', id, value)
 
-		if (typeof type === 'boolean') return <Input type="checkbox" name={id} id={id} checked={value ? true : undefined} onChange={onChange} />
+		if (typeof type === 'boolean') return <Input type="checkbox" name={id} id={id} checked={value} onChange={onChange} />
 		if (Array.isArray(type)) {
-			if (!Array.isArray(value)) value = [value] // fixes a bug from prev versions, needed for compat
-
 			const options = value.map(this.renderOption)
 			return (
 				<div class="d-flex flex-wrap">
