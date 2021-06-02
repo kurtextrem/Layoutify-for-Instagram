@@ -27,14 +27,21 @@ export default class FetchComponent extends Component {
 	}
 
 	getCSRF() {
-		const cookies = document.cookie.split('; ')
-		return cookies.find(v => v.indexOf('csrftoken=') === 0)?.split('=')[1] || window._sharedData?.config?.csrf_token
+		return (
+			document.cookie
+				.split('; ')
+				.find(v => v.indexOf('csrftoken=') === 0)
+				?.split('=')[1] ||
+			window._sharedData?.config?.csrf_token ||
+			window.__initialData?.data?.config?.csrf_token ||
+			window._csrf_token
+		)
 	}
 
 	getHeaders(withRollout) {
 		// sync with background.js
 		const headers = new Headers({
-			'x-asbd-id': '437806', // @TODO Update from ConsumerLibCommons e.ASBD_ID= | last update 02.06.2021
+			'x-asbd-id': sessionStorage['ige_ASBD'], // sync with igdata
 			'x-csrftoken': this.getCSRF(),
 			'X-IG-App-ID': '936619743392459', // .instagramWebDesktopFBAppId
 			'X-IG-WWW-Claim': sessionStorage['www-claim-v2'] || localStorage['www-claim-v2'],

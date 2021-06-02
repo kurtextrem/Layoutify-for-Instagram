@@ -712,8 +712,8 @@ else document.addEventListener('DOMContentLoaded', onReady)
 // pass from injected page to background
 window.addEventListener('__@@ptb_ige', function (event) {
 	for (const key in event.detail) {
-		if (key !== 'ig-claim' && key !== 'rollout-hash') continue
+		if (key !== 'ig-claim' && key !== 'rollout-hash' && key !== 'asbd-id') continue
 
-		chrome.runtime.sendMessage({ action: key, path: event.details[key] })
+		chrome.runtime.sendMessage({ action: key, path: event.detail[key] })
 	}
 })
