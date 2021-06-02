@@ -15,7 +15,7 @@
 	"content_scripts": [
 		{
 			"matches": ["*://*.instagram.com/*"],
-			"js": ["content/start.js"],
+			"js": ["content/start.js", "content/main.js"],
 			"run_at": "document_idle",
 			"all_frames": true
 		},
@@ -40,7 +40,7 @@
 	"web_accessible_resources": [
 		"content/night.css",
 		"content/content.css",
-		"main.js",
+		"content/igdata.js",
 		"commons.bundle.js",
 		"runtime.bundle.js",
 		"vendors.bundle.js",
