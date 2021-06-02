@@ -204,6 +204,7 @@ const PRIVATE_WEB_API_OPTS = {
 	method: 'GET',
 }
 
+// sync with components/feed/FetchComponent
 const PUBLIC_API_OPTS = {
 	headers: {
 		'x-asbd-id': '437806', // @TODO Update from ConsumerLibCommons e.ASBD_ID= | last update 02.06.2021
