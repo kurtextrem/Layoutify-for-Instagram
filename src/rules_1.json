@@ -1,11 +1,138 @@
-[{
-	"id": 1,
-	"priority": 1,
-	"action": {
-		"type": "modifyHeaders",
-		"requestHeaders": [
-			{ "header": "referer", "operation": "set", "value": "https://www.instagram.com/" }
-		]
+[
+	{
+		"id": 1,
+		"priority": 1,
+		"action": {
+			"type": "modifyHeaders",
+			"requestHeaders": [
+				{
+					"header": "referer",
+					"operation": "set",
+					"value": "https://www.instagram.com/"
+				}
+			]
+		},
+		"condition": {
+			"urlFilter": "||fbcdn.net",
+			"domains": [
+			],
+			"resourceTypes": [
+				"image",
+				"media"
+			],
+			"requestMethods": [
+				"get"
+			]
+		}
 	},
-	"condition": { "urlFilter": "||fbcdn.net", "resourceTypes": ["image"] }
-}]
+	{
+		"id": 1,
+		"priority": 1,
+		"action": {
+			"type": "modifyHeaders",
+			"requestHeaders": [
+				{
+					"header": "referer",
+					"operation": "set",
+					"value": "https://www.instagram.com/"
+				}
+			]
+		},
+		"condition": {
+			"urlFilter": "||cdninstagram.com",
+			"domains": [
+			],
+			"resourceTypes": [
+				"image",
+				"media"
+			],
+			"requestMethods": [
+				"get"
+			]
+		}
+	},
+	{
+		"id": 3,
+		"priority": 1,
+		"action": {
+			"type": "modifyHeaders",
+			"requestHeaders": [
+				{
+					"header": "user-agent",
+					"operation": "set",
+					"value": "Instagram 121.0.0.29.119 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 185203708)"
+				}
+			]
+		},
+		"condition": {
+			"urlFilter": "||i.instagram.com/api/v1/feed/liked/*",
+			"domains": [],
+			"resourceTypes": [
+				"xmlhttprequest"
+			]
+		}
+	},
+	{
+		"id": 4,
+		"priority": 1,
+		"action": {
+			"type": "modifyHeaders",
+			"requestHeaders": [
+				{
+					"header": "user-agent",
+					"operation": "set",
+					"value": "Instagram 121.0.0.29.119 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 185203708)"
+				}
+			]
+		},
+		"condition": {
+			"urlFilter": "||i.instagram.com/api/v1/feed/saved/*",
+			"domains": [],
+			"resourceTypes": [
+				"xmlhttprequest"
+			]
+		}
+	},
+	{
+		"id": 5,
+		"priority": 1,
+		"action": {
+			"type": "modifyHeaders",
+			"requestHeaders": [
+				{
+					"header": "user-agent",
+					"operation": "set",
+					"value": "Instagram 121.0.0.29.119 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 185203708)"
+				}
+			]
+		},
+		"condition": {
+			"urlFilter": "||i.instagram.com/api/v1/feed/collection/*",
+			"domains": [],
+			"resourceTypes": [
+				"xmlhttprequest"
+			]
+		}
+	},
+	{
+		"id": 6,
+		"priority": 1,
+		"action": {
+			"type": "modifyHeaders",
+			"requestHeaders": [
+				{
+					"header": "user-agent",
+					"operation": "set",
+					"value": "Instagram 121.0.0.29.119 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 185203708)"
+				}
+			]
+		},
+		"condition": {
+			"urlFilter": "||i.instagram.com/api/v1/collections/list/*",
+			"domains": [],
+			"resourceTypes": [
+				"xmlhttprequest"
+			]
+		}
+	}
+]
