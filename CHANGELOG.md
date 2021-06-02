@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.5.0 - 2021-06-02
+
+"Suspicion bans" from Instagram happened for some users in the past days and thanks to Cheyi, Nedi and Mike who wrote me in the Chrome WebStore and via email (I read all your comments and try to reply :) ), I have finally found the culprit.
+
+**Why did that happen?**
+
+Instagram added a new security feature to their requests (when your browser sends something to their servers). My requests did not send them. As a result, Instagram could think a bot is sending the requests, in simple terms.
+
+**Again:** This extension will never do any action without your interaction. In fact, for example it can not even like posts without you clicking on the heart button.
+
 ## 3.4.0 - 2021-05-24
 
 No exciting new features, sorry - but exciting news: I have completed University - and the post/story notifications work again _(had been broken way too long, sorry!)_.
