@@ -5,7 +5,8 @@ import { Component, h } from 'preact'
  *
  */
 export default class FetchComponent extends Component {
-	static rolloutHash = window._cached_shared_Data?.rollout_hash || window._sharedData?.rollout_hash || '<unknown>'
+	static rolloutHash =
+		window._cached_shared_Data?.rollout_hash || window._sharedData?.rollout_hash || window.__initialData?.data?.rollout_hash || '<unknown>'
 
 	/**
 	 * Used as gate-keeper toggle to the loading of multiple pages at the same time.
@@ -31,7 +32,9 @@ export default class FetchComponent extends Component {
 	}
 
 	getHeaders(withRollout) {
+		// sync with background.js
 		const headers = new Headers({
+			'x-asbd-id': '437806', // @TODO Update from ConsumerLibCommons e.ASBD_ID= | last update 02.06.2021
 			'x-csrftoken': this.getCSRF(),
 			'X-IG-App-ID': '936619743392459', // .instagramWebDesktopFBAppId
 			'X-IG-WWW-Claim': sessionStorage['www-claim-v2'] || localStorage['www-claim-v2'],
