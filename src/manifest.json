@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extTitle__",
-	"version": "3.4.0.2",
+	"version": "3.5.0",
 	"manifest_version": 2,
 
 	"description": "__MSG_extDesc__",
@@ -15,7 +15,7 @@
 	"content_scripts": [
 		{
 			"matches": ["*://*.instagram.com/*"],
-			"js": ["content/start.js", "content/main.js"],
+			"js": ["content/start.js"],
 			"run_at": "document_idle",
 			"all_frames": true
 		},
@@ -40,7 +40,7 @@
 	"web_accessible_resources": [
 		"content/night.css",
 		"content/content.css",
-		"content/InstagramFeed.js",
+		"main.js",
 		"commons.bundle.js",
 		"runtime.bundle.js",
 		"vendors.bundle.js",
