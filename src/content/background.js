@@ -54,19 +54,22 @@ getSessionId()
 // Hook into web request and modify headers before sending the request
 chrome.webRequest.onBeforeSendHeaders.addListener(
 	function listener(details) {
+		if (details.initiator !== 'chrome-extension://' + chrome.runtime.id) return
+
 		getSessionId() // just update for next time
 
 		const headers = details.requestHeaders
 
 		for (const i in headers) {
-			const header = headers[i]
+			const header = headers[i],
+				name = header.name.toLowerCase()
 
-			if (header.name === 'User-Agent') {
+			if (name === 'user-agent') {
 				// credit https://github.com/mgp25/Instagram-API/master/src/Constants.php
 				// https://packagist.org/packages/mgp25/instagram-php / https://github.com/dilame/instagram-private-api
 				header.value =
 					'Instagram 121.0.0.29.119 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 185203708)'
-			} else if (header.name === 'Cookie') {
+			} else if (name === 'cookie') {
 				if (header.value.indexOf('sessionid=') === -1)
 					// add auth cookies to authenticate API requests
 					header.value = `${header.value}; sessionid=${sessionid}`
@@ -77,7 +80,12 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 	},
 	{
 		types: ['xmlhttprequest'],
-		urls: ['https://i.instagram.com/api/v1/feed/*'],
+		urls: [
+			'https://i.instagram.com/api/v1/feed/liked/*',
+			'https://i.instagram.com/api/v1/feed/saved/*',
+			'https://i.instagram.com/api/v1/feed/collection/*',
+			'https://i.instagram.com/api/v1/collections/list/*',
+		],
 	},
 	['blocking', 'requestHeaders', 'extraHeaders']
 )
@@ -87,6 +95,9 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
  */
 chrome.webRequest.onBeforeSendHeaders.addListener(
 	function modifyCospHeaders(details) {
+		// @todo Replace this with declarative netrequest https://developer.chrome.com/docs/extensions/reference/declarativeNetRequest/#:~:text=within%20a%20tab.-,initiator,-string%C2%A0optional
+		if (details.initiator !== 'chrome-extension://' + chrome.runtime.id) return
+
 		const headers = details.requestHeaders
 
 		let updated = false
@@ -588,8 +599,8 @@ function notify(user, userObject, type, watchData, length_, i) {
 		fetchOptions_ = WEB_OPTS
 
 	if (type === 0) {
-		url = `https://www.instagram.com/${user.replace('$$ANON$$', '')}/?__a=1`
-		if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
+		url = `https://www.instagram.com/${user}/?__a=1` // .replace('$$ANON$$', '')
+		//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
 	} /*if (type === 1)*/ else {
 		const params = { ...storiesParams }
 		params.user_id = userObject.id
@@ -621,9 +632,9 @@ function notify(user, userObject, type, watchData, length_, i) {
  */
 function createUserObject(user, watchData) {
 	let fetchOptions_ = WEB_OPTS
-	if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
+	//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
 
-	return fetchAux(`https://www.instagram.com/${user.replace('$$ANON$$', '')}/?__a=1`, fetchOptions_, 'json')
+	return fetchAux(`https://www.instagram.com/${user}/?__a=1`, fetchOptions_, 'json') // .replace('$$ANON$$', '')
 		.then(json => {
 			if (watchData[user] === undefined)
 				return (watchData[user] = {
