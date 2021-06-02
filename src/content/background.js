@@ -206,9 +206,10 @@ const PRIVATE_WEB_API_OPTS = {
 
 const PUBLIC_API_OPTS = {
 	headers: {
+		'x-asbd-id': '437806', // @TODO Update from ConsumerLibCommons e.ASBD_ID= | last update 02.06.2021
 		'x-csrftoken': '',
 		'X-IG-App-ID': '936619743392459',
-		'x-instagram-ajax': '1',
+		'x-instagram-ajax': '',
 		'x-requested-with': 'XMLHttpRequest',
 	},
 	method: 'POST',
@@ -231,7 +232,8 @@ function fetchFromBackground(which, path, sendResponse, options) {
 	if (which === 'PUBLIC') {
 		getCookie('csrftoken')
 			.then(value => {
-				PUBLIC_API_OPTS.headers['x-csrftoken'] = value
+				PUBLIC_API_OPTS.headers['x-csrftoken'] = value // can also be obtained by using window.__initialData.data.config.csrf_token||window._csrf_token
+				PUBLIC_API_OPTS.headers['x-instagram-ajax'] = localStorage['rollout-hash']
 				fetchAux(API_URL[which] + path, PUBLIC_API_OPTS)
 
 				return value
@@ -337,8 +339,13 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 			fetchFromBackground(request.which.toUpperCase(), request.path, sendResponse, request.options)
 			return true
 
+		// variables from IG web
 		case 'ig-claim':
 			window.localStorage['ig-claim'] = request.path
+			break
+
+		case 'rollout-hash':
+			window.localStorage['rollout-hash'] = request.path
 			break
 
 		default:

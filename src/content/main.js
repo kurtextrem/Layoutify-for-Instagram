@@ -340,12 +340,29 @@ function addExtendedButton() {
 	$anchor.parentNode.append(element)
 }
 
+const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
+
+function getFromIGData(key) {
+	const path = [key]
+	let get1 = get(path, window._cached_shared_Data)
+	if (get1 !== null) return get1
+
+	get1 = get(path, window._sharedData)
+	if (get1 !== null) return get1
+
+	get1 = get(path, window.__initialData.data)
+	if (get1 !== null) return get1
+
+	return '<unknown>'
+}
+
 /**
  *
  */
 function addChromeListener() {
 	//chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {})
 	chrome.runtime.sendMessage({ action: 'ig-claim', path: sessionStorage['www-claim-v2'] || localStorage['www-claim-v2'] })
+	chrome.runtime.sendMessage({ action: 'rollout-hash', path: getFromIGData('rollout_hash') })
 }
 
 const connection = navigator.connection.type || '',
