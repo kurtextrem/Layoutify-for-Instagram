@@ -34,7 +34,7 @@ export default class PostHeader extends Component {
 			<header class="ige_header px-12">
 				<a class="ige_picture_container" href={userHref} role="button" tabIndex={0}>
 					{/*<canvas class="CfWVH" height="42" width="42" style="position: absolute; top: -5px; left: -5px; width: 42px; height: 42px;" /> @TODO stories */}
-					<img alt={username + ' Profilbild'} src={profile_pic_url} decoding="async" intrinsicsize="150x150" width="33" height="33" />
+					<img alt={username + ' Profilbild'} src={profile_pic_url} decoding="async" width="33" height="33" />
 				</a>
 				<div class="ige_username_container">
 					<Username username={username} name={full_name} isVerified={is_verified} isPrivate={is_private} />

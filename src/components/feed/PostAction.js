@@ -20,7 +20,6 @@ function returnLiked(value, index) {
 				src={node.profile_pic_url}
 				alt={username + ' Profilbild'}
 				decoding="async"
-				intrinsicsize="150x150"
 				width="20"
 				height="20"
 			/>
