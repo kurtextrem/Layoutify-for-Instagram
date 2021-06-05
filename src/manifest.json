@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extTitle__",
-	"version": "3.5.0",
+	"version": "3.5.0.1",
 	"manifest_version": 2,
 
 	"description": "__MSG_extDesc__",
@@ -16,7 +16,7 @@
 		{
 			"matches": ["*://*.instagram.com/*"],
 			"js": ["content/start.js", "content/main.js"],
-			"run_at": "document_idle",
+			"run_at": "document_end",
 			"all_frames": true
 		},
 		{

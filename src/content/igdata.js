@@ -24,7 +24,7 @@
 
 		return new Promise((resolve, reject) => {
 			window
-				.fetch(src)
+				.fetch(src, { cache: 'force-cache' })
 				.then(response => {
 					if (response.ok) return response
 					resolve('<unknown>')
