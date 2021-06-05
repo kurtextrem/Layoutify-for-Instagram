@@ -73,12 +73,12 @@ export default class PostMedia extends Component {
 					type="video/mp4"
 					class="img-fluid full-img"
 					preload="none"
-					intrinsicsize={media.dimensions !== undefined ? `${media.dimensions.width}x${media.dimensions.height}` : undefined}
 					width={media.dimensions.width}
 					height={media.dimensions.height}
 					controls
 					onVolumeChange={this.setVolume}
 					ref={this.videoRef}
+					crossorigin="anonymous" // so it does not send cookies over, which might make the request faster?! Instagram uses it also for <script
 				/>
 			)
 		}
@@ -89,9 +89,9 @@ export default class PostMedia extends Component {
 				alt={media.accessibility_caption}
 				class="img-fluid"
 				decoding="async"
-				intrinsicsize={media.dimensions !== undefined ? `${media.dimensions.width}x${media.dimensions.height}` : undefined}
 				width={media.dimensions.width}
 				height={media.dimensions.height}
+				crossorigin="anonymous" // so it does not send cookies over, which might make the request faster?! Instagram uses it also for <script
 			/>
 		)
 	}
