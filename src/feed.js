@@ -25,7 +25,7 @@ if (location.pathname === '/feed.html') ready()
 else if (location.href.indexOf('instagram.com') !== -1) {
 	// install navigation observer
 	if (location.pathname === '/' && window._sharedData.config.viewer !== null)
-		// logged
+		// logged-in
 		ready()
 	else {
 		const observer = new MutationObserver(function (mutations) {
