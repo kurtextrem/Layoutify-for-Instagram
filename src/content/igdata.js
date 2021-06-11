@@ -43,23 +43,36 @@
 		})
 	}
 
+	function dispatch(obj) {
+		window.dispatchEvent(
+			new CustomEvent('__@@ptb_ige', {
+				detail: obj,
+			})
+		)
+	}
+
 	function onReady() {
 		getASBD().then(asbd => {
+			const obj = {
+				'rollout-hash': getFromIGData('rollout_hash'),
+				'asbd-id': asbd,
+			}
 			const igClaim = sessionStorage['www-claim-v2'] || localStorage['www-claim-v2']
-			if (!igClaim) console.error('couldnt find ig claim')
+			if (igClaim) obj['ig-claim'] = igClaim
 
-			window.dispatchEvent(
-				new CustomEvent('__@@ptb_ige', {
-					detail: {
-						'ig-claim': sessionStorage['www-claim-v2'] || localStorage['www-claim-v2'],
-						'rollout-hash': getFromIGData('rollout_hash'),
-						'asbd-id': asbd,
-					},
-				})
-			)
+			dispatch(obj)
 		})
+	}
+
+	function onLoad() {
+		const igClaim = sessionStorage['www-claim-v2'] || localStorage['www-claim-v2']
+		if (!igClaim) console.error('couldnt find ig claim')
+		dispatch({ 'ig-claim': igClaim })
 	}
 
 	if (document.readyState === 'interactive' || document.readyState === 'complete') onReady()
 	else document.addEventListener('DOMContentLoaded', onReady)
+
+	if (document.readyState === 'complete') onLoad()
+	else document.addEventListener('load', onLoad)
 })(window, document)
