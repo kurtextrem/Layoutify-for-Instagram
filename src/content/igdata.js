@@ -18,7 +18,10 @@
 
 	function getASBD() {
 		const el = document.querySelector('script[src*="ConsumerLibCommons"]')
-		if (el === null) return '<unknown>'
+		if (el === null) {
+			console.error('couldnt find ConsumerLibCommons script')
+			return '<unknown>'
+		}
 
 		const src = el.src
 
@@ -27,18 +30,19 @@
 				.fetch(src, { cache: 'force-cache' })
 				.then(response => {
 					if (response.ok) return response
-					resolve('<unknown>')
+					throw new Error('response not ok')
 				})
 				.then(response => response.text())
 				.then(response => {
 					const match = response.match(/ASBD_ID='(\d+)'/)
-					if (match.length < 2) {
-						console.error('couldnt find asbd id')
-						return resolve('<unknown>')
-					}
+					if (match.length < 2) throw new Error('couldnt find asbd id')
 
-					sessionStorage['ige_ASBD'] = match[1]
+					sessionStorage.ige_ASBD = match[1]
 					resolve(match[1])
+				})
+				.catch(err => {
+					console.error(err)
+					resolve('<unknown>')
 				})
 		})
 	}
@@ -51,17 +55,19 @@
 		)
 	}
 
-	function onReady() {
-		getASBD().then(asbd => {
-			const obj = {
-				'rollout-hash': getFromIGData('rollout_hash'),
-				'asbd-id': asbd,
-			}
-			const igClaim = sessionStorage['www-claim-v2'] || localStorage['www-claim-v2']
-			if (igClaim) obj['ig-claim'] = igClaim
+	function asbdPromiseHandler(asbd) {
+		const obj = {
+			'asbd-id': asbd,
+			'rollout-hash': getFromIGData('rollout_hash'),
+		}
+		const igClaim = sessionStorage['www-claim-v2'] || localStorage['www-claim-v2']
+		if (igClaim) obj['ig-claim'] = igClaim
 
-			dispatch(obj)
-		})
+		dispatch(obj)
+	}
+
+	function onReady() {
+		getASBD().then(asbdPromiseHandler).catch(asbdPromiseHandler)
 	}
 
 	function onLoad() {
