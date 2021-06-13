@@ -22,7 +22,7 @@ function createTab(id, force) {
 }
 
 /**
- *
+ * @param name
  */
 function getCookie(name) {
 	return new Promise((resolve, reject) => {
@@ -54,7 +54,7 @@ getSessionId()
 // Hook into web request and modify headers before sending the request
 chrome.webRequest.onBeforeSendHeaders.addListener(
 	function listener(details) {
-		if (details.initiator !== 'chrome-extension://' + chrome.runtime.id) return
+		if (details.initiator !== `chrome-extension://${chrome.runtime.id}`) return
 
 		getSessionId() // just update for next time
 
@@ -69,11 +69,9 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 				// https://packagist.org/packages/mgp25/instagram-php / https://github.com/dilame/instagram-private-api
 				header.value =
 					'Instagram 121.0.0.29.119 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 185203708)'
-			} else if (name === 'cookie') {
-				if (header.value.indexOf('sessionid=') === -1)
-					// add auth cookies to authenticate API requests
-					header.value = `${header.value}; sessionid=${sessionid}`
-			}
+			} else if (name === 'cookie' && header.value.indexOf('sessionid=') === -1)
+				// add auth cookies to authenticate API requests
+				header.value = `${header.value}; sessionid=${sessionid}`
 		}
 
 		return { requestHeaders: headers }
@@ -96,7 +94,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 chrome.webRequest.onBeforeSendHeaders.addListener(
 	function modifyCospHeaders(details) {
 		// @todo Replace this with declarative netrequest https://developer.chrome.com/docs/extensions/reference/declarativeNetRequest/#:~:text=within%20a%20tab.-,initiator,-string%C2%A0optional
-		if (details.initiator !== 'chrome-extension://' + chrome.runtime.id) return
+		if (details.initiator !== `chrome-extension://${chrome.runtime.id}`) return
 
 		const headers = details.requestHeaders
 
@@ -122,7 +120,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 )
 
 /**
- *
+ * @param response
  */
 function checkStatus(response) {
 	if (response.ok) return response
@@ -134,21 +132,21 @@ function checkStatus(response) {
 }
 
 /**
- *
+ * @param response
  */
 function toText(response) {
 	return response.text()
 }
 
 /**
- *
+ * @param response
  */
 function toJSON(response) {
 	return response.json()
 }
 
 /**
- *
+ * @param e
  */
 function logAndReject(e) {
 	console.warn(e)
@@ -156,7 +154,7 @@ function logAndReject(e) {
 }
 
 /**
- *
+ * @param response
  */
 function fixMaxId(response) {
 	const response_ = response.replace(/"next_max_id":(\d+)/g, '"next_max_id":"$1"')
@@ -165,7 +163,7 @@ function fixMaxId(response) {
 }
 
 /**
- *
+ * @param response
  */
 function parseJSON(response) {
 	return JSON.parse(response)
@@ -189,7 +187,7 @@ const PRIVATE_API_OPTS = {
 		'X-IG-Bandwidth-TotalBytes-B': '0',
 		'X-IG-Bandwidth-TotalTime-MS': '0',
 		'X-IG-Capabilities': '3brTvw==',
-		'X-IG-Connection-Speed': ~~(Math.random() * 5000 + 1000) + 'kbps',
+		'X-IG-Connection-Speed': `${~~(Math.random() * 5000 + 1000)}kbps`,
 		'X-IG-Connection-Type': 'WIFI',
 	},
 	method: 'GET',
@@ -227,7 +225,10 @@ const GRAPHQL_API_OPTS = {
 }
 
 /**
- *
+ * @param which
+ * @param path
+ * @param sendResponse
+ * @param options
  */
 function fetchFromBackground(which, path, sendResponse, options) {
 	if (which === 'PUBLIC') {
@@ -257,11 +258,9 @@ function fetchFromBackground(which, path, sendResponse, options) {
 	}
 
 	const opts = { ...PRIVATE_API_OPTS, ...options }
-	if (opts.method === undefined || opts.method !== 'GET') {
-		if (opts.body !== undefined) {
-			opts.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
-			opts.body = new FormData()
-		}
+	if ((opts.method === undefined || opts.method !== 'GET') && opts.body !== undefined) {
+		opts.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+		opts.body = new FormData()
 	}
 
 	fetchAux(API_URL[which] + path, opts, 'text')
@@ -277,7 +276,9 @@ function fetchFromBackground(which, path, sendResponse, options) {
 //	UUID = '' // 'android-' + SparkMD5.hash(document.getElementsByClassName('coreSpriteDesktopNavProfile')[0].href.split('/')[3]).slice(0, 16)
 
 /**
- *
+ * @param url
+ * @param options
+ * @param type
  */
 function fetchAux(url, options, type) {
 	let opts
@@ -290,30 +291,39 @@ function fetchAux(url, options, type) {
 			.catch(logAndReject)
 
 	return new Promise((resolve, reject) => {
-		const xhr = new XMLHttpRequest()
-		xhr.open(opts.method, url, true)
-		xhr.responseType = type || 'text'
-		xhr.withCredentials = true
+		try {
+			const xhr = new XMLHttpRequest()
+			xhr.open(opts.method, url, true)
+			xhr.responseType = type || 'text'
+			xhr.withCredentials = true
 
-		const headers = opts.headers
-		for (const header in headers) {
-			if (!Object.prototype.hasOwnProperty.call(headers, header)) continue
-			xhr.setRequestHeader(header, headers[header])
+			const headers = opts.headers
+			for (const header in headers) {
+				if (!Object.prototype.hasOwnProperty.call(headers, header)) continue
+				xhr.setRequestHeader(header, headers[header])
+			}
+
+			xhr.addEventListener('load', function () {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					resolve(xhr.response)
+				} else {
+					logAndReject(xhr)
+				}
+			})
+
+			xhr.addEventListener('error', logAndReject)
+			xhr.addEventListener('abort', logAndReject)
+
+			xhr.send()
+		} catch (e) {
+			logAndReject(e)
 		}
-
-		xhr.addEventListener('load', function () {
-			resolve(xhr.response)
-		})
-
-		xhr.addEventListener('error', logAndReject)
-		xhr.addEventListener('abort', logAndReject)
-
-		xhr.send()
 	})
 }
 
 /**
- *
+ * @param min
+ * @param max
  */
 function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
@@ -362,7 +372,7 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 })
 
 /**
- *
+ * @param when
  */
 function createUpdateAlarm(when) {
 	chrome.alarms.create('update', {
@@ -405,13 +415,14 @@ function watchNow(e) {
 chrome.alarms.onAlarm.addListener(watchNow)
 
 /**
- *
+ * @param id
  */
 function openIG(id) {
 	chrome.tabs.create({
 		url: `https://www.instagram.com/${id.split(';').splice(1)}`,
 	})
 }
+
 chrome.notifications.onClicked.addListener(openIG)
 
 chrome.notifications.onButtonClicked.addListener((id, buttonIndex) => {
@@ -420,7 +431,7 @@ chrome.notifications.onButtonClicked.addListener((id, buttonIndex) => {
 })
 
 /**
- *
+ * @param e
  */
 function getWatchlist(e) {
 	chrome.storage.sync.get({ options: null, watchData: null }, data => {
@@ -429,6 +440,7 @@ function getWatchlist(e) {
 			console.error(chrome.runtime.lastError.message)
 			return
 		}
+
 		if (options === null) {
 			console.error('Empty options', options, data.watchData)
 			return
@@ -444,7 +456,7 @@ function getWatchlist(e) {
 }
 
 /**
- *
+ * @param url
  */
 function getBlobUrl(url) {
 	return new Promise((resolve, reject) => {
@@ -472,7 +484,7 @@ const notificationOptions = {
 const get = (path, object) => path.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), object)
 
 /**
- *
+ * @param url
  */
 function getProfilePicId(url) {
 	const pic_id = url.split('/')
@@ -481,7 +493,11 @@ function getProfilePicId(url) {
 }
 
 /**
- *
+ * @param json
+ * @param user
+ * @param userObject
+ * @param watchData
+ * @param options
  */
 function handlePost(json, user, userObject, watchData, options) {
 	const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json)
@@ -517,6 +533,7 @@ function handlePost(json, user, userObject, watchData, options) {
 				})
 				.catch(logAndReject)
 		}
+
 		return
 	}
 
@@ -541,7 +558,11 @@ function handlePost(json, user, userObject, watchData, options) {
 }
 
 /**
- *
+ * @param json
+ * @param user
+ * @param userObject
+ * @param watchData
+ * @param options
  */
 function handleStory(json, user, userObject, watchData, options) {
 	const userJson = get(['data', 'user'], json)
@@ -576,14 +597,15 @@ function handleStory(json, user, userObject, watchData, options) {
 }
 
 /**
- *
+ * @param user
+ * @param options
  */
 function notifyError(user, options) {
 	options.type = 'basic'
 	options.title = `${user} could not be found`
 	options.message = `${user} might have changed the Instagram nickname. Please go to the options and remove the name.`
 	options.iconUrl = 'img/icon-128.png'
-	chrome.notifications.create(`error;${user}/`, options, undefined) // @TODO: Add 'click to remove'
+	chrome.notifications.create(`error;${user}/`, options) // @TODO: Add 'click to remove'
 }
 
 const WEB_OPTS = {
@@ -605,7 +627,12 @@ const QUERY_HASH = 'd4d88dc1500312af6f937f7b804c68c3', // @TODO Update regularel
 //orig: {"user_id":"1514906067","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":false,"include_live_status":true}
 
 /**
- *
+ * @param user
+ * @param userObject
+ * @param type
+ * @param watchData
+ * @param length_
+ * @param i
  */
 function notify(user, userObject, type, watchData, length_, i) {
 	let url,
@@ -641,10 +668,11 @@ function notify(user, userObject, type, watchData, length_, i) {
 }
 
 /**
- *
+ * @param user
+ * @param watchData
  */
 function createUserObject(user, watchData) {
-	let fetchOptions_ = WEB_OPTS
+	const fetchOptions_ = WEB_OPTS
 	//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
 
 	return fetchAux(`https://www.instagram.com/${user}/?__a=1`, fetchOptions_, 'json') // .replace('$$ANON$$', '')
@@ -664,6 +692,7 @@ function createUserObject(user, watchData) {
 				const options = { ...notificationOptions }
 				notifyError(user, options)
 			}
+
 			throw e
 		})
 }
