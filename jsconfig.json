@@ -34,5 +34,6 @@
 		"emitDeclarationOnly": true,
 		"outDir": "types"
 	},
+	"experimentalDecorators": true,
 	"exclude": ["dist", "node_modules"]
 }

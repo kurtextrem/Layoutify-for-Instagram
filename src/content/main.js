@@ -68,7 +68,7 @@ const documentElement = document.documentElement,
 let OPTIONS = {}
 
 /**
- *
+ * @param file
  */
 function injectCSS(file) {
 	const style = document.createElement('link')
@@ -78,6 +78,7 @@ function injectCSS(file) {
 	style.href = chrome.extension.getURL(`content/${file}.css`)
 	document.head.append(style) // inserted css is always non-blocking
 }
+
 injectCSS('content') // inject as early as possible
 
 // block middle mouse button
@@ -202,7 +203,8 @@ function handleSidebar() {
 }
 
 /**
- *
+ * @param node
+ * @param mutation
  */
 function handleNode(node, mutation) {
 	const nodeName = node.nodeName
@@ -394,14 +396,14 @@ function addControls(element) {
 }
 
 /**
- *
+ * @param i
  */
 function setBoxWidth(i) {
 	documentElement.style.setProperty('--boxWidth', `${i}vw`)
 }
 
 /**
- *
+ * @param user
  */
 function toggleWatchlist(user) {
 	if (!OPTIONS.watchPosts) OPTIONS.watchPosts = [user]
@@ -410,6 +412,7 @@ function toggleWatchlist(user) {
 
 		i === -1 ? OPTIONS.watchPosts.push(user) : OPTIONS.watchPosts.splice(i, 1)
 	}
+
 	if (!OPTIONS.watchStories) OPTIONS.watchStories = [user]
 	else {
 		const i = OPTIONS.watchStories.indexOf(user)
@@ -442,6 +445,7 @@ function addWatched() {
 		text += 'Posts '
 		cls = true
 	}
+
 	if (OPTIONS.watchStories && OPTIONS.watchStories.indexOf(user) !== -1) {
 		text += 'Stories '
 		cls = true
@@ -542,7 +546,7 @@ const OPTS = {
 }
 
 /**
- *
+ * @param options
  */
 function handleOptions(options) {
 	if (options === null) return options
@@ -564,7 +568,8 @@ function handleOptions(options) {
 }
 
 /**
- *
+ * @param changes
+ * @param area
  */
 function updateStorage(changes, area) {
 	if (changes.options !== undefined) {
@@ -594,7 +599,7 @@ function addFeedDiv() {
 }
 
 /**
- *
+ * @param tries
  */
 function clickShare(tries) {
 	const $elem = $('article section > span:nth-of-type(3n) button')
@@ -610,7 +615,7 @@ function clickShare(tries) {
 }
 
 /**
- *
+ * @param mutations
  */
 function storiesMutationHandler(mutations) {
 	let counterAdded = 0
@@ -646,6 +651,7 @@ function storiesMutationHandler(mutations) {
 		for (let i = amountDummyNodes; i < len; ++i) {
 			storyChildren[i].style.display = 'list-item'
 		} // 4 -> 4 -> 4
+
 		return
 	}
 
@@ -663,7 +669,7 @@ function storiesMutationHandler(mutations) {
 }
 
 /**
- *
+ * @param el
  */
 function moveStories(el) {
 	el.classList.add('ige_movedStories')

@@ -51,9 +51,12 @@ class Stories extends FetchComponent {
 	fetchInitial(cb) {
 		if (Stories.reels_promise !== null) return Stories.reels_promise.then(() => cb && cb())
 
-		Stories.reels_promise = this.fetch('/graphql/query/?query_hash=' + Stories.queryID + '&variables=' + JSON.stringify(Stories.fetchObj), {
-			headers: this.getHeaders(false),
-		})
+		Stories.reels_promise = FetchComponent.fetch(
+			`/graphql/query/?query_hash=${Stories.queryID}&variables=${JSON.stringify(Stories.fetchObj)}`,
+			{
+				headers: FetchComponent.getHeaders(false),
+			}
+		)
 			.then(json => {
 				Stories.reels = json?.data?.user?.feed_reels_tray?.edge_reels_tray_to_reel?.edges || []
 				cb && cb()
@@ -83,8 +86,8 @@ class Stories extends FetchComponent {
 
 		if (obj.reel_ids.length === 0) return this.forceUpdate()
 
-		this.fetch('/graphql/query/?query_hash=' + Stories.reelsQueryID + '&variables=' + JSON.stringify(obj), {
-			headers: this.getHeaders(false),
+		FetchComponent.fetch(`/graphql/query/?query_hash=${Stories.reelsQueryID}&variables=${JSON.stringify(obj)}`, {
+			headers: FetchComponent.getHeaders(false),
 		})
 			.then(json => {
 				const nextItems = json.data.reels_media,
@@ -145,7 +148,7 @@ class Stories extends FetchComponent {
 
 	componentDidMount() {
 		console.log('didmount')
-		Stories.itemAmount = ~~(document.getElementById('ige_feed').clientWidth / 135)
+		Stories.itemAmount = Math.trunc(document.getElementById('ige_feed').clientWidth / 135)
 		this.fetchInitial(this.fetchNext)
 	}
 

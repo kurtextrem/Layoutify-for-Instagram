@@ -1,6 +1,7 @@
 {
 	// Change this to match your project
 	"include": ["src/**/*"],
+	"experimentalDecorators": true,
 
 	"compilerOptions": {
 		// Tells TypeScript to read JS files, as
@@ -14,7 +15,8 @@
 		// Types should go into this directory.
 		// Removing this would place the .d.ts files
 		// next to the .js files
-		"outDir": "types"
+		"outDir": "types",
+		"experimentalDecorators": true
 		// https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html
 	}
 }

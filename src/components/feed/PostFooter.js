@@ -15,7 +15,7 @@ export default class PostFooter extends FetchComponent {
 		this.setState({ canSubmit: false }, async () => {
 			const response = await this.fetch(`/web/comments/${this.props.id}/add/`, {
 				body: new FormData(e.target),
-				headers: this.getHeaders(true),
+				headers: FetchComponent.getHeaders(true),
 				method: 'POST',
 			})
 

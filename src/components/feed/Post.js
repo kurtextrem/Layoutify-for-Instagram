@@ -58,8 +58,8 @@ export default class Post extends FetchComponent {
 	post(action) {
 		const path = action.indexOf('like') !== -1 ? 'likes' : action.replace('un', '') // like -> likes; unsave -> save; ...
 
-		return this.fetch(`/web/${path}/${this.props.data.id}/${action}/`, {
-			headers: this.getHeaders(true),
+		return FetchComponent.fetch(`/web/${path}/${this.props.data.id}/${action}/`, {
+			headers: FetchComponent.getHeaders(true),
 			method: 'POST',
 		})
 	}
@@ -145,7 +145,7 @@ export default class Post extends FetchComponent {
 					hasSaved={hasSaved}
 					onLike={this.handleLike}
 					onSave={this.handleSave}
-					enableShare={true} // !owner.is_private
+					enableShare // !owner.is_private
 				/>
 				<div class="ige_post-content px-12">
 					{text !== undefined ? (

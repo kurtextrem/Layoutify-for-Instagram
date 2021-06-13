@@ -83,8 +83,8 @@ class Feed extends FetchComponent {
 		const obj = { ...this.fetchObj }
 		obj.fetch_media_item_cursor = this.state.cursor
 
-		const response = await this.fetch('/graphql/query/?query_hash=' + this.queryID + '&variables=' + JSON.stringify(obj), {
-			headers: this.getHeaders(false),
+		const response = await FetchComponent.fetch(`/graphql/query/?query_hash=${this.queryID}&variables=${JSON.stringify(obj)}`, {
+			headers: FetchComponent.getHeaders(false),
 		})
 
 		if (response.status !== 'ok') {
