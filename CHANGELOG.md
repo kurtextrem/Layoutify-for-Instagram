@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.6.0 - 2021-06-17
+
+For some users, the "suspicion bans" are still happening and I am working on fixing them. I have updated a few other things, that might have been outdated, so fingers crossed, that 3.6.0 will stop them finally. **If you have any hints, write me an email, it is very important to know what actions you did before the ban got triggered, so that I can fix it**.
+
+**❗ For now, please do not open many Instagram.com tabs at the same time! This seems to be one of the causes ❗**
+
+### New features
+
+- The DMs page now supports dark mode too
+- Modals (e.g. when you click a post on someones profile) are now bigger
+
 ## 3.5.0 - 2021-06-02
 
 "Suspicion bans" from Instagram happened for some users in the past days and thanks to Cheyi, Nedi and Mike who wrote me in the Chrome WebStore and via email (I read all your comments and try to reply :) ), I have finally found the culprit.
