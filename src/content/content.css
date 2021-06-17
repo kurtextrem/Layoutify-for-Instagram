@@ -497,6 +497,7 @@ div[role='button'] > div > div:not(:first-child):not(:last-child),
 div[role='button'] > div > button {
 	z-index: 3; /* so it doesn't overlap tagged users */
 }
+
 div[role='button'] + div[class] + div[class][style] /* tagged users */ {
 	z-index: 4;
 }
@@ -910,6 +911,11 @@ video::-webkit-media-controls:not(.audio-only) div[pseudo='-webkit-media-control
 /*=============================================
 										Post
 =============================================*/
+/** Enlargen modal */
+div[role='dialog'] > div[role='dialog'] > div[role='dialog'] {
+	max-width: none !important;
+}
+
 /** Enlargen modal */
 body > div > div[role='dialog'] article,
 .post article,
