@@ -614,7 +614,7 @@ const WEB_OPTS = {
 	},
 }
 
-const QUERY_HASH = 'd4d88dc1500312af6f937f7b804c68c3', // @TODO Update regularely, last check 09.09.2020 - request loads on any profile/non-home page
+const QUERY_HASH = 'd4d88dc1500312af6f937f7b804c68c3', // @TODO Update regularely, last check 17.06.2021 - request loads on any profile
 	storiesParams = {
 		include_chaining: true,
 		include_highlight_reels: false,
@@ -624,7 +624,7 @@ const QUERY_HASH = 'd4d88dc1500312af6f937f7b804c68c3', // @TODO Update regularel
 		include_suggested_users: false,
 		user_id: '',
 	}
-//orig: {"user_id":"1514906067","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":false,"include_live_status":true}
+//orig: {"user_id":"","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":false,"include_live_status":true}
 
 /**
  * @param user

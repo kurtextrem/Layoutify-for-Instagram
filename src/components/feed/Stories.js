@@ -12,7 +12,7 @@ class Stories extends FetchComponent {
 
 	static reels = []
 
-	static queryID = '7223fb3539e10cad7900c019401669e7' // preloaded query id // @TODO Update regularely, last check 23.09.2020
+	static queryID = '0ae2bc5ea94ae2255f0ce78b7cd2d791' // <link rel="preload" query id // @TODO Update regularely, last check 17.06.2021
 
 	static fetchObj = {
 		only_stories: true,
@@ -32,7 +32,7 @@ class Stories extends FetchComponent {
 		tag_names: [],
 	}
 
-	static reelsQueryID = 'f5dc1457da7a4d3f88762dae127e0238' // stories query id // @TODO Update regularely, last check 20.04.2020
+	static reelsQueryID = 'ac897a58b021a59013b517e73f8f9865' // stories query id, r(d[5]).query(f,{reel_ids: in ConsumerLibCommons // @TODO Update regularely, last check 20.04.2020
 
 	static itemAmount = 12
 

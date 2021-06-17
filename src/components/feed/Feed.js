@@ -8,7 +8,7 @@ import Stories from './Stories'
 import bind from 'autobind-decorator'
 import withIntersectionObserver from './withIntersectionObserver'
 import { Fragment, h } from 'preact'
-import { iObs, promiseReq, rObs, shallowDiffers } from '../Utils'
+import { promiseReq, shallowDiffers } from '../Utils'
 //import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
 
 class Feed extends FetchComponent {
@@ -35,6 +35,7 @@ class Feed extends FetchComponent {
 	db = null
 
 	fetchObj = {
+		// @TODO Update regularely, last check 17.06.2021, same as below
 		cached_feed_item_ids: [],
 		fetch_comment_count: 4,
 		fetch_like: 3,
@@ -49,7 +50,7 @@ class Feed extends FetchComponent {
 	constructor(props) {
 		super(props)
 
-		this.queryID = '6b838488258d7a4820e48d209ef79eb1' // feed query id // @TODO Update regularely, last check 13.04.2020
+		this.queryID = 'a7124f10a3421523b50620bb071434ca' // feed query id &variables=%7B%22has_threaded_comments%22%3Atrue%7D // @TODO Update regularely, last check 17.06.2021
 
 		//this.iObs = iObs()
 		//this.rObs = rObs()
