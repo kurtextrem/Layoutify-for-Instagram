@@ -1,4 +1,3 @@
-import Arrow from './Arrow'
 import Dots from '../Dots'
 import User from './User'
 import bind from 'autobind-decorator'
@@ -125,7 +124,7 @@ export default class PostMedia extends Component {
 					)
 				})}
 				<button type="button" class="ige_button ige_post_userIcon" onClick={this.toggleTaggedUsers}>
-					<User size="24" fill="white" />
+					<User size="12" fill="white" />
 				</button>
 			</>
 		)
@@ -181,10 +180,10 @@ export default class PostMedia extends Component {
 					onMouseOut={this.handleMouseOut}>
 					<div class="img--wrapper">{mediaElement}</div>
 					{isCarousel && carouselIndex !== 0 ? (
-						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick} />
+						<button type="button" class="ige_button ig_sprite ige_carousel-btn ige_carousel-btn--left" onClick={this.handleArrowClick} />
 					) : null}
 					{isCarousel ? (
-						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.handleArrowClick} />
+						<button type="button" class="ige_button ig_sprite ige_carousel-btn ige_carousel-btn--right" onClick={this.handleArrowClick} />
 					) : null}
 				</div>
 				{isCarousel ? <Dots index={carouselIndex} len={carouselLen} /> : null}
