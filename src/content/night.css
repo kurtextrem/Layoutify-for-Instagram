@@ -31,6 +31,8 @@
 
 /* Body */
 body,
+.dms > section > div,
+.dms > section > div *,
 section > main,
 section > main *:not(canvas):not([class*='Sprite']):not(video):not([role='button']) {
 	color: var(--text) !important;
@@ -38,6 +40,8 @@ section > main *:not(canvas):not([class*='Sprite']):not(video):not([role='button
 }
 
 section > nav > div > div,
+.dms > section > div > div:first-child /* nav in DMs */,
+.dms > section > div > div:first-child * /* nav in DMs */,
 section > footer,
 div[role='dialog'],
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div {
@@ -45,6 +49,8 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 	background-color: var(--primary) !important;
 }
 
+.dms > section > div > div:first-child input /* nav in DMs */,
+.dms > section > div > div:first-child input + div /* nav in DMs */,
 nav input,
 nav input + div {
 	color: var(--text) !important;
@@ -67,11 +73,14 @@ li span {
 }
 
 /** Hue Rotation 100% - Important: This has a drastic performance impact. Don't over-use! */
-[class*='Sprite'],
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div::after /** Stories after "shadow" **/,
- svg {
+#react-root:not(.dms) [class*='Sprite'],
+main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div::after /** Stories after "shadow" **/ {
 	filter: invert(100%) hue-rotate(180deg); /* 60%, no hue rotation before */
 	mix-blend-mode: screen;
+}
+
+svg {
+	fill: var(--text) !important;
 }
 
 /** Hue Rotation 60%, easier on the eyes - Important: This has a drastic performance impact. Don't over-use! */
@@ -246,4 +255,21 @@ nav input + div {
 
 div[role='dialog'] > div > div + div {
 	background-color: transparent !important;
+}
+
+/*=============================================
+									DMs (separate page)
+=============================================*/
+
+.dms > section > div > div:first-child > div /* nav in DMs */ {
+	height: 53px; /* display border */
+}
+
+.dms > section > div > div:last-child > div > div:first-child > div:first-child > div:first-child > div {
+	height: 59px; /* display border */
+}
+
+#react-root.dms a[href='/'],
+#react-root.dms a[href='/'] * {
+	background-color: unset !important;
 }
