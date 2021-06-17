@@ -9,7 +9,7 @@ For some users, the "suspicion bans" are still happening and I am working on fix
 ### New features
 
 - The DMs page now supports dark mode too
-- Modals (e.g. when you click a post on someones profile) are now bigger
+- Modals (when you click a post on someones profile) are now bigger (<small>_thanks to Dominic for the suggestion_</small>)
 
 ## 3.5.0 - 2021-06-02
 
