@@ -178,9 +178,9 @@ const API_URL = {
 const PRIVATE_API_OPTS = {
 	headers: {
 		Accept: '*/*',
-		//'Accept-Encoding': 'gzip, deflate',
-		//'Accept-Language': 'en-US',
-		//Connection: 'keep-alive',
+		'Accept-Encoding': 'gzip, deflate',
+		'Accept-Language': 'en-US',
+		Connection: 'keep-alive',
 		'X-FB-HTTP-Engine': 'Liger',
 		'X-IG-App-ID': '567067343352427',
 		'X-IG-Bandwidth-Speed-KBPS': '-1.000',
