@@ -78,7 +78,7 @@ export default class PostMedia extends Component {
 					controls
 					onVolumeChange={this.setVolume}
 					ref={this.videoRef}
-					crossorigin="anonymous" // so it does not send cookies over, which might make the request faster?! Instagram uses it also for <script
+					crossOrigin="anonymous" // so it does not send cookies over, which might make the request faster?! Instagram uses it also for <script
 				/>
 			)
 		}
@@ -91,7 +91,7 @@ export default class PostMedia extends Component {
 				decoding="async"
 				width={media.dimensions.width}
 				height={media.dimensions.height}
-				crossorigin="anonymous" // so it does not send cookies over, which might make the request faster?! Instagram uses it also for <script
+				crossOrigin="anonymous" // so it does not send cookies over, which might make the request faster?! Instagram uses it also for <script
 			/>
 		)
 	}
@@ -113,14 +113,14 @@ export default class PostMedia extends Component {
 
 					return (
 						<div
-							key={node.x + '' + node.y + '' + node.user.id}
+							key={`${node.x}${node.y}${node.user.id}`}
 							class="ige_taggedUser"
 							style={{
-								left: node.x * 100 + '%',
-								top: node.y * 100 + '%',
+								left: `${node.x * 100}%`,
+								top: `${node.y * 100}%`,
 								transform: `translate(${node.y > 0.15 ? '-50%' : '0'}, ${node.y > 0.85 ? '-100%' : '0'}`,
 							}}>
-							<a href={'/' + username + '/'}>{node.user.full_name || username}</a>
+							<a href={`/${username}/`}>{node.user.full_name || username}</a>
 						</div>
 					)
 				})}
@@ -132,7 +132,9 @@ export default class PostMedia extends Component {
 	}
 
 	@bind
-	handleDblClick() {
+	handleDblClick(e) {
+		if (e.target.type === 'button') return // do not like on arrow click.
+
 		this.props.onLike()
 	}
 
@@ -153,10 +155,8 @@ export default class PostMedia extends Component {
 		const { data } = this.props
 		const { carouselIndex, carouselLen, isCarousel } = this.state
 
-		let mediaElement
-
-		if (isCarousel) {
-			mediaElement = data.edge_sidecar_to_children.edges.map((v, i) => (
+		const mediaElement = isCarousel ? (
+			data.edge_sidecar_to_children.edges.map((v, i) => (
 				<div
 					key={v.id}
 					data-active={i === carouselIndex ? '' : undefined}
@@ -165,14 +165,12 @@ export default class PostMedia extends Component {
 					{this.getTaggedUsers(v.node.edge_media_to_tagged_user?.edges)}
 				</div>
 			))
-		} else {
-			mediaElement = (
-				<div data-active>
-					{this.getMedia(data)}
-					{this.getTaggedUsers(data.edge_media_to_tagged_user?.edges)}
-				</div>
-			)
-		}
+		) : (
+			<div data-active>
+				{this.getMedia(data)}
+				{this.getTaggedUsers(data.edge_media_to_tagged_user?.edges)}
+			</div>
+		)
 
 		return (
 			<>
