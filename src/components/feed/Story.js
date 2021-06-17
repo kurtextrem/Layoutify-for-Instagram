@@ -1,10 +1,14 @@
 import { Fragment, h } from 'preact'
 import { Modal } from 'react-responsive-modal'
+import { cancelOpenModalDelayed, closeIframe, openModalDelayed } from '../Utils'
 import { memo, useCallback, useState } from 'preact/compat'
-import { closeIframe, openModalDelayed, cancelOpenModalDelayed } from '../Utils'
 
 /**
- *
+ * @param root0
+ * @param root0.data
+ * @param root0.src
+ * @param root0.type
+ * @param root0.additionalClass
  */
 function Story({ data, src, type, additionalClass }) {
 	const [isOpen, setOpen] = useState(false)
@@ -33,7 +37,7 @@ function Story({ data, src, type, additionalClass }) {
 		<>
 			<div
 				class={`ige_story ${additionalClass} ${wasOpen ? 'black-white' : ''} ${has_besties_media ? 'bestie-story' : ''} ${
-					type === 'GraphStoryVideo' ? 'story-video' : ''
+					type === 'GraphStoryVideo' ? 'story-video ig_sprite-before' : ''
 				}`}
 				onMouseOver={renderModalDelayed}
 				onMouseOut={cancelOpenModalDelayed}>
@@ -43,8 +47,15 @@ function Story({ data, src, type, additionalClass }) {
 					</div>
 					<div class="ige_story-avatar_container br-6">
 						<div role="button" tabIndex="0" class="d-flex a-center">
-							<span class="ige_story-avatar" role="link" tabIndex="0">
-								<img decoding="async" alt={username + 's Profilbild'} class="full-img br-50" src={profile_pic_url} />
+							<span class="ig_sprite-before ige_story-avatar" role="link" tabIndex="0">
+								<img
+									decoding="async"
+									alt={`${username}s Profilbild`}
+									class="full-img br-50"
+									src={profile_pic_url}
+									width={150}
+									height={150}
+								/>
 							</span>
 						</div>
 						<div class="ige_story-username">{username}</div>
@@ -65,7 +76,8 @@ function Story({ data, src, type, additionalClass }) {
 export default memo(Story)
 
 /**
- *
+ * @param items
+ * @param seen
  */
 export function returnUnseenSrc(items, seen) {
 	if (items === null) return null

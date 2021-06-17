@@ -1,6 +1,5 @@
 import FetchComponent from './FetchComponent'
 //import VirtualList from './VirtualList'
-import Arrow from './Arrow'
 import Story, { returnUnseenSrc } from './Story'
 import bind from 'autobind-decorator'
 import { Fragment, h } from 'preact'
@@ -194,15 +193,11 @@ class Stories extends FetchComponent {
 				</div>
 				<div class="ige_stories_container">
 					{page > 0 ? (
-						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--left" onClick={this.prevPage}>
-							<Arrow direction="left" size="30" fill="gray" />
-						</button>
+						<button type="button" class="ige_button ig_sprite ige_carousel-btn ige_carousel-btn--left" onClick={this.prevPage} />
 					) : null}
 					{items}
 					{hasNextPage ? (
-						<button type="button" class="ige_button ige_carousel-btn ige_carousel-btn--right" onClick={this.nextPage}>
-							<Arrow direction="right" size="30" fill="gray" />
-						</button>
+						<button type="button" class="ige_button ig_sprite ige_carousel-btn ige_carousel-btn--right" onClick={this.nextPage} />
 					) : null}
 				</div>
 			</div>
