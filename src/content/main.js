@@ -503,8 +503,13 @@ const OPTS_MODE = {
 			(hour < OPTIONS.nightModeStart && hour < OPTIONS.nightModeEnd) ||
 			OPTIONS.nightModeStart === OPTIONS.nightModeEnd ||
 			(OPTIONS.nightSystem && window.matchMedia('(prefers-color-scheme:dark)').matches)
-		)
+		) {
 			injectCSS('night')
+			const meta = document.createElement('meta')
+			meta.name = 'color-scheme'
+			meta.content = 'dark light'
+			document.head.appendChild(meta)
+		}
 	},
 	notify(argument) {
 		chrome.runtime.sendMessage(null, { action: 'watchNow' })
