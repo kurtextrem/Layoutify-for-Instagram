@@ -160,5 +160,13 @@
 	"hideVerifiedIcon": {
 		"message": "Hide 'Verified Profile' Icon",
 		"description": "Option to hide the verified profile icon"
+	},
+	"modalWidth": {
+		"message": "Modal Width",
+		"description": "setting"
+	},
+	"modalWidth_help": {
+		"message": "Controls the width of modals (when you click a post on a user profile). Default is 85, Instagram's default around 50.",
+		"description": "setting"
 	}
 }

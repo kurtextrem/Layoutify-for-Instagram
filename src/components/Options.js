@@ -32,6 +32,8 @@ export default class Options extends Component {
 		rowsFourBoxWidth: 23,
 		rowsTwoBoxWidth: 40,
 
+		modalWidth: 85,
+
 		//hidePrivateIcon: false, // @TODO load in main.js & then apply CSS
 		//hideVerifiedIcon: false, // @TODO load in main.js & then apply CSS
 
@@ -112,6 +114,13 @@ export default class Options extends Component {
 				if (e.target.checked === true) chrome.runtime.sendMessage(null, { action: 'watchInBackground' })
 				else chrome.runtime.sendMessage(null, { action: 'stopWatchInBackground' })
 			},
+		},
+		modalWidth: {
+			min: 25,
+			step: 1,
+			max: 85,
+			help: true,
+			onChange: undefined,
 		},
 	}
 

@@ -152,5 +152,13 @@
 				"example": "JacobGross_"
 			}
 		}
+	},
+	"modalWidth": {
+		"message": "Modal Breite",
+		"description": "setting"
+	},
+	"modalWidth_help": {
+		"message": "Kontrolliert die Breite von Modalen (nach Klick auf Beiträgen auf User-Profilen). Standard ist 85, Instagrams Standard ca 50.",
+		"description": "setting"
 	}
 }

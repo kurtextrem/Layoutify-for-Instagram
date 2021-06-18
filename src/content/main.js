@@ -396,10 +396,11 @@ function addControls(element) {
 }
 
 /**
- * @param i
+ * @param name
+ * @param value
  */
-function setBoxWidth(i) {
-	documentElement.style.setProperty('--boxWidth', `${i}vw`)
+function setCSSVar(name, value) {
+	documentElement.style.setProperty(`--${name}`, `${value}vw`)
 }
 
 /**
@@ -481,10 +482,10 @@ function addWatched() {
 /** Options handlers */
 const OPTS_MODE = {
 	//highlightOP(arg) {},
-	_boxWidth(i) {},
-	boxWidth(i) {
-		if (OPTIONS.rows === 2 && i > 25 && i !== 49) setBoxWidth(i)
-		else if (OPTIONS.rows === 4 && i < 25 && i !== 23) setBoxWidth(i)
+	_boxWidth(value) {},
+	boxWidth(value) {
+		if (OPTIONS.rows === 2 && value > 25 && value !== 49) setCSSVar('boxWidth', value)
+		else if (OPTIONS.rows === 4 && value < 25 && value !== 23) setCSSVar('boxWidth', value)
 		else if (OPTIONS.rows === 1) {
 			const $style = $('#ige_style')
 			if ($style !== null) $style.remove()
@@ -522,8 +523,11 @@ const OPTS_MODE = {
 		).style.display = 'flex'
 		$('#ige_feedCSS').remove()
 	},
-	rows(i) {
-		if (i !== 4) setBoxWidth(Math.ceil(100 / (i + 1)))
+	rows(value) {
+		if (value !== 4) setCSSVar('boxWidth', Math.ceil(100 / (value + 1)))
+	},
+	modalWidth(value) {
+		setCSSVar('modalWidth', value)
 	},
 }
 
@@ -547,6 +551,7 @@ const OPTS = {
 	watchInBackground: OPTS_MODE.notify,
 	watchPosts: undefined,
 	watchStories: undefined, // Check for updates when opening IG
+	modalWidth: OPTS_MODE.modalWidth,
 	// indicateFollowing: true
 }
 
