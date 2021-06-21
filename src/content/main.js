@@ -527,7 +527,7 @@ const OPTS_MODE = {
 		if (value !== 4) setCSSVar('boxWidth', Math.ceil(100 / (value + 1)))
 	},
 	modalWidth(value) {
-		setCSSVar('modalWidth', value)
+		if (value !== 85) setCSSVar('modalWidth', value)
 	},
 }
 
