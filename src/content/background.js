@@ -118,7 +118,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 			'*://*.cdninstagram.com/*',
 			// private_web
 			'https://i.instagram.com/api/v1/*',
-			'https://www.instagram.com/graphql/*',
+			'https://www.instagram.com/*',
 		],
 	},
 	['blocking', 'requestHeaders', 'extraHeaders']
@@ -268,8 +268,8 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 	}
 
 	if (which === 'PRIVATE_WEB') {
-		PRIVATE_WEB_API_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
 		PRIVATE_WEB_API_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
+		PRIVATE_WEB_API_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
 		fetchAux(API_URL[which] + path, PRIVATE_WEB_API_OPTS, 'text')
 			.then(fixMaxId)
 			.then(parseJSON)
@@ -565,35 +565,38 @@ function handlePost(json, user, userObject, watchData, options) {
 	const node = get(['edge_owner_to_timeline_media', 'edges', '0', 'node'], userNode)
 	handleGraphQL(3, json, user, userObject, watchData, options) // handle IGTV
 
-	const id = node.shortcode,
-		pic = userNode.profile_pic_url_hd
-
+	const id = node.shortcode
 	const hasNewPost = id !== null && id != userObject.post
-	const needsProfilePic = hasNewPost || user_pic !== picId
+	watchData[user].post = id
+
+	const isPrivate = userNode.is_private
+	const hasPrivateChanged = watchData[user].priv && isPrivate !== watchData[user].priv
+	watchData[user].priv = isPrivate
+
+	const pic = userNode.profile_pic_url_hd
+	const user_pic = getProfilePicId(watchData[user].pic), // @todo Migration code getProfilePicId
+		picId = getProfilePicId(pic)
+	const profilePictureChanged = user_pic !== picId
+	watchData[user].pic = picId
+
+	const needsProfilePic = hasNewPost || profilePictureChanged || hasPrivateChanged
+	if (!needsProfilePic) return
 
 	const blob = getBlobUrl(pic)
 	const promises = []
 
-	const isPrivate = userNode.is_private
-	if (watchData[user].priv && userNode.is_private !== watchData[user].priv)
+	if (hasPrivateChanged)
 		promises.push(
 			blob.then(url => createNotification(`priv;${user}/`, chrome.i18n.getMessage(`watch_priv${isPrivate}`, user), options, url))
 		)
-	watchData[user].priv = isPrivate
 
-	const user_pic = getProfilePicId(watchData[user].pic), // @todo Migration code getProfilePicId
-		picId = getProfilePicId(pic)
-
-	if (user_pic !== picId)
+	if (profilePictureChanged)
 		promises.push(blob.then(url => createNotification(`pic;${user}/`, chrome.i18n.getMessage(`watch_newPic`, user), options, url)))
-	watchData[user].pic = picId
 
 	if (hasNewPost) {
 		// if no post exsits, or if String/Number id == userObject.post (String)
 		//console.log(user, 'no new post', node)
-
 		console.log(user, 'new post', node, userObject.post)
-		watchData[user].post = id
 
 		options.type = 'image'
 		options.title = chrome.i18n.getMessage('watch_newPost', user)
@@ -647,17 +650,19 @@ function handleStory(json, user, userObject, watchData, options) {
 		}
 	} */
 
-	if (highlightId !== null) watchData[user].highlight = highlightId // @todo could check for rename
 	if (followerId !== null && watchData[user].follower && watchData[user].follower !== followerId)
 		console.warn(user, 'new common follower', followerId)
 	watchData[user].follower = followerId
 	// watchData[user].live = isLive
 
 	const isStoryUnseen = id !== null && id > reel.seen
-	const isNewHighlight = watchData[user].highlight && watchData[user].highlight !== highlightId
-	const needsProfilePic = isStoryUnseen || isNewHighlight || isLive
 
+	const isNewHighlight = watchData[user].highlight && watchData[user].highlight !== highlightId
+	watchData[user].highlight = highlightId // @todo could check for rename
+
+	const needsProfilePic = isStoryUnseen || isNewHighlight || isLive
 	if (!needsProfilePic) return
+
 	const blob = getBlobUrl(reel.owner.profile_pic_url)
 	const promises = []
 
@@ -671,18 +676,16 @@ function handleStory(json, user, userObject, watchData, options) {
 		)
 	} else console.log(user, 'no new story', reel)
 
-	if (isNewHighlight) {
+	if (isNewHighlight)
 		promises.push(
 			blob.then(url => createNotification(`highlight;${user}/`, chrome.i18n.getMessage('watch_newHighlight', user), options, url))
 		)
-	}
 
-	if (isLive) {
+	if (isLive)
 		// @todo when timer is < 60 min, enable check if notification has been sent already
 		promises.push(
 			blob.then(url => createNotification(`live;${user}/`, chrome.i18n.getMessage('watch_isLive', user), options, url)).catch(logAndReject)
 		)
-	}
 
 	Promise.all(promises)
 		.then(values => URL.revokeObjectURL(values[0]))
