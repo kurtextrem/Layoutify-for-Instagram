@@ -560,258 +560,6 @@ main > section > div:first-child:not(#rcr-anchor) {
 }
 
 /* Sidebar container */
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
-		top: 75px !important;
-		right: 0;
-		left: unset !important;
-		z-index: 10;
-		height: auto !important;
-		margin-bottom: 0;
-		padding-top: 0;
-		padding-bottom: 11px;
-		background-color: rgba(var(--primary-rgb), 0.8);
-		border-top-left-radius: 4px;
-		border-bottom-left-radius: 4px;
-		box-shadow: -1px 1px 7px 0 #bdbdbd;
-		transform: translateX(80%);
-		transition: none;
-		contain: content;
-	}
-}
-
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
 main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
 	top: 75px !important;
@@ -1125,18 +873,6 @@ section > footer + div {
 										Stories
 =============================================*/
 /** Reply box + send */
-@media screen and (prefers-reduced-motion: reduce) {
-	.stories section header + button + div:last-child {
-		bottom: 70px;
-		z-index: 2;
-		height: auto; /* no need for the black fading background */
-		padding: 0 5px 0 15px;
-		background: none;
-		transform: translateY(70px);
-		transition: none;
-	}
-}
-
 .stories section header + button + div:last-child {
 	bottom: 70px;
 	z-index: 2;
@@ -1192,7 +928,7 @@ div[role='dialog'] div[role='button'] > div:first-child {
 div[role='dialog'] div > img {
 	max-height: var(--modalHeight);
 	object-fit: contain !important;
-	background-image: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgb(0 0 0 / 25%) 100%);
+	background-image: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(0, 0, 0, 0.25) 100%);
 }
 
 /** Enlargen modal */
@@ -1412,17 +1148,6 @@ footer > div > nav {
 	opacity: 1;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.ige_picturesOnly.home + #ige_feed article > .ige_actions_container {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 20%;
-		opacity: 0.33;
-		transition: none;
-	}
-}
-
 .ige_picturesOnly.home + #ige_feed article > .ige_actions_container {
 	position: absolute;
 	bottom: 0;
@@ -1430,19 +1155,6 @@ footer > div > nav {
 	width: 20%;
 	opacity: 0.33;
 	transition: opacity 400ms ease-out;
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	.ige_picturesOnly.home + #ige_feed article > .ige_footer {
-		position: absolute;
-		right: 0;
-		bottom: -3px;
-		z-index: 1;
-		width: 80%;
-		border-top: 0;
-		opacity: 0;
-		transition: none;
-	}
 }
 
 .ige_picturesOnly.home + #ige_feed article > .ige_footer {
