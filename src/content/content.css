@@ -4,6 +4,7 @@
 	--primary: white;
 	--primary-rgb: 255, 255, 255;
 	--modalWidth: 85vw;
+	--modalHeight: 90vh;
 }
 
 /*html,
@@ -643,6 +644,174 @@ main > section > div:first-child:not(#rcr-anchor) {
 	}
 }
 
+@media screen and (prefers-reduced-motion: reduce) {
+	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
+	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
+		top: 75px !important;
+		right: 0;
+		left: unset !important;
+		z-index: 10;
+		height: auto !important;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 11px;
+		background-color: rgba(var(--primary-rgb), 0.8);
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		box-shadow: -1px 1px 7px 0 #bdbdbd;
+		transform: translateX(80%);
+		transition: none;
+		contain: content;
+	}
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
+	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
+		top: 75px !important;
+		right: 0;
+		left: unset !important;
+		z-index: 10;
+		height: auto !important;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 11px;
+		background-color: rgba(var(--primary-rgb), 0.8);
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		box-shadow: -1px 1px 7px 0 #bdbdbd;
+		transform: translateX(80%);
+		transition: none;
+		contain: content;
+	}
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
+	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
+		top: 75px !important;
+		right: 0;
+		left: unset !important;
+		z-index: 10;
+		height: auto !important;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 11px;
+		background-color: rgba(var(--primary-rgb), 0.8);
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		box-shadow: -1px 1px 7px 0 #bdbdbd;
+		transform: translateX(80%);
+		transition: none;
+		contain: content;
+	}
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
+	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
+		top: 75px !important;
+		right: 0;
+		left: unset !important;
+		z-index: 10;
+		height: auto !important;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 11px;
+		background-color: rgba(var(--primary-rgb), 0.8);
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		box-shadow: -1px 1px 7px 0 #bdbdbd;
+		transform: translateX(80%);
+		transition: none;
+		contain: content;
+	}
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
+	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
+		top: 75px !important;
+		right: 0;
+		left: unset !important;
+		z-index: 10;
+		height: auto !important;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 11px;
+		background-color: rgba(var(--primary-rgb), 0.8);
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		box-shadow: -1px 1px 7px 0 #bdbdbd;
+		transform: translateX(80%);
+		transition: none;
+		contain: content;
+	}
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
+	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
+		top: 75px !important;
+		right: 0;
+		left: unset !important;
+		z-index: 10;
+		height: auto !important;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 11px;
+		background-color: rgba(var(--primary-rgb), 0.8);
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		box-shadow: -1px 1px 7px 0 #bdbdbd;
+		transform: translateX(80%);
+		transition: none;
+		contain: content;
+	}
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
+	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
+		top: 75px !important;
+		right: 0;
+		left: unset !important;
+		z-index: 10;
+		height: auto !important;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 11px;
+		background-color: rgba(var(--primary-rgb), 0.8);
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		box-shadow: -1px 1px 7px 0 #bdbdbd;
+		transform: translateX(80%);
+		transition: none;
+		contain: content;
+	}
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
+	main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
+		top: 75px !important;
+		right: 0;
+		left: unset !important;
+		z-index: 10;
+		height: auto !important;
+		margin-bottom: 0;
+		padding-top: 0;
+		padding-bottom: 11px;
+		background-color: rgba(var(--primary-rgb), 0.8);
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+		box-shadow: -1px 1px 7px 0 #bdbdbd;
+		transform: translateX(80%);
+		transition: none;
+		contain: content;
+	}
+}
+
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
 main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
 	top: 75px !important;
@@ -1012,6 +1181,18 @@ video::-webkit-media-controls:not(.audio-only) div[pseudo='-webkit-media-control
 div[role='dialog'] > div[role='dialog'] > div[role='dialog'],
 div[role='dialog'] > div:first-child > div:only-child > div:only-child {
 	max-width: var(--modalWidth) !important;
+	max-height: var(--modalHeight);
+}
+
+div[role='dialog'] div[role='button'] > div:first-child {
+	max-height: var(--modalHeight);
+	overflow: hidden;
+}
+
+div[role='dialog'] div > img {
+	max-height: var(--modalHeight);
+	object-fit: contain !important;
+	background-image: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgb(0 0 0 / 25%) 100%);
 }
 
 /** Enlargen modal */
@@ -1019,7 +1200,7 @@ body > div > div[role='dialog'] article,
 .post article,
 .tv article {
 	min-height: 50vh;
-	max-height: 90vh;
+	max-height: var(--modalHeight);
 	margin-bottom: 0;
 	contain: layout style;
 }
