@@ -82,7 +82,6 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 			'https://i.instagram.com/api/v1/feed/liked/*',
 			'https://i.instagram.com/api/v1/feed/saved/*',
 			'https://i.instagram.com/api/v1/feed/collection/*',
-			'https://i.instagram.com/api/v1/collections/list/*',
 		],
 	},
 	['blocking', 'requestHeaders', 'extraHeaders']
@@ -113,8 +112,14 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 		return { requestHeaders: details.requestHeaders }
 	},
 	{
-		types: ['image', 'media'],
-		urls: ['*://*.fbcdn.net/*', '*://*.cdninstagram.com/*'],
+		types: ['image', 'media', 'xmlhttprequest'],
+		urls: [
+			'*://*.fbcdn.net/*',
+			'*://*.cdninstagram.com/*',
+			// private_web
+			'https://i.instagram.com/api/v1/*',
+			'https://www.instagram.com/graphql/*',
+		],
 	},
 	['blocking', 'requestHeaders', 'extraHeaders']
 )
@@ -173,6 +178,7 @@ const API_URL = {
 	PRIVATE: 'https://i.instagram.com/api/v1/',
 	PRIVATE_WEB: 'https://i.instagram.com/api/v1/', // once web has more abilities, replace PRIVATE
 	PUBLIC: 'https://www.instagram.com/web/',
+	GRAPHQL: 'https://www.instagram.com/graphql/query/',
 }
 
 const PRIVATE_API_OPTS = {
@@ -242,8 +248,9 @@ const WEB_OPTS = {
  * @param path
  * @param sendResponse
  * @param options
+ * @param error
  */
-function fetchFromBackground(which, path, sendResponse, options) {
+function fetchFromBackground(which, path, sendResponse, options, error) {
 	if (which === 'PUBLIC') {
 		getCookie('csrftoken') // sync with FetchComponent
 			.then(value => {
@@ -266,9 +273,26 @@ function fetchFromBackground(which, path, sendResponse, options) {
 			.then(fixMaxId)
 			.then(parseJSON)
 			.then(sendResponse)
-			.catch(sendResponse)
+			.catch(error || sendResponse)
 
 		return true
+	}
+
+	if (which === 'GRAPHQL') {
+		getCookie('csrftoken') // sync with FetchComponent
+			.then(value => {
+				GRAPHQL_API_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
+				GRAPHQL_API_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
+				GRAPHQL_API_OPTS.headers['x-csrftoken'] = value
+				fetchAux(API_URL[which] + path, GRAPHQL_API_OPTS, 'json')
+					.then(sendResponse)
+					.catch(error)
+
+				return value
+			})
+			.catch(logAndReject)
+
+		return false // for now
 	}
 
 	const opts = { ...PRIVATE_API_OPTS, ...options }
@@ -318,7 +342,7 @@ function fetchAux(url, options, type) {
 			}
 
 			xhr.addEventListener('load', function () {
-				if (xhr.readyState === 4 && xhr.status === 200) {
+				if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
 					resolve(xhr.response)
 				} else {
 					logAndReject(xhr)
@@ -464,8 +488,14 @@ function getWatchlist(e) {
 			data.watchData = {}
 		}
 
-		if (options.watchPosts) checkForWatchedContent(options.watchPosts, 0, data.watchData)
-		if (options.watchStories) checkForWatchedContent(options.watchStories, 1, data.watchData)
+		if (options.watchPosts) {
+			checkForWatchedContent(options.watchPosts, 0, data.watchData) // posts
+			checkForWatchedContent(options.watchPosts, 2, data.watchData) // tagged photos
+			checkForWatchedContent(options.watchPosts, 3, data.watchData) // igtv
+			// checkForWatchedContent(options.watchPosts, 4, data.watchData) // reels
+		}
+
+		if (options.watchStories) checkForWatchedContent(options.watchStories, 1, data.watchData) // story
 	})
 }
 
@@ -524,7 +554,7 @@ function handlePost(json, user, userObject, watchData, options) {
 		pic = json.graphql.user.profile_pic_url_hd
 	if (id === null || id == userObject.post) {
 		// if no post exsits, or if String/Number id == userObject.post (String)
-		console.log(user, 'no new post', node)
+		//console.log(user, 'no new post', node)
 
 		const user_pic = watchData[user].pic,
 			picId = getProfilePicId(pic)
@@ -593,9 +623,10 @@ function handleStory(json, user, userObject, watchData, options) {
 		highlightId = get(['edge_highlight_reels', 'edges', '0', 'node', 'id'], userJson),
 		followerId = get(['edge_chaining', 'edges', '0', 'node', 'id'], userJson)
 
-	if (highlightId !== null) watchData[user].highlight = highlightId
-	//watchData[user].follower = followerId
-	if (followerId !== null) console.log(user, 'follower', followerId)
+	if (highlightId !== null) watchData[user].highlight = highlightId // @todo could check for rename
+	if (followerId !== null && watchData[user].follower && watchData[user].follower !== followerId)
+		console.warn(user, 'new common follower', followerId)
+	watchData[user].follower = followerId
 	// watchData[user].live = isLive
 
 	const isStoryUnseen = id !== null && id > reel.seen
@@ -647,6 +678,27 @@ function createNotification(id, title, options, url) {
 	return url
 }
 
+function handleGraphQL(type, json, user, userObject, watchData, options) {
+	const userJson = get(['data', 'user'], json)
+	if (userJson === null) {
+		notifyError(user, options)
+	}
+
+	const path = type === 2 ? ['edge_user_to_photos_of_you', 'edges', '0', 'node'] : ['edge_felix_video_timeline', 'edges', '0', 'node']
+	const typeStr = type === 2 ? 'tagged' : 'tv'
+	const data = watchData[user][typeStr]
+	if (!data || path.shortcode === data) return
+
+	const action = type === 2 ? 'p' : 'tv'
+	const shortcode = path.shortcode
+	watchData[user][typeStr] = shortcode
+
+	getBlobUrl(path.display_url)
+		.then(url => createNotification(`${typeStr};${action}/${shortcode}`, chrome.i18n.getMessage(`watch_new${typeStr}`, user), options, url))
+		.then(url => URL.revokeObjectURL(url))
+		.catch(logAndReject)
+}
+
 /**
  * @param user
  * @param options
@@ -659,17 +711,32 @@ function notifyError(user, options) {
 	chrome.notifications.create(`error;${user}/`, options) // @TODO: Add 'click to remove'
 }
 
-const QUERY_HASH = 'd4d88dc1500312af6f937f7b804c68c3', // @TODO Update regularely, last check 17.06.2021 - request loads on any profile
-	storiesParams = {
-		include_chaining: true,
-		include_highlight_reels: true,
-		include_live_status: true,
-		include_logged_out_extras: false,
-		include_reel: true,
-		include_suggested_users: false,
-		user_id: '',
-	}
-//orig: {"user_id":"","include_chaining":true,"include_reel":true,"include_suggested_users":false,"include_logged_out_extras":false,"include_highlight_reels":false,"include_live_status":true}
+const GRAPHQL_PARAMS = {
+	story: {
+		hash: 'd4d88dc1500312af6f937f7b804c68c3', // @TODO Update regularely, last check 17.06.2021 - request loads on any profile
+		params: {
+			include_chaining: true,
+			include_highlight_reels: true,
+			include_live_status: true,
+			include_logged_out_extras: false,
+			include_reel: true,
+			include_suggested_users: false,
+			user_id: '',
+		},
+	},
+
+	tagged: {
+		// referer: https://www.instagram.com/XXX/tagged/
+		hash: 'be13233562af2d229b008d2976b998b5', // @TODO Update regularely, last check 24.06.2021 - request loads on any profile on tagged tab
+		params: { id: '', first: 12 },
+	},
+
+	tv: {
+		// referer: https://www.instagram.com/XXX/channel/
+		hash: 'bc78b344a68ed16dd5d7f264681c4c76', // @TODO Update regularely, last check 24.06.2021 - request loads on any profile on IGTV tab
+		params: { id: '', first: 12 },
+	},
+}
 
 /**
  * @param user
@@ -684,35 +751,56 @@ function notify(user, userObject, type, watchData, length_, i) {
 	WEB_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
 
 	let url,
-		fetchOptions_ = WEB_OPTS
+		queryType = ''
 
-	if (type === 0) {
-		url = `https://www.instagram.com/${user}/?__a=1` // .replace('$$ANON$$', '')
+	if (type === 0 || type === 4) {
+		queryType = 'PRIVATE_WEB'
+		url = type === 0 ? `users/${userObject.id}/info/` : `clips/user/` // .replace('$$ANON$$', '')
 		//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
-	} /*if (type === 1)*/ else {
-		const params = { ...storiesParams }
-		params.user_id = userObject.id
-		url = `https://www.instagram.com/graphql/query/?query_hash=${QUERY_HASH}&variables=${JSON.stringify(params)}`
+	} /*if (type === 1)*/ else if (type === 1 || type === 2 || type === 3) {
+		queryType = 'GRAPHQL'
+		const params = GRAPHQL_PARAMS[type === 1 ? 'story' : type === 2 ? 'tagged' : 'tv']
+		if (type === 1) params.params.user_id = userObject.id
+		else params.params.id = userObject.id
+
+		url = `?query_hash=${params.hash}&variables=${JSON.stringify(params.params)}`
 	}
 
 	const options = { ...notificationOptions }
-	fetchAux(url, fetchOptions_, 'json')
-		.then(json => {
-			if (type === 0) {
-				handlePost(json, user, userObject, watchData, options)
-			} else if (type === 1) {
-				handleStory(json, user, userObject, watchData, options)
+	fetchFromBackground(
+		queryType,
+		url,
+		function (json) {
+			switch (type) {
+				case 0: {
+					handlePost(json, user, userObject, watchData, options)
+					break
+				}
+
+				case 1: {
+					handleStory(json, user, userObject, watchData, options)
+					break
+				}
+
+				case 2:
+				case 3: {
+					handleGraphQL(type, json, user, userObject, watchData, options)
+					break
+				}
+				// No default
 			}
 
 			if (i === length_) chrome.storage.sync.set({ watchData })
 			return json
-		})
-		.catch(e => {
+		},
+		undefined,
+		function (e) {
 			console.warn(e)
 			if (e.status === 404) notifyError(user, options)
 			if (i === length_) chrome.storage.sync.set({ watchData })
 			return e
-		})
+		}
+	)
 }
 
 /**
@@ -731,9 +819,14 @@ function createUserObject(user, watchData) {
 			if (watchData[user] === undefined)
 				return (watchData[user] = {
 					id: json ? json.graphql.user.id : '',
-					pic: '',
+					/*pic: '',
 					post: '',
 					story: '',
+					highlight: '',
+					tv: '',
+					follower: '',
+					reel: '',
+					tagged: '',*/
 				})
 			return (watchData[user].id = json ? json.graphql.user.id : '')
 		})
@@ -780,3 +873,19 @@ function checkForWatchedContent(users, type, watchData) {
 		timeout += getRandom(1000, 15000)
 	}
 }
+
+/*
+reels:
+https://i.instagram.com/api/v1/clips/user/ POST
+x-asbd-id: ...
+x-csrftoken: ...
+x-ig-app-id: ...
+x-ig-www-claim: ...
+x-instagram-ajax: ...
+
+target_user_id: ...
+page_size: 12
+max_id:
+
+items[0]
+*/

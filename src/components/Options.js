@@ -204,7 +204,20 @@ export default class Options extends Component {
 
 		if (type === 'checkbox') value = target.checked
 		else if (type === 'number') value = +value
+
 		this.save(target.parentElement.name, value, true)
+
+		// re-write watchData
+		if (typeof value === 'string')
+			StorageSync.get('watchData')
+				.then(obj => {
+					const id = obj[value]?.id
+					if (id === null) return obj
+
+					obj[value] = { id }
+					StorageSync.set('watchData', obj).catch(logAndReturn)
+				})
+				.catch(logAndReturn)
 	}
 
 	@bind
