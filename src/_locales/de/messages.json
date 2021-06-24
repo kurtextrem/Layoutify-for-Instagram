@@ -129,7 +129,7 @@
 		"placeholders": {
 			"user": {
 				"content": "$1",
-				"example": "JacobGross_"
+				"example": "kurtextrem"
 			}
 		}
 	},
@@ -139,7 +139,7 @@
 		"placeholders": {
 			"user": {
 				"content": "$1",
-				"example": "JacobGross_"
+				"example": "kurtextrem"
 			}
 		}
 	},
@@ -149,7 +149,7 @@
 		"placeholders": {
 			"user": {
 				"content": "$1",
-				"example": "JacobGross_"
+				"example": "kurtextrem"
 			}
 		}
 	},
@@ -160,5 +160,45 @@
 	"modalWidth_help": {
 		"message": "Kontrolliert die Breite von Modalen (nach Klick auf Beiträgen auf User-Profilen). Standard ist 85, Instagrams Standard ca 50.",
 		"description": "setting"
+	},
+	"watch_newHighlight": {
+		"message": "Sieh dir $user$'s neues Highlight Reel an",
+		"description": "Text of the Notification, when the watched User has a new highlight reel",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "kurtextrem"
+			}
+		}
+	},
+	"watch_isLive": {
+		"message": "$user$ ist live",
+		"description": "Text of the Notification, when the watched User went live",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "kurtextrem"
+			}
+		}
+	},
+	"watch_newtagged": {
+		"message": "$user$ wurde getaggt",
+		"description": "Text of the Notification, when the watched User got a new tagged photo",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "kurtextrem"
+			}
+		}
+	},
+	"watch_newtv": {
+		"message": "$user$ hat etwas gepostet",
+		"description": "Text of the Notification, when the watched User posted a new IGTV",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "kurtextrem"
+			}
+		}
 	}
 }

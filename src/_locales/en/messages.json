@@ -168,5 +168,45 @@
 	"modalWidth_help": {
 		"message": "Controls the width of modals (when you click a post on a user profile). Default is 85, Instagram's default around 50.",
 		"description": "setting"
+	},
+	"watch_newHighlight": {
+		"message": "View $user$'s new Highlight Reel",
+		"description": "Text of the Notification, when the watched User has a new highlight reel",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "kurtextrem"
+			}
+		}
+	},
+	"watch_isLive": {
+		"message": "$user$ is live",
+		"description": "Text of the Notification, when the watched User went live",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "kurtextrem"
+			}
+		}
+	},
+	"watch_newtagged": {
+		"message": "$user$ has been tagged",
+		"description": "Text of the Notification, when the watched User got a new tagged photo",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "kurtextrem"
+			}
+		}
+	},
+	"watch_newtv": {
+		"message": "View the new IGTV clip by $user$",
+		"description": "Text of the Notification, when the watched User posted a new IGTV",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "kurtextrem"
+			}
+		}
 	}
 }
