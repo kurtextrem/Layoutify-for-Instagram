@@ -1,203 +1,172 @@
 {
 	"extTitle": {
-		"message": "Layoutify: Verbessertes Design für Instagram",
-		"description": "Extension Title."
+		"message": "Layoutify: Verbessertes Design für Instagram"
 	},
 	"extDesc": {
-		"message": "Das Web-Design von Instagram.com ist nicht für den Desktop optimiert. Diese Erweiterung ändert das.",
-		"description": "Extension description."
+		"message": "Das Web-Design von Instagram.com ist nicht für den Desktop optimiert. Diese Erweiterung ändert das."
 	},
 	"blockPosts": {
-		"message": "Posts verstecken von",
-		"description": "Block Posts from Users setting."
+		"message": "Posts verstecken von"
 	},
 	"blockStories": {
-		"message": "Storys verstecken von",
-		"description": "Block Stories from Users setting."
+		"message": "Storys verstecken von"
 	},
 	"night": {
-		"message": "Nacht Modus an?",
-		"description": "Night mode setting."
+		"message": "Nacht Modus an?"
 	},
 	"nightModeStart": {
-		"message": "Nacht Modus Startstunde",
-		"description": ""
+		"message": "Nacht Modus Startstunde"
 	},
 	"nightModeStart_help": {
-		"message": "Wenn du diese Einstellung und das Ende auf die gleiche Zahl stellst, ist der Nacht Modus dauerhaft an.",
-		"description": ""
+		"message": "Wenn du diese Einstellung und das Ende auf die gleiche Zahl stellst, ist der Nacht Modus dauerhaft an."
 	},
 	"nightModeEnd": {
-		"message": "Nacht Modus Endstunde",
-		"description": ""
+		"message": "Nacht Modus Endstunde"
 	},
 	"nightModeEnd_help": {
-		"message": "Wenn du diese Einstellung und das Ende auf die gleiche Zahl stellst, ist der Nacht Modus dauerhaft an.",
-		"description": ""
+		"message": "Wenn du diese Einstellung und das Ende auf die gleiche Zahl stellst, ist der Nacht Modus dauerhaft an."
 	},
 	"nightSystem": {
-		"message": "System Nacht Modus",
-		"description": ""
+		"message": "System Nacht Modus"
 	},
 	"nightSystem_help": {
-		"message": "Der Nacht Modus wird aktiviert, wenn das System im Nacht Modus ist.",
-		"description": ""
+		"message": "Der Nacht Modus wird aktiviert, wenn das System im Nacht Modus ist."
 	},
 	"picturesOnly": {
-		"message": "Nur Bilder zeigen",
-		"description": "setting"
+		"message": "Nur Bilder zeigen"
 	},
 	"hideStories": {
-		"message": "Alle Storys verstecken",
-		"description": "setting"
+		"message": "Alle Storys verstecken"
 	},
 	"hideRecommended": {
-		"message": "Vorgeschlagene Nutzer verstecken",
-		"description": "setting"
+		"message": "Vorgeschlagene Nutzer verstecken"
 	},
 	"highlightOP": {
-		"message": "Highlight Author in comments",
-		"description": "setting"
+		"message": "Highlight Author in comments"
 	},
 	"only3Dot": {
-		"message": "Alle Style-Modifikationen entfernen",
-		"description": "setting"
+		"message": "Alle Style-Modifikationen entfernen"
 	},
 	"rows": {
-		"message": "Posts pro Reihe",
-		"description": "setting"
+		"message": "Posts pro Reihe"
 	},
 	"rows_help": {
-		"message": "1 stellt das reguläre IG Layout ein. Standard ist 4.",
-		"description": "setting"
+		"message": "1 stellt das reguläre IG Layout ein. Standard ist 4."
 	},
 	"indicateFollowing": {
-		"message": "Following indicator",
-		"description": "setting"
+		"message": "Following indicator"
 	},
 	"noSpaceBetweenPosts": {
-		"message": "Keine leerstellen zwischen Posts",
-		"description": "setting"
+		"message": "Keine leerstellen zwischen Posts"
 	},
 	"rowsFourBoxWidth": {
-		"message": "4-Posts Breite",
-		"description": "setting"
+		"message": "4-Posts Breite"
 	},
 	"rowsFourBoxWidth_help": {
-		"message": "Tritt nur in Kraft, wenn 'Posts pro Reihe' auf 4 gesetzt ist. Standard ist 23.",
-		"description": "setting"
+		"message": "Tritt nur in Kraft, wenn 'Posts pro Reihe' auf 4 gesetzt ist. Standard ist 23."
 	},
 	"rowsTwoBoxWidth": {
-		"message": "2-Posts Breite",
-		"description": "setting"
+		"message": "2-Posts Breite"
 	},
 	"rowsTwoBoxWidth_help": {
-		"message": "Tritt nur in Kraft, wenn 'Posts pro Reihe' auf 2 gesetzt ist. Standard ist 40.",
-		"description": "setting"
+		"message": "Tritt nur in Kraft, wenn 'Posts pro Reihe' auf 2 gesetzt ist. Standard ist 40."
 	},
 	"watchPosts": {
-		"message": "Posts beobachten von",
-		"description": "setting"
+		"message": "Posts beobachten von"
 	},
 	"watchPosts_help": {
-		"message": "Bitte gehe sicher, dass der Name existiert (d.h. https://instagram.com/DerName funktioniert)",
-		"description": "setting"
+		"message": "Bitte gehe sicher, dass der Name existiert (d.h. https://instagram.com/DerName funktioniert)"
 	},
 	"watchStories": {
-		"message": "Storys beobachten von",
-		"description": "setting"
+		"message": "Storys beobachten von"
 	},
 	"watchStories_help": {
-		"message": "Bitte gehe sicher, dass der Name existiert (d.h. https://instagram.com/DerName funktioniert)",
-		"description": "setting"
+		"message": "Bitte gehe sicher, dass der Name existiert (d.h. https://instagram.com/DerName funktioniert)"
 	},
 	"watchInBackground": {
-		"message": "Benachrichtige im Hintergrund?",
-		"description": "setting"
+		"message": "Benachrichtige im Hintergrund?"
 	},
 	"watchInBackground_help": {
-		"message": "Falls ausgeschaltet, erhälst du nur Benachrichtigungen, wenn du Instagram.com öffnest.",
-		"description": "setting"
+		"message": "Falls ausgeschaltet, erhälst du nur Benachrichtigungen, wenn du Instagram.com öffnest."
 	},
 	"watch_openProfile": {
-		"message": "Klicken um das Profil zu öffnen.",
-		"description": "Text in Notification"
+		"message": "Klicken um das Profil zu öffnen."
 	},
 	"watch_newPost": {
 		"message": "$user$ hat etwas gepostet",
-		"description": "Text of the Notification, when the watched User posted a new post",
 		"placeholders": {
 			"user": {
-				"content": "$1",
-				"example": "kurtextrem"
+				"content": "$1"
 			}
 		}
 	},
 	"watch_newStory": {
 		"message": "Sieh dir $user$'s Story an",
-		"description": "Text of the Notification, when the watched User has an unseen Story",
 		"placeholders": {
 			"user": {
-				"content": "$1",
-				"example": "kurtextrem"
+				"content": "$1"
 			}
 		}
 	},
 	"watch_newPic": {
 		"message": "$user$ hat ein neues Profilbild",
-		"description": "Text of the Notification, when the watched User has a new profile picture.",
 		"placeholders": {
 			"user": {
-				"content": "$1",
-				"example": "kurtextrem"
+				"content": "$1"
 			}
 		}
 	},
 	"modalWidth": {
-		"message": "Modal Breite",
-		"description": "setting"
+		"message": "Modal Breite"
 	},
 	"modalWidth_help": {
-		"message": "Kontrolliert die Breite von Modalen (nach Klick auf Beiträgen auf User-Profilen). Standard ist 85, Instagrams Standard ca 50.",
-		"description": "setting"
+		"message": "Kontrolliert die Breite von Modalen (nach Klick auf Beiträgen auf User-Profilen). Standard ist 85, Instagrams Standard ca 50."
 	},
 	"watch_newHighlight": {
 		"message": "Sieh dir $user$'s neues Highlight Reel an",
-		"description": "Text of the Notification, when the watched User has a new highlight reel",
 		"placeholders": {
 			"user": {
-				"content": "$1",
-				"example": "kurtextrem"
+				"content": "$1"
 			}
 		}
 	},
 	"watch_isLive": {
 		"message": "$user$ ist live",
-		"description": "Text of the Notification, when the watched User went live",
 		"placeholders": {
 			"user": {
-				"content": "$1",
-				"example": "kurtextrem"
+				"content": "$1"
 			}
 		}
 	},
 	"watch_newtagged": {
 		"message": "$user$ wurde getaggt",
-		"description": "Text of the Notification, when the watched User got a new tagged photo",
 		"placeholders": {
 			"user": {
-				"content": "$1",
-				"example": "kurtextrem"
+				"content": "$1"
 			}
 		}
 	},
 	"watch_newtv": {
 		"message": "$user$ hat etwas gepostet",
-		"description": "Text of the Notification, when the watched User posted a new IGTV",
 		"placeholders": {
 			"user": {
-				"content": "$1",
-				"example": "kurtextrem"
+				"content": "$1"
+			}
+		}
+	},
+	"watch_privtrue": {
+		"message": "$user$ ist nun 'Privat'",
+		"placeholders": {
+			"user": {
+				"content": "$1"
+			}
+		}
+	},
+	"watch_privfalse": {
+		"message": "$user$ ist nicht mehr 'Privat'",
+		"placeholders": {
+			"user": {
+				"content": "$1"
 			}
 		}
 	}

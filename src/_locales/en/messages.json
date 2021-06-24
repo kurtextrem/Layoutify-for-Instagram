@@ -208,5 +208,25 @@
 				"example": "kurtextrem"
 			}
 		}
+	},
+	"watch_privtrue": {
+		"message": "$user$ is now 'private'",
+		"description": "Text of the Notification, when the watched User is now private",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "kurtextrem"
+			}
+		}
+	},
+	"watch_privfalse": {
+		"message": "$user$ is no longer 'private'",
+		"description": "Text of the Notification, when the watched User is no longer private",
+		"placeholders": {
+			"user": {
+				"content": "$1",
+				"example": "kurtextrem"
+			}
+		}
 	}
 }
