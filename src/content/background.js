@@ -179,6 +179,7 @@ const API_URL = {
 	PRIVATE_WEB: 'https://i.instagram.com/api/v1/', // once web has more abilities, replace PRIVATE
 	PUBLIC: 'https://www.instagram.com/web/',
 	GRAPHQL: 'https://www.instagram.com/graphql/query/',
+	WEB: 'https://www.instagram.com/',
 }
 
 const PRIVATE_API_OPTS = {
@@ -292,7 +293,18 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 			})
 			.catch(logAndReject)
 
-		return false // for now
+		return false
+	}
+
+	if (which === 'WEB') {
+		WEB_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
+		WEB_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
+
+		fetchAux(API_URL[which] + path, WEB_OPTS, 'json')
+			.then(sendResponse)
+			.catch(error)
+
+		return false
 	}
 
 	const opts = { ...PRIVATE_API_OPTS, ...options }
@@ -491,8 +503,7 @@ function getWatchlist(e) {
 		if (options.watchPosts) {
 			checkForWatchedContent(options.watchPosts, 0, data.watchData) // posts
 			checkForWatchedContent(options.watchPosts, 2, data.watchData) // tagged photos
-			checkForWatchedContent(options.watchPosts, 3, data.watchData) // igtv
-			// checkForWatchedContent(options.watchPosts, 4, data.watchData) // reels
+			// checkForWatchedContent(options.watchPosts, 3, data.watchData) // reels
 		}
 
 		if (options.watchStories) checkForWatchedContent(options.watchStories, 1, data.watchData) // story
@@ -544,60 +555,64 @@ function getProfilePicId(url) {
  * @param options
  */
 function handlePost(json, user, userObject, watchData, options) {
-	const node = get(['graphql', 'user', 'edge_owner_to_timeline_media', 'edges', '0', 'node'], json)
-	if (node === null) {
+	// @todo graphql.user.is_private
+	const userNode = get(['graphql', 'user'], json)
+	if (userNode === null) {
 		notifyError(user, options)
 		return
 	}
 
+	const node = get(['edge_owner_to_timeline_media', 'edges', '0', 'node'], userNode)
+	handleGraphQL(3, json, user, userObject, watchData, options) // handle IGTV
+
 	const id = node.shortcode,
-		pic = json.graphql.user.profile_pic_url_hd
-	if (id === null || id == userObject.post) {
+		pic = userNode.profile_pic_url_hd
+
+	const hasNewPost = id !== null && id != userObject.post
+	const needsProfilePic = hasNewPost || user_pic !== picId
+
+	const blob = getBlobUrl(pic)
+	const promises = []
+
+	const isPrivate = userNode.is_private
+	if (watchData[user].priv && userNode.is_private !== watchData[user].priv)
+		promises.push(
+			blob.then(url => createNotification(`priv;${user}/`, chrome.i18n.getMessage(`watch_priv${isPrivate}`, user), options, url))
+		)
+	watchData[user].priv = isPrivate
+
+	const user_pic = getProfilePicId(watchData[user].pic), // @todo Migration code getProfilePicId
+		picId = getProfilePicId(pic)
+
+	if (user_pic !== picId)
+		promises.push(blob.then(url => createNotification(`pic;${user}/`, chrome.i18n.getMessage(`watch_newPic`, user), options, url)))
+	watchData[user].pic = picId
+
+	if (hasNewPost) {
 		// if no post exsits, or if String/Number id == userObject.post (String)
 		//console.log(user, 'no new post', node)
 
-		const user_pic = watchData[user].pic,
-			picId = getProfilePicId(pic)
-		if (user_pic === undefined) {
-			watchData[user].pic = picId
-		} else if (getProfilePicId(user_pic) !== picId) {
-			watchData[user].pic = picId
-			// @todo: Migration code getProfilePicId(user_pic)
-			options.type = 'basic'
-			options.title = chrome.i18n.getMessage('watch_newPic', user) // new profile picture
+		console.log(user, 'new post', node, userObject.post)
+		watchData[user].post = id
 
-			getBlobUrl(pic)
-				.then(url => {
-					options.iconUrl = url
-					return chrome.notifications.create(`pic;${user}/`, options, nId => {
-						if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
-						URL.revokeObjectURL(url)
-						// @todo: Maybe clear notification?
-					})
+		options.type = 'image'
+		options.title = chrome.i18n.getMessage('watch_newPost', user)
+
+		Promise.all([blob, getBlobUrl(node.thumbnail_src)])
+			.then(values => {
+				options.iconUrl = values[0]
+				options.imageUrl = values[1]
+				return chrome.notifications.create(`post;p/${id}/`, options, nId => {
+					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+					URL.revokeObjectURL(values[1])
+					// @todo: Maybe clear notification?
 				})
-				.catch(logAndReject)
-		}
-
-		return
+			})
+			.catch(logAndReject)
 	}
 
-	console.log(user, 'new post', node, userObject.post)
-	watchData[user].post = id
-
-	options.type = 'image'
-	options.title = chrome.i18n.getMessage('watch_newPost', user)
-
-	Promise.all([getBlobUrl(pic), getBlobUrl(node.thumbnail_src)])
-		.then(values => {
-			options.iconUrl = values[0]
-			options.imageUrl = values[1]
-			return chrome.notifications.create(`post;p/${id}/`, options, nId => {
-				if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
-				URL.revokeObjectURL(values[0])
-				URL.revokeObjectURL(values[1])
-				// @todo: Maybe clear notification?
-			})
-		})
+	Promise.all(promises)
+		.then(values => URL.revokeObjectURL(values[0]))
 		.catch(logAndReject)
 }
 
@@ -622,6 +637,15 @@ function handleStory(json, user, userObject, watchData, options) {
 	const isLive = userJson.is_live,
 		highlightId = get(['edge_highlight_reels', 'edges', '0', 'node', 'id'], userJson),
 		followerId = get(['edge_chaining', 'edges', '0', 'node', 'id'], userJson)
+
+	/* @todo Collect all edge_highlight_reels IDs -> highlight:ID check
+	const reels = get(['edge_highlight_reels', 'edges'])
+	if (reels !== null) {
+		const reelIds = []
+		for (let i = 0; i < reels.length; ++i) {
+			reelIds.push(reels[i].node.id)
+		}
+	} */
 
 	if (highlightId !== null) watchData[user].highlight = highlightId // @todo could check for rename
 	if (followerId !== null && watchData[user].follower && watchData[user].follower !== followerId)
@@ -661,13 +685,14 @@ function handleStory(json, user, userObject, watchData, options) {
 	}
 
 	Promise.all(promises)
-		.then(url => URL.revokeObjectURL(url))
+		.then(values => URL.revokeObjectURL(values[0]))
 		.catch(logAndReject)
 }
 
 function createNotification(id, title, options, url) {
 	options.type = 'basic'
 	options.title = title
+	options.message = title
 	options.iconUrl = url
 
 	chrome.notifications.create(id, options, nId => {
@@ -706,7 +731,7 @@ function handleGraphQL(type, json, user, userObject, watchData, options) {
 function notifyError(user, options) {
 	options.type = 'basic'
 	options.title = `${user} could not be found`
-	options.message = `${user} might have changed the Instagram nickname. Please go to the options and remove the name.`
+	options.message = `${user} might have changed the Instagram nickname. Please go to the options and update the name.`
 	options.iconUrl = 'img/icon-128.png'
 	chrome.notifications.create(`error;${user}/`, options) // @TODO: Add 'click to remove'
 }
@@ -730,12 +755,6 @@ const GRAPHQL_PARAMS = {
 		hash: 'be13233562af2d229b008d2976b998b5', // @TODO Update regularely, last check 24.06.2021 - request loads on any profile on tagged tab
 		params: { id: '', first: 12 },
 	},
-
-	tv: {
-		// referer: https://www.instagram.com/XXX/channel/
-		hash: 'bc78b344a68ed16dd5d7f264681c4c76', // @TODO Update regularely, last check 24.06.2021 - request loads on any profile on IGTV tab
-		params: { id: '', first: 12 },
-	},
 }
 
 /**
@@ -747,30 +766,45 @@ const GRAPHQL_PARAMS = {
  * @param i
  */
 function notify(user, userObject, type, watchData, length_, i) {
-	WEB_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
-	WEB_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
-
 	let url,
 		queryType = ''
 
-	if (type === 0 || type === 4) {
-		queryType = 'PRIVATE_WEB'
-		url = type === 0 ? `users/${userObject.id}/info/` : `clips/user/` // .replace('$$ANON$$', '')
-		//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
-	} /*if (type === 1)*/ else if (type === 1 || type === 2 || type === 3) {
-		queryType = 'GRAPHQL'
-		const params = GRAPHQL_PARAMS[type === 1 ? 'story' : type === 2 ? 'tagged' : 'tv']
-		if (type === 1) params.params.user_id = userObject.id
-		else params.params.id = userObject.id
+	switch (type) {
+		case 0: {
+			// @todo user.profile_context_mutual_follow_ids -> fetchFromBackground('PRIVATE_WEB', `users/${id}/info/`, console.log)
+			queryType = 'WEB'
+			url = `${user}/?__a=1` // .replace('$$ANON$$', '')
+			//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
 
-		url = `?query_hash=${params.hash}&variables=${JSON.stringify(params.params)}`
+			break
+		}
+
+		case 1:
+		case 2: {
+			queryType = 'GRAPHQL'
+			const params = GRAPHQL_PARAMS[type === 1 ? 'story' : 'tagged']
+			if (type === 1) params.params.user_id = userObject.id
+			else params.params.id = userObject.id
+
+			url = `?query_hash=${params.hash}&variables=${JSON.stringify(params.params)}`
+
+			break
+		}
+
+		case 3: {
+			queryType = 'PRIVATE_WEB'
+			url = `clips/user/`
+
+			break
+		}
+		// No default
 	}
 
 	const options = { ...notificationOptions }
 	fetchFromBackground(
 		queryType,
 		url,
-		function (json) {
+		json => {
 			switch (type) {
 				case 0: {
 					handlePost(json, user, userObject, watchData, options)
@@ -782,8 +816,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 					break
 				}
 
-				case 2:
-				case 3: {
+				case 2: {
 					handleGraphQL(type, json, user, userObject, watchData, options)
 					break
 				}
@@ -794,7 +827,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 			return json
 		},
 		undefined,
-		function (e) {
+		e => {
 			console.warn(e)
 			if (e.status === 404) notifyError(user, options)
 			if (i === length_) chrome.storage.sync.set({ watchData })
@@ -808,29 +841,29 @@ function notify(user, userObject, type, watchData, length_, i) {
  * @param watchData
  */
 function createUserObject(user, watchData) {
-	WEB_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
-	WEB_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
-
-	const fetchOptions_ = WEB_OPTS
+	//const fetchOptions_ = WEB_OPTS
 	//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
 
-	return fetchAux(`https://www.instagram.com/${user}/?__a=1`, fetchOptions_, 'json') // .replace('$$ANON$$', '')
-		.then(json => {
+	return fetchFromBackground(
+		'WEB',
+		`${user}/?__a=1`,
+		json => {
 			if (watchData[user] === undefined)
 				return (watchData[user] = {
 					id: json ? json.graphql.user.id : '',
 					/*pic: '',
-					post: '',
-					story: '',
-					highlight: '',
-					tv: '',
-					follower: '',
-					reel: '',
-					tagged: '',*/
+				post: '',
+				story: '',
+				highlight: '',
+				tv: '',
+				follower: '',
+				reel: '',
+				tagged: '',*/
 				})
 			return (watchData[user].id = json ? json.graphql.user.id : '')
-		})
-		.catch(e => {
+		},
+		undefined,
+		e => {
 			console.warn(e)
 			if (e.status === 404) {
 				const options = { ...notificationOptions }
@@ -838,7 +871,8 @@ function createUserObject(user, watchData) {
 			}
 
 			throw e
-		})
+		}
+	) // .replace('$$ANON$$', '')
 }
 
 /**
@@ -888,4 +922,17 @@ page_size: 12
 max_id:
 
 items[0]
+
+----------------------
+
+check highlight reels for new items:
+-> track changed title for each
+https://i.instagram.com/api/v1/feed/reels_media/
+reel_ids: highlight:XXX
+reel_ids: highlight:XXX
+reel_ids: highlight:XXX
+reel_ids: highlight:XXX
+reel_ids: highlight:XXX
+
+reels["highlight:XXX"].latest_reel_media
 */
