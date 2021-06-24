@@ -185,16 +185,19 @@ const PRIVATE_API_OPTS = {
 		'X-IG-Bandwidth-TotalBytes-B': '0',
 		'X-IG-Bandwidth-TotalTime-MS': '0',
 		'X-IG-Capabilities': '3brTvw==',
-		'X-IG-Connection-Speed': `${~~(Math.random() * 5000 + 1000)}kbps`,
+		'X-IG-Connection-Speed': `${Math.trunc(Math.random() * 5000 + 1000)}kbps`,
 		'X-IG-Connection-Type': 'WIFI',
 	},
 	method: 'GET',
 	// credits to https://github.com/mgp25/Instagram-API/blob/master/src/Request.php#L377
 }
 
+const FB_APP_ID = '936619743392459'
+
 const PRIVATE_WEB_API_OPTS = {
 	headers: {
-		'X-IG-App-ID': '936619743392459',
+		'x-asbd-id': '',
+		'X-IG-App-ID': FB_APP_ID,
 		'X-IG-WWW-Claim': '',
 	},
 	method: 'GET',
@@ -205,7 +208,7 @@ const PUBLIC_API_OPTS = {
 	headers: {
 		'x-asbd-id': '',
 		'x-csrftoken': '',
-		'X-IG-App-ID': '936619743392459',
+		'X-IG-App-ID': FB_APP_ID,
 		'x-instagram-ajax': '',
 		'x-requested-with': 'XMLHttpRequest',
 	},
@@ -213,10 +216,22 @@ const PUBLIC_API_OPTS = {
 }
 
 const GRAPHQL_API_OPTS = {
+	// sync with FetchComponent
 	headers: {
+		'x-asbd-id': '',
 		'x-csrftoken': '',
-		'X-IG-App-ID': '936619743392459',
+		'X-IG-App-ID': FB_APP_ID,
 		'X-IG-WWW-Claim': '',
+		'x-requested-with': 'XMLHttpRequest',
+	},
+	method: 'GET',
+}
+
+const WEB_OPTS = {
+	headers: {
+		'x-asbd-id': '',
+		'x-ig-app-id': FB_APP_ID,
+		'x-ig-www-claim': '',
 		'x-requested-with': 'XMLHttpRequest',
 	},
 	method: 'GET',
@@ -246,6 +261,7 @@ function fetchFromBackground(which, path, sendResponse, options) {
 
 	if (which === 'PRIVATE_WEB') {
 		PRIVATE_WEB_API_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
+		PRIVATE_WEB_API_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
 		fetchAux(API_URL[which] + path, PRIVATE_WEB_API_OPTS, 'text')
 			.then(fixMaxId)
 			.then(parseJSON)
@@ -606,16 +622,10 @@ function notifyError(user, options) {
 	chrome.notifications.create(`error;${user}/`, options) // @TODO: Add 'click to remove'
 }
 
-const WEB_OPTS = {
-	headers: {
-		'x-requested-with': 'XMLHttpRequest',
-	},
-}
-
 const QUERY_HASH = 'd4d88dc1500312af6f937f7b804c68c3', // @TODO Update regularely, last check 17.06.2021 - request loads on any profile
 	storiesParams = {
 		include_chaining: true,
-		include_highlight_reels: false,
+		include_highlight_reels: true,
 		include_live_status: true,
 		include_logged_out_extras: false,
 		include_reel: true,
@@ -633,6 +643,9 @@ const QUERY_HASH = 'd4d88dc1500312af6f937f7b804c68c3', // @TODO Update regularel
  * @param i
  */
 function notify(user, userObject, type, watchData, length_, i) {
+	WEB_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
+	WEB_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
+
 	let url,
 		fetchOptions_ = WEB_OPTS
 
@@ -670,6 +683,9 @@ function notify(user, userObject, type, watchData, length_, i) {
  * @param watchData
  */
 function createUserObject(user, watchData) {
+	WEB_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
+	WEB_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
+
 	const fetchOptions_ = WEB_OPTS
 	//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
 

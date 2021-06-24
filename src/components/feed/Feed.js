@@ -8,7 +8,7 @@ import Stories from './Stories'
 import bind from 'autobind-decorator'
 import withIntersectionObserver from './withIntersectionObserver'
 import { Fragment, h } from 'preact'
-import { promiseReq, shallowDiffers } from '../Utils'
+import { iObs, promiseReq, rObs, shallowDiffers } from '../Utils'
 //import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
 
 class Feed extends FetchComponent {
