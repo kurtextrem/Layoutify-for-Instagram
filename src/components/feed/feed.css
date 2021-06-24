@@ -216,16 +216,6 @@
 	contain: layout style;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.img--wrapper > div {
-		position: absolute;
-		top: 0;
-		right: 0;
-		transform: translateX(100%);
-		transition: none;
-	}
-}
-
 .img--wrapper > div {
 	position: absolute;
 	top: 0;
@@ -419,16 +409,6 @@
 	contain: content;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.ige_dots--dot {
-		width: 6px;
-		height: 6px;
-		background-color: rgb(var(--dots-color, 168, 168, 168));
-		border-radius: 50%;
-		transition: none;
-	}
-}
-
 .ige_dots--dot {
 	width: 6px;
 	height: 6px;
@@ -457,23 +437,6 @@
 }
 
 .ige_userIcon {
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	.ige_taggedUser {
-		position: absolute;
-
-		z-index: 2;
-		margin-top: 6px;
-		padding: 0 12px;
-		font-size: 14px;
-		line-height: 36px;
-		background-color: rgb(0, 0, 0);
-		border-radius: 4px;
-		transform: translate(-50%, 0%);
-		opacity: 0;
-		transition: none;
-	}
 }
 
 .ige_taggedUser {
@@ -561,30 +524,12 @@
 	contain: strict;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.ball-pulse-sync > div:nth-child(1) {
-		animation: none;
-	}
-}
-
 .ball-pulse-sync > div:nth-child(1) {
 	animation: ball-pulse-sync 0.6s -0.14s infinite ease-in-out;
 }
 
-@media screen and (prefers-reduced-motion: reduce) {
-	.ball-pulse-sync > div:nth-child(2) {
-		animation: none;
-	}
-}
-
 .ball-pulse-sync > div:nth-child(2) {
 	animation: ball-pulse-sync 0.6s -0.07s infinite ease-in-out;
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	.ball-pulse-sync > div:nth-child(3) {
-		animation: none;
-	}
 }
 
 .ball-pulse-sync > div:nth-child(3) {
@@ -672,13 +617,6 @@
 	top: 16.5vh;
 	right: 29.2vw;
 	filter: invert(1);
-}
-
-@media screen and (prefers-reduced-motion: reduce) {
-	.ige_fade {
-		opacity: 0.01;
-		animation: none;
-	}
 }
 
 .ige_fade {

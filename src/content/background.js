@@ -547,6 +547,20 @@ function getProfilePicId(url) {
 	return pic_id[pic_id.length - 1].split('?')[0].split('.')[0]
 }
 
+function cmpAndNotify(value, storeKey, i18nKey, notificationPath, store, blob, user, options) {
+	if (!value) return
+
+	const hasNew = value !== store[storeKey]
+	store[storeKey] = value
+
+	if (hasNew) {
+		blob.then(url => createNotification(`${storeKey};${notificationPath}`, chrome.i18n.getMessage(i18nKey, user), options, url))
+		return true
+	}
+
+	return false
+}
+
 /**
  * @param json
  * @param user
@@ -563,36 +577,33 @@ function handlePost(json, user, userObject, watchData, options) {
 	}
 
 	const node = get(['edge_owner_to_timeline_media', 'edges', '0', 'node'], userNode)
-	handleGraphQL(3, json, user, userObject, watchData, options) // handle IGTV
+	const data = watchData[user]
+
+	const pic = userNode.profile_pic_url_hd
+
+	let load, cancel
+	const blob = new Promise((resolve, reject) => {
+		load = resolve
+		cancel = reject
+	}).then(() => getBlobUrl(pic))
+
+	const isPrivate = userNode.is_private
+	const hasPrivateChanged = cmpAndNotify(userNode.is_private, 'priv', `watch_priv${isPrivate}`, `${user}/`, data, blob, user, options)
+
+	const tvShort = get(['edge_felix_video_timeline', 'edges', '0', 'node', 'shortcode'], userNode)
+	const hasNewTV = cmpAndNotify(tvShort, 'tv', `watch_newtv`, `tv/${tvShort}`, data, blob, user, options)
+
+	const user_pic = getProfilePicId(data.pic), // @todo Migration code getProfilePicId
+		picId = getProfilePicId(pic)
+	const profilePictureChanged = user_pic !== picId
+	data.pic = picId
+
+	if (profilePictureChanged)
+		blob.then(url => createNotification(`pic;${user}/`, chrome.i18n.getMessage(`watch_newPic`, user), options, url))
 
 	const id = node.shortcode
 	const hasNewPost = id !== null && id != userObject.post
-	watchData[user].post = id
-
-	const isPrivate = userNode.is_private
-	const hasPrivateChanged = watchData[user].priv && isPrivate !== watchData[user].priv
-	watchData[user].priv = isPrivate
-
-	const pic = userNode.profile_pic_url_hd
-	const user_pic = getProfilePicId(watchData[user].pic), // @todo Migration code getProfilePicId
-		picId = getProfilePicId(pic)
-	const profilePictureChanged = user_pic !== picId
-	watchData[user].pic = picId
-
-	const needsProfilePic = hasNewPost || profilePictureChanged || hasPrivateChanged
-	if (!needsProfilePic) return
-
-	const blob = getBlobUrl(pic)
-	const promises = []
-
-	if (hasPrivateChanged)
-		promises.push(
-			blob.then(url => createNotification(`priv;${user}/`, chrome.i18n.getMessage(`watch_priv${isPrivate}`, user), options, url))
-		)
-
-	if (profilePictureChanged)
-		promises.push(blob.then(url => createNotification(`pic;${user}/`, chrome.i18n.getMessage(`watch_newPic`, user), options, url)))
-
+	data.post = id
 	if (hasNewPost) {
 		// if no post exsits, or if String/Number id == userObject.post (String)
 		//console.log(user, 'no new post', node)
@@ -614,9 +625,10 @@ function handlePost(json, user, userObject, watchData, options) {
 			.catch(logAndReject)
 	}
 
-	Promise.all(promises)
-		.then(values => URL.revokeObjectURL(values[0]))
-		.catch(logAndReject)
+	if (hasPrivateChanged || hasNewTV || profilePictureChanged || hasNewPost) {
+		blob.then(url => URL.revokeObjectURL(url))
+		load()
+	} else cancel()
 }
 
 /**
@@ -633,13 +645,14 @@ function handleStory(json, user, userObject, watchData, options) {
 		return
 	}
 
-	const reel = userJson.reel,
-		id = reel !== null ? reel.latest_reel_media : null
-	if (reel.seen > id) console.warn(user, 'seen id > current id: story deleted?')
+	const reel = userJson.reel
+	const data = watchData[user]
 
-	const isLive = userJson.is_live,
-		highlightId = get(['edge_highlight_reels', 'edges', '0', 'node', 'id'], userJson),
-		followerId = get(['edge_chaining', 'edges', '0', 'node', 'id'], userJson)
+	let load, cancel
+	const blob = new Promise((resolve, reject) => {
+		load = resolve
+		cancel = reject
+	}).then(() => getBlobUrl(reel.owner.profile_pic_url))
 
 	/* @todo Collect all edge_highlight_reels IDs -> highlight:ID check
 	const reels = get(['edge_highlight_reels', 'edges'])
@@ -650,46 +663,31 @@ function handleStory(json, user, userObject, watchData, options) {
 		}
 	} */
 
-	if (followerId !== null && watchData[user].follower && watchData[user].follower !== followerId)
-		console.warn(user, 'new common follower', followerId)
-	watchData[user].follower = followerId
-	// watchData[user].live = isLive
+	const followerId = get(['edge_chaining', 'edges', '0', 'node', 'id'], userJson)
+	if (followerId !== null && data.follower && data.follower !== followerId) console.warn(user, 'new common follower', followerId)
+	data.follower = followerId
+	// data.live = isLive
 
+	const highlightId = get(['edge_highlight_reels', 'edges', '0', 'node', 'id'], userJson)
+	const hasNewHighlight = cmpAndNotify(highlightId, 'highlight', `watch_newHighlight`, `${user}/`, data, blob, user, options) // @todo could check for rename
+
+	const isLive = cmpAndNotify(userJson.is_live, 'live', `watch_isLive`, `${user}/`, data, blob, user, options) // @todo when timer is < 60 min, enable check if notification has been sent already
+
+	const id = reel !== null ? reel.latest_reel_media : null
+	if (reel.seen > id) console.warn(user, 'seen id > current id: story deleted?')
 	const isStoryUnseen = id !== null && id > reel.seen
-
-	const isNewHighlight = watchData[user].highlight && watchData[user].highlight !== highlightId
-	watchData[user].highlight = highlightId // @todo could check for rename
-
-	const needsProfilePic = isStoryUnseen || isNewHighlight || isLive
-	if (!needsProfilePic) return
-
-	const blob = getBlobUrl(reel.owner.profile_pic_url)
-	const promises = []
-
 	if (isStoryUnseen) {
 		// && id != userObj.story
 		console.log(user, 'new story')
-		//watchData[user].story = `${id}`
+		//data.story = `${id}`
 
-		promises.push(
-			blob.then(url => createNotification(`story;stories/${user}/`, chrome.i18n.getMessage('watch_newStory', user), options, url))
-		)
-	} else console.log(user, 'no new story', reel)
+		blob.then(url => createNotification(`story;stories/${user}/`, chrome.i18n.getMessage('watch_newStory', user), options, url))
+	} // else console.log(user, 'no new story', reel)
 
-	if (isNewHighlight)
-		promises.push(
-			blob.then(url => createNotification(`highlight;${user}/`, chrome.i18n.getMessage('watch_newHighlight', user), options, url))
-		)
-
-	if (isLive)
-		// @todo when timer is < 60 min, enable check if notification has been sent already
-		promises.push(
-			blob.then(url => createNotification(`live;${user}/`, chrome.i18n.getMessage('watch_isLive', user), options, url)).catch(logAndReject)
-		)
-
-	Promise.all(promises)
-		.then(values => URL.revokeObjectURL(values[0]))
-		.catch(logAndReject)
+	if (isStoryUnseen || hasNewHighlight || isLive) {
+		blob.then(url => URL.revokeObjectURL(url))
+		load()
+	} else cancel()
 }
 
 function createNotification(id, title, options, url) {
@@ -712,12 +710,12 @@ function handleGraphQL(type, json, user, userObject, watchData, options) {
 		notifyError(user, options)
 	}
 
-	const path = type === 2 ? ['edge_user_to_photos_of_you', 'edges', '0', 'node'] : ['edge_felix_video_timeline', 'edges', '0', 'node']
-	const typeStr = type === 2 ? 'tagged' : 'tv'
+	const path = ['edge_user_to_photos_of_you', 'edges', '0', 'node']
+	const typeStr = 'tagged'
 	const data = watchData[user][typeStr]
 	if (!data || path.shortcode === data) return
 
-	const action = type === 2 ? 'p' : 'tv'
+	const action = 'p'
 	const shortcode = path.shortcode
 	watchData[user][typeStr] = shortcode
 
