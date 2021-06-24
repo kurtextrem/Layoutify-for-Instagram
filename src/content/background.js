@@ -587,27 +587,64 @@ function handleStory(json, user, userObject, watchData, options) {
 
 	const reel = userJson.reel,
 		id = reel !== null ? reel.latest_reel_media : null
-
 	if (reel.seen > id) console.warn(user, 'seen id > current id: story deleted?')
-	if (id !== null && id > reel.seen) {
+
+	const isLive = userJson.is_live,
+		highlightId = get(['edge_highlight_reels', 'edges', '0', 'node', 'id'], userJson),
+		followerId = get(['edge_chaining', 'edges', '0', 'node', 'id'], userJson)
+
+	if (highlightId !== null) watchData[user].highlight = highlightId
+	//watchData[user].follower = followerId
+	if (followerId !== null) console.log(user, 'follower', followerId)
+	// watchData[user].live = isLive
+
+	const isStoryUnseen = id !== null && id > reel.seen
+	const isNewHighlight = watchData[user].highlight && watchData[user].highlight !== highlightId
+	const needsProfilePic = isStoryUnseen || isNewHighlight || isLive
+
+	if (!needsProfilePic) return
+	const blob = getBlobUrl(reel.owner.profile_pic_url)
+	const promises = []
+
+	if (isStoryUnseen) {
 		// && id != userObj.story
 		console.log(user, 'new story')
 		//watchData[user].story = `${id}`
 
-		options.type = 'basic'
-		options.title = chrome.i18n.getMessage('watch_newStory', user)
-
-		getBlobUrl(reel.owner.profile_pic_url)
-			.then(url => {
-				options.iconUrl = url
-				return chrome.notifications.create(`story;stories/${user}/`, options, nId => {
-					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
-					URL.revokeObjectURL(url)
-					// @todo: Maybe clear notification?
-				})
-			})
-			.catch(logAndReject)
+		promises.push(
+			blob.then(url => createNotification(`story;stories/${user}/`, chrome.i18n.getMessage('watch_newStory', user), options, url))
+		)
 	} else console.log(user, 'no new story', reel)
+
+	if (isNewHighlight) {
+		promises.push(
+			blob.then(url => createNotification(`highlight;${user}/`, chrome.i18n.getMessage('watch_newHighlight', user), options, url))
+		)
+	}
+
+	if (isLive) {
+		// @todo when timer is < 60 min, enable check if notification has been sent already
+		promises.push(
+			blob.then(url => createNotification(`live;${user}/`, chrome.i18n.getMessage('watch_isLive', user), options, url)).catch(logAndReject)
+		)
+	}
+
+	Promise.all(promises)
+		.then(url => URL.revokeObjectURL(url))
+		.catch(logAndReject)
+}
+
+function createNotification(id, title, options, url) {
+	options.type = 'basic'
+	options.title = title
+	options.iconUrl = url
+
+	chrome.notifications.create(id, options, nId => {
+		if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+		// @todo: Maybe clear notification?
+	})
+
+	return url
 }
 
 /**
