@@ -26,103 +26,12 @@ function createTab(id, force) {
  */
 function getCookie(name) {
 	return new Promise((resolve, reject) => {
-		chrome.cookies.get(
-			{
-				name,
-				url: 'https://www.instagram.com/',
-			},
-			function cookies(cookie) {
-				if (cookie !== null) resolve(cookie.value)
-				reject()
-			}
-		)
+		chrome.cookies.get({ name, url: 'https://www.instagram.com/' }, function cookies(cookie) {
+			if (cookie !== null) resolve(cookie.value)
+			reject()
+		})
 	})
 }
-
-let sessionid = ''
-/**
- *
- */
-function getSessionId() {
-	getCookie('sessionid')
-		.then(value => (sessionid = value))
-		.catch(logAndReject)
-}
-
-getSessionId()
-
-// Hook into web request and modify headers before sending the request
-chrome.webRequest.onBeforeSendHeaders.addListener(
-	function listener(details) {
-		if (details.initiator !== `chrome-extension://${chrome.runtime.id}`) return
-
-		getSessionId() // just update for next time
-
-		const headers = details.requestHeaders
-
-		for (const i in headers) {
-			const header = headers[i],
-				name = header.name.toLowerCase()
-
-			if (name === 'user-agent') {
-				// credit https://github.com/mgp25/Instagram-API/master/src/Constants.php
-				// https://packagist.org/packages/mgp25/instagram-php / https://github.com/dilame/instagram-private-api
-				header.value =
-					'Instagram 121.0.0.29.119 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 185203708)'
-			} else if (name === 'cookie' && header.value.indexOf('sessionid=') === -1)
-				// add auth cookies to authenticate API requests
-				header.value = `${header.value}; sessionid=${sessionid}`
-		}
-
-		return { requestHeaders: headers }
-	},
-	{
-		types: ['xmlhttprequest'],
-		urls: [
-			'https://i.instagram.com/api/v1/feed/liked/*',
-			'https://i.instagram.com/api/v1/feed/saved/*',
-			'https://i.instagram.com/api/v1/feed/collection/*',
-		],
-	},
-	['blocking', 'requestHeaders', 'extraHeaders']
-)
-
-/**
- * So we can load images/videos on 3-dots page.
- */
-chrome.webRequest.onBeforeSendHeaders.addListener(
-	function modifyCospHeaders(details) {
-		// @todo Replace this with declarative netrequest https://developer.chrome.com/docs/extensions/reference/declarativeNetRequest/#:~:text=within%20a%20tab.-,initiator,-string%C2%A0optional
-		if (details.initiator !== `chrome-extension://${chrome.runtime.id}`) return
-
-		const headers = details.requestHeaders
-
-		let updated = false
-		for (const i in headers) {
-			const header = headers[i]
-
-			if (header.name === 'Referer') {
-				header.value = 'https://www.instagram.com/'
-				updated = true
-			}
-		}
-
-		if (!updated) headers.push({ name: 'referer', value: 'https://www.instagram.com/' })
-
-		return { requestHeaders: details.requestHeaders }
-	},
-	{
-		types: ['image', 'media', 'xmlhttprequest'],
-		urls: [
-			'*://*.fbcdn.net/*',
-			'*://*.cdninstagram.com/*',
-			// private_web
-			'https://i.instagram.com/api/v1/*',
-			'https://www.instagram.com/*',
-		],
-	},
-	['blocking', 'requestHeaders', 'extraHeaders']
-)
 
 /**
  * @param response
@@ -204,8 +113,8 @@ const FB_APP_ID = '936619743392459'
 const PRIVATE_WEB_API_OPTS = {
 	headers: {
 		'x-asbd-id': '',
-		'X-IG-App-ID': FB_APP_ID,
-		'X-IG-WWW-Claim': '',
+		'x-ig-app-id': FB_APP_ID,
+		'x-ig-www-claim': '',
 	},
 	method: 'GET',
 }
@@ -215,7 +124,7 @@ const PUBLIC_API_OPTS = {
 	headers: {
 		'x-asbd-id': '',
 		'x-csrftoken': '',
-		'X-IG-App-ID': FB_APP_ID,
+		'x-ig-app-id': FB_APP_ID,
 		'x-instagram-ajax': '',
 		'x-requested-with': 'XMLHttpRequest',
 	},
@@ -227,8 +136,8 @@ const GRAPHQL_API_OPTS = {
 	headers: {
 		'x-asbd-id': '',
 		'x-csrftoken': '',
-		'X-IG-App-ID': FB_APP_ID,
-		'X-IG-WWW-Claim': '',
+		'x-ig-app-id': FB_APP_ID,
+		'x-ig-www-claim': '',
 		'x-requested-with': 'XMLHttpRequest',
 	},
 	method: 'GET',
@@ -252,6 +161,11 @@ const WEB_OPTS = {
  * @param error
  */
 function fetchFromBackground(which, path, sendResponse, options, error) {
+	if (!localStorage['asbd-id']) {
+		console.error('no asbd-id', localStorage)
+		return false
+	}
+
 	if (which === 'PUBLIC') {
 		getCookie('csrftoken') // sync with FetchComponent
 			.then(value => {
@@ -269,7 +183,7 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 
 	if (which === 'PRIVATE_WEB') {
 		PRIVATE_WEB_API_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
-		PRIVATE_WEB_API_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
+		PRIVATE_WEB_API_OPTS.headers['x-ig-www-claim'] = localStorage['ig-claim']
 		fetchAux(API_URL[which] + path, PRIVATE_WEB_API_OPTS, 'text')
 			.then(fixMaxId)
 			.then(parseJSON)
@@ -283,7 +197,7 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 		getCookie('csrftoken') // sync with FetchComponent
 			.then(value => {
 				GRAPHQL_API_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
-				GRAPHQL_API_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
+				GRAPHQL_API_OPTS.headers['x-ig-www-claim'] = localStorage['ig-claim']
 				GRAPHQL_API_OPTS.headers['x-csrftoken'] = value
 				fetchAux(API_URL[which] + path, GRAPHQL_API_OPTS, 'json')
 					.then(sendResponse)
@@ -298,7 +212,7 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 
 	if (which === 'WEB') {
 		WEB_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
-		WEB_OPTS.headers['X-IG-WWW-Claim'] = localStorage['ig-claim']
+		WEB_OPTS.headers['x-ig-www-claim'] = localStorage['ig-claim']
 
 		fetchAux(API_URL[which] + path, WEB_OPTS, 'json')
 			.then(sendResponse)
@@ -403,15 +317,15 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 
 		// variables from IG web
 		case 'ig-claim':
-			window.localStorage['ig-claim'] = request.path
+			localStorage['ig-claim'] = request.path
 			break
 
 		case 'rollout-hash':
-			window.localStorage['rollout-hash'] = request.path
+			localStorage['rollout-hash'] = request.path
 			break
 
 		case 'asbd-id':
-			window.localStorage['asbd-id'] = request.path
+			localStorage['asbd-id'] = request.path
 			break
 
 		default:
@@ -427,7 +341,7 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 function createUpdateAlarm(when) {
 	chrome.alarms.create('update', {
 		delayInMinutes: when ? undefined : 1,
-		periodInMinutes: 52, // @todo Try to get this as low as possible, 15: acc locked
+		periodInMinutes: 57, // @todo Try to get this as low as possible, 15: acc locked
 		when: when || undefined,
 	})
 }
@@ -453,11 +367,11 @@ chrome.runtime.onInstalled.addListener(details => {
 
 function watchNow(e) {
 	const now = Date.now(),
-		last = window.localStorage.ige_lastFetch || 0
+		last = localStorage.ige_lastFetch || 0
 
 	const INTERVAL = 900000 // 15min
 	if (now - +last > INTERVAL) {
-		window.localStorage.ige_lastFetch = now
+		localStorage.ige_lastFetch = now
 		getWatchlist()
 	}
 }
@@ -523,7 +437,6 @@ function getBlobUrl(url) {
 			.catch(e => {
 				console.error(e)
 				reject(e)
-				return e
 			})
 	})
 }
@@ -548,7 +461,7 @@ function getProfilePicId(url) {
 }
 
 function cmpAndNotify(value, storeKey, i18nKey, notificationPath, store, blob, user, options) {
-	if (!value) return
+	if (!value) return false
 
 	const hasNew = value !== store[storeKey]
 	store[storeKey] = value
@@ -666,7 +579,6 @@ function handleStory(json, user, userObject, watchData, options) {
 	const followerId = get(['edge_chaining', 'edges', '0', 'node', 'id'], userJson)
 	if (followerId !== null && data.follower && data.follower !== followerId) console.warn(user, 'new common follower', followerId)
 	data.follower = followerId
-	// data.live = isLive
 
 	const highlightId = get(['edge_highlight_reels', 'edges', '0', 'node', 'id'], userJson)
 	const hasNewHighlight = cmpAndNotify(highlightId, 'highlight', `watch_newHighlight`, `${user}/`, data, blob, user, options) // @todo could check for rename
@@ -798,7 +710,9 @@ function notify(user, userObject, type, watchData, length_, i) {
 
 			break
 		}
-		// No default
+
+		default:
+			return
 	}
 
 	const options = { ...notificationOptions }
@@ -821,18 +735,18 @@ function notify(user, userObject, type, watchData, length_, i) {
 					handleGraphQL(type, json, user, userObject, watchData, options)
 					break
 				}
-				// No default
+
+				default:
+					return
 			}
 
 			if (i === length_) chrome.storage.sync.set({ watchData })
-			return json
 		},
 		undefined,
 		e => {
 			console.warn(e)
 			if (e.status === 404) notifyError(user, options)
 			if (i === length_) chrome.storage.sync.set({ watchData })
-			return e
 		}
 	)
 }
@@ -845,35 +759,40 @@ function createUserObject(user, watchData) {
 	//const fetchOptions_ = WEB_OPTS
 	//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
 
-	return fetchFromBackground(
-		'WEB',
-		`${user}/?__a=1`,
-		json => {
-			if (watchData[user] === undefined)
-				return (watchData[user] = {
-					id: json ? json.graphql.user.id : '',
-					/*pic: '',
-				post: '',
-				story: '',
-				highlight: '',
-				tv: '',
-				follower: '',
-				reel: '',
-				tagged: '',*/
-				})
-			return (watchData[user].id = json ? json.graphql.user.id : '')
-		},
-		undefined,
-		e => {
-			console.warn(e)
-			if (e.status === 404) {
-				const options = { ...notificationOptions }
-				notifyError(user, options)
-			}
+	return new Promise((resolve, reject) => {
+		fetchFromBackground(
+			'WEB',
+			`${user}/?__a=1`,
+			json => {
+				if (watchData[user] === undefined) {
+					watchData[user] = {
+						id: json ? json.graphql.user.id : '',
+						/*pic: '',
+					post: '',
+					story: '',
+					highlight: '',
+					tv: '',
+					follower: '',
+					reel: '',
+					tagged: '',*/
+					}
+					resolve()
+				}
 
-			throw e
-		}
-	) // .replace('$$ANON$$', '')
+				watchData[user].id = json ? json.graphql.user.id : reject()
+			},
+			undefined,
+			e => {
+				console.warn(e)
+				if (e.status === 404) {
+					const options = { ...notificationOptions }
+					notifyError(user, options)
+				}
+
+				reject()
+			}
+		) // .replace('$$ANON$$', '')
+	})
 }
 
 /**
@@ -892,20 +811,17 @@ function checkForWatchedContent(users, type, watchData) {
 			userObject = watchData[user]
 
 		if (userObject === undefined || userObject.id === '') {
-			window.setTimeout(function () {
+			setTimeout(function () {
 				createUserObject(user, watchData)
-					.then(function (e) {
-						window.setTimeout(function () {
-							notify(user, watchData[user], type, watchData, length_, i)
-						})
-						return e
+					.then(function () {
+						notify(user, watchData[user], type, watchData, length_, i)
 					})
 					.catch(logAndReject)
 			}, timeout)
 			// @Fixme: edge-case: when a user deleted the post we've saved; solved by storing all 11 nodes and comparing them.
-		} else window.setTimeout(notify.bind(undefined, user, watchData[user], type, watchData, length_, i), timeout)
+		} else setTimeout(notify.bind(undefined, user, watchData[user], type, watchData, length_, i), timeout)
 
-		timeout += getRandom(1000, 15000)
+		timeout += getRandom(5000, 25000)
 	}
 }
 
