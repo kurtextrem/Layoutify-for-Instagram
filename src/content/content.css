@@ -496,7 +496,8 @@ div[role='button'] > div:first-child {
 }
 
 div[role='button'] > div > div:not(:first-child):not(:last-child),
-div[role='button'] > div > button {
+div[role='button'] > div > button,
+div[role='button'][aria-label][tabindex='0'] + span[tabindex='0'] /* unmute icon */ {
 	z-index: 3; /* so it doesn't overlap tagged users */
 }
 
