@@ -444,7 +444,7 @@ function getBlobUrl(url) {
 const notificationOptions = {
 	iconUrl: '',
 	imageUrl: '',
-	message: chrome.i18n.getMessage('watch_openProfile'),
+	message: '',
 	title: '', // profile pic
 	type: '',
 }
@@ -498,7 +498,9 @@ function handlePost(json, user, userObject, watchData, options) {
 	const blob = new Promise((resolve, reject) => {
 		load = resolve
 		cancel = reject
-	}).then(() => getBlobUrl(pic))
+	})
+		.then(() => getBlobUrl(pic))
+		.catch(() => {})
 
 	const isPrivate = userNode.is_private
 	const hasPrivateChanged = cmpAndNotify(userNode.is_private, 'priv', `watch_priv${isPrivate}`, `${user}/`, data, blob, user, options)
@@ -525,20 +527,24 @@ function handlePost(json, user, userObject, watchData, options) {
 		options.type = 'image'
 		options.title = chrome.i18n.getMessage('watch_newPost', user)
 
+		load()
 		Promise.all([blob, getBlobUrl(node.thumbnail_src)])
 			.then(values => {
 				options.iconUrl = values[0]
 				options.imageUrl = values[1]
 				return chrome.notifications.create(`post;p/${id}/`, options, nId => {
 					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+					URL.revokeObjectURL(values[0])
 					URL.revokeObjectURL(values[1])
 					// @todo: Maybe clear notification?
 				})
 			})
 			.catch(logAndReject)
+
+		return
 	}
 
-	if (hasPrivateChanged || hasNewTV || profilePictureChanged || hasNewPost) {
+	if (hasPrivateChanged || hasNewTV || profilePictureChanged) {
 		blob.then(url => URL.revokeObjectURL(url))
 		load()
 	} else cancel()
@@ -565,7 +571,9 @@ function handleStory(json, user, userObject, watchData, options) {
 	const blob = new Promise((resolve, reject) => {
 		load = resolve
 		cancel = reject
-	}).then(() => getBlobUrl(reel.owner.profile_pic_url))
+	})
+		.then(() => getBlobUrl(reel.owner.profile_pic_url))
+		.catch(() => {})
 
 	/* @todo Collect all edge_highlight_reels IDs -> highlight:ID check
 	const reels = get(['edge_highlight_reels', 'edges'])
@@ -605,7 +613,7 @@ function handleStory(json, user, userObject, watchData, options) {
 function createNotification(id, title, options, url) {
 	options.type = 'basic'
 	options.title = title
-	options.message = title
+	options.message = chrome.i18n.getMessage('watch_openProfile')
 	options.iconUrl = url
 
 	chrome.notifications.create(id, options, nId => {
