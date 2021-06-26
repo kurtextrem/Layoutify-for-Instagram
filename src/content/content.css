@@ -52,8 +52,7 @@ body {
 
 /*----------  Performance  ----------*/
 /** Outer parent of the image */
-header + div,
-video {
+header + div {
 	contain: layout style;
 	z-index: 1;
 }
@@ -75,6 +74,10 @@ div > img {
 a:hover > div + div,
 a:focus > div + div {
 	z-index: 0;
+}
+
+video {
+	z-index: 1;
 }
 
 img + video {
@@ -450,12 +453,6 @@ video[loop] {
 	z-index: 4;
 }
 
-video::-webkit-media-controls {
-	z-index: 1;
-	display: flex !important;
-	contain: strict;
-}
-
 /** @TODO: Replace IG's play button with the native one once its been rolled out */
 body > div > div[role='dialog'] video:not([loop])::-webkit-media-controls-overlay-play-button,
 #react-root:not(.stories) video:not([loop])::-webkit-media-controls-overlay-play-button {
@@ -473,7 +470,6 @@ div[role='button'] > div[role='dialog'] > div + div > div + div + a,
 [class*='Sprite'],
 div[role='button'] > div[role='dialog'] + button,
 a[role='button'],
-div[role='button'],
 button[tabindex='-1'],
 div[role='button'] + button /* tagged users icon on videos */,
 div[role='button'] + button[class] + div[style] {
@@ -497,7 +493,8 @@ div[role='button'] > div:first-child {
 
 div[role='button'] > div > div:not(:first-child):not(:last-child),
 div[role='button'] > div > button,
-div[role='button'][aria-label][tabindex='0'] + span[tabindex='0'] /* unmute icon */ {
+div[role='button'][aria-label][tabindex='0'] + div[class] > button[class], /* tagged users icon */
+div[role='button'][aria-label][tabindex='0'] ~ span[tabindex='0'] > div[class] /* unmute icon */ {
 	z-index: 3; /* so it doesn't overlap tagged users */
 }
 
@@ -930,6 +927,12 @@ div[role='dialog'] div > img {
 	max-height: var(--modalHeight);
 	object-fit: contain !important;
 	background-image: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(0, 0, 0, 0.25) 100%);
+}
+
+/** Carousels */
+div[role='dialog'] > article[role='presentation'] > header + div + div > div > div > div:first-child:not(:only-child) {
+	height: var(--modalHeight);
+	padding-bottom: 0 !important;
 }
 
 /** Enlargen modal */
