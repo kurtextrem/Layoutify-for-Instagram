@@ -17,8 +17,8 @@ And:
 
 ### Bug Fixes
 
-- Another fix for the security
-- The 'unmute' button is visible again on single posts
+- The 'unmute' button is visible again on single posts and media controls work on videos again
+- Another fix regarding the case described below.
 
 ## 3.6.0 - 2021-06-17
 
