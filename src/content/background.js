@@ -524,16 +524,18 @@ function handlePost(json, user, userObject, watchData, options) {
 		//console.log(user, 'no new post', node)
 		console.log(user, 'new post', node, userObject.post)
 
-		options.type = 'image'
-		options.title = chrome.i18n.getMessage('watch_newPost', user)
-
 		load()
 		Promise.all([blob, getBlobUrl(node.thumbnail_src)])
 			.then(values => {
+				options.type = 'image'
+				options.title = chrome.i18n.getMessage('watch_newPost', user)
+				options.message = chrome.i18n.getMessage('watch_openProfile')
 				options.iconUrl = values[0]
 				options.imageUrl = values[1]
+
 				return chrome.notifications.create(`post;p/${id}/`, options, nId => {
 					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
+
 					URL.revokeObjectURL(values[0])
 					URL.revokeObjectURL(values[1])
 					// @todo: Maybe clear notification?

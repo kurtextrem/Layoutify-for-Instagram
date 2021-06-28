@@ -120,5 +120,8 @@
 	},
 	"sideEffects": [
 		"*.css"
+	],
+	"browserslist": [
+		"Chrome > 71"
 	]
 }

@@ -1,5 +1,25 @@
 # Changelog
 
+## 3.7.0 - 2021-06-24
+
+### New Features
+
+The "Watch" feature has been expanded to notify when a user...:
+
+- has a new IGTV post
+- has a new highlight reel
+- has a new tagged photo
+- went private / unprivate
+
+And:
+
+- 3-dots page now has an option for the modal width (and the bigger width is now less buggy in height)
+
+### Bug Fixes
+
+- Another fix for the security
+- The 'unmute' button is visible again on single posts
+
 ## 3.6.0 - 2021-06-17
 
 For some users, the "suspicion bans" are still happening and I am working on fixing them. I have updated a few other things, that might have been outdated, so fingers crossed, that 3.6.0 will stop them finally. **If you have any hints, write me an email, it is very important to know what actions you did before the ban got triggered, so that I can fix it**.
