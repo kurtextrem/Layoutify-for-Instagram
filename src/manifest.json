@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extTitle__",
-	"version": "3.6.1",
+	"version": "3.7.0",
 	"manifest_version": 2,
 
 	"description": "__MSG_extDesc__",
@@ -27,10 +27,10 @@
 		}
 	],
 	"background": {
-		"scripts": ["content/background.js"],
+		"scripts": ["content/webrequest.js", "content/background.js"],
 		"persistent": true
 	},
-	"options_page": "index.html",
+	"options_page": "index.html#/options",
 	"minimum_chrome_version": "72",
 
 	"permissions": ["*://*.instagram.com/*", "*://*.fbcdn.net/*", "*://*.cdninstagram.com/*", "storage", "webRequest", "webRequestBlocking", "cookies", "notifications", "alarms", "unlimitedStorage"],
