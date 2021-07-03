@@ -911,7 +911,7 @@ video::-webkit-media-controls:not(.audio-only) div[pseudo='-webkit-media-control
 /*=============================================
 										Post
 =============================================*/
-/** Enlargen modal */
+/** Bigger modals */
 div[role='dialog'] > div[role='dialog'] > div[role='dialog'],
 div[role='dialog'] > div:first-child > div:only-child > div:only-child {
 	max-width: var(--modalWidth) !important;
@@ -923,19 +923,20 @@ div[role='dialog'] div[role='button'] > div:first-child {
 	overflow: hidden;
 }
 
-div[role='dialog'] div > img {
+div[role='dialog'] div > img,
+div[role='dialog'] div > video {
 	max-height: var(--modalHeight);
 	object-fit: contain !important;
 	background-image: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(0, 0, 0, 0.25) 100%);
 }
 
 /** Carousels */
-div[role='dialog'] > article[role='presentation'] > header + div + div > div > div > div:first-child:not(:only-child) {
+div[role='dialog'] > article[role='presentation'] > header + div + div > div > div > div:first-child:not(:only-child)[style] {
 	height: var(--modalHeight);
 	padding-bottom: 0 !important;
 }
 
-/** Enlargen modal */
+/** Bigger modals */
 body > div > div[role='dialog'] article,
 .post article,
 .tv article {

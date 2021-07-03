@@ -163,7 +163,7 @@ const WEB_OPTS = {
 function fetchFromBackground(which, path, sendResponse, options, error) {
 	if (!localStorage['asbd-id']) {
 		console.error('no asbd-id', localStorage)
-		return false
+		return
 	}
 
 	if (which === 'PUBLIC') {
@@ -178,7 +178,7 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 			})
 			.catch(logAndReject)
 
-		return false // for now
+		return
 	}
 
 	if (which === 'PRIVATE_WEB') {
@@ -190,7 +190,7 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 			.then(sendResponse)
 			.catch(error || sendResponse)
 
-		return true
+		return
 	}
 
 	if (which === 'GRAPHQL') {
@@ -207,7 +207,7 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 			})
 			.catch(logAndReject)
 
-		return false
+		return
 	}
 
 	if (which === 'WEB') {
@@ -218,7 +218,7 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 			.then(sendResponse)
 			.catch(error)
 
-		return false
+		return
 	}
 
 	const opts = { ...PRIVATE_API_OPTS, ...options }
@@ -232,8 +232,6 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 		.then(parseJSON)
 		.then(sendResponse)
 		.catch(sendResponse)
-
-	return true
 }
 
 //const UID = getCookie('ds_user_id').then(value => value),
@@ -348,7 +346,7 @@ function createUpdateAlarm(when) {
 
 /** Open Changelog when updating to a new major/minor version. */
 chrome.runtime.onInstalled.addListener(details => {
-	if (details.reason !== 'update') return
+	if (details.reason !== chrome.runtime.OnInstalledReason.UPDATE) return
 
 	chrome.alarms.get('update', function (alarm) {
 		const when = alarm !== undefined ? alarm.scheduledTime : undefined
