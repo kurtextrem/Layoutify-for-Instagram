@@ -918,8 +918,8 @@ div[role='dialog'] > div:first-child > div:only-child > div:only-child {
 	max-height: var(--modalHeight);
 }
 
-div[role='dialog'] div[role='button'] > div:first-child {
-	max-height: var(--modalHeight);
+div[role='dialog'] > article > header + div + div > div:only-child {
+	max-height: var(--modalHeight) !important;
 	overflow: hidden;
 }
 
