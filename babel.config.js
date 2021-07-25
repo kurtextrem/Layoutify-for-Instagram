@@ -61,7 +61,7 @@ module.exports = function (api) {
 						},
 					],
 					'babel-plugin-transform-react-pure-class-to-function',
-					['@babel/plugin-transform-react-jsx', { pragma: 'h', pragmaFrag: 'Fragment', useBuiltIns: true }], // @todo runtime: 'automatic',
+					['@babel/plugin-transform-react-jsx', { runtime: 'automatic', importSource: 'preact', useBuiltIns: true, useSpread: true }], // @todo runtime: 'automatic',
 					'babel-plugin-optimize-react',
 					'babel-plugin-react-local',
 					'babel-plugin-optimize-clsx',

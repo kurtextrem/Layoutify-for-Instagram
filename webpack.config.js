@@ -270,6 +270,15 @@ const first = {
 					'css-loader',
 				],
 			},
+			// This rule fixes an issue where @quilted/preact-mini-compat does not use
+			// fully specified paths for its imports (e.g., uses bare/ relative import
+			// specifiers without the extension).
+			{
+				test: /\.mjs$/,
+				resolve: {
+					fullySpecified: false,
+				},
+			},
 		],
 	},
 
@@ -377,10 +386,10 @@ const first = {
 			? {
 					'create-react-class': 'preact-compat/lib/create-react-class',
 					'prop-types$': 'proptypes/disabled',
-					react: 'preact/compat',
-					'react-dom': 'preact/compat',
 					'react-dom/test-utils': 'preact/test-utils',
 					'react-dom-factories': 'preact-compat/lib/react-dom-factories',
+					react$: '@quilted/preact-mini-compat',
+					'react-dom$': '@quilted/preact-mini-compat',
 			  }
 			: {
 					'create-react-class': 'preact-compat/lib/create-react-class',
@@ -389,6 +398,7 @@ const first = {
 					'react-dom/test-utils': 'preact/test-utils',
 					'react-dom-factories': 'preact-compat/lib/react-dom-factories',
 			  },
+		extensions: ['.mjs', '.js', '.json'],
 	},
 
 	stats:

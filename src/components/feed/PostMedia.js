@@ -77,7 +77,7 @@ export default class PostMedia extends Component {
 					controls
 					onVolumeChange={this.setVolume}
 					ref={this.videoRef}
-					crossOrigin="anonymous" // so it does not send cookies over, which might make the request faster?! Instagram uses it also for <script
+					crossOrigin="anonymous" // IG adds this by default
 				/>
 			)
 		}
@@ -90,7 +90,7 @@ export default class PostMedia extends Component {
 				decoding="async"
 				width={media.dimensions.width}
 				height={media.dimensions.height}
-				crossOrigin="anonymous" // so it does not send cookies over, which might make the request faster?! Instagram uses it also for <script
+				crossOrigin="anonymous" // IG adds this by default
 			/>
 		)
 	}
