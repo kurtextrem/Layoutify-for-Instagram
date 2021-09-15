@@ -1,7 +1,7 @@
 {
 	"name": "__MSG_extTitle__",
-	"version": "3.7.0.2",
-	"manifest_version": 2,
+	"version": "3.7.1",
+	"manifest_version": 3,
 
 	"description": "__MSG_extDesc__",
 	"default_locale": "en",
@@ -27,26 +27,31 @@
 		}
 	],
 	"background": {
-		"scripts": ["content/webrequest.js", "content/background.js"],
-		"persistent": true
+		"service_worker": "content/background.js"
 	},
 	"options_page": "index.html#/options",
-	"minimum_chrome_version": "72",
+	"minimum_chrome_version": "93",
 
-	"permissions": ["*://*.instagram.com/*", "*://*.fbcdn.net/*", "*://*.cdninstagram.com/*", "storage", "webRequest", "webRequestBlocking", "cookies", "notifications", "alarms", "unlimitedStorage"],
+	"permissions": ["storage", "declarativeNetRequest", "cookies", "notifications", "alarms", "unlimitedStorage"],
+	"host_permissions": [
+		"*://*.instagram.com/*", "*://*.fbcdn.net/*", "*://*.cdninstagram.com/*"
+	],
 	"incognito": "split",
-	"content_security_policy": "script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'",
+	"content_security_policy": { "extension_pages":  "script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'" },
 
-	"web_accessible_resources": [
-		"content/night.css",
-		"content/content.css",
-		"content/igdata.js",
-		"commons.bundle.js",
-		"runtime.bundle.js",
-		"vendors.bundle.js",
-		"feed.bundle.js",
-		"feed.css",
-		"img/story.png",
-		"img/IGsprite.webp"
-	]
+	"web_accessible_resources": [{
+		"resources": [
+			"content/night.css",
+			"content/content.css",
+			"content/igdata.js",
+			"commons.bundle.js",
+			"runtime.bundle.js",
+			"vendors.bundle.js",
+			"feed.bundle.js",
+			"feed.css",
+			"img/story.png",
+			"img/IGsprite.webp"
+		],
+		"matches": ["https://*.instagram.com/*"]
+	}]
 }

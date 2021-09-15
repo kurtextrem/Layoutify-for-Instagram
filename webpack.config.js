@@ -80,7 +80,7 @@ const plugins = [
 
 					return replaceBuffer(
 						content,
-						"\"content_security_policy\": \"script-src 'self' 'unsafe-eval' http://localhost:8080; object-src 'self'\",",
+						'"content_security_policy": { "extension_pages":  "script-src \'self\' \'unsafe-eval\' http://localhost:8080; object-src \'self\'" },',
 						''
 					)
 				},

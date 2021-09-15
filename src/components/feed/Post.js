@@ -82,7 +82,7 @@ export default class Post extends FetchComponent {
 		}
 
 		this.setState((prevState, props) => ({
-			additionalComments: prevState.additionalComments.concat(newNode),
+			additionalComments: prevState.additionalComments.push(newNode),
 		}))
 	}
 
@@ -125,15 +125,11 @@ export default class Post extends FetchComponent {
 		const { hasLiked, hasSaved, additionalComments } = this.state
 
 		const text = edge_media_to_caption?.edges[0]?.node?.text
-		const comments = edge_media_preview_comment.edges?.concat(additionalComments)
+		const comments = edge_media_preview_comment.edges?.push(...additionalComments)
 
 		// @TODO Preload next page when idling (no scroll) for 3 sec
 		return (
-			<article
-				class={`ige_post ${is_video ? 'ige_post_video' : ''} ${additionalClass || ''}`}
-				id={`post_${id}`}
-				data-index={index}
-				rendersubtree="activatable">
+			<article class={`ige_post ${is_video ? 'ige_post_video' : ''} ${additionalClass || ''}`} id={`post_${id}`} data-index={index}>
 				<PostHeader user={owner} shortcode={shortcode} taken_at={taken_at_timestamp} location={location} />
 				<PostMedia data={data} onLike={this.handleLike} />
 				<PostAction

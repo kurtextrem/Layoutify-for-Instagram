@@ -20,6 +20,8 @@ const Heart = props =>
 		</svg>
 	)
 
-Heart.propTypes = {}
+Heart.propTypes = {
+	active: PropTypes.bool,
+}
 
 export default memo(Heart)

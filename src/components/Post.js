@@ -1,4 +1,5 @@
 import PostAction from './feed/PostAction'
+import PostDummy from './PostDummy'
 import PostHeader from './PostHeader'
 import PostMedia from './feed/PostMedia'
 import bind from 'autobind-decorator'
@@ -7,7 +8,6 @@ import { default as FeedPost } from './feed/Post'
 import { Instagram } from './InstagramAPI'
 import { Storage, logAndReturn } from './Utils'
 import { h } from 'preact'
-import PostDummy from './PostDummy'
 
 export default class Post extends FeedPost {
 	static removeItem(id) {
@@ -40,6 +40,7 @@ export default class Post extends FeedPost {
 					media.dimensions = { height: media.image_versions2.candidates[0].height, width: media.image_versions2.candidates[0].width }
 					carouselMedia[i] = { node: media }
 				}
+
 				data.edge_sidecar_to_children = { edges: data.carousel_media }
 			} else {
 				data.is_video = data.media_type === 2
@@ -107,11 +108,11 @@ export default class Post extends FeedPost {
 		const isAd = link !== null
 
 		return (
-			<article class={`card${active ? '' : ' fadeOut'}`} id={`post_${id}`} rendersubtree="activatable">
+			<article class={`card${active ? '' : ' fadeOut'}`} id={`post_${id}`}>
 				<PostHeader user={user} code={code} taken_at={taken_at} isAd={isAd} />
 				<PostMedia data={data} onLike={this.handleLike} />
 				{isAd ? (
-					<a href={link} class="btn btn-link" target="_blank" rel="noopener">
+					<a href={link} class="btn btn-link" target="_blank" rel="noopener noreferrer">
 						{overlay_text}
 					</a>
 				) : null}

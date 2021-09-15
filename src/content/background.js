@@ -1,5 +1,3 @@
-'use strict'
-
 /** Stores tab ID */
 let tabId
 
@@ -160,18 +158,19 @@ const WEB_OPTS = {
  * @param options
  * @param error
  */
-function fetchFromBackground(which, path, sendResponse, options, error) {
-	if (!localStorage['asbd-id']) {
-		console.error('no asbd-id', localStorage)
+async function fetchFromBackground(which, path, sendResponse, options, error) {
+	const { asbdId, rolloutHash, igClaim } = await localStorage.get({ 'asbd-id': '', 'rollout-hash': '', 'ig-claim': '' })
+	if (!asbdId || !rolloutHash || !igClaim) {
+		console.error('no', asbdId, rolloutHash, igClaim)
 		return
 	}
 
 	if (which === 'PUBLIC') {
 		getCookie('csrftoken') // sync with FetchComponent
 			.then(value => {
-				PUBLIC_API_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
+				PUBLIC_API_OPTS.headers['x-asbd-id'] = asbdId
 				PUBLIC_API_OPTS.headers['x-csrftoken'] = value
-				PUBLIC_API_OPTS.headers['x-instagram-ajax'] = localStorage['rollout-hash']
+				PUBLIC_API_OPTS.headers['x-instagram-ajax'] = rolloutHash
 				fetchAux(API_URL[which] + path, PUBLIC_API_OPTS)
 
 				return value
@@ -182,8 +181,8 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 	}
 
 	if (which === 'PRIVATE_WEB') {
-		PRIVATE_WEB_API_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
-		PRIVATE_WEB_API_OPTS.headers['x-ig-www-claim'] = localStorage['ig-claim']
+		PRIVATE_WEB_API_OPTS.headers['x-asbd-id'] = asbdId
+		PRIVATE_WEB_API_OPTS.headers['x-ig-www-claim'] = igClaim
 		fetchAux(API_URL[which] + path, PRIVATE_WEB_API_OPTS, 'text')
 			.then(fixMaxId)
 			.then(parseJSON)
@@ -196,8 +195,8 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 	if (which === 'GRAPHQL') {
 		getCookie('csrftoken') // sync with FetchComponent
 			.then(value => {
-				GRAPHQL_API_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
-				GRAPHQL_API_OPTS.headers['x-ig-www-claim'] = localStorage['ig-claim']
+				GRAPHQL_API_OPTS.headers['x-asbd-id'] = asbdId
+				GRAPHQL_API_OPTS.headers['x-ig-www-claim'] = igClaim
 				GRAPHQL_API_OPTS.headers['x-csrftoken'] = value
 				fetchAux(API_URL[which] + path, GRAPHQL_API_OPTS, 'json')
 					.then(sendResponse)
@@ -211,8 +210,8 @@ function fetchFromBackground(which, path, sendResponse, options, error) {
 	}
 
 	if (which === 'WEB') {
-		WEB_OPTS.headers['x-asbd-id'] = localStorage['asbd-id']
-		WEB_OPTS.headers['x-ig-www-claim'] = localStorage['ig-claim']
+		WEB_OPTS.headers['x-asbd-id'] = asbdId
+		WEB_OPTS.headers['x-ig-www-claim'] = igClaim
 
 		fetchAux(API_URL[which] + path, WEB_OPTS, 'json')
 			.then(sendResponse)
@@ -291,6 +290,62 @@ function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+class Storage {
+	constructor(storage) {
+		this.STORAGE = storage
+
+		this.promise = this.promise.bind(this)
+		this.set = this.set.bind(this)
+		this.get = this.get.bind(this)
+		this.remove = this.remove.bind(this)
+	}
+
+	promise(cb) {
+		return new Promise((resolve, reject) => {
+			if (chrome.storage[this.STORAGE] === undefined) reject('') // @TODO: Don't emit on SSR
+
+			try {
+				cb(resolve, reject)
+			} catch (e) {
+				reject(e)
+			}
+		})
+	}
+
+	set(key, value) {
+		return this.promise((resolve, reject) =>
+			chrome.storage[this.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
+		)
+	}
+
+	get(key, defaultValue) {
+		return this.promise((resolve, reject) =>
+			chrome.storage[this.STORAGE].get(defaultValue ? { [key]: defaultValue } : key, data => Storage.check(data[key], resolve, reject))
+		)
+	}
+
+	remove(key) {
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
+	}
+
+	getBytes() {
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].getBytesInUse(null, resolve))
+	}
+
+	static check(data, resolve, reject) {
+		if (chrome.runtime.lastError) {
+			console.error(chrome.runtime.lastError.message)
+			/*if (chrome.runtime.lastError.message.indexOf('QUOTA_BYTES') !== 0) {
+				alert('Because you have a lot of likes / collections, please go to "About" and clear old data.')
+			}*/
+			return reject(chrome.runtime.lastError.message)
+		}
+
+		return resolve(data)
+	}
+}
+const localStorage = new Storage('local')
+
 chrome.runtime.onMessage.addListener(function listener(request, sender, sendResponse) {
 	switch (request.action) {
 		case 'click':
@@ -315,15 +370,15 @@ chrome.runtime.onMessage.addListener(function listener(request, sender, sendResp
 
 		// variables from IG web
 		case 'ig-claim':
-			localStorage['ig-claim'] = request.path
+			localStorage.set('ig-claim', request.path)
 			break
 
 		case 'rollout-hash':
-			localStorage['rollout-hash'] = request.path
+			localStorage.set('rollout-hash', request.path)
 			break
 
 		case 'asbd-id':
-			localStorage['asbd-id'] = request.path
+			localStorage.set('asbd-id', request.path)
 			break
 
 		default:
@@ -346,6 +401,72 @@ function createUpdateAlarm(when) {
 
 /** Open Changelog when updating to a new major/minor version. */
 chrome.runtime.onInstalled.addListener(details => {
+	//importScripts('webrequest.js')
+
+	;(function () {
+		let id = 0
+
+		// this is a workaround until https://bugs.chromium.org/p/chromium/issues/detail?id=1226276#c4 is fixed.
+		chrome.declarativeNetRequest.getDynamicRules(function (rules) {
+			if (rules.length > 2) return // already loaded
+
+			chrome.declarativeNetRequest.updateDynamicRules({
+				addRules: [
+					/** So we can load images/videos on 3-dots page. */
+					...[
+						'fbcdn.net',
+						'cdninstagram.com',
+						// private_web
+						'i.instagram.com/api/v1/*',
+						'www.instagram.com',
+					].map(item => ({
+						id: ++id,
+						priority: 1,
+						action: {
+							type: 'modifyHeaders',
+							requestHeaders: [
+								{
+									header: 'referer',
+									operation: 'set',
+									value: 'https://www.instagram.com/',
+								},
+							],
+						},
+						condition: {
+							urlFilter: `||${item}`,
+							domains: [chrome.runtime.id],
+							resourceTypes: ['image', 'media', 'xmlhttprequest'],
+						},
+					})),
+
+					// Hook into web request and modify headers before sending the request
+					...['i.instagram.com/api/v1/feed/liked/*', 'i.instagram.com/api/v1/feed/saved/*', 'i.instagram.com/api/v1/feed/collection/*'].map(
+						item => ({
+							id: ++id,
+							priority: 1,
+							action: {
+								type: 'modifyHeaders',
+								requestHeaders: [
+									{
+										header: 'user-agent',
+										operation: 'set',
+										value:
+											'Instagram 121.0.0.29.119 Android (24/7.0; 380dpi; 1080x1920; OnePlus; ONEPLUS A3010; OnePlus3T; qcom; en_US; 185203708)',
+									},
+								],
+							},
+							condition: {
+								urlFilter: `||${item}`,
+								domains: [chrome.runtime.id],
+								resourceTypes: ['xmlhttprequest'],
+							},
+						})
+					),
+				],
+			})
+		})
+	})()
+
 	if (details.reason !== chrome.runtime.OnInstalledReason.UPDATE) return
 
 	chrome.alarms.get('update', function (alarm) {
@@ -363,14 +484,14 @@ chrome.runtime.onInstalled.addListener(details => {
 		})
 })
 
-function watchNow(e) {
-	const now = Date.now(),
-		last = localStorage.ige_lastFetch || 0
-
+async function watchNow(e) {
+	const now = Date.now()
 	const INTERVAL = 900000 // 15min
-	if (now - +last > INTERVAL) {
-		localStorage.ige_lastFetch = now
-		getWatchlist()
+	const last = await localStorage.get('ige_lastFetch', 0)
+	if (now - last > INTERVAL) {
+		chrome.storage.local.set({ ige_lastFetch: now }, function () {
+			getWatchlist()
+		})
 	}
 }
 
@@ -694,8 +815,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 		case 0: {
 			// @todo user.profile_context_mutual_follow_ids -> fetchFromBackground('PRIVATE_WEB', `users/${id}/info/`, console.log)
 			queryType = 'WEB'
-			url = `${user}/?__a=1` // .replace('$$ANON$$', '')
-			//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
+			url = `${user.replace('$$ANON$$', '')}/?__a=1`
 
 			break
 		}
@@ -750,7 +870,7 @@ function notify(user, userObject, type, watchData, length_, i) {
 
 			if (i === length_) chrome.storage.sync.set({ watchData })
 		},
-		undefined,
+		user.indexOf('$$ANON$$') === 0 ? { ...WEB_OPTS, credentials: 'omit' } : undefined,
 		e => {
 			console.warn(e)
 			if (e.status === 404) notifyError(user, options)
@@ -764,13 +884,10 @@ function notify(user, userObject, type, watchData, length_, i) {
  * @param watchData
  */
 function createUserObject(user, watchData) {
-	//const fetchOptions_ = WEB_OPTS
-	//if (user.indexOf('$$ANON$$') === 0) fetchOptions_ = { ...WEB_OPTS, credentials: 'omit' }
-
 	return new Promise((resolve, reject) => {
 		fetchFromBackground(
 			'WEB',
-			`${user}/?__a=1`,
+			`${user.replace('$$ANON$$', '')}/?__a=1`,
 			json => {
 				if (watchData[user] === undefined) {
 					watchData[user] = {
@@ -789,7 +906,7 @@ function createUserObject(user, watchData) {
 
 				watchData[user].id = json ? json.graphql.user.id : reject()
 			},
-			undefined,
+			user.indexOf('$$ANON$$') === 0 ? { ...WEB_OPTS, credentials: 'omit' } : undefined,
 			e => {
 				console.warn(e)
 				if (e.status === 404) {
@@ -799,7 +916,7 @@ function createUserObject(user, watchData) {
 
 				reject()
 			}
-		) // .replace('$$ANON$$', '')
+		)
 	})
 }
 

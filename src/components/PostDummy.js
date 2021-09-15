@@ -10,7 +10,7 @@ const dummyUser = {
 }
 const style = { visibility: 'hidden' }
 const PostDummy = () => (
-	<article class="card" rendersubtree="activatable">
+	<article class="card">
 		<PostHeader user={dummyUser} code="" taken_at={0} />
 		<div class="position-relative post--carousel">
 			<a href="#" target="_blank" rel="noopener" class="img--wrapper img--placeholder">

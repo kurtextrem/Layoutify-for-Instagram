@@ -6,8 +6,8 @@ import Share from './Share'
 import Username from './Username'
 import { Fragment, h } from 'preact'
 import { Modal } from 'react-responsive-modal'
+import { cancelOpenModalDelayed, closeIframe, openModalDelayed } from '../Utils'
 import { memo, useCallback, useState } from 'preact/compat'
-import { closeIframe, openModalDelayed, cancelOpenModalDelayed } from '../Utils'
 
 function returnLiked(value, index) {
 	const node = value.node,
@@ -18,7 +18,7 @@ function returnLiked(value, index) {
 			<img
 				class="ige_picture_container ige_picture_container-small va-text-top"
 				src={node.profile_pic_url}
-				alt={username + ' Profilbild'}
+				alt={`${username} Profilbild`}
 				decoding="async"
 				width="20"
 				height="20"
@@ -56,17 +56,17 @@ function PostAction({ onLike, onSave, hasLiked, hasSaved, shortcode, like_media,
 				<Save size={24} active={hasSaved} />
 			</button>
 			<div class="ml-auto d-block ige_action_amount">
-				<a href={'/p/' + shortcode + '/'} class="color-inherit">
+				<a href={`/p/${shortcode}/`} class="color-inherit">
 					<>
 						{is_video ? null : '♥ '}
 						{is_video ? <PlayButton fill="black" /> : like_media?.edges?.map(returnLiked)}
-						{' ' + count?.toLocaleString()}
+						{` ${count?.toLocaleString()}`}
 					</>
 				</a>
 			</div>
 			{isOpen || renderModal ? (
 				<Modal open onClose={closeModal} center classNames={{ root: !isOpen ? 'd-none' : undefined }}>
-					<iframe src={'/p/' + shortcode + '/#share'} class="ige_iframe" ref={iframeCloser} />
+					<iframe src={`/p/${shortcode}/#share`} class="ige_iframe" ref={iframeCloser} />
 				</Modal>
 			) : null}
 		</div>
