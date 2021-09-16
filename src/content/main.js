@@ -75,7 +75,7 @@ function injectCSS(file) {
 
 	style.id = 'ige_style'
 	style.rel = 'stylesheet'
-	style.href = chrome.extension.getURL(`content/${file}.css`)
+	style.href = chrome.runtime.getURL(`content/${file}.css`)
 	document.head.append(style) // inserted css is always non-blocking
 }
 

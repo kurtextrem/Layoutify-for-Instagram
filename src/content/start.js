@@ -11,12 +11,12 @@
 
 	for (let i = 0; i < scripts.length; ++i) {
 		const s = document.createElement('script')
-		s.src = chrome.extension.getURL(scripts[i])
+		s.src = chrome.runtime.getURL(scripts[i])
 		document.body.appendChild(s)
 	}
 
 	const c = document.createElement('link')
-	c.href = chrome.extension.getURL('feed.css')
+	c.href = chrome.runtime.getURL('feed.css')
 	c.rel = 'stylesheet'
 	c.id = 'ige_feedCSS'
 	document.body.appendChild(c)

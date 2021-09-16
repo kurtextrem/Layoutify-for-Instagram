@@ -81,9 +81,10 @@ export default class Post extends FetchComponent {
 			},
 		}
 
-		this.setState((prevState, props) => ({
-			additionalComments: prevState.additionalComments.push(newNode),
-		}))
+		this.setState((prevState, props) => {
+			const additionalComments = prevState.additionalComments.push(newNode)
+			return { additionalComments }
+		})
 	}
 
 	render() {
@@ -125,7 +126,8 @@ export default class Post extends FetchComponent {
 		const { hasLiked, hasSaved, additionalComments } = this.state
 
 		const text = edge_media_to_caption?.edges[0]?.node?.text
-		const comments = edge_media_preview_comment.edges?.push(...additionalComments)
+		edge_media_preview_comment.edges?.push(...additionalComments)
+		const comments = edge_media_preview_comment.edges
 
 		// @TODO Preload next page when idling (no scroll) for 3 sec
 		return (
