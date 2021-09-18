@@ -140,8 +140,10 @@ canvas + span:focus {
 /*=============================================
 						Slimmer Post Header
 =============================================*/
-body > div > div[role='dialog'] article > div > header,
-#react-root:not(.profile):not(.explore) article > div > header {
+body > div > div[role='dialog'] article > div > header, /** @deprecated */
+#react-root:not(.profile):not(.explore) article > div > header, /** @deprecated */
+body > div > div[role='dialog'] article > div > div header,
+#react-root:not(.profile):not(.explore) article > div > div header {
 	/** don't overlap, so article won't get promoted to a layer */
 	z-index: 8;
 	width: 99%;
@@ -151,26 +153,25 @@ body > div > div[role='dialog'] article > div > header,
 	contain: strict;
 }
 
-#react-root.post.post.post article > header /* @deprecated */,
-#react-root.tv.tv.tv article > header /* @deprecated */,
-#react-root.post.post.post article > div > header,
-#react-root.tv.tv.tv article > div > header {
+#react-root.post.post.post article > header, /** @deprecated */
+#react-root.tv.tv.tv article > header, /** @deprecated */
+#react-root.post.post.post article > div > div header,
+#react-root.tv.tv.tv article > div > div header {
 	padding: 4px !important;
 }
 
-body > div > div[role='dialog'] article > header /* @deprecated */,
-#react-root.post article > header /* @deprecated */,
-#react-root.tv article > header /* @deprecated */,
-body > div > div[role='dialog'] article > div > header,
-#react-root.post article > div > header,
-#react-root.tv article > div > header {
+body > div > div[role='dialog'] article > div > header, /** @deprecated */
+#react-root.post article > div > header, /** @deprecated */
+#react-root.tv article > div > header, /** @deprecated */
+body > div > div[role='dialog'] article > div > div header,
+#react-root.post article > div > div header,
+#react-root.tv article > div > div header {
 	right: 8px !important;
 	width: 305px !important;
 	border: 0 !important;
 }
 
-body > div > div[role='dialog'] article > header /* @deprecated */,
-body > div > div[role='dialog'] article > div > header {
+body > div > div[role='dialog'] article > div > div header {
 	padding: 16px 4px !important;
 }
 
@@ -182,16 +183,10 @@ div > main:only-child {
 	flex-grow: 1;
 }
 
-body > div > div[role='dialog'] header + div + div + div,
-.post header + div + div + div,
-.tv header + div + div + div {
-	top: 55px !important;
-}
-
 /*----------  Improve new post layout  ----------*/
 /** Row layout */
-body > div > div[role='dialog'] header + div + div + div,
-#react-root:not(.profile):not(.stories) header + div + div + div {
+body > div > div[role='dialog'] article > div > div + div:last-child > div + div:last-child,
+#react-root:not(.profile):not(.stories) article > div > div + div:last-child > div + div:last-child {
 	/* @TODO: Min Chrome v60 */
 	display: grid;
 	flex: 1;
@@ -210,16 +205,16 @@ body > div > div[role='dialog'] header + div + div + div,
 	contain: layout style;
 }
 
-body > div > div[role='dialog'] header + div + div + div,
-#react-root.post.post.post header + div + div + div,
-#react-root.tv.tv.tv header + div + div + div {
+body > div > div[role='dialog'] article > div > div + div:last-child > div + div:last-child,
+#react-root.post.post.post article > div > div + div:last-child > div + div:last-child,
+#react-root.tv.tv.tv article > div > div + div:last-child > div + div:last-child {
 	grid-template:
 		'date likes' min-content
 		'c c' 1fr
 		'buttons comment' 56px
 		/ auto 2fr;
 	height: auto !important;
-	padding: 0 8px 0 20px !important;
+	padding: 0 0 0 12px !important;
 }
 
 /** Views / likes */
@@ -269,8 +264,20 @@ time {
 	text-transform: none;
 }
 
-body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li,
-#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li {
+body
+	> div
+	> div[role='dialog']
+	article
+	> div
+	> div
+	+ div:last-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li,
+#react-root:not(.stories) article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > ul > li {
 	padding: 0 16px;
 }
 
@@ -299,8 +306,8 @@ h3 + span + div {
 }
 
 /** Grow comments */
-body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child),
-#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) {
+body > div > div[role='dialog'] article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child),
+#react-root:not(.stories) article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	grid-area: c;
 	order: 2 !important;
@@ -310,8 +317,8 @@ body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not
 	contain: content;
 }
 
-body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) > ul,
-#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) > ul {
+body > div > div[role='dialog'] article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul,
+#react-root:not(.stories) article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul {
 	width: 100%;
 	height: 100%;
 	padding: 0;
@@ -319,17 +326,43 @@ body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not
 	overflow-x: hidden;
 }
 
-body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) > ul > li,
-#react-root.post header + div + div + div > div:first-of-type:not(:only-child) > ul > li,
-#react-root.tv header + div + div + div > div:first-of-type:not(:only-child) > ul > li {
+body > div > div[role='dialog'] article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > li,
+#react-root.post article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > li,
+#react-root.tv article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > li {
 	margin-top: 0;
 	margin-left: 0;
 	padding: 2px;
 }
 
 /** Comments comment profile pic */
-body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) ul > li > div > div > div,
-#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) ul > li > div > div > div {
+body
+	> div
+	> div[role='dialog']
+	article
+	> div
+	> div
+	+ div:last-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	ul
+	> li
+	> div
+	> div
+	> div,
+#react-root:not(.stories)
+	article
+	> div
+	> div
+	+ div:last-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	ul
+	> li
+	> div
+	> div
+	> div {
 	align-self: flex-start;
 	margin-right: 7px;
 }
@@ -344,19 +377,67 @@ body > div > div[role='dialog'] h3 + span + div,
 }
 
 /** Comments comments replies */
-body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul,
-#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul {
+body
+	> div
+	> div[role='dialog']
+	article
+	> div
+	> div
+	+ div:last-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li
+	> ul,
+#react-root:not(.stories)
+	article
+	> div
+	> div
+	+ div:last-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li
+	> ul {
 	width: calc(100% - 18px);
 	margin: 4px 0 0 36px;
 }
 
-body > div > div[role='dialog'] header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul > li:first-child > div,
-#react-root:not(.stories) header + div + div + div > div:first-of-type:not(:only-child) > ul > ul > li > ul > li:first-child > div {
+body
+	> div
+	> div[role='dialog']
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li
+	> ul
+	> li:first-child
+	> div,
+#react-root:not(.stories)
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li
+	> ul
+	> li:first-child
+	> div {
 	margin-bottom: 0;
 }
 
 /** Heart / Comment / Save */
-header + div + div + div > section:first-child {
+article > div > div + div:last-child > div + div:last-child > section:first-child {
 	grid-area: buttons;
 	align-self: flex-end;
 	order: 4 !important;
@@ -366,57 +447,42 @@ header + div + div + div > section:first-child {
 	margin-right: 0 !important;
 	padding: 0 !important;
 	border-top: 1px solid #efefef;
-	contain: content;
 }
 
-header + div + div + div > section:first-child > * {
+article > div > div + div:last-child > div + div:last-child > section:first-child > * {
 	display: flex;
 	align-items: center;
 }
 
-/** Icons */
-article > div > section:first-child > span {
-	display: flex;
-}
-
 /** Hide useless comment icon */
-section > a[role='button']:first-child + a[role='button']:not([aria-disabled]) /* @deprecated */,
-article > div > section > span:first-child + span /* @deprecated */,
-div[role='dialog'] header + div + div + div > section:first-child > span:first-child + span,
-header + div + div + div > section:first-child > span:first-child + span {
+div[role='dialog'] article > div > div + div:last-child > div + div:last-child > section:first-child > span:first-child + span,
+article > div > div + div:last-child > div + div:last-child > section:first-child > span:first-child + span {
 	display: none;
 }
 
 /** Share button */
-article > div > section:first-child > span ~ button {
+article > div > div + div:last-child > div + div:last-child > section:first-child > span > button {
 	padding-left: 0;
 }
 
 /** Save button */
-article > div > section:first-child > span:last-child {
+article > div > div + div:last-child > div + div:last-child > section:first-child > span:last-child {
 	margin-left: -8px;
 }
 
 /** 3 dots */
 /** 3 dots on every post */
-article > header + div + div + div /* @deprecated */,
-article > div > header + div + div + div {
+article > div > article > div > div + div:last-child > div + div:last-child {
 	z-index: 9;
 }
 
-.post article > header + div /* @deprecated */,
-.post article > div > header + div {
+.post article > div > div + div:last-child > div:first-child + div {
 	z-index: 6;
 	height: 52px !important;
 }
 
-/** Heart */
-article > div > section:first-child > span:first-child {
-}
-
-/** "Add comment" */
-article > div > section:last-child /* @deprecated */,
-article > div > div > section:last-child {
+/** Emoji button + comment textarea */
+article > div > div + div:last-child > div + div:last-child > section:last-child {
 	flex: 1;
 	grid-area: comment;
 	align-self: flex-end;
@@ -424,13 +490,18 @@ article > div > div > section:last-child {
 	width: auto;
 	height: 56px;
 	margin: 0;
+	padding-right: 0;
+	padding-left: 0;
 }
 
-article > div > section textarea  /* @deprecated */,
-article > div > div > section textarea {
+/** Emoji button */
+article > div > div + div:last-child > div + div:last-child > section:last-child button:first-child {
+	padding-right: 8px;
+}
+
+article > div > div + div:last-child > div + div:last-child > section:last-child textarea {
 	height: auto !important;
 	padding-right: 2px !important;
-	padding-left: 2px !important;
 }
 
 /** Comments */
@@ -956,14 +1027,12 @@ body > div > div[role='dialog'] > div:first-child > div > div {
 	/* max-width: 52vh !important; */
 }
 
-body > div > div[role='dialog'] article > header + div /* @deprecated */,
-body > div > div[role='dialog'] article > div > header + div {
+body > div > div[role='dialog'] article > div > div + div:last-child > div:first-child + div {
 	margin-right: 320px !important;
 }
 
 /** dots in multiple posts */
-article > header + div > div > div > div[style^='padding-bottom'] + div + div /* @deprecated */,
-article > div > header + div > div > div > div[style^='padding-bottom'] + div + div {
+article > div > div + div:last-child > div:first-child + div > div > div > div[style^='padding-bottom'] + div + div {
 	margin-top: 12px;
 	margin-bottom: -3px;
 }
@@ -1124,15 +1193,12 @@ footer > div > nav {
 =============================================*/
 
 /*----------  Picture Only Mode  ----------*/
-.ige_picturesOnly.home + #ige_feed article > header /* @deprecated */,
-.ige_picturesOnly.home article > header /* @deprecated */,
-.ige_picturesOnly.home + #ige_feed article > div > header,
-.ige_picturesOnly.home article > div > header {
+.ige_picturesOnly.home + #ige_feed article > div > div + div:last-child > div:first-child,
+.ige_picturesOnly.home article > div > div + div:last-child > div:first-child {
 	height: 41px !important;
 }
 
-.ige_picturesOnly.home article > header > div:last-child > div:last-child /* @deprecated */,
-.ige_picturesOnly.home article > div > header > div:last-child > div:last-child {
+.ige_picturesOnly.home article > div > div + div:last-child > div:first-child > div:last-child > div:last-child {
 	display: flex;
 }
 
@@ -1141,8 +1207,7 @@ footer > div > nav {
 	display: none;
 }
 
-.ige_picturesOnly.home + #ige_feed article > header /* @deprecated */,
-.ige_picturesOnly.home + #ige_feed article > div > header {
+.ige_picturesOnly.home + #ige_feed article > div > div + div:last-child > div:first-child {
 	border-bottom: 0;
 }
 
