@@ -140,39 +140,34 @@ canvas + span:focus {
 /*=============================================
 						Slimmer Post Header
 =============================================*/
-body > div > div[role='dialog'] article > div > header, /** @deprecated */
-#react-root:not(.profile):not(.explore) article > div > header, /** @deprecated */
 body > div > div[role='dialog'] article > div > div header,
 #react-root:not(.profile):not(.explore) article > div > div header {
 	/** don't overlap, so article won't get promoted to a layer */
 	z-index: 8;
 	width: 99%;
 	height: 53px !important;
-	margin: auto;
-	padding: 16px 8px !important;
+	padding: 16px 0 16px 8px !important;
 	contain: strict;
 }
 
-#react-root.post.post.post article > header, /** @deprecated */
-#react-root.tv.tv.tv article > header, /** @deprecated */
-#react-root.post.post.post article > div > div header,
-#react-root.tv.tv.tv article > div > div header {
-	padding: 4px !important;
-}
-
-body > div > div[role='dialog'] article > div > header, /** @deprecated */
-#react-root.post article > div > header, /** @deprecated */
-#react-root.tv article > div > header, /** @deprecated */
 body > div > div[role='dialog'] article > div > div header,
 #react-root.post article > div > div header,
 #react-root.tv article > div > div header {
-	right: 8px !important;
 	width: 305px !important;
 	border: 0 !important;
 }
 
-body > div > div[role='dialog'] article > div > div header {
-	padding: 16px 4px !important;
+/** menu dots */
+body > div > div[role='dialog'] article > div > div header + div,
+#react-root:not(.profile):not(.explore) article > div > div header + div {
+	/** don't overlap, so article won't get promoted to a layer */
+	padding-right: 0;
+}
+
+/** more lengthy usernames */
+body > div > div[role='dialog'] article > div > div header > div + div:last-child > div:first-child,
+#react-root:not(.profile):not(.explore) article > div > div header > div + div:last-child > div:first-child {
+	max-width: 240px; /* copied from instagram class */
 }
 
 div > main:first-child {
@@ -185,7 +180,7 @@ div > main:only-child {
 
 /*----------  Improve new post layout  ----------*/
 /** Row layout */
-body > div > div[role='dialog'] article > div > div + div:last-child > div + div:last-child,
+body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child,
 #react-root:not(.profile):not(.stories) article > div > div + div:last-child > div + div:last-child {
 	/* @TODO: Min Chrome v60 */
 	display: grid;
@@ -205,7 +200,7 @@ body > div > div[role='dialog'] article > div > div + div:last-child > div + div
 	contain: layout style;
 }
 
-body > div > div[role='dialog'] article > div > div + div:last-child > div + div:last-child,
+body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child,
 #react-root.post.post.post article > div > div + div:last-child > div + div:last-child,
 #react-root.tv.tv.tv article > div > div + div:last-child > div + div:last-child {
 	grid-template:
@@ -213,8 +208,9 @@ body > div > div[role='dialog'] article > div > div + div:last-child > div + div
 		'c c' 1fr
 		'buttons comment' 56px
 		/ auto 2fr;
+	width: 100%;
 	height: auto !important;
-	padding: 0 0 0 12px !important;
+	padding: 0 8px 0 8px !important;
 }
 
 /** Views / likes */
@@ -234,6 +230,7 @@ div > section + section {
 div > section + section > div {
 	align-items: center !important;
 	justify-content: flex-end !important;
+	margin-top: 4px;
 }
 
 /* User Avatars */
@@ -254,6 +251,7 @@ div > section + section + div:only-of-type {
 	grid-area: date;
 	/* higher than views / likes to push it to the right */
 	order: 0 !important;
+	margin-top: 4px !important;
 	margin-bottom: 4px !important;
 	padding: 0 !important;
 }
@@ -306,7 +304,17 @@ h3 + span + div {
 }
 
 /** Grow comments */
-body > div > div[role='dialog'] article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child),
+body
+	> div
+	> div[role='dialog']
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:only-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child),
 #react-root:not(.stories) article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	grid-area: c;
@@ -317,7 +325,18 @@ body > div > div[role='dialog'] article > div > div + div:last-child > div + div
 	contain: content;
 }
 
-body > div > div[role='dialog'] article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul,
+body
+	> div
+	> div[role='dialog']
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:only-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul,
 #react-root:not(.stories) article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul {
 	width: 100%;
 	height: 100%;
@@ -326,7 +345,19 @@ body > div > div[role='dialog'] article > div > div + div:last-child > div + div
 	overflow-x: hidden;
 }
 
-body > div > div[role='dialog'] article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > li,
+body
+	> div
+	> div[role='dialog']
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:only-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul
+	> li,
 #react-root.post article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > li,
 #react-root.tv article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > li {
 	margin-top: 0;
@@ -437,6 +468,7 @@ body
 }
 
 /** Heart / Comment / Save */
+div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child,
 article > div > div + div:last-child > div + div:last-child > section:first-child {
 	grid-area: buttons;
 	align-self: flex-end;
@@ -445,36 +477,51 @@ article > div > div + div:last-child > div + div:last-child > section:first-chil
 	height: 56px;
 	margin-top: 0 !important;
 	margin-right: 0 !important;
-	padding: 0 !important;
+	padding-right: 8px !important;
+	padding-left: 8px !important;
 	border-top: 1px solid #efefef;
 }
+/* @TODO Single post auch vergrößern wie dialoge */
 
+div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > *,
 article > div > div + div:last-child > div + div:last-child > section:first-child > * {
 	display: flex;
 	align-items: center;
 }
 
 /** Hide useless comment icon */
-div[role='dialog'] article > div > div + div:last-child > div + div:last-child > section:first-child > span:first-child + span,
+div[role='dialog']
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:only-child
+	> div
+	+ div:last-child
+	> section:first-child
+	> span:first-child
+	+ span,
 article > div > div + div:last-child > div + div:last-child > section:first-child > span:first-child + span {
 	display: none;
 }
 
 /** Share button */
+div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span > button,
 article > div > div + div:last-child > div + div:last-child > section:first-child > span > button {
 	padding-left: 0;
 }
 
 /** Save button */
+div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span:last-child,
 article > div > div + div:last-child > div + div:last-child > section:first-child > span:last-child {
 	margin-left: -8px;
 }
 
 /** 3 dots */
 /** 3 dots on every post */
-article > div > article > div > div + div:last-child > div + div:last-child {
+/*article > div > article > div > div + div:last-child > div + div:last-child {
 	z-index: 9;
-}
+}*/
 
 .post article > div > div + div:last-child > div:first-child + div {
 	z-index: 6;
@@ -482,7 +529,7 @@ article > div > article > div > div + div:last-child > div + div:last-child {
 }
 
 /** Emoji button + comment textarea */
-article > div > div + div:last-child > div + div:last-child > section:last-child {
+div > section + section ~ section {
 	flex: 1;
 	grid-area: comment;
 	align-self: flex-end;
@@ -495,11 +542,11 @@ article > div > div + div:last-child > div + div:last-child > section:last-child
 }
 
 /** Emoji button */
-article > div > div + div:last-child > div + div:last-child > section:last-child button:first-child {
+div > section + section ~ section button:first-child {
 	padding-right: 8px;
 }
 
-article > div > div + div:last-child > div + div:last-child > section:last-child textarea {
+div > section + section ~ section textarea {
 	height: auto !important;
 	padding-right: 2px !important;
 }
@@ -543,7 +590,8 @@ div[role='button'] > div[role='dialog'] + button,
 a[role='button'],
 button[tabindex='-1'],
 div[role='button'] + button /* tagged users icon on videos */,
-div[role='button'] + button[class] + div[style] {
+div[role='button'] + button[class] + div[style],
+svg {
 	z-index: 3;
 }
 
@@ -989,9 +1037,13 @@ div[role='dialog'] > div:first-child > div:only-child > div:only-child {
 	max-height: var(--modalHeight);
 }
 
-div[role='dialog'] > article > header + div + div > div:only-child {
+div[role='dialog'] > article[role='presentation'] > div > div:first-child {
 	max-height: var(--modalHeight) !important;
 	overflow: hidden;
+}
+
+div[role='dialog'] > div[role='dialog'] {
+	padding: 0;
 }
 
 div[role='dialog'] div > img,
@@ -1001,8 +1053,8 @@ div[role='dialog'] div > video {
 	background-image: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(0, 0, 0, 0.25) 100%);
 }
 
-/** Carousels */
-div[role='dialog'] > article[role='presentation'] > header + div + div > div > div > div:first-child:not(:only-child)[style] {
+/** padding-bottom */
+div[role='dialog'] > article[role='presentation'] > div > div:first-child > div > div [style*='padding-bottom'] {
 	height: var(--modalHeight);
 	padding-bottom: 0 !important;
 }
@@ -1027,7 +1079,7 @@ body > div > div[role='dialog'] > div:first-child > div > div {
 	/* max-width: 52vh !important; */
 }
 
-body > div > div[role='dialog'] article > div > div + div:last-child > div:first-child + div {
+body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div:first-child + div {
 	margin-right: 320px !important;
 }
 
@@ -1238,10 +1290,12 @@ footer > div > nav {
 	transition: opacity 400ms ease-out;
 }
 
+/** @TODO */
 .ige_picturesOnly.home header + div + div > div:first-of-type:not(:only-child) {
 	height: 0;
 }
 
+/** @TODO */
 /* Hide comments */
 .ige_picturesOnly header + div + div > div:first-of-type:not(:only-child) > ul {
 	display: none;

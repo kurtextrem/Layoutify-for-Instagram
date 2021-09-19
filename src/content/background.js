@@ -418,7 +418,7 @@ chrome.runtime.onInstalled.addListener(details => {
 						'cdninstagram.com',
 						// private_web
 						'i.instagram.com/api/v1/*',
-						'www.instagram.com',
+						'instagram.com',
 					].map(item => ({
 						id: ++id,
 						priority: 1,

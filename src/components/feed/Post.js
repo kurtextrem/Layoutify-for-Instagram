@@ -127,6 +127,7 @@ export default class Post extends FetchComponent {
 		const text = edge_media_to_caption?.edges[0]?.node?.text
 		// eslint-disable-next-line react-perf/jsx-no-new-array-as-prop
 		const comments = [...edge_media_preview_comment.edges, ...additionalComments]
+		const count = edge_media_preview_comment.count
 
 		// @TODO Preload next page when idling (no scroll) for 3 sec
 		return (
@@ -151,9 +152,9 @@ export default class Post extends FetchComponent {
 							<Text text={text} />
 						</div>
 					) : null}
-					{edge_media_preview_comment.count > 2 ? (
+					{count > 2 ? (
 						<a href={`https://www.instagram.com/p/${shortcode}`} class="text-gray">
-							View all {comments.length} comments
+							View all {count} comments
 						</a>
 					) : null}
 					<Comments data={comments} />

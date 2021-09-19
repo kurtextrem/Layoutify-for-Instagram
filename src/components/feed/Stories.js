@@ -35,11 +35,13 @@ class Stories extends FetchComponent {
 
 	static itemAmount = 12
 
+	static pageNum = 14
+
 	constructor(props) {
 		super(props)
 
 		this.state.cursor = props.cursor
-		this.state.page = props.cursor / 14
+		this.state.page = props.cursor / Stories.pageNum
 	}
 
 	shouldComponentUpdate(nextProperties, nextState) {
@@ -73,7 +75,7 @@ class Stories extends FetchComponent {
 		obj.reel_ids = []
 
 		const cursor = this.state.cursor
-		const end = Math.min(cursor + 14, Stories.reels.length)
+		const end = Math.min(cursor + Stories.pageNum, Stories.reels.length)
 		let itemMap = {}
 		for (let i = cursor; i < end; ++i) {
 			const item = Stories.reels[i].node
@@ -100,7 +102,7 @@ class Stories extends FetchComponent {
 
 				this.setState(
 					prevState => {
-						const nextCursor = prevState.cursor + 14
+						const nextCursor = prevState.cursor + Stories.pageNum
 						return {
 							cursor: nextCursor,
 							hasNextPage: nextCursor < Stories.reels.length,

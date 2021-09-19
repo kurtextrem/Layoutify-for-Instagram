@@ -32,7 +32,7 @@
 	"options_page": "index.html#/options",
 	"minimum_chrome_version": "93",
 
-	"permissions": ["storage", "declarativeNetRequest", "cookies", "notifications", "alarms", "unlimitedStorage"],
+	"permissions": ["storage", "declarativeNetRequest", "declarativeNetRequestWithHostAccess", "cookies", "notifications", "alarms", "unlimitedStorage"],
 	"host_permissions": [
 		"*://*.instagram.com/*", "*://*.fbcdn.net/*", "*://*.cdninstagram.com/*"
 	],
@@ -52,6 +52,6 @@
 			"img/story.png",
 			"img/IGsprite.webp"
 		],
-		"matches": ["https://*.instagram.com/*"]
+		"matches": ["*://*.instagram.com/*"]
 	}]
 }
