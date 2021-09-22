@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extTitle__",
-	"version": "3.7.1",
+	"version": "3.8.0",
 	"manifest_version": 3,
 
 	"description": "__MSG_extDesc__",
@@ -32,7 +32,7 @@
 	"options_page": "index.html#/options",
 	"minimum_chrome_version": "93",
 
-	"permissions": ["storage", "declarativeNetRequest", "declarativeNetRequestWithHostAccess", "cookies", "notifications", "alarms", "unlimitedStorage"],
+	"permissions": ["storage", "declarativeNetRequest", "cookies", "notifications", "alarms", "unlimitedStorage"],
 	"host_permissions": [
 		"*://*.instagram.com/*", "*://*.fbcdn.net/*", "*://*.cdninstagram.com/*"
 	],

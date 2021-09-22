@@ -19,6 +19,62 @@ function createTab(id, force) {
 	}
 }
 
+class Storage {
+	constructor(storage) {
+		this.STORAGE = storage
+
+		this.promise = this.promise.bind(this)
+		this.set = this.set.bind(this)
+		this.get = this.get.bind(this)
+		this.remove = this.remove.bind(this)
+	}
+
+	promise(cb) {
+		return new Promise((resolve, reject) => {
+			if (chrome.storage[this.STORAGE] === undefined) reject('') // @TODO: Don't emit on SSR
+
+			try {
+				cb(resolve, reject)
+			} catch (e) {
+				reject(e)
+			}
+		})
+	}
+
+	set(key, value) {
+		return this.promise((resolve, reject) =>
+			chrome.storage[this.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
+		)
+	}
+
+	get(key, defaultValue) {
+		return this.promise((resolve, reject) =>
+			chrome.storage[this.STORAGE].get(defaultValue ? { [key]: defaultValue } : key, data => Storage.check(data, resolve, reject))
+		)
+	}
+
+	remove(key) {
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
+	}
+
+	getBytes() {
+		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].getBytesInUse(null, resolve))
+	}
+
+	static check(data, resolve, reject) {
+		if (chrome.runtime.lastError) {
+			console.error(chrome.runtime.lastError.message)
+			/*if (chrome.runtime.lastError.message.indexOf('QUOTA_BYTES') !== 0) {
+				alert('Because you have a lot of likes / collections, please go to "About" and clear old data.')
+			}*/
+			return reject(chrome.runtime.lastError.message)
+		}
+
+		return resolve(data)
+	}
+}
+const localStorage = new Storage('local')
+
 /**
  * @param name
  */
@@ -159,7 +215,11 @@ const WEB_OPTS = {
  * @param error
  */
 async function fetchFromBackground(which, path, sendResponse, options, error) {
-	const { asbdId, rolloutHash, igClaim } = await localStorage.get({ 'asbd-id': '', 'rollout-hash': '', 'ig-claim': '' })
+	const {
+		'asbd-id': asbdId,
+		'rollout-hash': rolloutHash,
+		'ig-claim': igClaim,
+	} = await localStorage.get({ 'asbd-id': '', 'rollout-hash': '', 'ig-claim': '' })
 	if (!asbdId || !rolloutHash || !igClaim) {
 		console.error('no', asbdId, rolloutHash, igClaim)
 		return
@@ -245,41 +305,10 @@ function fetchAux(url, options, type) {
 	let opts
 	if (options !== undefined) opts = { credentials: 'include', method: 'GET', ...options }
 
-	if (opts.credentials === 'omit')
-		return fetch(url, opts)
-			.then(checkStatus)
-			.then(type === 'json' ? toJSON : toText)
-			.catch(logAndReject)
-
-	return new Promise((resolve, reject) => {
-		try {
-			const xhr = new XMLHttpRequest()
-			xhr.open(opts.method, url, true)
-			xhr.responseType = type || 'text'
-			xhr.withCredentials = true
-
-			const headers = opts.headers
-			for (const header in headers) {
-				if (!Object.prototype.hasOwnProperty.call(headers, header)) continue
-				xhr.setRequestHeader(header, headers[header])
-			}
-
-			xhr.addEventListener('load', function () {
-				if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-					resolve(xhr.response)
-				} else {
-					logAndReject(xhr)
-				}
-			})
-
-			xhr.addEventListener('error', logAndReject)
-			xhr.addEventListener('abort', logAndReject)
-
-			xhr.send()
-		} catch (e) {
-			logAndReject(e)
-		}
-	})
+	return fetch(url, opts)
+		.then(checkStatus)
+		.then(type === 'json' ? toJSON : toText)
+		.catch(logAndReject)
 }
 
 /**
@@ -289,62 +318,6 @@ function fetchAux(url, options, type) {
 function getRandom(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
-
-class Storage {
-	constructor(storage) {
-		this.STORAGE = storage
-
-		this.promise = this.promise.bind(this)
-		this.set = this.set.bind(this)
-		this.get = this.get.bind(this)
-		this.remove = this.remove.bind(this)
-	}
-
-	promise(cb) {
-		return new Promise((resolve, reject) => {
-			if (chrome.storage[this.STORAGE] === undefined) reject('') // @TODO: Don't emit on SSR
-
-			try {
-				cb(resolve, reject)
-			} catch (e) {
-				reject(e)
-			}
-		})
-	}
-
-	set(key, value) {
-		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].set({ [key]: value }, data => Storage.check(data, resolve, reject))
-		)
-	}
-
-	get(key, defaultValue) {
-		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].get(defaultValue ? { [key]: defaultValue } : key, data => Storage.check(data[key], resolve, reject))
-		)
-	}
-
-	remove(key) {
-		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].remove(key, data => Storage.check(data, resolve, reject)))
-	}
-
-	getBytes() {
-		return this.promise((resolve, reject) => chrome.storage[this.STORAGE].getBytesInUse(null, resolve))
-	}
-
-	static check(data, resolve, reject) {
-		if (chrome.runtime.lastError) {
-			console.error(chrome.runtime.lastError.message)
-			/*if (chrome.runtime.lastError.message.indexOf('QUOTA_BYTES') !== 0) {
-				alert('Because you have a lot of likes / collections, please go to "About" and clear old data.')
-			}*/
-			return reject(chrome.runtime.lastError.message)
-		}
-
-		return resolve(data)
-	}
-}
-const localStorage = new Storage('local')
 
 chrome.runtime.onMessage.addListener(function listener(request, sender, sendResponse) {
 	switch (request.action) {

@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.8.0 - 2021-09-22
+
+The new permission is required since I upgraded to Chrome [Manifest V3](https://9to5google.com/guides/manifest-v3/), which makes the extension **use less resources in the background**. To remind you, the extension can only access data from: instagram.com, fbcdn.net (to display images), cdninstagram.com (to display images). Data will never leave your PC.
+
+### Bug Fixes
+
+Instagram changed the source code of posts and modals on profiles, which broke the design. This version fixes it.
+
 ## 3.7.0 - 2021-06-24
 
 ### New Features
