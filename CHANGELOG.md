@@ -2,7 +2,19 @@
 
 ## 3.8.0 - 2021-09-22
 
-The new permission is required since I upgraded to Chrome [Manifest V3](https://9to5google.com/guides/manifest-v3/), which makes the extension **use less resources in the background**. To remind you, the extension can only access data from: instagram.com, fbcdn.net (to display images), cdninstagram.com (to display images). Data will never leave your PC.
+The new permission is required since I upgraded to Chrome [Manifest V3](https://9to5google.com/guides/manifest-v3/), which makes the extension **use less resources in the background**. <small>Up to version 3.7.0 the extension always needed to run in the background (a lot of extensions do this).</small>
+
+### Why is the new permission needed?
+
+> This lets extensions modify network requests without intercepting them and viewing their content, **thus providing more privacy**. <small>- Source: [Chrome API](https://developer.chrome.com/docs/extensions/reference/declarativeNetRequest/)</small>
+
+**TL;DR: I replaced a permission with a privacy friendly one, which also consumes less CPU resources.**
+
+As a reminder, the extension can only access data from: instagram.com, fbcdn.net (to display images), cdninstagram.com (to display images). Data will never leave your PC (also stated in the legally binding privacy statement).
+
+To check, right-click the extension -> "Manage extensions" there you can see what websites it can modify. Google also checks the extensions before updates get published.
+
+For developers, the added rules can be seen [here](https://github.com/kurtextrem/Layoutify-for-Instagram/blob/master/src/content/background.js#L383). Discussions can be seen here: [#105](https://github.com/kurtextrem/Layoutify-for-Instagram/issues/105#issuecomment-927180588), [#106](https://github.com/kurtextrem/Layoutify-for-Instagram/issues/106#issuecomment-927180421).
 
 ### Bug Fixes
 
