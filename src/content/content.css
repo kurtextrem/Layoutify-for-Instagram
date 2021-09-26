@@ -140,6 +140,11 @@ canvas + span:focus {
 /*=============================================
 						Slimmer Post Header
 =============================================*/
+body > div > div[role='dialog'] article > div > div + div > div:only-child > div:first-child,
+#react-root:not(.profile):not(.explore) article > div > div + div > div:only-child > div:first-child {
+	height: 53px !important;
+}
+
 body > div > div[role='dialog'] article > div > div header,
 #react-root:not(.profile):not(.explore) article > div > div header {
 	/** don't overlap, so article won't get promoted to a layer */
@@ -160,6 +165,7 @@ body > div > div[role='dialog'] article > div > div header,
 /** menu dots */
 body > div > div[role='dialog'] article > div > div header + div,
 #react-root:not(.profile):not(.explore) article > div > div header + div {
+	height: 53px !important;
 	/** don't overlap, so article won't get promoted to a layer */
 	padding-right: 0;
 }
@@ -181,7 +187,7 @@ div > main:only-child {
 /*----------  Improve new post layout  ----------*/
 /** Row layout */
 body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child,
-#react-root:not(.profile):not(.stories) article > div > div + div:last-child > div + div:last-child {
+#react-root:not(.profile):not(.stories) article > div > div + div:last-child > div:only-child > div + div:last-child {
 	/* @TODO: Min Chrome v60 */
 	display: grid;
 	flex: 1;
@@ -201,8 +207,8 @@ body > div > div[role='dialog'] article > div > div + div:last-child > div:only-
 }
 
 body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child,
-#react-root.post.post.post article > div > div + div:last-child > div + div:last-child,
-#react-root.tv.tv.tv article > div > div + div:last-child > div + div:last-child {
+#react-root.post.post.post article > div > div + div:last-child > div:only-child > div + div:last-child,
+#react-root.tv.tv.tv article > div > div + div:last-child > div:only-child > div + div:last-child {
 	grid-template:
 		'date likes' min-content
 		'c c' 1fr
@@ -274,9 +280,22 @@ body
 	> div:first-of-type:not(:only-child)
 	> ul
 	> ul
-	> li,
-#react-root:not(.stories) article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > ul > li {
-	padding: 0 16px;
+	> li
+	> ul,
+#react-root:not(.stories)
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:only-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul
+	> ul
+	> li
+	> ul {
+	margin: 4px 0 0 54px;
 }
 
 /** Comments comments timestamp, reply, liked */
@@ -293,7 +312,8 @@ ul li div > time + button + button {
 	width: calc(100% - 7px);
 }
 
-/** Comments comments timestamp */
+/** Comments comments timestamp, post description timestamp */
+ul li a > time,
 ul li div > time {
 	font-size: 12px !important;
 }
@@ -315,7 +335,15 @@ body
 	> div
 	+ div:last-child
 	> div:first-of-type:not(:only-child),
-#react-root:not(.stories) article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) {
+#react-root:not(.stories)
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:only-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child) {
 	flex-grow: 1;
 	grid-area: c;
 	order: 2 !important;
@@ -337,7 +365,16 @@ body
 	+ div:last-child
 	> div:first-of-type:not(:only-child)
 	> ul,
-#react-root:not(.stories) article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul {
+#react-root:not(.stories)
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:only-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul {
 	width: 100%;
 	height: 100%;
 	padding: 0;
@@ -358,8 +395,18 @@ body
 	> div:first-of-type:not(:only-child)
 	> ul
 	> li,
-#react-root.post article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > li,
-#react-root.tv article > div > div + div:last-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > li {
+#react-root.post
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:only-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul
+	> li,
+#react-root.tv article > div > div + div:last-child > div:only-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > li {
 	margin-top: 0;
 	margin-left: 0;
 	padding: 2px;
@@ -469,7 +516,7 @@ body
 
 /** Heart / Comment / Save */
 div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child,
-article > div > div + div:last-child > div + div:last-child > section:first-child {
+article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child {
 	grid-area: buttons;
 	align-self: flex-end;
 	order: 4 !important;
@@ -484,7 +531,7 @@ article > div > div + div:last-child > div + div:last-child > section:first-chil
 /* @TODO Single post auch vergrößern wie dialoge */
 
 div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > *,
-article > div > div + div:last-child > div + div:last-child > section:first-child > * {
+article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > * {
 	display: flex;
 	align-items: center;
 }
@@ -501,25 +548,25 @@ div[role='dialog']
 	> section:first-child
 	> span:first-child
 	+ span,
-article > div > div + div:last-child > div + div:last-child > section:first-child > span:first-child + span {
+article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span:first-child + span {
 	display: none;
 }
 
 /** Share button */
 div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span > button,
-article > div > div + div:last-child > div + div:last-child > section:first-child > span > button {
+article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span > button {
 	padding-left: 0;
 }
 
 /** Save button */
 div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span:last-child,
-article > div > div + div:last-child > div + div:last-child > section:first-child > span:last-child {
+article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span:last-child {
 	margin-left: -8px;
 }
 
 /** 3 dots */
 /** 3 dots on every post */
-/*article > div > article > div > div + div:last-child > div + div:last-child {
+/*article > div > article > div > div + div:last-child > div:only-child > div + div:last-child {
 	z-index: 9;
 }*/
 
@@ -533,17 +580,17 @@ div > section + section ~ section {
 	flex: 1;
 	grid-area: comment;
 	align-self: flex-end;
-	order: 5;
+	order: 5 !important;
 	width: auto;
 	height: 56px;
 	margin: 0;
-	padding-right: 0;
-	padding-left: 0;
+	padding-right: 0 !important;
+	padding-left: 0 !important;
 }
 
 /** Emoji button */
 div > section + section ~ section button:first-child {
-	padding-right: 8px;
+	padding-right: 8px !important;
 }
 
 div > section + section ~ section textarea {

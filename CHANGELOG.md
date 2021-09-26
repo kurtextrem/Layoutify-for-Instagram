@@ -1,6 +1,12 @@
 # Changelog
 
-## 3.8.0 - 2021-09-22
+<h3 style="display: flex;">
+
+<img src="src/img/icon-128.png?raw=true" width="3%"> Layoutify: Improved Layout for Instagram
+
+</h3>
+
+## 3.9.0 & 3.8.0 - 2021-09-26 (updated details)
 
 The new permission is required since I upgraded to Chrome [Manifest V3](https://9to5google.com/guides/manifest-v3/), which makes the extension **use less resources in the background**. <small>Up to version 3.7.0 the extension always needed to run in the background (a lot of extensions do this).</small>
 
@@ -10,7 +16,7 @@ The new permission is required since I upgraded to Chrome [Manifest V3](https://
 
 **TL;DR: I replaced a permission with a privacy friendly one, which also consumes less CPU resources.**
 
-As a reminder, the extension can only access data from: instagram.com, fbcdn.net (to display images), cdninstagram.com (to display images). Data will never leave your PC (also stated in the legally binding privacy statement).
+As a reminder, the extension can only access data from: instagram.com, fbcdn.net (to display images), cdninstagram.com (to display images). Data collected stays on your own PC (also stated in the legally binding privacy statement).
 
 To check, right-click the extension -> "Manage extensions" there you can see what websites it can modify. Google also checks the extensions before updates get published.
 
