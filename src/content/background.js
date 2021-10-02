@@ -49,7 +49,9 @@ class Storage {
 
 	get(key, defaultValue) {
 		return this.promise((resolve, reject) =>
-			chrome.storage[this.STORAGE].get(defaultValue ? { [key]: defaultValue } : key, data => Storage.check(data, resolve, reject))
+			chrome.storage[this.STORAGE].get(defaultValue !== undefined ? { [key]: defaultValue } : key, data =>
+				Storage.check(data, resolve, reject)
+			)
 		)
 	}
 
@@ -460,11 +462,10 @@ chrome.runtime.onInstalled.addListener(details => {
 async function watchNow(e) {
 	const now = Date.now()
 	const INTERVAL = 900000 // 15min
-	const last = await localStorage.get('ige_lastFetch', 0)
+	const last = (await localStorage.get('ige_lastFetch', 0)).ige_lastFetch
 	if (now - last > INTERVAL) {
-		chrome.storage.local.set({ ige_lastFetch: now }, function () {
-			getWatchlist()
-		})
+		await localStorage.set('ige_lastFetch', now)
+		getWatchlist()
 	}
 }
 
@@ -521,8 +522,7 @@ function getWatchlist(e) {
  */
 function getBlobUrl(url) {
 	return new Promise((resolve, reject) => {
-		window
-			.fetch(url)
+		fetch(url)
 			.then(checkStatus)
 			.then(response => response.blob())
 			.then(blob => resolve(URL.createObjectURL(blob)))
