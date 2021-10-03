@@ -212,7 +212,7 @@ body > div > div[role='dialog'] article > div > div + div:last-child > div:only-
 	grid-template:
 		'date likes' min-content
 		'c c' 1fr
-		'buttons comment' 56px
+		'buttons comment' 45px
 		/ auto 2fr;
 	width: 100%;
 	height: auto !important;
@@ -268,33 +268,9 @@ time {
 	text-transform: none;
 }
 
-body
-	> div
-	> div[role='dialog']
-	article
-	> div
-	> div
-	+ div:last-child
-	> div
-	+ div:last-child
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li
-	> ul,
-#react-root:not(.stories)
-	article
-	> div
-	> div
-	+ div:last-child
-	> div:only-child
-	> div
-	+ div:last-child
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li
-	> ul {
+/** View replies text */
+body > div > div[role='dialog'] ul > ul > li > ul,
+#react-root:not(.stories) ul > ul > li > ul {
 	margin: 4px 0 0 54px;
 }
 
@@ -413,36 +389,9 @@ body
 }
 
 /** Comments comment profile pic */
-body
-	> div
-	> div[role='dialog']
-	article
-	> div
-	> div
-	+ div:last-child
-	> div
-	+ div:last-child
-	> div:first-of-type:not(:only-child)
-	ul
-	> li
-	> div
-	> div
-	> div,
-#react-root:not(.stories)
-	article
-	> div
-	> div
-	+ div:last-child
-	> div
-	+ div:last-child
-	> div:first-of-type:not(:only-child)
-	ul
-	> li
-	> div
-	> div
-	> div {
-	align-self: flex-start;
-	margin-right: 7px;
+body > div > div[role='dialog'] ul > ul > div > li > div > div > div > div,
+#react-root:not(.stories) ul > ul > div > li > div > div > div > div {
+	margin-right: 10px;
 }
 
 /** Comments timestamp */
@@ -455,63 +404,21 @@ body > div > div[role='dialog'] h3 + span + div,
 }
 
 /** Comments comments replies */
-body
-	> div
-	> div[role='dialog']
-	article
-	> div
-	> div
-	+ div:last-child
-	> div
-	+ div:last-child
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li
-	> ul,
-#react-root:not(.stories)
-	article
-	> div
-	> div
-	+ div:last-child
-	> div
-	+ div:last-child
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li
-	> ul {
-	width: calc(100% - 18px);
-	margin: 4px 0 0 36px;
+body > div > div[role='dialog'] div > li > div > div,
+#react-root:not(.stories) div > li > div > div {
+	width: calc(100% - 12px);
 }
 
-body
-	> div
-	> div[role='dialog']
-	article
-	> div
-	> div
-	+ div:last-child
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li
-	> ul
-	> li:first-child
-	> div,
-#react-root:not(.stories)
-	article
-	> div
-	> div
-	+ div:last-child
-	> div:first-of-type:not(:only-child)
-	> ul
-	> ul
-	> li
-	> ul
-	> li:first-child
-	> div {
-	margin-bottom: 0;
+/** Each comment row */
+body > div > div[role='dialog'] ul > ul,
+#react-root:not(.stories) ul > ul {
+	margin-bottom: 8px;
+}
+
+/** Each comment row li */
+body > div > div[role='dialog'] div > li,
+#react-root:not(.stories) div > li {
+	margin-right: 0; /* so heart isn't cut */
 }
 
 /** Heart / Comment / Save */
@@ -521,10 +428,11 @@ article > div > div + div:last-child > div:only-child > div + div:last-child > s
 	align-self: flex-end;
 	order: 4 !important;
 	width: auto;
-	height: 56px;
 	margin-top: 0 !important;
 	margin-right: 0 !important;
+	padding-top: 2px !important;
 	padding-right: 8px !important;
+	padding-bottom: 2px !important;
 	padding-left: 8px !important;
 	border-top: 1px solid #efefef;
 }
@@ -582,9 +490,10 @@ div > section + section ~ section {
 	align-self: flex-end;
 	order: 5 !important;
 	width: auto;
-	height: 56px;
 	margin: 0;
+	padding-top: 2px !important;
 	padding-right: 0 !important;
+	padding-bottom: 2px !important;
 	padding-left: 0 !important;
 }
 
@@ -594,8 +503,13 @@ div > section + section ~ section button:first-child {
 }
 
 div > section + section ~ section textarea {
-	height: auto !important;
+	height: 100% !important;
 	padding-right: 2px !important;
+	font-size: 12px !important;
+}
+
+div > section + section ~ section textarea::placeholder {
+	padding-top: 8px;
 }
 
 /** Comments */
