@@ -120,8 +120,8 @@ export default class PostsContainer extends Component {
 		this.loadData()
 
 		window.setTimeout(() => {
-			this.setState({ canLoadMore: false })
-		}, 15_000) // let user retry if nothing has happened after 15 sec
+			this.setState({ canLoadMore: true })
+		}, 5_000) // let user retry if nothing has happened after 5 sec
 	}
 
 	addStorageListener() {
