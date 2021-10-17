@@ -619,10 +619,9 @@ function handlePost(json, user, userObject, watchData, options) {
 	const tvShort = get(['edge_felix_video_timeline', 'edges', '0', 'node', 'shortcode'], userNode)
 	const hasNewTV = cmpAndNotify(tvShort, 'tv', `watch_newtv`, `tv/${tvShort}`, data, blob, user, options)
 
-	console.log(data)
-	const user_pic = getProfilePicId(data.pic), // @todo Migration code getProfilePicId
+	const oldPicId = data.pic ? getProfilePicId(data.pic) : '', // @todo Migration code getProfilePicId
 		picId = getProfilePicId(pic)
-	const profilePictureChanged = user_pic !== picId
+	const profilePictureChanged = oldPicId !== picId
 	data.pic = picId
 
 	if (profilePictureChanged) blob.then(url => createNotification(`pic;${user}/`, 'Instagram Avatar: ' + user, options, url)) // chrome.i18n.getMessage(`watch_newPic`, user)
@@ -721,7 +720,7 @@ function handleStory(json, user, userObject, watchData, options) {
 function createNotification(id, title, options, url) {
 	options.type = 'basic'
 	options.title = title
-	options.message = '--> instagram.com/' + id.split('/')[1] //chrome.i18n.getMessage('watch_openProfile') // @TODO
+	options.message = '--> instagram.com/' + id.split(';')[1] //chrome.i18n.getMessage('watch_openProfile') // @TODO
 	options.iconUrl = url
 
 	chrome.notifications.create(id, options, nId => {
