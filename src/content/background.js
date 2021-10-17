@@ -517,20 +517,31 @@ function getWatchlist(e) {
 	})
 }
 
+/*const blobToBase64 = blob => {
+	const reader = new FileReader()
+	reader.readAsDataURL(blob)
+	return new Promise(resolve => {
+		reader.onloadend = () => {
+			resolve(reader.result)
+		}
+	})
+}*/
+
 /**
  * @param url
  */
 function getBlobUrl(url) {
-	return new Promise((resolve, reject) => {
+	return url
+	/*return new Promise((resolve, reject) => {
 		fetch(url)
 			.then(checkStatus)
 			.then(response => response.blob())
-			.then(blob => resolve(URL.createObjectURL(blob)))
+			.then(blobToBase64)
 			.catch(e => {
 				console.error(e)
 				reject(e)
 			})
-	})
+	})*/
 }
 
 const notificationOptions = {
@@ -558,8 +569,16 @@ function cmpAndNotify(value, storeKey, i18nKey, notificationPath, store, blob, u
 	const hasNew = value !== store[storeKey]
 	store[storeKey] = value
 
+	const getMessage = {
+		watch_isLive: 'Live',
+		watch_newHighlight: 'Highlight',
+		watch_newtv: 'TV',
+		watch_privtrue: 'Private',
+		watch_privfalse: 'Unprivate,',
+	}
+
 	if (hasNew) {
-		blob.then(url => createNotification(`${storeKey};${notificationPath}`, chrome.i18n.getMessage(i18nKey, user), options, url))
+		blob.then(url => createNotification(`${storeKey};${notificationPath}`, 'Instagram ' + getMessage[i18nKey] + ': ' + user, options, url)) // chrome.i18n.getMessage(i18nKey, user)
 		return true
 	}
 
@@ -600,13 +619,13 @@ function handlePost(json, user, userObject, watchData, options) {
 	const tvShort = get(['edge_felix_video_timeline', 'edges', '0', 'node', 'shortcode'], userNode)
 	const hasNewTV = cmpAndNotify(tvShort, 'tv', `watch_newtv`, `tv/${tvShort}`, data, blob, user, options)
 
+	console.log(data)
 	const user_pic = getProfilePicId(data.pic), // @todo Migration code getProfilePicId
 		picId = getProfilePicId(pic)
 	const profilePictureChanged = user_pic !== picId
 	data.pic = picId
 
-	if (profilePictureChanged)
-		blob.then(url => createNotification(`pic;${user}/`, chrome.i18n.getMessage(`watch_newPic`, user), options, url))
+	if (profilePictureChanged) blob.then(url => createNotification(`pic;${user}/`, 'Instagram Avatar: ' + user, options, url)) // chrome.i18n.getMessage(`watch_newPic`, user)
 
 	const id = node.shortcode
 	const hasNewPost = id !== null && id != userObject.post
@@ -620,16 +639,13 @@ function handlePost(json, user, userObject, watchData, options) {
 		Promise.all([blob, getBlobUrl(node.thumbnail_src)])
 			.then(values => {
 				options.type = 'image'
-				options.title = chrome.i18n.getMessage('watch_newPost', user)
-				options.message = chrome.i18n.getMessage('watch_openProfile')
+				options.title = 'Instagram: ' + user //chrome.i18n.getMessage('watch_newPost', user) // @TODO
+				options.message = node.edge_media_to_caption?.edges?.[0].node?.text || node.location?.name // chrome.i18n.getMessage('watch_openProfile') // @TODO
 				options.iconUrl = values[0]
 				options.imageUrl = values[1]
 
 				return chrome.notifications.create(`post;p/${id}/`, options, nId => {
 					if (chrome.runtime.lastError) console.error(chrome.runtime.lastError.message)
-
-					URL.revokeObjectURL(values[0])
-					URL.revokeObjectURL(values[1])
 					// @todo: Maybe clear notification?
 				})
 			})
@@ -639,7 +655,6 @@ function handlePost(json, user, userObject, watchData, options) {
 	}
 
 	if (hasPrivateChanged || hasNewTV || profilePictureChanged) {
-		blob.then(url => URL.revokeObjectURL(url))
 		load()
 	} else cancel()
 }
@@ -695,11 +710,10 @@ function handleStory(json, user, userObject, watchData, options) {
 		console.log(user, 'new story')
 		//data.story = `${id}`
 
-		blob.then(url => createNotification(`story;stories/${user}/`, chrome.i18n.getMessage('watch_newStory', user), options, url))
+		blob.then(url => createNotification(`story;stories/${user}/`, 'Instagram Story: ' + user, options, url)) // chrome.i18n.getMessage('watch_newStory', user)
 	} // else console.log(user, 'no new story', reel)
 
 	if (isStoryUnseen || hasNewHighlight || isLive) {
-		blob.then(url => URL.revokeObjectURL(url))
 		load()
 	} else cancel()
 }
@@ -707,7 +721,7 @@ function handleStory(json, user, userObject, watchData, options) {
 function createNotification(id, title, options, url) {
 	options.type = 'basic'
 	options.title = title
-	options.message = chrome.i18n.getMessage('watch_openProfile')
+	options.message = '--> instagram.com/' + id.split('/')[1] //chrome.i18n.getMessage('watch_openProfile') // @TODO
 	options.iconUrl = url
 
 	chrome.notifications.create(id, options, nId => {
@@ -734,8 +748,7 @@ function handleGraphQL(type, json, user, userObject, watchData, options) {
 	watchData[user][typeStr] = shortcode
 
 	getBlobUrl(path.display_url)
-		.then(url => createNotification(`${typeStr};${action}/${shortcode}`, chrome.i18n.getMessage(`watch_new${typeStr}`, user), options, url))
-		.then(url => URL.revokeObjectURL(url))
+		.then(url => createNotification(`${typeStr};${action}/${shortcode}`, 'Instagram Tagged: ' + user, options, url)) // chrome.i18n.getMessage(`watch_new${typeStr}`, user), // @TODO
 		.catch(logAndReject)
 }
 
