@@ -16,7 +16,7 @@ module.exports = function (api) {
 						{
 							absoluteRuntime: false,
 							useESModules: true,
-							version: '^7.11.0',
+							version: '^7.14.0',
 						},
 					],
 					// Stage 0

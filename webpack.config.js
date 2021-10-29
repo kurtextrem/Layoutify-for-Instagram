@@ -253,9 +253,12 @@ const first = {
 		rules: [
 			{
 				exclude: /node_modules/,
-				loader: 'babel-loader',
+				loader: 'esbuild-loader',
 				options: {
-					cacheDirectory: true,
+					loader: 'tsx',
+					target: 'chrome72',
+					jsxFactory: 'h',
+					jsxFragment: 'Fragment',
 				},
 				test: /\.jsx?$/i,
 			},

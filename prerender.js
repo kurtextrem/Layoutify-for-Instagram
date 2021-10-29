@@ -1,12 +1,13 @@
 const { resolve } = require('path')
 
 /**
- *
+ * @param outputDirectory
+ * @param params
  */
 module.exports = function prerender(outputDirectory, params) {
 	params = params || {}
 
-	const entry = './' + outputDirectory + '/ssr-bundle.js',
+	const entry = `./${outputDirectory}/ssr-bundle.js`,
 		url = params.url || '/'
 
 	global.window = {
@@ -16,7 +17,7 @@ module.exports = function prerender(outputDirectory, params) {
 				return {}
 			},
 			location: {
-				hash: '#' + url,
+				hash: `#${url}`,
 				href: url,
 				pathname: url,
 				replace() {},
@@ -67,8 +68,8 @@ module.exports = function prerender(outputDirectory, params) {
 		return ''
 	}
 
-	const preact = require('preact/dist/preact.umd')
-	const renderToString = require(`preact-render-to-string/dist/index`)
+	const preact = require('preact')
+	const renderToString = require(`preact-render-to-string`)
 
 	return renderToString(preact.h(app))
 }
