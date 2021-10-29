@@ -236,8 +236,9 @@ div > section + section {
 
 /* Views + likes */
 div > section + section > div {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
 	align-items: center !important;
-	justify-content: flex-end !important;
 	margin-top: 4px;
 }
 
@@ -245,12 +246,11 @@ div > section + section > div {
 div > section + section > div > div:first-child {
 	align-items: flex-end !important;
 	justify-content: flex-end !important;
-	margin-right: 6px;
 }
 
 /* likes / views */
 div > section + section > div > div:last-child {
-	flex: 0;
+	display: block;
 }
 
 /** Posted date */
@@ -427,7 +427,7 @@ body > div > div[role='dialog'] ul > ul,
 /** Each comment row li */
 body > div > div[role='dialog'] div > li,
 #react-root:not(.stories) div > li {
-	margin-right: 6px; /* so heart isn't cut */
+	margin-right: 12px; /* so heart isn't cut */
 }
 
 /** Heart / Comment / Save */
@@ -1001,8 +1001,7 @@ video::-webkit-media-controls:not(.audio-only) div[pseudo='-webkit-media-control
 										Post
 =============================================*/
 /** Bigger modals */
-div[role='dialog'] > div[role='dialog'] > div[role='dialog'],
-div[role='dialog'] > div:first-child > div:only-child > div:only-child {
+div[role='dialog'] > div[role='dialog'] > div[role='dialog'] {
 	max-width: var(--modalWidth) !important;
 	max-height: var(--modalHeight);
 }
