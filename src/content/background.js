@@ -128,7 +128,7 @@ function logAndReject(e) {
  */
 function fixMaxId(response) {
 	const response_ = response.replace(/"next_max_id":(\d+)/g, '"next_max_id":"$1"')
-	;/\s*/g.exec('') // clear regex cache to prevent memory leak
+	;/\s*/.exec('') // clear regex cache to prevent memory leak
 	return response_
 }
 
@@ -578,7 +578,7 @@ function cmpAndNotify(value, storeKey, i18nKey, notificationPath, store, blob, u
 	}
 
 	if (hasNew) {
-		blob.then(url => createNotification(`${storeKey};${notificationPath}`, 'Instagram ' + getMessage[i18nKey] + ': ' + user, options, url)) // chrome.i18n.getMessage(i18nKey, user)
+		blob.then(url => createNotification(`${storeKey};${notificationPath}`, `Instagram ${getMessage[i18nKey]}: ${user}`, options, url)) // chrome.i18n.getMessage(i18nKey, user)
 		return true
 	}
 
@@ -624,7 +624,7 @@ function handlePost(json, user, userObject, watchData, options) {
 	const profilePictureChanged = oldPicId !== picId
 	data.pic = picId
 
-	if (profilePictureChanged) blob.then(url => createNotification(`pic;${user}/`, 'Instagram Avatar: ' + user, options, url)) // chrome.i18n.getMessage(`watch_newPic`, user)
+	if (profilePictureChanged) blob.then(url => createNotification(`pic;${user}/`, `Instagram Avatar: ${user}`, options, url)) // chrome.i18n.getMessage(`watch_newPic`, user)
 
 	const id = node.shortcode
 	const hasNewPost = id !== null && id != userObject.post
@@ -638,7 +638,7 @@ function handlePost(json, user, userObject, watchData, options) {
 		Promise.all([blob, getBlobUrl(node.thumbnail_src)])
 			.then(values => {
 				options.type = 'image'
-				options.title = 'Instagram: ' + user //chrome.i18n.getMessage('watch_newPost', user) // @TODO
+				options.title = `Instagram: ${user}` //chrome.i18n.getMessage('watch_newPost', user) // @TODO
 				options.message = node.edge_media_to_caption?.edges?.[0].node?.text || node.location?.name // chrome.i18n.getMessage('watch_openProfile') // @TODO
 				options.iconUrl = values[0]
 				options.imageUrl = values[1]
@@ -709,7 +709,7 @@ function handleStory(json, user, userObject, watchData, options) {
 		console.log(user, 'new story')
 		//data.story = `${id}`
 
-		blob.then(url => createNotification(`story;stories/${user}/`, 'Instagram Story: ' + user, options, url)) // chrome.i18n.getMessage('watch_newStory', user)
+		blob.then(url => createNotification(`story;stories/${user}/`, `Instagram Story: ${user}`, options, url)) // chrome.i18n.getMessage('watch_newStory', user)
 	} // else console.log(user, 'no new story', reel)
 
 	if (isStoryUnseen || hasNewHighlight || isLive) {
@@ -720,7 +720,7 @@ function handleStory(json, user, userObject, watchData, options) {
 function createNotification(id, title, options, url) {
 	options.type = 'basic'
 	options.title = title
-	options.message = '--> instagram.com/' + id.split(';')[1] //chrome.i18n.getMessage('watch_openProfile') // @TODO
+	options.message = `--> instagram.com/${id.split(';')[1]}` //chrome.i18n.getMessage('watch_openProfile') // @TODO
 	options.iconUrl = url
 
 	chrome.notifications.create(id, options, nId => {
@@ -747,7 +747,7 @@ function handleGraphQL(type, json, user, userObject, watchData, options) {
 	watchData[user][typeStr] = shortcode
 
 	getBlobUrl(path.display_url)
-		.then(url => createNotification(`${typeStr};${action}/${shortcode}`, 'Instagram Tagged: ' + user, options, url)) // chrome.i18n.getMessage(`watch_new${typeStr}`, user), // @TODO
+		.then(url => createNotification(`${typeStr};${action}/${shortcode}`, `Instagram Tagged: ${user}`, options, url)) // chrome.i18n.getMessage(`watch_new${typeStr}`, user), // @TODO
 		.catch(logAndReject)
 }
 
