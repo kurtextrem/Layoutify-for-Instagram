@@ -28,7 +28,7 @@ body {
 }
 
 .share ~ [role='presentation'] {
-	background: rgba(0, 0, 0, 0.75);
+	background: rgb(0 0 0 / 75%);
 	pointer-events: none;
 }
 
@@ -67,7 +67,7 @@ div > img {
 	/** Moves the img over the "prevent right click copy"-element */
 	z-index: 1;
 	/* autoprefixer: off */
-	image-rendering: -webkit-optimize-contrast;
+	image-rendering: optimize-contrast;
 }
 
 /** Likes & comments amount */
@@ -140,18 +140,13 @@ canvas + span:focus {
 /*=============================================
 						Slimmer Post Header
 =============================================*/
-body > div > div[role='dialog'] article > div > div + div > div:only-child > div:first-child,
-#react-root:not(.profile):not(.explore) article > div > div + div > div:only-child > div:first-child {
-	height: 53px !important;
-}
-
 body > div > div[role='dialog'] article > div > div header,
 #react-root:not(.profile):not(.explore) article > div > div header {
 	/** don't overlap, so article won't get promoted to a layer */
 	z-index: 8;
 	width: 99%;
 	height: 53px !important;
-	padding: 16px 0 16px 8px !important;
+	padding: 16px 0 16px 12px !important;
 	contain: strict;
 }
 
@@ -160,6 +155,13 @@ body > div > div[role='dialog'] article > div > div header,
 #react-root.tv article > div > div header {
 	width: 305px !important;
 	border: 0 !important;
+}
+
+/** avatar spacing */
+body > div > div[role='dialog'] article > div > div header > div:last-child,
+#react-root.post article > div > div header > div:last-child,
+#react-root.tv article > div > div header > div:last-child {
+	margin-left: 12px;
 }
 
 /** menu dots */
@@ -186,7 +188,7 @@ div > main:only-child {
 
 /*----------  Improve new post layout  ----------*/
 /** Row layout */
-body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child,
+body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div > div:last-child,
 #react-root:not(.profile):not(.stories) article > div > div + div:last-child > div:only-child > div + div:last-child {
 	/* @TODO: Min Chrome v60 */
 	display: grid;
@@ -206,7 +208,7 @@ body > div > div[role='dialog'] article > div > div + div:last-child > div:only-
 	contain: layout style;
 }
 
-body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child,
+body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div > div:last-child,
 #react-root.post.post.post article > div > div + div:last-child > div:only-child > div + div:last-child,
 #react-root.tv.tv.tv article > div > div + div:last-child > div:only-child > div + div:last-child {
 	grid-template:
@@ -216,7 +218,7 @@ body > div > div[role='dialog'] article > div > div + div:last-child > div:only-
 		/ auto 2fr;
 	width: 100%;
 	height: auto !important;
-	padding: 0 8px 0 8px !important;
+	padding: 0 8px !important;
 }
 
 /** Views / likes */
@@ -243,11 +245,12 @@ div > section + section > div {
 div > section + section > div > div:first-child {
 	align-items: flex-end !important;
 	justify-content: flex-end !important;
-	margin-right: 0;
+	margin-right: 6px;
 }
 
+/* likes / views */
 div > section + section > div > div:last-child {
-	flex-grow: 0 !important;
+	flex: 0;
 }
 
 /** Posted date */
@@ -306,7 +309,7 @@ body
 	article
 	> div
 	> div
-	+ div:last-child
+	> div:last-child
 	> div:only-child
 	> div
 	+ div:last-child
@@ -335,7 +338,7 @@ body
 	article
 	> div
 	> div
-	+ div:last-child
+	> div:last-child
 	> div:only-child
 	> div
 	+ div:last-child
@@ -353,7 +356,7 @@ body
 	> ul {
 	width: 100%;
 	height: 100%;
-	padding: 0;
+	padding: 0 0 0 4px;
 	contain: content;
 	overflow-x: hidden;
 }
@@ -364,7 +367,7 @@ body
 	article
 	> div
 	> div
-	+ div:last-child
+	> div:last-child
 	> div:only-child
 	> div
 	+ div:last-child
@@ -406,7 +409,13 @@ body > div > div[role='dialog'] h3 + span + div,
 /** Comments comments replies */
 body > div > div[role='dialog'] div > li > div > div,
 #react-root:not(.stories) div > li > div > div {
-	width: calc(100% - 12px);
+	width: calc(100% - 6px);
+}
+
+/** avatar spacing */
+body > div > div[role='dialog'] div > li > div > div > div > div,
+#react-root:not(.stories) div > li > div > div > div > div {
+	margin-right: 12px;
 }
 
 /** Each comment row */
@@ -418,11 +427,11 @@ body > div > div[role='dialog'] ul > ul,
 /** Each comment row li */
 body > div > div[role='dialog'] div > li,
 #react-root:not(.stories) div > li {
-	margin-right: 0; /* so heart isn't cut */
+	margin-right: 6px; /* so heart isn't cut */
 }
 
 /** Heart / Comment / Save */
-div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child,
+div[role='dialog'] article > div > div + div:last-child > div:only-child > div > div:last-child > section:first-child,
 article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child {
 	grid-area: buttons;
 	align-self: flex-end;
@@ -438,7 +447,7 @@ article > div > div + div:last-child > div:only-child > div + div:last-child > s
 }
 /* @TODO Single post auch vergrößern wie dialoge */
 
-div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > *,
+div[role='dialog'] article > div > div + div:last-child > div:only-child > div > div:last-child > section:first-child > *,
 article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > * {
 	display: flex;
 	align-items: center;
@@ -452,7 +461,7 @@ div[role='dialog']
 	+ div:last-child
 	> div:only-child
 	> div
-	+ div:last-child
+	> div:last-child
 	> section:first-child
 	> span:first-child
 	+ span,
@@ -461,13 +470,13 @@ article > div > div + div:last-child > div:only-child > div + div:last-child > s
 }
 
 /** Share button */
-div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span > button,
+div[role='dialog'] article > div > div + div:last-child > div:only-child > div > div:last-child > section:first-child > span > button,
 article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span > button {
 	padding-left: 0;
 }
 
 /** Save button */
-div[role='dialog'] article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span:last-child,
+div[role='dialog'] article > div > div + div:last-child > div:only-child > div > div:last-child > section:first-child > span:last-child,
 article > div > div + div:last-child > div:only-child > div + div:last-child > section:first-child > span:last-child {
 	margin-left: -8px;
 }
@@ -558,7 +567,7 @@ svg {
 
 div[role='button']:hover ~ a,
 div[role='button']:focus ~ a {
-	opacity: 1;
+	opacity: 100%;
 }
 
 div[role='button'] > div {
@@ -583,7 +592,7 @@ div[role='button'] + div[class] + div[class][style] /* tagged users */ {
 }
 
 div[role='button'] > div > button {
-	opacity: 1; /* always show */
+	opacity: 100%; /* always show */
 }
 
 /** Multiple dots */
@@ -648,7 +657,7 @@ main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
 	margin-bottom: 0;
 	padding-top: 0;
 	padding-bottom: 11px;
-	background-color: rgba(var(--primary-rgb), 0.8);
+	background-color: rgb(var(--primary-rgb) 0.8);
 	border-top-left-radius: 4px;
 	border-bottom-left-radius: 4px;
 	box-shadow: -1px 1px 7px 0 #bdbdbd;
@@ -722,7 +731,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div,
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div > div > div {
-	background-color: rgba(var(--primary-rgb), 0.8);
+	background-color: rgb(var(--primary-rgb) 0.8);
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover,
@@ -1011,7 +1020,7 @@ div[role='dialog'] div > img,
 div[role='dialog'] div > video {
 	max-height: var(--modalHeight);
 	object-fit: contain !important;
-	background-image: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(0, 0, 0, 0.25) 100%);
+	background-image: radial-gradient(circle, rgb(255 255 255 / 100%) 0%, rgb(0 0 0 / 25%) 100%);
 }
 
 /** padding-bottom */
@@ -1228,7 +1237,7 @@ footer > div > nav {
 .ige_picturesOnly.home + #ige_feed article:hover > .ige_footer,
 .ige_picturesOnly.home + #ige_feed article:focus > .ige_actions_container,
 .ige_picturesOnly.home + #ige_feed article:focus > .ige_footer {
-	opacity: 1;
+	opacity: 100%;
 }
 
 .ige_picturesOnly.home + #ige_feed article > .ige_actions_container {
@@ -1236,7 +1245,7 @@ footer > div > nav {
 	bottom: 0;
 	left: 0;
 	width: 20%;
-	opacity: 0.33;
+	opacity: 33%;
 	transition: opacity 400ms ease-out;
 }
 
@@ -1247,7 +1256,7 @@ footer > div > nav {
 	z-index: 1;
 	width: 80%;
 	border-top: 0;
-	opacity: 0;
+	opacity: 0%;
 	transition: opacity 400ms ease-out;
 }
 
@@ -1360,7 +1369,7 @@ footer > div > nav {
 =============================================*/
 ::-webkit-scrollbar {
 	width: 9px;
-	background-color: rgba(0, 0, 0, 0);
+	background-color: rgb(0 0 0 / 0%);
 	border-radius: 100px;
 	contain: strict;
 	/*transition: background-color 1s linear;*/
@@ -1373,7 +1382,7 @@ footer > div > nav {
 /* hover effect for both scrollbar area, and scrollbar 'thumb' */
 ::-webkit-scrollbar:hover,
 ::-webkit-scrollbar:focus {
-	background-color: rgba(0, 0, 0, 0.07);
+	background-color: rgb(0 0 0 / 7%);
 }
 
 /* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
@@ -1386,7 +1395,7 @@ footer > div > nav {
 	min-height: 30px;
 	background-color: #afafaf;
 	background-clip: padding-box;
-	border: 2px solid rgba(0, 0, 0, 0);
+	border: 2px solid rgb(0 0 0 / 0%);
 	border-radius: 100px;
 }
 
