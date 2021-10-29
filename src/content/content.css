@@ -236,7 +236,7 @@ div > section + section {
 
 /* Views + likes */
 div > section + section > div {
-	display: grid;
+	display: grid !important;
 	grid-template-columns: 1fr 1fr;
 	align-items: center !important;
 	margin-top: 4px;
@@ -1000,6 +1000,12 @@ video::-webkit-media-controls:not(.audio-only) div[pseudo='-webkit-media-control
 /*=============================================
 										Post
 =============================================*/
+/** let comment block grow in width */
+.post article > div:only-child > div + div:last-child > div:only-child {
+	width: min-content;
+	min-width: 335px;
+}
+
 /** Bigger modals */
 div[role='dialog'] > div[role='dialog'] > div[role='dialog'] {
 	max-width: var(--modalWidth) !important;
@@ -1075,7 +1081,7 @@ body > div > div[role='dialog'] article,
 .post > section > main > div,
 .tv > section > main > div {
 	flex-grow: 0;
-	max-width: 51vw !important;
+	max-width: 55vw !important;
 	padding-top: 10px;
 	padding-right: 0;
 	padding-bottom: 10px;
@@ -1359,7 +1365,7 @@ footer > div > nav {
 @media (max-width: 1919px) {
 	.post > section > main > div,
 	.tv > section > main > div {
-		max-width: 70vw !important;
+		max-width: 89vw !important;
 	}
 }
 
