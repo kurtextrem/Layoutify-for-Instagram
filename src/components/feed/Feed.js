@@ -177,7 +177,7 @@ class Feed extends FetchComponent {
 			// usertags
 			// location
 
-			const owner = item.owner
+			const owner = usersResult[item.owner.id]
 			owner.is_private = owner.isPrivate
 			owner.is_verified = owner.isVerified
 			owner.profile_pic_url = owner.profilePictureUrl
@@ -212,11 +212,11 @@ class Feed extends FetchComponent {
 			const len = arr.length
 			if (len === 8 || len === 25)
 				// two rows, so stories can load out of view
-				arr.push(<Stories cursor={i < 10 ? 0 : 14} additionalClass={i >= prevCount ? 'ige_fade' : ''} key={current.node.id} />)
+				arr.push(<Stories key={current.node.id} additionalClass={i >= prevCount ? 'ige_fade' : ''} cursor={i < 10 ? 0 : 14} />)
 
 			if (type === 'GraphStoriesInFeedItem') continue
 
-			arr.push(<Post data={current.node} key={current.node.shortcode} additionalClass={i >= prevCount ? 'ige_fade' : ''} />)
+			arr.push(<Post key={current.node.shortcode} additionalClass={i >= prevCount ? 'ige_fade' : ''} data={current.node} />)
 		}
 
 		return arr
@@ -231,7 +231,7 @@ class Feed extends FetchComponent {
 		if (items.length !== 0)
 			return (
 				<div class="ige_virtual">
-					<div class="ige_virtual_container" ref={this.setRef}>
+					<div ref={this.setRef} class="ige_virtual_container">
 						{this.renderItems()}
 						<Sentinel onVisible={this.loadNextPageRender} />
 						{!hasNextPage && !isNextPageLoading ? this.error : this.loading}
