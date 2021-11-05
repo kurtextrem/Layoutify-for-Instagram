@@ -687,6 +687,29 @@ function moveStories(el) {
 	observe(el, storiesMutationHandler, { childList: true, subtree: true })
 }
 
+function setVideoURLFromScripts() {
+	let src
+	for (const node of document.body.querySelectorAll('script')) {
+		const match = node.textContent.match(/"video_url":"(?<url>.+?)"/)
+		if (match) {
+			src = JSON.parse(`"${match.groups.url}"`)
+			break
+		}
+	}
+
+	document.body.querySelector('video').addEventListener('canplay', e => {
+		const target = e.target
+		if (target.src !== src) {
+			// we clone this, so that the page doesn't throw an error when it can no longer find the buffer on the node.
+			const newNode = target.cloneNode()
+			newNode.src = src
+			newNode.preload = 'auto'
+			target.parentNode.insertBefore(newNode, target)
+			target.style.display = 'none'
+		}
+	})
+}
+
 /**
  * Callback when nodes are removed/inserted.
  */
@@ -720,6 +743,13 @@ function onReady() {
 
 	if (location.hash === '#share') window.requestAnimationFrame(() => clickShare(0))
 	else if (location.hash !== '#story') addFeedDiv()
+
+	window.requestAnimationFrame(() => {
+		if (currentClass === 'post' || currentClass === 'post tv') {
+			// re-write blob url to true url so Chrome lets you download again
+			setVideoURLFromScripts()
+		}
+	})
 }
 
 if (document.readyState === 'interactive' || document.readyState === 'complete') onReady()
