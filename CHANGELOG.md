@@ -6,6 +6,10 @@
 
 </h3>
 
+## 3.10.0
+
+Downloading videos now works again via right-click on posts (if you open them in a new tab - modals aren't supported yet) - Instagram broke this purposely it seems.
+
 ## 3.9.0 & 3.8.0 - 2021-09-26 (updated details)
 
 The new permission is required since I upgraded to Chrome [Manifest V3](https://9to5google.com/guides/manifest-v3/), which makes the extension **use less resources in the background**. <small>Up to version 3.7.0 the extension always needed to run in the background (a lot of extensions do this).</small>

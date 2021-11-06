@@ -33,6 +33,7 @@ export default class Options extends Component {
 		rowsTwoBoxWidth: 40,
 
 		modalWidth: 85,
+		// refresh interval: 60 // @TODO Implement
 
 		//hidePrivateIcon: false, // @TODO load in main.js & then apply CSS
 		//hideVerifiedIcon: false, // @TODO load in main.js & then apply CSS

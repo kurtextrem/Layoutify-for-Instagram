@@ -115,6 +115,7 @@ class Feed extends FetchComponent {
 	}
 
 	componentDidUpdate() {
+		// eslint-disable-next-line regexp/no-useless-flag
 		;/\s*/g.exec('') // free regexp memory
 
 		/*if (this.ref) {
@@ -178,6 +179,7 @@ class Feed extends FetchComponent {
 			// location
 
 			const owner = usersResult[item.owner.id]
+			item.owner = usersResult[item.owner.id]
 			owner.is_private = owner.isPrivate
 			owner.is_verified = owner.isVerified
 			owner.profile_pic_url = owner.profilePictureUrl

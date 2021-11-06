@@ -5,7 +5,7 @@ import 'react-responsive-modal/styles.css'
 import './components/feed/feed.css'
 import { h, options, render } from 'preact'
 
-options.debounceRendering = requestIdleCallback
+// options.debounceRendering = requestIdleCallback
 
 const ready = () => render(h(Feed), document.getElementById('ige_feed')) // @todo: https://css-tricks.com/render-caching-for-react/
 
