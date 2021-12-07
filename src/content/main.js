@@ -202,6 +202,9 @@ function handleSidebar() {
 	}
 }
 
+const rootInnerDiv = root.children[0],
+	rootInnerDiv2 = rootInnerDiv.children[0]
+
 /**
  * @param node
  * @param mutation
@@ -214,7 +217,7 @@ function handleNode(node, mutation) {
 	handleSidebar()
 
 	const target = mutation.target
-	if (target === root && (nodeName === 'SECTION' || target.nodeName === 'SECTION')) onChange()
+	if ((target === root || target === rootInnerDiv || target === rootInnerDiv2) && nodeName === 'SECTION') onChange()
 	handleNodeFns[nodeName] !== undefined && handleNodeFns[nodeName](node)
 }
 
