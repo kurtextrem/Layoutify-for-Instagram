@@ -213,7 +213,8 @@ function handleNode(node, mutation) {
 	handleStories()
 	handleSidebar()
 
-	if (mutation.target === root && nodeName === 'SECTION') onChange()
+	const target = mutation.target
+	if (target === root && (nodeName === 'SECTION' || target.nodeName === 'SECTION')) onChange()
 	handleNodeFns[nodeName] !== undefined && handleNodeFns[nodeName](node)
 }
 

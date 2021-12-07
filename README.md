@@ -58,3 +58,5 @@ It will auto reload when you do changes in `src/components`.
 This also works if you want to debug CSS/JS on Instagram.com.
 
 I'm always available to help!
+
+![Alt](https://repobeats.axiom.co/api/embed/788db19c8ef115ddecc2029c6c0fd78040cd119f.svg "Repobeats analytics image")
