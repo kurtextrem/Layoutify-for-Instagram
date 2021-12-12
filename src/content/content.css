@@ -529,6 +529,9 @@ ul > li > div > div > div {
 /*=============================================
 								Media Controls
 =============================================*/
+::-webkit-media-controls {
+	display: flex !important;
+}
 /** Always show media controls when playing */
 video::-webkit-media-controls-overlay-enclosure,
 video[loop]::-webkit-media-controls-enclosure,
