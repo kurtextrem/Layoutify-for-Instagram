@@ -253,7 +253,7 @@ function decideClass() {
 	const pathname = location.pathname
 
 	if (
-		(hasNavigated && (location.search.indexOf('tagged') !== -1 || location.search.indexOf('taken-by=') !== -1)) ||
+		(hasNavigated && (location.search.includes('tagged') || location.search.includes('taken-by='))) ||
 		$('body > div > div[role="dialog"]') !== null
 	)
 		return (currentClass = '')
@@ -263,33 +263,36 @@ function decideClass() {
 
 	// stories
 	if (location.hash === '#story') return (currentClass = 'stories story')
-	if (pathname.indexOf('/stories/') !== -1) return (currentClass = 'stories')
+	if (pathname.includes('/stories/')) return (currentClass = 'stories')
 
 	// single post
 	if (location.hash === '#share') return (currentClass = 'post share')
 	if (location.hash === '#likes') return (currentClass = 'post likes')
-	if (pathname.indexOf('/p/') !== -1) return (currentClass = 'post')
+	if (pathname.includes('/p/')) return (currentClass = 'post')
 
 	// search results
-	if (pathname.indexOf('/explore/') !== -1) return (currentClass = 'explore')
+	if (pathname.includes('/explore/')) return (currentClass = 'explore')
 
 	// insta TV
-	if (pathname.indexOf('/tv/') !== -1) return (currentClass = 'post tv')
+	if (pathname.includes('/tv/')) return (currentClass = 'post tv')
 
 	// reels
-	if (pathname.indexOf('/reels/') !== -1) return (currentClass = 'post reels')
+	if (pathname.includes('/reels/')) return (currentClass = 'post reels')
 
 	// reel
-	if (pathname.indexOf('/reel/') !== -1) return (currentClass = 'post reel')
+	if (pathname.includes('/reel/')) return (currentClass = 'post reel')
 
 	// login -> 2FA screen
-	if (pathname.indexOf('/accounts/login/two_factor') === 0) return (currentClass = 'twoFA')
+	if (pathname.includes('/accounts/login/two_factor') === 0) return (currentClass = 'twoFA')
+
+	// any settings on the account
+	if (pathname.includes('/accounts/') === 0) return (currentClass = 'account')
 
 	// direct msgs
-	if (pathname.indexOf('/direct/') !== -1) return (currentClass = 'dms')
+	if (pathname.includes('/direct/')) return (currentClass = 'dms')
 
 	// live
-	if (pathname.indexOf('/live/') !== -1) return (currentClass = 'profile live')
+	if (pathname.includes('/live/')) return (currentClass = 'profile live')
 
 	// profile page
 	return (currentClass = 'profile')
