@@ -6,6 +6,14 @@
 
 </h3>
 
+## 3.11.0
+
+Instagram changed the structure of their page and thus it broke the extension. I submitted a fix for this on the 9th of December, but it did not get approved at the time of writing this (23th December). Not sure why it takes so long, I never had that issue before.
+
+Also, media controls are visible again (e.g. to download videos).
+
+For all of my users celebrating Christmas: Have a merry Christmas and a happy new year 🎄🎆.
+
 ## 3.10.0
 
 Downloading videos now works again via right-click on posts (if you open them in a new tab - modals aren't supported yet) - Instagram broke this purposely it seems.
