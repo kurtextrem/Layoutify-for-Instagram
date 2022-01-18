@@ -409,6 +409,11 @@ const first = {
 			: {}, // can't be 'none' as per parallel-webpack
 
 	watch: !isProduction,
+
+	experiments: {
+		//futureDefaults: true,
+		//backCompat: false,
+	},
 }
 
 const second = {
@@ -437,6 +442,11 @@ const second = {
 	recordsPath: path.resolve(__dirname, './records_html.json'),
 	resolve: first.resolve,
 	target: 'node',
+
+	experiments: {
+		//futureDefaults: true,
+		//backCompat: false,
+	},
 }
 
 // @TODO: https://blog.box.com/blog/how-we-improved-webpack-build-performance-95/
