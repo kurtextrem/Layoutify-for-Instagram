@@ -175,7 +175,7 @@ let OPTS_LOADED = false
 function handleStories() {
 	if (OPTS_LOADED && currentClass === 'home' && !OPTIONS.only3Dot && $('.ige_movedStories') === null) {
 		let $div
-		if (($div = $('.home main > section > div > div:first-child[class] > div + div')) !== null) {
+		if (($div = $('.home main > section > div > div:first-child[class] > div:last-child')) !== null) {
 			moveStories($div)
 		}
 	}
@@ -349,8 +349,9 @@ function addExtendedButton() {
 	$anchor.parentNode.append(element)
 }
 
-const connection = navigator.connection.type || '',
-	speed = navigator.connection.downlink,
+const navigatorConnection = navigator.connection || {},
+	connection = navigatorConnection.type || '',
+	speed = navigatorConnection.downlink || 2,
 	fullSizeCondition = document.hidden || (connection.indexOf('cell') === -1 && speed > 1.9),
 	fullsizeObserver = observe(
 		undefined,
