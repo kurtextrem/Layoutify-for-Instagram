@@ -175,7 +175,9 @@ let OPTS_LOADED = false
 function handleStories() {
 	if (OPTS_LOADED && currentClass === 'home' && !OPTIONS.only3Dot && $('.ige_movedStories') === null) {
 		let $div
-		if (($div = $('.home main > section > div > div:first-child[class] > div:last-child')) !== null) {
+		if (
+			($div = $('.home main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) > div:last-child')) !== null
+		) {
 			moveStories($div)
 		}
 	}

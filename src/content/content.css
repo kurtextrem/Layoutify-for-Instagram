@@ -651,7 +651,7 @@ main > section > div:first-child:not(#rcr-anchor) {
 
 /* Sidebar container */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
+main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) {
 	top: 75px !important;
 	right: 0;
 	left: unset !important;
@@ -669,7 +669,7 @@ main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
 	contain: content;
 }
 
-main > section > div:first-child:not(#rcr-anchor) > div:first-child[class] {
+main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) {
 	top: 85px !important;
 	z-index: 11;
 	height: 42.5vh !important;
@@ -743,18 +743,18 @@ main > section > div:first-child:not(#rcr-anchor):hover ~ div:last-child,
 main > section > div:first-child:not(#rcr-anchor):focus ~ div:last-child,
 main > section > div:first-child:not(#rcr-anchor):hover > div:first-child[class],
 main > section > div:first-child:not(#rcr-anchor):focus > div:first-child[class],
-main > section > div:first-child:not(#rcr-anchor) > div:first-child[class]:focus,
-main > section > div:first-child:not(#rcr-anchor) > div:first-child[class]:hover,
-main > section > div:first-child:not(#rcr-anchor) > div:first-child[class].hover,
-main > section > div:first-child:not(#rcr-anchor) > div:first-child[class].focus {
+main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):focus,
+main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):hover,
+main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child).hover,
+main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child).focus {
 	right: 12.2%;
 	background-color: var(--primary);
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover > div,
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:focus > div,
-main > section > div:first-child:not(#rcr-anchor) > div:first-child[class]:hover,
-main > section > div:first-child:not(#rcr-anchor) > div:first-child[class]:focus {
+main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):hover,
+main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):focus {
 	background-color: var(--primary);
 }
 

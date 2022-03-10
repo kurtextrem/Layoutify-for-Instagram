@@ -33,14 +33,17 @@ export default class About extends Component {
 		return (
 			<div>
 				<h3>
-					<a href="https://github.com/kurtextrem/Layoutify-for-Instagram/blob/master/CHANGELOG.md#changelog" target="_blank" rel="noopener">
+					<a
+						href="https://github.com/kurtextrem/Layoutify-for-Instagram/blob/master/CHANGELOG.md#changelog"
+						rel="noopener noreferrer"
+						target="_blank">
 						Changelog 📃
 					</a>
 				</h3>
 				<h3>About</h3>
 				<p>
 					Layoutify: Improved Layout does not collect any data and stores liked/saved posts only on your system. The code is Open-Source on{' '}
-					<a href="https://github.com/kurtextrem/Layoutify-for-Instagram" target="_blank" rel="noopener">
+					<a href="https://github.com/kurtextrem/Layoutify-for-Instagram" rel="noopener noreferrer" target="_blank">
 						GitHub
 					</a>
 					. I developed this extension, as I was not satisfied with the Instagram.com design and published it, as I thought I am probably
@@ -49,10 +52,10 @@ export default class About extends Component {
 				</p>
 				<p>
 					If you find any issues, please report them on{' '}
-					<a href="https://github.com/kurtextrem/Layoutify-for-Instagram/issues" target="_blank" rel="noopener">
+					<a href="https://github.com/kurtextrem/Layoutify-for-Instagram/issues" rel="noopener noreferrer" target="_blank">
 						GitHub
 					</a>{' '}
-					or mail me: <a href="mailto:kurtextrem@gmail.com">kurtextrem [at] gmail.com</a> (replace &nbsp;[at]&nbsp; with @).
+					or mail me: kurtextrem [at] gmail.com (replace &nbsp;[at]&nbsp; with @).
 				</p>
 
 				<h3>Donate</h3>
@@ -61,18 +64,18 @@ export default class About extends Component {
 					appreciate any donation. So if you want to buy me a ☕ or 🍻, please this button (redirects to PayPal) ❤️
 				</p>
 				<div class="d-flex">
-					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" rel="noopener">
-						<input type="hidden" name="cmd" value="_s-xclick" />
-						<input type="hidden" name="hosted_button_id" value="ZZD7VFF99KE74" />
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" rel="noopener" target="_blank">
+						<input name="cmd" type="hidden" value="_s-xclick" />
+						<input name="hosted_button_id" type="hidden" value="ZZD7VFF99KE74" />
 						<input
-							type="image"
-							src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif"
+							alt="Donate with PayPal button"
 							border="0"
 							name="submit"
+							src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif"
 							title="PayPal - The safer, easier way to pay online!"
-							alt="Donate with PayPal button"
+							type="image"
 						/>
-						<img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1" />
+						<img alt="" border="0" height="1" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" />
 					</form>
 				</div>
 				<p>
@@ -83,8 +86,8 @@ export default class About extends Component {
 					<span class="star" /> rating in the{' '}
 					<a
 						href="https://chrome.google.com/webstore/detail/layoutify-improved-layout/nekeeojpcbiehcignddhindbgacbghmi/reviews"
-						target="_blank"
-						rel="noopener">
+						rel="noopener noreferrer"
+						target="_blank">
 						Chrome Webstore
 					</a>
 					.
@@ -94,14 +97,6 @@ export default class About extends Component {
 					updates.
 				</p>
 
-				<h3>Tips & Tricks</h3>
-				<p>
-					If you want to upload pictures to Instagram on your PC, follow{' '}
-					<a href="https://medium.com/@mwender/how-to-post-to-instagram-from-your-desktop-65fa55c77556" target="_blank" rel="noopener">
-						this
-					</a>{' '}
-					tutorial.
-				</p>
 				<h3>Clear Outdated Data</h3>
 				<p>
 					Sometimes old posts are displayed, which aren&apos;t saved or liked anymore. Use this button to clear old local data (does not
@@ -114,7 +109,7 @@ export default class About extends Component {
 				<p>
 					Huuuuge thanks to{' '}
 					<b>
-						<a href="https://github.com/KLVN" target="_blank" rel="noopener">
+						<a href="https://github.com/KLVN" rel="noopener noreferrer" target="_blank">
 							Kelvin R.
 						</a>
 					</b>{' '}
@@ -122,14 +117,14 @@ export default class About extends Component {
 					<br />
 					Also huuuuge thanks to{' '}
 					<b>
-						<a href="https://github.com/ihtiht" target="_blank" rel="noopener">
+						<a href="https://github.com/ihtiht" rel="noopener noreferrer" target="_blank">
 							Ibrahim Tenekeci
 						</a>
 					</b>{' '}
 					for the modern and nice new logo.
 					<br />
 					Thanks to{' '}
-					<a href="https://github.com/PaoloC95" target="_blank" rel="noopener">
+					<a href="https://github.com/PaoloC95" rel="noopener noreferrer" target="_blank">
 						PaoloC95
 					</a>{' '}
 					for the italian translation.
@@ -142,7 +137,7 @@ export default class About extends Component {
 					This project is in no way affiliated with, authorized, maintained, sponsored or endorsed by Instagram or any of its affiliates or
 					subsidiaries. This is an independent project. Use at your own risk.
 					<br />
-					<a href="https://kurtextrem.de/chrome/PRIVACY.html" target="_blank" rel="noopener">
+					<a href="https://kurtextrem.de/chrome/PRIVACY.html" rel="noopener noreferrer" target="_blank">
 						Privacy Policy
 					</a>{' '}
 					(Sensitive data is <b>only</b> collected and stored <b>on your own PC</b>, options are synced if Chrome Sync is turned on)
