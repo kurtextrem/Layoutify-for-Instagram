@@ -5,6 +5,10 @@
 	--primary-rgb: 255, 255, 255;
 	--modalWidth: 85vw;
 	--modalHeight: 90vh;
+
+	--storyHeight: 47vh;
+	--storyItemSize: 40px;
+	--storyTransform: 87%;
 }
 
 /*html,
@@ -250,7 +254,15 @@ div > section + section > div > div:first-child {
 
 /* likes / views */
 div > section + section > div > div:last-child {
-	display: block;
+	min-width: unset;
+}
+
+div > section + section > div > div:last-child > div {
+	font-size: 8px;
+}
+
+div > section + section > div > div:last-child > div * {
+	font-size: 11px;
 }
 
 /** Posted date */
@@ -647,12 +659,19 @@ main > section > div:first-child:not(#rcr-anchor) {
 	max-width: none;
 	margin-right: 0;
 	pointer-events: none;
+	position: relative;
+	z-index: 11;
+	margin-top: 0;
+}
+
+main > section > div:first-child:not(#rcr-anchor) > div:first-child {
+	display: none;
 }
 
 /* Sidebar container */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
 main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) {
-	top: 75px !important;
+	top: 7% !important;
 	right: 0;
 	left: unset !important;
 	z-index: 10;
@@ -664,22 +683,24 @@ main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-c
 	border-top-left-radius: 4px;
 	border-bottom-left-radius: 4px;
 	box-shadow: -1px 1px 7px 0 #bdbdbd;
-	transform: translateX(80%);
+	transform: translateX(var(--storyTransform));
 	transition: opacity 300ms ease-out, right 300ms ease-out;
 	contain: content;
 }
 
 main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) {
-	top: 85px !important;
-	z-index: 11;
-	height: 42.5vh !important;
+	height: var(--storyHeight) !important;
 	padding-top: 3px;
 	padding-bottom: 0;
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;
-	transform: translateX(97%);
 	pointer-events: all;
+	position: absolute;
+	transform: translateX(calc(var(--storyTransform) + -4.4%));
+	top: 123px !important;
+	margin-top: 0;
+	width: 315px;
 }
 
 /* Suggestions */
@@ -699,16 +720,16 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 }
 
 .ige_movedStories canvas {
-	top: -3px !important;
-	left: -3px !important;
-	width: 38px !important;
-	height: 38px !important;
+	height: var(--storyItemSize) !important;
+	left: -2px !important;
+	top: -2px !important;
+	width: var(--storyItemSize) !important;
 }
 
 .ige_movedStories canvas + *,
 .ige_movedStories canvas + div > div + div > span {
-	width: 32px !important;
-	height: 32px !important;
+	width: calc(var(--storyItemSize) - 4px) !important;
+	height: calc(var(--storyItemSize) - 4px) !important;
 }
 
 /* "LIVE" */
@@ -735,6 +756,8 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div,
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div > div > div {
 	background-color: rgb(var(--primary-rgb) 0.8);
+	margin-right: 0;
+	max-width: 310px;
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover,
@@ -747,7 +770,7 @@ main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-c
 main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):hover,
 main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child).hover,
 main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child).focus {
-	right: 12.2%;
+	right: 13.2%;
 	background-color: var(--primary);
 }
 
@@ -774,11 +797,11 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
 
 /* Owner story */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child {
-	margin-top: 11px;
-	margin-bottom: 406px;
-	padding-bottom: 6px;
-	padding-left: 7px;
 	border-bottom: 1px solid #f5f5f5;
+	margin-bottom: 440px;
+	margin-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 7px;
 }
 
 /*main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div,
@@ -848,6 +871,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div {
 	margin-left: -4px;
 	padding-left: 0;
 	border-top: 1px solid #f5f5f5;
+	padding-top: 6px;
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div {
@@ -874,18 +898,23 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-ch
 
 /** 2020 in feed Stories */
 .ige_movedStories {
-	width: 15%;
-	height: 42.5vh !important;
-	padding-left: 8px;
+	height: var(--storyHeight) !important;
+	outline: 0;
 	overflow-x: hidden;
 	overflow-y: hidden;
-	outline: 0;
+	padding-left: 2px;
+	width: 100%;
 }
 
 .ige_movedStories > div > div {
 	margin: 0 !important;
 	overflow-x: hidden;
 	overflow-y: hidden;
+}
+
+/* next page button */
+.ige_movedStories > div > div + button {
+	left: 245px;
 }
 
 .ige_movedStories > div > div > div:only-child {
@@ -931,8 +960,11 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-ch
 
 .ige_movedStories ul li > div > button > div:last-child {
 	position: static;
-	max-width: none;
 	margin-left: 1em;
+}
+
+.ige_movedStories ul li > div > button > div:last-child > div {
+	max-width: none;
 }
 
 /*=============================================
