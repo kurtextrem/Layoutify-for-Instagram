@@ -114,7 +114,7 @@
 		"clean": "rimraf /dist",
 		"prebuild": "npm run clean & npm version patch",
 		"build": "npm run build-bundle",
-		"build-bundle": "cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider parallel-webpack --no-stats",
+		"build-bundle": "cross-env NODE_ENV=production parallel-webpack --no-stats",
 		"build-stats": "cross-env NODE_ENV=production STATS_ENABLE=true webpack --profile --json > stats.json",
 		"start": "cross-env NODE_ENV=development webpack-dev-server"
 	},

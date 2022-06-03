@@ -20,7 +20,7 @@ export default class PostsContainer extends Component {
 	static error = (
 		<div>
 			No data available (have you tried clicking the three dots on top of{' '}
-			<a href="https://www.instagram.com" _target="blank" rel="noopener">
+			<a _target="blank" href="https://www.instagram.com" rel="noopener">
 				Instagram.com
 			</a>
 			)? Please leave the Instagram tab open.
@@ -173,12 +173,12 @@ export default class PostsContainer extends Component {
 
 		return (
 			<Post
-				key={post.id}
 				data={post}
-				parent={id}
 				defaultClass={defaultClass}
-				toggleClass={toggleClass}
 				isCarousel={post.media_type === 8}
+				key={post.id}
+				parent={id}
+				toggleClass={toggleClass}
 			/>
 		)
 	}
@@ -193,7 +193,7 @@ export default class PostsContainer extends Component {
 						{Posts(items, this.renderPost)}
 					</div>
 					<div class="text-center">
-						<Button onClick={this.handleBtnClick} disabled={!canLoadMore}>
+						<Button disabled={!canLoadMore} onClick={this.handleBtnClick}>
 							Load more
 						</Button>
 					</div>

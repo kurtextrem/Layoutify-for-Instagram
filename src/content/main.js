@@ -64,7 +64,9 @@ const documentElement = document.documentElement,
 	},
 	WIDTH = window.innerWidth
 
-/** Stores the current options */
+/**
+ * Stores the current options
+ */
 let OPTIONS = {}
 
 /**
@@ -132,7 +134,7 @@ function observe(element, fn, options) {
 /**
  * Observe for node changes and add video controls if needed.
  */
-const root = document.getElementById('react-root')
+let root = document.getElementById('react-root')
 
 observe(
 	document.body,
@@ -142,6 +144,11 @@ observe(
 
 			for (const element of added) {
 				Promise.resolve().then(handleNode.bind(undefined, element, mutation)).catch(logAndReject)
+
+				if (root === null && $('[id^="mount"]')) {
+					root = $('[id^="mount"]')
+					onReady()
+				}
 			}
 		}
 	},
@@ -204,8 +211,8 @@ function handleSidebar() {
 	}
 }
 
-const rootInnerDiv = root.children[0],
-	rootInnerDiv2 = rootInnerDiv.children[0]
+/*const rootInnerDiv = root?.children[0],
+	rootInnerDiv2 = rootInnerDiv?.children[0]*/
 
 /**
  * @param node
@@ -219,7 +226,7 @@ function handleNode(node, mutation) {
 	handleSidebar()
 
 	const target = mutation.target
-	if ((target === root || target === rootInnerDiv || target === rootInnerDiv2) && nodeName === 'SECTION') onChange()
+	if (target === root && nodeName === 'SECTION') onChange()
 	handleNodeFns[nodeName] !== undefined && handleNodeFns[nodeName](node)
 }
 
@@ -489,7 +496,9 @@ function addWatched() {
  * Options
  */
 
-/** Options handlers */
+/**
+ * Options handlers
+ */
 const OPTS_MODE = {
 	//highlightOP(arg) {},
 	_boxWidth(value) {},
@@ -505,6 +514,9 @@ const OPTS_MODE = {
 		if (!root.classList.contains(cls)) root.classList.add(cls)
 	},
 
+	modalWidth(value) {
+		if (value !== 85) setCSSVar('modalWidth', value)
+	},
 	// boolean toggles
 	night(argument) {
 		const hour = new Date().getHours()
@@ -529,15 +541,12 @@ const OPTS_MODE = {
 		$('#ige_style').remove()
 		$('#ige_feed').style.display = 'none'
 		$(
-			'#react-root:not(.profile):not(.tv):not(.stories):not(.explore):not(.post):not(.twoFA) main > section > div:not(#rcr-anchor) > div:not([class])'
+			'[id^="mount"]:not(.profile):not(.tv):not(.stories):not(.explore):not(.post):not(.twoFA) main > section > div:not(#rcr-anchor) > div:not([class])'
 		).style.display = 'flex'
 		$('#ige_feedCSS').remove()
 	},
 	rows(value) {
 		if (value !== 4) setCSSVar('boxWidth', Math.ceil(100 / (value + 1)))
-	},
-	modalWidth(value) {
-		if (value !== 85) setCSSVar('modalWidth', value)
 	},
 }
 
@@ -549,19 +558,29 @@ const OPTS = {
 	hideStories: OPTS_MODE.klass,
 	highlightOP: OPTS_MODE.highlightOP,
 	night: OPTS_MODE.night,
+	// Check for updates when opening IG
+	modalWidth: OPTS_MODE.modalWidth,
+
 	nightModeEnd: undefined,
+
 	nightModeStart: undefined,
+
 	noSpaceBetweenPosts: OPTS_MODE.klass,
+
 	only3Dot: OPTS_MODE.only3Dot,
+
 	picturesOnly: OPTS_MODE.klass,
+
 	rows: OPTS_MODE.rows,
+
 	rowsFourBoxWidth: OPTS_MODE.boxWidth,
+
 	rowsTwoBoxWidth: OPTS_MODE.boxWidth,
 
 	watchInBackground: OPTS_MODE.notify,
+
 	watchPosts: undefined,
-	watchStories: undefined, // Check for updates when opening IG
-	modalWidth: OPTS_MODE.modalWidth,
+	watchStories: undefined,
 	// indicateFollowing: true
 }
 
@@ -761,9 +780,6 @@ function onReady() {
 		}
 	})
 }
-
-if (document.readyState === 'interactive' || document.readyState === 'complete') onReady()
-else document.addEventListener('DOMContentLoaded', onReady)
 
 // pass from injected page to background
 window.addEventListener('__@@ptb_ige', function (event) {

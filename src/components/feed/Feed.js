@@ -56,8 +56,8 @@ class Feed extends FetchComponent {
 		//this.rObs = rObs()
 
 		this.state.timeout = 0
-		this.state.items = window.__additionalData?.feed?.data?.user?.edge_web_feed_timeline?.edges || []
-		this.state.cursor = window.__additionalData.feed?.data?.user?.edge_web_feed_timeline?.page_info?.end_cursor || ''
+		this.state.items = []
+		this.state.cursor = ''
 
 		this.SentinelWithObserver = withIntersectionObserver(Sentinel, {
 			//delay: 16,
@@ -214,11 +214,11 @@ class Feed extends FetchComponent {
 			const len = arr.length
 			if (len === 8 || len === 25)
 				// two rows, so stories can load out of view
-				arr.push(<Stories key={current.node.id} additionalClass={i >= prevCount ? 'ige_fade' : ''} cursor={i < 10 ? 0 : 14} />)
+				arr.push(<Stories additionalClass={i >= prevCount ? 'ige_fade' : ''} cursor={i < 10 ? 0 : 14} key={current.node.id} />)
 
 			if (type === 'GraphStoriesInFeedItem') continue
 
-			arr.push(<Post key={current.node.shortcode} additionalClass={i >= prevCount ? 'ige_fade' : ''} data={current.node} />)
+			arr.push(<Post additionalClass={i >= prevCount ? 'ige_fade' : ''} data={current.node} key={current.node.shortcode} />)
 		}
 
 		return arr
@@ -233,7 +233,7 @@ class Feed extends FetchComponent {
 		if (items.length !== 0)
 			return (
 				<div class="ige_virtual">
-					<div ref={this.setRef} class="ige_virtual_container">
+					<div class="ige_virtual_container" ref={this.setRef}>
 						{this.renderItems()}
 						<Sentinel onVisible={this.loadNextPageRender} />
 						{!hasNextPage && !isNextPageLoading ? this.error : this.loading}

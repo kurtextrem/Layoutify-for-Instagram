@@ -5,7 +5,6 @@
 	--primary-rgb: 255, 255, 255;
 	--modalWidth: 85vw;
 	--modalHeight: 90vh;
-
 	--storyHeight: 47vh;
 	--storyItemSize: 40px;
 	--storyTransform: 87%;
@@ -13,7 +12,7 @@
 
 /*html,
 body,
-#react-root {
+[id^="mount"] {
 	height: unset !important;
 	min-height: 100%;
 }*/
@@ -145,7 +144,7 @@ canvas + span:focus {
 						Slimmer Post Header
 =============================================*/
 body > div > div[role='dialog'] article > div > div header,
-#react-root:not(.profile):not(.explore) article > div > div header {
+[id^='mount']:not(.profile):not(.explore) article > div > div header {
 	/** don't overlap, so article won't get promoted to a layer */
 	z-index: 8;
 	width: 99%;
@@ -155,22 +154,22 @@ body > div > div[role='dialog'] article > div > div header,
 }
 
 body > div > div[role='dialog'] article > div > div header,
-#react-root.post article > div > div header,
-#react-root.tv article > div > div header {
+[id^='mount'].post article > div > div header,
+[id^='mount'].tv article > div > div header {
 	width: 305px !important;
 	border: 0 !important;
 }
 
 /** avatar spacing */
 body > div > div[role='dialog'] article > div > div header > div:last-child,
-#react-root.post article > div > div header > div:last-child,
-#react-root.tv article > div > div header > div:last-child {
+[id^='mount'].post article > div > div header > div:last-child,
+[id^='mount'].tv article > div > div header > div:last-child {
 	margin-left: 12px;
 }
 
 /** menu dots */
 body > div > div[role='dialog'] article > div > div header + div,
-#react-root:not(.profile):not(.explore) article > div > div header + div {
+[id^='mount']:not(.profile):not(.explore) article > div > div header + div {
 	height: 53px !important;
 	/** don't overlap, so article won't get promoted to a layer */
 	padding-right: 0;
@@ -178,7 +177,7 @@ body > div > div[role='dialog'] article > div > div header + div,
 
 /** more lengthy usernames */
 body > div > div[role='dialog'] article > div > div header > div + div:last-child > div:first-child,
-#react-root:not(.profile):not(.explore) article > div > div header > div + div:last-child > div:first-child {
+[id^='mount']:not(.profile):not(.explore) article > div > div header > div + div:last-child > div:first-child {
 	max-width: 240px; /* copied from instagram class */
 }
 
@@ -193,7 +192,7 @@ div > main:only-child {
 /*----------  Improve new post layout  ----------*/
 /** Row layout */
 body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div > div:last-child,
-#react-root:not(.profile):not(.stories) article > div > div + div:last-child > div:only-child > div + div:last-child {
+[id^='mount']:not(.profile):not(.stories) article > div > div + div:last-child > div:only-child > div + div:last-child {
 	/* @TODO: Min Chrome v60 */
 	display: grid;
 	flex: 1;
@@ -213,8 +212,8 @@ body > div > div[role='dialog'] article > div > div + div:last-child > div:only-
 }
 
 body > div > div[role='dialog'] article > div > div + div:last-child > div:only-child > div > div:last-child,
-#react-root.post.post.post article > div > div + div:last-child > div:only-child > div + div:last-child,
-#react-root.tv.tv.tv article > div > div + div:last-child > div:only-child > div + div:last-child {
+[id^='mount'].post.post.post article > div > div + div:last-child > div:only-child > div + div:last-child,
+[id^='mount'].tv.tv.tv article > div > div + div:last-child > div:only-child > div + div:last-child {
 	grid-template:
 		'date likes' min-content
 		'c c' 1fr
@@ -285,7 +284,7 @@ time {
 
 /** View replies text */
 body > div > div[role='dialog'] ul > ul > li > ul,
-#react-root:not(.stories) ul > ul > li > ul {
+[id^='mount']:not(.stories) ul > ul > li > ul {
 	margin: 4px 0 0 54px;
 }
 
@@ -326,7 +325,7 @@ body
 	> div
 	+ div:last-child
 	> div:first-of-type:not(:only-child),
-#react-root:not(.stories)
+[id^='mount']:not(.stories)
 	article
 	> div
 	> div
@@ -356,7 +355,7 @@ body
 	+ div:last-child
 	> div:first-of-type:not(:only-child)
 	> ul,
-#react-root:not(.stories)
+[id^='mount']:not(.stories)
 	article
 	> div
 	> div
@@ -386,7 +385,7 @@ body
 	> div:first-of-type:not(:only-child)
 	> ul
 	> li,
-#react-root.post
+[id^='mount'].post
 	article
 	> div
 	> div
@@ -397,7 +396,17 @@ body
 	> div:first-of-type:not(:only-child)
 	> ul
 	> li,
-#react-root.tv article > div > div + div:last-child > div:only-child > div + div:last-child > div:first-of-type:not(:only-child) > ul > li {
+[id^='mount'].tv
+	article
+	> div
+	> div
+	+ div:last-child
+	> div:only-child
+	> div
+	+ div:last-child
+	> div:first-of-type:not(:only-child)
+	> ul
+	> li {
 	margin-top: 0;
 	margin-left: 0;
 	padding: 2px;
@@ -405,40 +414,40 @@ body
 
 /** Comments comment profile pic */
 body > div > div[role='dialog'] ul > ul > div > li > div > div > div > div,
-#react-root:not(.stories) ul > ul > div > li > div > div > div > div {
+[id^='mount']:not(.stories) ul > ul > div > li > div > div > div > div {
 	margin-right: 10px;
 }
 
 /** Comments timestamp */
 body > div > div[role='dialog'] h2 + span + div,
-#react-root:not(.stories) h2 + span + div,
+[id^='mount']:not(.stories) h2 + span + div,
 body > div > div[role='dialog'] h3 + span + div,
-#react-root:not(.stories) h3 + span + div {
+[id^='mount']:not(.stories) h3 + span + div {
 	margin-top: 7px;
 	margin-bottom: 5px;
 }
 
 /** Comments comments replies */
 body > div > div[role='dialog'] div > li > div > div,
-#react-root:not(.stories) div > li > div > div {
+[id^='mount']:not(.stories) div > li > div > div {
 	width: calc(100% - 6px);
 }
 
 /** avatar spacing */
 body > div > div[role='dialog'] div > li > div > div > div > div,
-#react-root:not(.stories) div > li > div > div > div > div {
+[id^='mount']:not(.stories) div > li > div > div > div > div {
 	margin-right: 12px;
 }
 
 /** Each comment row */
 body > div > div[role='dialog'] ul > ul,
-#react-root:not(.stories) ul > ul {
+[id^='mount']:not(.stories) ul > ul {
 	margin-bottom: 8px;
 }
 
 /** Each comment row li */
 body > div > div[role='dialog'] div > li,
-#react-root:not(.stories) div > li {
+[id^='mount']:not(.stories) div > li {
 	margin-right: 12px; /* so heart isn't cut */
 }
 
@@ -558,7 +567,7 @@ video[loop] {
 
 /** @TODO: Replace IG's play button with the native one once its been rolled out */
 body > div > div[role='dialog'] video:not([loop])::-webkit-media-controls-overlay-play-button,
-#react-root:not(.stories) video:not([loop])::-webkit-media-controls-overlay-play-button {
+[id^='mount']:not(.stories) video:not([loop])::-webkit-media-controls-overlay-play-button {
 	display: none;
 }
 
@@ -582,7 +591,7 @@ svg {
 
 div[role='button']:hover ~ a,
 div[role='button']:focus ~ a {
-	opacity: 100%;
+	opacity: 1;
 }
 
 div[role='button'] > div {
@@ -607,7 +616,7 @@ div[role='button'] + div[class] + div[class][style] /* tagged users */ {
 }
 
 div[role='button'] > div > button {
-	opacity: 100%; /* always show */
+	opacity: 1; /* always show */
 }
 
 /** Multiple dots */
@@ -655,13 +664,13 @@ nav input + span + div + div > div:first-of-type {
 =============================================*/
 /* Fix main feed */
 main > section > div:first-child:not(#rcr-anchor) {
-	float: none;
-	max-width: none;
-	margin-right: 0;
-	pointer-events: none;
 	position: relative;
 	z-index: 11;
+	float: none;
+	max-width: none;
 	margin-top: 0;
+	margin-right: 0;
+	pointer-events: none;
 }
 
 main > section > div:first-child:not(#rcr-anchor) > div:first-child {
@@ -689,18 +698,18 @@ main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-c
 }
 
 main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) {
+	position: absolute;
+	top: 123px !important;
+	width: 315px;
 	height: var(--storyHeight) !important;
+	margin-top: 0;
 	padding-top: 3px;
 	padding-bottom: 0;
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;
-	pointer-events: all;
-	position: absolute;
 	transform: translateX(calc(var(--storyTransform) + -4.4%));
-	top: 123px !important;
-	margin-top: 0;
-	width: 315px;
+	pointer-events: all;
 }
 
 /* Suggestions */
@@ -720,10 +729,10 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 }
 
 .ige_movedStories canvas {
-	height: var(--storyItemSize) !important;
-	left: -2px !important;
 	top: -2px !important;
+	left: -2px !important;
 	width: var(--storyItemSize) !important;
+	height: var(--storyItemSize) !important;
 }
 
 .ige_movedStories canvas + *,
@@ -755,9 +764,9 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div,
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div > div > div {
-	background-color: rgb(var(--primary-rgb) 0.8);
-	margin-right: 0;
 	max-width: 310px;
+	margin-right: 0;
+	background-color: rgb(var(--primary-rgb) 0.8);
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover,
@@ -797,11 +806,11 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
 
 /* Owner story */
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child {
-	border-bottom: 1px solid #f5f5f5;
+	margin-top: 0;
 	margin-bottom: 440px;
-	margin-top: 0px;
-	padding-bottom: 0px;
+	padding-bottom: 0;
 	padding-left: 7px;
+	border-bottom: 1px solid #f5f5f5;
 }
 
 /*main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div,
@@ -869,9 +878,9 @@ main
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div {
 	margin-bottom: 0;
 	margin-left: -4px;
+	padding-top: 6px;
 	padding-left: 0;
 	border-top: 1px solid #f5f5f5;
-	padding-top: 6px;
 }
 
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div {
@@ -898,12 +907,12 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-ch
 
 /** 2020 in feed Stories */
 .ige_movedStories {
+	width: 100%;
 	height: var(--storyHeight) !important;
-	outline: 0;
+	padding-left: 2px;
 	overflow-x: hidden;
 	overflow-y: hidden;
-	padding-left: 2px;
-	width: 100%;
+	outline: 0;
 }
 
 .ige_movedStories > div > div {
@@ -1101,7 +1110,7 @@ article > div > div + div:last-child > div:first-child + div > div > div > div[s
 
 /** Center the image */
 body > div > div[role='dialog'] article,
-#react-root:not(.home) article {
+[id^='mount']:not(.home) article {
 	flex-grow: 1;
 	justify-content: center;
 	max-height: 100%;
@@ -1277,7 +1286,7 @@ footer > div > nav {
 .ige_picturesOnly.home + #ige_feed article:hover > .ige_footer,
 .ige_picturesOnly.home + #ige_feed article:focus > .ige_actions_container,
 .ige_picturesOnly.home + #ige_feed article:focus > .ige_footer {
-	opacity: 100%;
+	opacity: 1;
 }
 
 .ige_picturesOnly.home + #ige_feed article > .ige_actions_container {
@@ -1285,7 +1294,7 @@ footer > div > nav {
 	bottom: 0;
 	left: 0;
 	width: 20%;
-	opacity: 33%;
+	opacity: 0.33;
 	transition: opacity 400ms ease-out;
 }
 
@@ -1296,7 +1305,7 @@ footer > div > nav {
 	z-index: 1;
 	width: 80%;
 	border-top: 0;
-	opacity: 0%;
+	opacity: 0;
 	transition: opacity 400ms ease-out;
 }
 
