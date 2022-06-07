@@ -16,35 +16,55 @@
 		return '<unknown>'
 	}
 
-	function getASBD() {
-		const el = document.querySelector('script[src*="ConsumerLibCommons"]')
-		if (el === null) {
-			console.error('couldnt find ConsumerLibCommons script')
-			return '<unknown>'
-		}
-
-		const src = el.src
-
+	function loadWithCache(src, old) {
 		return new Promise((resolve, reject) => {
 			window
 				.fetch(src, { cache: 'force-cache' })
 				.then(response => {
 					if (response.ok) return response
-					throw new Error('response not ok')
+					resolve(null)
 				})
 				.then(response => response.text())
 				.then(response => {
-					const match = response.match(/ASBD_ID='(\d+)'/)
-					if (match.length < 2) throw new Error('couldnt find asbd id')
+					const match = response.match(old ? /ASBD_ID='(\d+)'/ : /="(\d+)";\w\.ASBD_ID=/)
+					if (!match || match.length < 2) return resolve(null)
 
 					sessionStorage.ige_ASBD = match[1]
 					resolve(match[1])
 				})
 				.catch(err => {
 					console.error(err)
-					resolve('<unknown>')
+					resolve(null)
 				})
 		})
+	}
+
+	function getASBD() {
+		const el = document.querySelector('script[src*="ConsumerLibCommons"]') || document.querySelectorAll("link[rel='preload'][as='script']")
+		if (el === null) {
+			console.error('couldnt find ConsumerLibCommons script')
+			return Promise.resolve('<unknown>')
+		}
+
+		const len = el.length
+		if (len) {
+			const promises = new Array(len)
+			for (let i = 0; i < len; ++i) {
+				promises.push(loadWithCache(el[i].href, false))
+			}
+
+			return Promise.all(promises).then(results => {
+				const result = results.find(result => !!result)
+				if (result === undefined) {
+					console.error('couldnt find asbd id')
+					return '<unknown>'
+				}
+
+				return result
+			})
+		}
+
+		return loadWithCache(el.src, true)
 	}
 
 	function dispatch(obj) {
