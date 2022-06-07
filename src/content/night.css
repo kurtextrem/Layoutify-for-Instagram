@@ -73,7 +73,7 @@ li span {
 }
 
 /** Hue Rotation 100% - Important: This has a drastic performance impact. Don't over-use! */
-#react-root:not(.dms) [class*='Sprite'],
+[id^='mount']:not(.dms) [class*='Sprite'],
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > hr:first-of-type + div + div::after /** Stories after "shadow" **/ {
 	filter: invert(100%) hue-rotate(180deg); /* 60%, no hue rotation before */
 	mix-blend-mode: screen;
@@ -100,27 +100,27 @@ div > section + section > a /* likes/views */ {
 }
 
 /* Header of post */
-#react-root > section > main > section > div > div > div > article,
+[id^='mount'] > section > main > section > div > div > div > article,
 /* Description/comments/comment input */
-#react-root:not(.profile) header + div + div {
+[id^='mount']:not(.profile) header + div + div {
 	background: var(--primary);
 }
 
 /* Stories: "Stories" */
-#react-root > section > main > section > div > div > span,
+[id^='mount'] > section > main > section > div > div > span,
 /* Stories: time */
-#react-root > section > main > section > div > div > div > div > a > div > div > time,
-#react-root > section > main > section > div > div > div > article > div > div,
+[id^='mount'] > section > main > section > div > div > div > div > a > div > div > time,
+[id^='mount'] > section > main > section > div > div > div > article > div > div,
 /* Comments: input */
-#react-root > section > main > section > div > div > div > article > div > section > form > textarea {
+[id^='mount'] > section > main > section > div > div > div > article > div > section > form > textarea {
 	color: var(--secondary);
 }
 
 /* No borders: around post and in header of post */
-#react-root > section > main > section > div > div > div > article,
-#react-root > section > main > section > div > div > div > article > header,
+[id^='mount'] > section > main > section > div > div > div > article,
+[id^='mount'] > section > main > section > div > div > div > article > header,
 /* above like button and comment input */
-#react-root > section > main > section > div > div > div > article > div > section,
+[id^='mount'] > section > main > section > div > div > div > article > div > section,
 main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child + div /* Stories */ {
 	border: none;
 }
@@ -130,17 +130,17 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 =============================================*/
 
 /* Username */
-#react-root > section > main > article > header > section > div > h1,
+[id^='mount'] > section > main > article > header > section > div > h1,
 /* Follow button */
-#react-root > section > main > article > header > section > div > span > span > button,
+[id^='mount'] > section > main > article > header > section > div > span > span > button,
 /* Posts, followers, following */
-#react-root > section > main > article > header > section > ul,
-#react-root > section > main > article > header > section > ul > li > span > span,
-#react-root > section > main > article > header > section > ul > li > a > span,
+[id^='mount'] > section > main > article > header > section > ul,
+[id^='mount'] > section > main > article > header > section > ul > li > span > span,
+[id^='mount'] > section > main > article > header > section > ul > li > a > span,
 /* Description */
-#react-root > section > main > article > header > section > div,
+[id^='mount'] > section > main > article > header > section > div,
 /* Suggested: usernames */
-#react-root > section > main > article > div > div > div > div > div > ul > li > div > div > div > a {
+[id^='mount'] > section > main > article > div > div > div > div > div > ul > li > div > div > div > a {
 	color: var(--secondary);
 }
 
@@ -151,17 +151,17 @@ body > div > div > div > div > ul > li > button {
 }
 
 /* Followed by */
-#react-root > section > main > article > header > section > div > span > a {
+[id^='mount'] > section > main > article > header > section > div > span > a {
 	color: var(--blue);
 }
 
 /* Suggested */
-#react-root > section > main > article > div {
+[id^='mount'] > section > main > article > div {
 	background-color: var(--primary);
 	border: none;
 }
 
-#react-root > section > main > article > div > div > div > div > div > ul > li > div > div {
+[id^='mount'] > section > main > article > div > div > div > div > div > ul > li > div > div {
 	background: var(--light);
 	border: none;
 }
@@ -212,39 +212,39 @@ body > div > div > div > div > article > div > section {
 =============================================*/
 
 /* Header, comments, ... */
-#react-root > section > main > div > div > article {
+[id^='mount'] > section > main > div > div > article {
 	background-color: var(--primary);
 }
 
 /* Header: username */
-#react-root > section > main > div > div > article > header > div > div > div > a,
+[id^='mount'] > section > main > div > div > article > header > div > div > div > a,
 /* Header: little dot */
-#react-root > section > main > div > div > article > header > div > div > div > span,
+[id^='mount'] > section > main > div > div > article > header > div > div > div > span,
 /* Header: follow button */
-#react-root > section > main > div > div > article > header > div > div > div > span > button,
+[id^='mount'] > section > main > div > div > article > header > div > div > div > span > button,
 /* Header: location */
-#react-root > section > main > div > div > article > header > div > div > a,
+[id^='mount'] > section > main > div > div > article > header > div > div > a,
 /* Header: time */
-#react-root > section > main > div > div > article > div > div > a > time,
+[id^='mount'] > section > main > div > div > article > div > div > a > time,
 /* Header: likes */
-#react-root > section > main > div > div > article > div > section > div > a,
+[id^='mount'] > section > main > div > div > article > div > section > div > a,
 /* Comments: usernames */
-#react-root > section > main > div > div > article > div > div > ul > li > a,
-#react-root > section > main > div > div > article > div > div > ul > li > span > span,
+[id^='mount'] > section > main > div > div > article > div > div > ul > li > a,
+[id^='mount'] > section > main > div > div > article > div > div > ul > li > span > span,
 /* Comments: input */
-#react-root > section > main > div > div > article > div > section > form > textarea {
+[id^='mount'] > section > main > div > div > article > div > section > form > textarea {
 	color: var(--secondary) !important;
 }
 
 /* Comments: tagged users */
-#react-root > section > main > div > div > article > div > div > ul > li > span > a {
+[id^='mount'] > section > main > div > div > article > div > div > ul > li > span > a {
 	color: var(--blue) !important;
 }
 
 /* No borders around post, below header and comments */
-#react-root > section > main > div > div > article,
-#react-root > section > main > div > div > article > header,
-#react-root > section > main > div > div > article > div > section {
+[id^='mount'] > section > main > div > div > article,
+[id^='mount'] > section > main > div > div > article > header,
+[id^='mount'] > section > main > div > div > article > div > section {
 	border: none;
 }
 
@@ -269,7 +269,7 @@ div[role='dialog'] > div > div + div {
 	height: 59px; /* display border */
 }
 
-#react-root.dms a[href='/'],
-#react-root.dms a[href='/'] * {
+[id^='mount'].dms a[href='/'],
+[id^='mount'].dms a[href='/'] * {
 	background-color: unset !important;
 }
