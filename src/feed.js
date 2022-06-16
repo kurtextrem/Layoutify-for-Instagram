@@ -29,14 +29,12 @@ else if (location.href.indexOf('instagram.com') !== -1) {
 		ready()
 	else {
 		const observer = new MutationObserver(function (mutations) {
-			for (const i in mutations) {
-				const mutation = mutations[i]
-				if (mutation.target.classList.contains('home') && window._sharedData.config.viewer !== null) {
-					ready()
-					return
-				}
+			const el = document.querySelector('[id^="mount"]')
+			if (el && el.classList.contains('home') && window._sharedData.config.viewer !== null) {
+				observer.disconnect()
+				ready()
 			}
 		})
-		observer.observe(document.getElementById('react-root'), { attributeFilter: ['class'], attributes: true })
+		observer.observe(document.body, { childList: true, subtree: true })
 	}
 }

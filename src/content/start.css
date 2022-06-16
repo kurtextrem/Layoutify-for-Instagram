@@ -3,7 +3,7 @@ body {
 }
 
 /** Hide regular feed */
-#react-root:not(.profile):not(.tv):not(.stories):not(.explore):not(.post):not(.twoFA)
+[id^='mount']:not(.profile):not(.tv):not(.stories):not(.explore):not(.post):not(.twoFA)
 	main
 	> section
 	> div:not(#rcr-anchor)

@@ -53,14 +53,14 @@
 				promises.push(loadWithCache(el[i].href, false))
 			}
 
-			return Promise.all(promises).then(results => {
-				const result = results.find(result => !!result)
-				if (result === undefined) {
+			return Promise.allSettled(promises).then(results => {
+				const result = results.find(result => !!result.value)
+				if (!result) {
 					console.error('couldnt find asbd id')
 					return '<unknown>'
 				}
 
-				return result
+				return result.value
 			})
 		}
 
