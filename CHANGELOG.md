@@ -6,6 +6,12 @@
 
 </h3>
 
+## 3.12.0
+
+Instagram has changed how they load the page etc., which broke this extension. Unfortunately, I haven't had time until now to fix it. Sorry for that, but there was no way to prevent the extension from breaking and of course they don't notify me whenever they change something.
+
+This version fixes it. Thank you for your patience.
+
 ## 3.11.0
 
 Instagram changed the structure of their page and thus it broke the extension. I submitted a fix for this on the 9th of December, but it did not get approveduntil late December (not even on the 25th December). Not sure why it took so long, I never had that issue before.
