@@ -30,7 +30,7 @@ else if (location.href.indexOf('instagram.com') !== -1) {
 	else {
 		const observer = new MutationObserver(function (mutations) {
 			const el = document.querySelector('[id^="mount"]')
-			if (el && el.classList.contains('home') && window._sharedData.config.viewer !== null) {
+			if (el && el.classList.contains('home') && window._sharedData && window._sharedData.config.viewer !== null) {
 				observer.disconnect()
 				ready()
 			}

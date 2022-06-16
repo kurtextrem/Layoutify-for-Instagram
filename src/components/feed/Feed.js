@@ -11,6 +11,14 @@ import { Fragment, h } from 'preact'
 import { iObs, promiseReq, rObs, shallowDiffers } from '../Utils'
 //import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'preact/compat'
 
+/**
+ *
+ * @param {Event} e
+ */
+function stopScrollPropagation(e) {
+	e.stopImmediatePropagation()
+}
+
 class Feed extends FetchComponent {
 	TIME_STATE = {
 		ERROR: 2_000,
@@ -232,7 +240,7 @@ class Feed extends FetchComponent {
 		// @TODO Unload out of viewport imgs/videos
 		if (items.length !== 0)
 			return (
-				<div class="ige_virtual">
+				<div class="ige_virtual" onScrollCapture={stopScrollPropagation}>
 					<div class="ige_virtual_container" ref={this.setRef}>
 						{this.renderItems()}
 						<Sentinel onVisible={this.loadNextPageRender} />

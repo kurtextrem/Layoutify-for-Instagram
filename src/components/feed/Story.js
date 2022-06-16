@@ -10,7 +10,7 @@ import { memo, useCallback, useState } from 'preact/compat'
  * @param root0.type
  * @param root0.additionalClass
  */
-function Story({ data, src, type, additionalClass }) {
+const Story = ({ data, src, type, additionalClass }) => {
 	const [isOpen, setOpen] = useState(false)
 	const [renderModal, setRenderModal] = useState(false)
 	const [wasOpen, setOpened] = useState(false)
@@ -39,22 +39,22 @@ function Story({ data, src, type, additionalClass }) {
 				class={`ige_story ${additionalClass} ${wasOpen ? 'black-white' : ''} ${has_besties_media ? 'bestie-story' : ''} ${
 					type === 'GraphStoryVideo' ? 'story-video ig_sprite-before' : ''
 				}`}
-				onMouseOver={renderModalDelayed}
-				onMouseOut={cancelOpenModalDelayed}>
-				<button class="ige_story_container" role="menuitem" tabIndex="0" type="button" onClick={openModal}>
+				onMouseOut={cancelOpenModalDelayed}
+				onMouseOver={renderModalDelayed}>
+				<button class="ige_story_container" onClick={openModal} role="menuitem" tabIndex="0" type="button">
 					<div class="ige_story-img">
-						<img decoding="async" src={src} class="full-img br-6" />
+						<img class="full-img br-6" decoding="async" src={src} />
 					</div>
-					<div class="ige_story-avatar_container br-6">
-						<div role="button" tabIndex="0" class="d-flex a-center">
+					<div class="ige_story-avatar_container br-6 j-center">
+						<div class="d-flex a-center j-center" role="button" tabIndex="0">
 							<span class="ig_sprite-before ige_story-avatar" role="link" tabIndex="0">
 								<img
-									decoding="async"
-									alt={`${username}s Profilbild`}
+									alt={`${username}s Profile Picture`}
 									class="full-img br-50"
+									decoding="async"
+									height={150}
 									src={profile_pic_url}
 									width={150}
-									height={150}
 								/>
 							</span>
 						</div>
@@ -63,9 +63,9 @@ function Story({ data, src, type, additionalClass }) {
 				</button>
 			</div>
 			{isOpen || renderModal ? (
-				<Modal open onClose={closeModal} center classNames={{ modal: 'modal-story', root: !isOpen ? 'd-none' : undefined }} hidden={isOpen}>
+				<Modal center classNames={{ modal: 'modal-story', root: !isOpen ? 'd-none' : undefined }} hidden={isOpen} onClose={closeModal} open>
 					<div>
-						<iframe src={`/stories/${username}/${id}/#story`} class="ige_iframe" ref={iframeCloser} />
+						<iframe class="ige_iframe" ref={iframeCloser} src={`/stories/${username}/${id}/#story`} />
 					</div>
 				</Modal>
 			) : null}

@@ -225,9 +225,8 @@ function handleNode(node, mutation) {
 	handleStories()
 	handleSidebar()
 
-	const target = mutation.target
-	if (target === root && nodeName === 'SECTION') onChange()
-	handleNodeFns[nodeName] !== undefined && handleNodeFns[nodeName](node)
+	onChange()
+	if (handleNodeFns[nodeName] !== undefined) handleNodeFns[nodeName](node)
 }
 
 let hasNavigated = false,
