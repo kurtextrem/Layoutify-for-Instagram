@@ -24,7 +24,7 @@ if (module.hot) {
 if (location.pathname === '/feed.html') ready()
 else if (location.href.indexOf('instagram.com') !== -1) {
 	// install navigation observer
-	if (location.pathname === '/' && window._sharedData.config.viewer !== null)
+	if (location.pathname === '/' && window._sharedData && window._sharedData.config.viewer !== null)
 		// logged-in
 		ready()
 	else {
