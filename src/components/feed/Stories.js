@@ -91,6 +91,8 @@ class Stories extends FetchComponent {
 			headers: FetchComponent.getHeaders(false),
 		})
 			.then(json => {
+				if (!json || !json.data) return
+
 				const nextItems = json.data.reels_media,
 					len = nextItems.length
 				for (let i = 0; i < len; ++i) {
@@ -140,7 +142,7 @@ class Stories extends FetchComponent {
 				const src = returnUnseenSrc(current.items, current.unseen)
 				if (src === null) continue
 
-				arr.push(<Story key={current.id} data={current} src={src.src} type={src.type} additionalClass={i >= prevCount ? 'ige_fade' : ''} />)
+				arr.push(<Story additionalClass={i >= prevCount ? 'ige_fade' : ''} data={current} key={current.id} src={src.src} type={src.type} />)
 			}
 		}
 
@@ -195,11 +197,11 @@ class Stories extends FetchComponent {
 				</div>
 				<div class="ige_stories_container">
 					{page > 0 ? (
-						<button type="button" class="ige_button ig_sprite ige_carousel-btn ige_carousel-btn--left" onClick={this.prevPage} />
+						<button class="ige_button ig_sprite ige_carousel-btn ige_carousel-btn--left" onClick={this.prevPage} type="button" />
 					) : null}
 					{items}
 					{hasNextPage ? (
-						<button type="button" class="ige_button ig_sprite ige_carousel-btn ige_carousel-btn--right" onClick={this.nextPage} />
+						<button class="ige_button ig_sprite ige_carousel-btn ige_carousel-btn--right" onClick={this.nextPage} type="button" />
 					) : null}
 				</div>
 			</div>

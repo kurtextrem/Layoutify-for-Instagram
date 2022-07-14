@@ -16,7 +16,7 @@ import { iObs, promiseReq, rObs, shallowDiffers } from '../Utils'
  * @param {Event} e
  */
 function stopScrollPropagation(e) {
-	e.stopImmediatePropagation()
+	e.stopPropagation()
 }
 
 class Feed extends FetchComponent {
@@ -156,7 +156,7 @@ class Feed extends FetchComponent {
 	async loadDBItems() {
 		const db = await this.db
 		const path = db.transaction('paths').objectStore('paths')
-		const items = promiseReq(path.get('feed.items'))
+		const items = promiseReq(path.get('feed.content.home.items'))
 		const posts = promiseReq(path.get('posts.byId'))
 		const comments = promiseReq(path.get('comments.byId'))
 		const users = promiseReq(path.get('users.users'))
@@ -166,6 +166,7 @@ class Feed extends FetchComponent {
 		const result = []
 		for (let i = 0; i < itemsResult.length; ++i) {
 			const item = postsResult[itemsResult[i].postId]
+			if (!item) continue
 
 			// We adapt the stored items to be compatible to the feed response
 			if (item.isSidecar) item.__typename = 'GraphSidecar'
@@ -187,15 +188,17 @@ class Feed extends FetchComponent {
 			// location
 
 			const owner = usersResult[item.owner.id]
-			item.owner = usersResult[item.owner.id]
-			owner.is_private = owner.isPrivate
-			owner.is_verified = owner.isVerified
-			owner.profile_pic_url = owner.profilePictureUrl
+			if (owner) {
+				item.owner = owner
+				owner.is_private = owner.isPrivate
+				owner.is_verified = owner.isVerified
+				owner.profile_pic_url = owner.profilePictureUrl
+			}
 
 			// comments
 			item.edge_media_preview_comment = { count: item.numComments, edges: [] }
 			for (let x = 0; x < item.previewCommentIds.length; ++x) {
-				const node = { node: commentsResult[item.previewCommentIds[x]] }
+				const node = { node: commentsResult[item.previewCommentIds[x]] || {} }
 				node.node.owner = usersResult[node.node.userId]
 				item.edge_media_preview_comment.edges.push(node)
 			}
@@ -203,7 +206,6 @@ class Feed extends FetchComponent {
 			result.push({ node: item })
 		}
 
-		console.log(result)
 		this.setState({ items: result })
 	}
 
@@ -240,7 +242,7 @@ class Feed extends FetchComponent {
 		// @TODO Unload out of viewport imgs/videos
 		if (items.length !== 0)
 			return (
-				<div class="ige_virtual" onScrollCapture={stopScrollPropagation}>
+				<div class="ige_virtual" onScroll={stopScrollPropagation}>
 					<div class="ige_virtual_container" ref={this.setRef}>
 						{this.renderItems()}
 						<Sentinel onVisible={this.loadNextPageRender} />

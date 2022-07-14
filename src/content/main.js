@@ -633,6 +633,11 @@ OPTS_MODE.rows(WIDTH < 1367 ? 2 : 4)
 function addFeedDiv() {
 	const div = document.createElement('div')
 	div.id = 'ige_feed'
+	div.onscroll = e => {
+		e.stopImmediatePropagation()
+		e.stopPropagation()
+	}
+
 	root.after(div)
 }
 
@@ -787,4 +792,12 @@ window.addEventListener('__@@ptb_ige', function (event) {
 
 		chrome.runtime.sendMessage({ action: key, path: event.detail[key] })
 	}
+})
+
+document.body.addEventListener('scroll', e => {
+	e.stopPropagation()
+})
+
+document.addEventListener('scroll', e => {
+	e.stopPropagation()
 })

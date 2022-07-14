@@ -684,11 +684,11 @@ nav input + span + div + div > div:first-of-type {
 
 /* Fix main feed */
 main > section > div:first-child:not(#rcr-anchor) {
-	position: relative;
+	position: absolute;
+	left: 100vw;
 	z-index: 11;
-	float: none;
-	width: 100vw;
-	max-width: none;
+	width: 0;
+	height: 0;
 	margin-top: 0;
 	margin-right: 0;
 	transform: none !important;
