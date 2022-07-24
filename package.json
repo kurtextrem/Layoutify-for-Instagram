@@ -72,7 +72,7 @@
 		"optimize-css-assets-webpack-plugin": "6.0.0",
 		"parallel-webpack": "3.0.0-alpha.2",
 		"perfume.js": "6.2.0",
-		"preact": "^10.5.13",
+		"preact": "^10.10.0",
 		"preact-perf-profiler": "1.0.3",
 		"preact-render-to-string": "^5.1.19",
 		"prepack": "0.2.54",

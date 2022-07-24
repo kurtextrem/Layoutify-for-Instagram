@@ -72,7 +72,7 @@ specifiers:
   optimize-css-assets-webpack-plugin: 6.0.0
   parallel-webpack: 3.0.0-alpha.2
   perfume.js: 6.2.0
-  preact: ^10.5.13
+  preact: ^10.10.0
   preact-perf-profiler: 1.0.3
   preact-render-to-string: ^5.1.19
   prepack: 0.2.54
@@ -137,7 +137,7 @@ dependencies:
   '@babel/plugin-transform-typeof-symbol': 7.12.13_@babel+core@7.14.3
   '@babel/preset-env': 7.14.2_@babel+core@7.14.3
   '@babel/runtime': 7.14.0
-  '@quilted/preact-mini-compat': 0.2.6_43352c3a8b6ff0ef9dffc5b0e03bfaf1
+  '@quilted/preact-mini-compat': 0.2.6_a597bfd5c30900e7b47b36ac65a8cc18
   '@welldone-software/why-did-you-render': 6.1.4
   autobind-decorator: 2.4.0
   autodll-webpack-plugin: 0.4.2_webpack@5.37.1
@@ -182,9 +182,9 @@ dependencies:
   optimize-css-assets-webpack-plugin: 6.0.0_webpack@5.37.1
   parallel-webpack: 3.0.0-alpha.2_webpack@5.37.1
   perfume.js: 6.2.0
-  preact: 10.5.13
+  preact: 10.10.0
   preact-perf-profiler: 1.0.3
-  preact-render-to-string: 5.1.19_preact@10.5.13
+  preact-render-to-string: 5.1.19_preact@10.10.0
   prepack: 0.2.54
   prepack-webpack-plugin: 1.1.2_webpack@5.37.1
   prop-types: 15.7.2
@@ -1918,7 +1918,7 @@ packages:
     resolution: {integrity: sha512-3NsZsJIA/22P3QUyrEDNA2D133H4j224twJrdipXN38dpnIOzAbUDtOwkcJ5pXmn75w7LSQDjA4tO9dm1XlqlA==}
     dev: false
 
-  /@quilted/preact-mini-compat/0.2.6_43352c3a8b6ff0ef9dffc5b0e03bfaf1:
+  /@quilted/preact-mini-compat/0.2.6_a597bfd5c30900e7b47b36ac65a8cc18:
     resolution: {integrity: sha512-g9Gorq/N34n2e2alBY8xW4rQb/+wCSoC3MkCgUiUXFgZDZxA6vQLSiMBnD3O0yq0DMUaKQnMOcLGCVHTBsEJfg==}
     peerDependencies:
       '@babel/runtime': '>=7.0.0 <8.0.0'
@@ -1930,7 +1930,7 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.14.0
-      preact: 10.5.13
+      preact: 10.10.0
     dev: false
 
   /@react-hook/debounce/3.0.0:
@@ -9439,17 +9439,17 @@ packages:
     resolution: {integrity: sha512-PykUPaF/zDjMhzi2XIwpRZ91kIzGna6Li05GWLATdEAFFGSy76cNtR7O1SILb4vL2QwQqSglghOIoon01JYyIA==}
     dev: false
 
-  /preact-render-to-string/5.1.19_preact@10.5.13:
+  /preact-render-to-string/5.1.19_preact@10.10.0:
     resolution: {integrity: sha512-bj8sn/oytIKO6RtOGSS/1+5CrQyRSC99eLUnEVbqUa6MzJX5dYh7wu9bmT0d6lm/Vea21k9KhCQwvr2sYN3rrQ==}
     peerDependencies:
       preact: '>=10'
     dependencies:
-      preact: 10.5.13
+      preact: 10.10.0
       pretty-format: 3.8.0
     dev: false
 
-  /preact/10.5.13:
-    resolution: {integrity: sha512-q/vlKIGNwzTLu+jCcvywgGrt+H/1P/oIRSD6mV4ln3hmlC+Aa34C7yfPI4+5bzW8pONyVXYS7SvXosy2dKKtWQ==}
+  /preact/10.10.0:
+    resolution: {integrity: sha512-fszkg1iJJjq68I4lI8ZsmBiaoQiQHbxf1lNq+72EmC/mZOsFF5zn3k1yv9QGoFgIXzgsdSKtYymLJsrJPoamjQ==}
     dev: false
 
   /prelude-ls/1.1.2:

@@ -54,7 +54,7 @@ body {
 }
 
 /** Hide regular feed */
-.home main > section > div:not(#rcr-anchor) > div:not([class]) {
+.home main > div > section > div:not(#rcr-anchor) > div:not([class]) {
 	display: none;
 }
 
@@ -93,9 +93,9 @@ img + video {
 }
 
 .home > div > div > div {
-	z-index: 1;
+	/*z-index: 1;
 	width: 0;
-	height: 0;
+	height: 0;*/
 }
 
 .home div > div + section {
@@ -103,7 +103,7 @@ img + video {
 }
 
 /** Remove width limit */
-main > section {
+main > div > section {
 	flex-direction: column !important;
 	max-width: none !important;
 	margin: 0 !important;
@@ -111,7 +111,7 @@ main > section {
 }
 
 /** Make the flex box layout row instead of column */
-main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+main > div > section > div:not(#rcr-anchor) > div:not([class]) > div {
 	position: relative;
 	flex-direction: row !important;
 	flex-wrap: wrap;
@@ -125,7 +125,7 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div {
 /**
  * Stories in between posts
  */
-main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
+main > div > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div {
 	width: calc(100% - 7.4vw);
 	margin-top: 30px;
 	margin-bottom: 30px;
@@ -133,7 +133,7 @@ main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > div
 }
 
 /** Make boxes equal in height and width */
-.home main > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > article {
+.home main > div > section > div:not(#rcr-anchor) > div:not([class]) > div:first-child > article {
 	z-index: 0;
 	width: var(--boxWidth) !important;
 	min-width: var(--boxWidth) !important;
@@ -151,7 +151,7 @@ canvas + span:focus {
 }
 
 /** IG notifications #67 */
-.home main > section > div:first-child[class]:not(#rcr-anchor) > div > section > div {
+.home main > div > section > div:first-child[class]:not(#rcr-anchor) > div > section > div {
 	display: none;
 }
 
@@ -658,6 +658,11 @@ section > nav > div:first-child {
 	width: 0;
 }
 
+section > nav > div + div > div,
+section > nav > div + div > div > div {
+	height: var(--navHeight) !important;
+}
+
 nav > div + div > div {
 	contain: layout style; /** See issues#16 */
 	z-index: 9 !important;
@@ -677,13 +682,18 @@ nav input + span + div + div > div:first-of-type {
 /*=============================================
 										Stories
 =============================================*/
+
+.home span + span + div {
+	z-index: unset !important;
+}
+
 .home span + span + div > div > div,
 .home span + span + div > div > div section {
 	min-height: 0 !important; /* remove scrollbars from stories */
 }
 
 /* Fix main feed */
-main > section > div:first-child:not(#rcr-anchor) {
+main > div > section > div:first-child:not(#rcr-anchor) {
 	position: absolute;
 	left: 100vw;
 	z-index: 11;
@@ -695,14 +705,15 @@ main > section > div:first-child:not(#rcr-anchor) {
 	pointer-events: none;
 }
 
-main > section > div:first-child:not(#rcr-anchor) > div:first-child {
+main > div > section > div:first-child:not(#rcr-anchor) > div:first-child {
 	display: none;
 }
 
 /* Sidebar container */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
-main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) {
-	top: 7% !important;
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child,
+main > div > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) {
+	position: absolute;
+	top: 1.5vh !important;
 	right: 0;
 	left: unset !important;
 	z-index: 10;
@@ -719,7 +730,7 @@ main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-c
 	transition: opacity 300ms ease-out, right 300ms ease-out, background-color 300ms ease-out;
 }
 
-main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) {
+main > div > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) {
 	position: absolute;
 	top: 70px !important;
 	right: 0;
@@ -737,17 +748,17 @@ main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-c
 }
 
 /* Suggestions */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child canvas {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child canvas {
 	width: 56px !important;
 	height: 56px !important;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child canvas + span {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child canvas + span {
 	width: 46px !important;
 	height: 46px !important;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child canvas + a {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child canvas + a {
 	width: 46px !important;
 	height: 46px !important;
 }
@@ -786,50 +797,50 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 	font-size: 9px;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div,
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div > div > div {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div,
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div > div > div {
 	max-width: 310px;
 	margin-right: 0;
 	background-color: rgb(var(--primary-rgb) 0.8);
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover,
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:focus,
-main > section > div:first-child:not(#rcr-anchor):hover ~ div:last-child,
-main > section > div:first-child:not(#rcr-anchor):focus ~ div:last-child,
-main > section > div:first-child:not(#rcr-anchor):hover > div:first-child[class],
-main > section > div:first-child:not(#rcr-anchor):focus > div:first-child[class],
-main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):focus,
-main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):hover,
-main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child).hover,
-main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child).focus {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover,
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child:focus,
+main > div > section > div:first-child:not(#rcr-anchor):hover ~ div:last-child,
+main > div > section > div:first-child:not(#rcr-anchor):focus ~ div:last-child,
+main > div > section > div:first-child:not(#rcr-anchor):hover > div:first-child[class],
+main > div > section > div:first-child:not(#rcr-anchor):focus > div:first-child[class],
+main > div > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):focus,
+main > div > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):hover,
+main > div > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child).hover,
+main > div > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child).focus {
 	right: 13.2%;
 	background-color: var(--primary);
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover > div,
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:focus > div,
-main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):hover,
-main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):focus {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child:hover > div,
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child:focus > div,
+main > div > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):hover,
+main > div > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child):focus {
 	background-color: var(--primary);
 }
 
 /* Remove the layer of the empty div */
-main > section > div:first-child:not(#rcr-anchor) + div:empty {
+main > div > section > div:first-child:not(#rcr-anchor) + div:empty {
 	z-index: 9;
 	width: 0;
 	contain: strict;
 }
 
 /* Box container */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div {
 	border-right: 0;
 	border-left: 0;
 	border-radius: 0;
 }
 
 /* Owner story */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child {
 	margin-top: 0;
 	margin-bottom: 440px;
 	padding-bottom: 0;
@@ -837,24 +848,25 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-c
 	border-bottom: 1px solid #f5f5f5;
 }
 
-/*main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div,
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div > div > div > div > div,
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:focus) > div > div,
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:focus) > div > div > div > div > div > div {
+/*main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div,
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div > div > div > div > div,
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:focus) > div > div,
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:focus) > div > div > div > div > div > div {
 	padding-top: 4px;
 	padding-right: 0;
 	padding-bottom: 4px;
 	padding-left: 0;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div > div,
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:focus) > div > div > div {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:hover) > div > div > div,
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child:not(:focus) > div > div > div {
 	margin-right: 7px;
 	margin-left: 7px;
 }*/
 
 /** LIVE */
 main
+	> div
 	> section
 	> div:first-child:not(#rcr-anchor)
 	~ div:last-child:not(:focus)
@@ -873,6 +885,7 @@ main
 
 /** feat: Mark LIVE */
 main
+	> div
 	> section
 	> div:first-child:not(#rcr-anchor)
 	~ div:last-child:not(:focus)
@@ -899,7 +912,7 @@ main
 }
 
 /* suggestions */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div {
 	margin-bottom: 0;
 	margin-left: -4px;
 	padding-top: 6px;
@@ -907,23 +920,23 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div {
 	border-top: 1px solid #f5f5f5;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div {
 	padding-top: 0;
 }
 
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div div[aria-labelledby] {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div + div > div div[aria-labelledby] {
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
 /* Copyright etc */
-main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-child {
+main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-child {
 	padding-right: 17px;
 	padding-bottom: 0;
 	padding-left: 19px;
 }
 
-.ige_hideOwnerStory main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child,
+.ige_hideOwnerStory main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:first-child,
 .ige_hideSuggestions {
 	/* @TODO */
 	display: none;
@@ -1003,7 +1016,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-ch
 										Spinner
 =============================================*/
 /** Profile spinner */
-.home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) {
+.home main > div > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) {
 	/* 	order: 3;
 	height: 60px;
 	margin: 10px 0;
@@ -1012,7 +1025,7 @@ main > section > div:first-child:not(#rcr-anchor) ~ div:last-child > div:last-ch
 	display: none;
 }
 
-.home main > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) > div {
+.home main > div > section > div:not(#rcr-anchor):first-child > div:last-child:not(:first-child) > div {
 	/* 	top: 30%; */
 }
 
@@ -1355,11 +1368,11 @@ footer > div > nav {
 }
 
 /*----------  Hide Stories  ----------*/
-.ige_hideStories main > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
+.ige_hideStories main > div > section > div:first-child:not(#rcr-anchor) ~ div:last-child {
 	display: none;
 }
 
-.ige_hideStories main > section > div:not(#rcr-anchor) > div:not([class]) > div > div {
+.ige_hideStories main > div > section > div:not(#rcr-anchor) > div:not([class]) > div > div {
 	display: none;
 }
 
@@ -1372,7 +1385,7 @@ footer > div > nav {
 	padding-left: 63px;
 }
 
-.ige_noSpaceBetweenPosts main > section div > article,
+.ige_noSpaceBetweenPosts main > div > section div > article,
 .ige_noSpaceBetweenPosts + #ige_feed .ige_post {
 	margin-top: 0.3px;
 	margin-right: 0.3px;
@@ -1382,19 +1395,19 @@ footer > div > nav {
 	border-radius: 0;
 }
 
-.ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n + 1)),
+.ige_noSpaceBetweenPosts main > div > section div > article:not(:nth-of-type(4n + 1)),
 .ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n + 1)),
 .ige_noSpaceBetweenPosts + #ige_feed div ~ .ige_post:not(:nth-of-type(4n + 1)) {
 	border-left-width: 0;
 }
 
-.ige_noSpaceBetweenPosts main > section div > article:not(:nth-of-type(4n)),
+.ige_noSpaceBetweenPosts main > div > section div > article:not(:nth-of-type(4n)),
 .ige_noSpaceBetweenPosts + #ige_feed .ige_post:not(:nth-of-type(4n)),
 .ige_noSpaceBetweenPosts + #ige_feed div ~ .ige_post:not(:nth-of-type(4n)) {
 	border-right-width: 0;
 }
 
-.ige_noSpaceBetweenPosts main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+.ige_noSpaceBetweenPosts main > div > section > div:not(#rcr-anchor) > div:not([class]) > div {
 	justify-content: center;
 }
 
@@ -1419,7 +1432,7 @@ footer > div > nav {
 	:root {
 	}
 
-	main > section > div:not(#rcr-anchor) > div:not([class]) > div {
+	main > div > section > div:not(#rcr-anchor) > div:not([class]) > div {
 		justify-content: space-evenly;
 	}
 

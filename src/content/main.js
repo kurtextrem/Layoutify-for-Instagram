@@ -183,7 +183,8 @@ function handleStories() {
 	if (OPTS_LOADED && currentClass === 'home' && !OPTIONS.only3Dot && $('.ige_movedStories') === null) {
 		let $div
 		if (
-			($div = $('.home main > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) > div:last-child')) !== null
+			($div = $('.home main > div > section > div:first-child:not(#rcr-anchor) > div + div[class]:not(:last-child) > div:last-child')) !==
+			null
 		) {
 			moveStories($div)
 		}

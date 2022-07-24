@@ -1,7 +1,6 @@
 'use strict'
 
 // const requireSoSlow = require('require-so-slow')
-require('v8-compile-cache')
 const path = require('path')
 const webpack = require('webpack')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
