@@ -55,7 +55,7 @@ export default class About extends Component {
 					<a href="https://github.com/kurtextrem/Layoutify-for-Instagram/issues" rel="noopener noreferrer" target="_blank">
 						GitHub
 					</a>{' '}
-					or mail me: kurtextrem [at] gmail.com (replace &nbsp;[at]&nbsp; with @).
+					or mail me: <a href="mailto:contact@kurtextrem.de">contact@kurtextrem.de</a>
 				</p>
 
 				<h3>Donate</h3>
