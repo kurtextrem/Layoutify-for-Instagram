@@ -6,6 +6,9 @@ Layoutify: Improved Layout for Instagram
 
 </h1>
 
+> [!IMPORTANT]
+> Unfortunately, I no longer have the time needed to maintain this extension. Instagram does too many changes to their website for me to keep up. I'm thankful for all the users and support across all the years. **As of 2nd December 2023, I've unpublished the extension from the Webstore.**
+
 The default Instagram.com layout is not optimized for the desktop. This extension improves this.
 
 Download from [Chrome Web Store](https://chrome.google.com/webstore/detail/nekeeojpcbiehcignddhindbgacbghmi).
